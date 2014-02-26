@@ -68,6 +68,7 @@
 		6329556C18BC900600F2B78D /* UIImage+MultiFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 6329555C18BC900600F2B78D /* UIImage+MultiFormat.m */; };
 		6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = 6329555E18BC900600F2B78D /* UIImage+WebP.m */; };
 		6329556E18BC900600F2B78D /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 6329556018BC900600F2B78D /* UIImageView+WebCache.m */; };
+		636CF4AB18BD848E0085C28E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 636CF4AA18BD848E0085C28E /* MBProgressHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,6 +198,8 @@
 		6329555E18BC900600F2B78D /* UIImage+WebP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+WebP.m"; sourceTree = "<group>"; };
 		6329555F18BC900600F2B78D /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		6329556018BC900600F2B78D /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
+		636CF4A918BD848E0085C28E /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		636CF4AA18BD848E0085C28E /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -336,6 +339,7 @@
 		632954C318BC879B00F2B78D /* thirtys */ = {
 			isa = PBXGroup;
 			children = (
+				636CF4A818BD84830085C28E /* MBProgressView */,
 				6329554318BC900600F2B78D /* SDWebImage */,
 				6329553218BC8D5B00F2B78D /* FMDB */,
 				632954D218BC8AA700F2B78D /* ASIHttprequest */,
@@ -503,6 +507,15 @@
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
+		636CF4A818BD84830085C28E /* MBProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				636CF4A918BD848E0085C28E /* MBProgressHUD.h */,
+				636CF4AA18BD848E0085C28E /* MBProgressHUD.m */,
+			);
+			path = MBProgressView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -623,6 +636,7 @@
 				6329553E18BC8D7C00F2B78D /* FMDatabase.m in Sources */,
 				6329554218BC8D7C00F2B78D /* FMDatabasePool.m in Sources */,
 				6329552618BC8AA700F2B78D /* ASIS3BucketRequest.m in Sources */,
+				636CF4AB18BD848E0085C28E /* MBProgressHUD.m in Sources */,
 				6329551D18BC8AA700F2B78D /* ASICloudFilesObject.m in Sources */,
 				6329556718BC900600F2B78D /* SDWebImageDownloaderOperation.m in Sources */,
 				6329551418BC8AA700F2B78D /* ASIFormDataRequest.m in Sources */,
@@ -857,6 +871,7 @@
 				632954BC18BC875800F2B78D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		632954BD18BC875800F2B78D /* Build configuration list for PBXNativeTarget "cjzyb_iosTests" */ = {
 			isa = XCConfigurationList;
@@ -865,6 +880,7 @@
 				632954BF18BC875800F2B78D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
