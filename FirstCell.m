@@ -80,7 +80,7 @@
 - (void)layoutItemViews {
     self.headImg.frame = CGRectMake(Insets, Insets, Head_Size, Head_Size);
     
-    self.nameFromLab.frame = CGRectMake(Insets*2+Head_Size, Insets, , );
+//    self.nameFromLab.frame = CGRectMake(Insets*2+Head_Size, Insets, , );
 }
 -(void)layoutSubviews {
     [super layoutSubviews];

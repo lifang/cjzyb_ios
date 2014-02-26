@@ -45,7 +45,7 @@
 {
     return self.firstArray.count;
 }
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString * identifier= @"firstCell";
-}
+//-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    static NSString * identifier= @"firstCell";
+//}
 @end
