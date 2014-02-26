@@ -7,11 +7,15 @@
 //
 
 #import "AppDelegate.h"
+#import "MainViewController.h"//主页
+
 #import "TestViewController.h"
-/**
- *  ////
- */
+
 @implementation AppDelegate
+
++(AppDelegate *)shareIntance {
+    return (AppDelegate *)[[UIApplication sharedApplication] delegate];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -20,6 +24,11 @@
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
     [self.window makeKeyAndVisible];
+    
+    MainViewController *mainView = [[MainViewController alloc]initWithNibName:@"MainViewController" bundle:nil];
+    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:mainView];
+    self.window.rootViewController = navControl;
+    
     return YES;
 }
 
