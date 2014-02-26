@@ -81,6 +81,9 @@
 		636CF4C718BDB0220085C28E /* tabBarItemBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4C018BDB0220085C28E /* tabBarItemBack@2x.png */; };
 		636CF4C818BDB0220085C28E /* tabBarItemBack2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4C118BDB0220085C28E /* tabBarItemBack2@2x.png */; };
 		636CF4C918BDB0220085C28E /* userGroupItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4C218BDB0220085C28E /* userGroupItem@2x.png */; };
+		636CF4D018BDC14B0085C28E /* navigationBarLeftItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4CF18BDC14B0085C28E /* navigationBarLeftItem@2x.png */; };
+		636CF4D418BDC22D0085C28E /* MainNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 636CF4D218BDC22D0085C28E /* MainNavigationViewController.m */; };
+		636CF4D518BDC22D0085C28E /* MainNavigationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4D318BDC22D0085C28E /* MainNavigationViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -227,6 +230,10 @@
 		636CF4C018BDB0220085C28E /* tabBarItemBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabBarItemBack@2x.png"; sourceTree = "<group>"; };
 		636CF4C118BDB0220085C28E /* tabBarItemBack2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabBarItemBack2@2x.png"; sourceTree = "<group>"; };
 		636CF4C218BDB0220085C28E /* userGroupItem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "userGroupItem@2x.png"; sourceTree = "<group>"; };
+		636CF4CF18BDC14B0085C28E /* navigationBarLeftItem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationBarLeftItem@2x.png"; sourceTree = "<group>"; };
+		636CF4D118BDC22D0085C28E /* MainNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainNavigationViewController.h; sourceTree = "<group>"; };
+		636CF4D218BDC22D0085C28E /* MainNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainNavigationViewController.m; sourceTree = "<group>"; };
+		636CF4D318BDC22D0085C28E /* MainNavigationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainNavigationViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -347,6 +354,9 @@
 			isa = PBXGroup;
 			children = (
 				636CF4B618BD90350085C28E /* test */,
+				636CF4D118BDC22D0085C28E /* MainNavigationViewController.h */,
+				636CF4D218BDC22D0085C28E /* MainNavigationViewController.m */,
+				636CF4D318BDC22D0085C28E /* MainNavigationViewController.xib */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -571,6 +581,7 @@
 		636CF4BB18BDAFFB0085C28E /* tabBar */ = {
 			isa = PBXGroup;
 			children = (
+				636CF4CF18BDC14B0085C28E /* navigationBarLeftItem@2x.png */,
 				636CF4BC18BDB0220085C28E /* carBarItem@2x.png */,
 				636CF4BD18BDB0220085C28E /* homeworkTabBarItem@2x.png */,
 				636CF4BE18BDB0220085C28E /* mainTabBarItem@2x.png */,
@@ -664,6 +675,8 @@
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				636CF4B518BD8F3B0085C28E /* TestViewController.xib in Resources */,
 				636CF4C918BDB0220085C28E /* userGroupItem@2x.png in Resources */,
+				636CF4D018BDC14B0085C28E /* navigationBarLeftItem@2x.png in Resources */,
+				636CF4D518BDC22D0085C28E /* MainNavigationViewController.xib in Resources */,
 				636CF4C618BDB0220085C28E /* notificationTabBarItem@2x.png in Resources */,
 				636CF4C318BDB0220085C28E /* carBarItem@2x.png in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
@@ -729,6 +742,7 @@
 				6329551518BC8AA700F2B78D /* ASIHTTPRequest.m in Sources */,
 				6329551B18BC8AA700F2B78D /* ASICloudFilesContainerRequest.m in Sources */,
 				6329552918BC8AA700F2B78D /* ASIS3ServiceRequest.m in Sources */,
+				636CF4D418BDC22D0085C28E /* MainNavigationViewController.m in Sources */,
 				6329556318BC900600F2B78D /* SDImageCache.m in Sources */,
 				6329551318BC8AA700F2B78D /* ASIDownloadCache.m in Sources */,
 				6329549E18BC875800F2B78D /* main.m in Sources */,
