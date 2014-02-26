@@ -1,5 +1,5 @@
 //
-//  MainNavigationViewController.h
+//  DRNavigationRightItem.h
 //  cjzyb_ios
 //
 //  Created by david on 14-2-26.
@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MainNavigationViewController : UINavigationController
+@interface DRNavigationRightItem : UIView
+@property (weak, nonatomic) IBOutlet UIButton *itemCoverButton;
 
 @end

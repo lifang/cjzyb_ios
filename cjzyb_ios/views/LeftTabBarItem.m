@@ -36,6 +36,7 @@
 -(void)setIsSelected:(BOOL)isSelected{
     _isSelected = isSelected;
     [self.backImageView setHidden:!isSelected];
+    [self setUserInteractionEnabled:!isSelected];
 }
 #pragma mark --
 @end
