@@ -234,9 +234,6 @@
         <image name="mainTabBarItem.png" width="25" height="25"/>
         <image name="notificationTabBarItem.png" width="26" height="20"/>
         <image name="tabBarItemBack.png" width="108" height="102"/>
-        <image name="tabBarItemBack.png" width="108" height="102"/>
-        <image name="tabBarItemBack.png" width="108" height="102"/>
-        <image name="tabBarItemBack.png" width="108" height="102"/>
         <image name="tabBarItemBack2.png" width="79" height="39"/>
         <image name="userGroupItem.png" width="26" height="41"/>
     </resources>
