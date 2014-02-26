@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */; };
+		189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */; };
+		189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */; };
+		189D1B7E18BDBA8C00C22D72 /* LHLNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7D18BDBA8C00C22D72 /* LHLNotificationCell.m */; };
 		6329549218BC875800F2B78D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549118BC875800F2B78D /* Foundation.framework */; };
 		6329549418BC875800F2B78D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549318BC875800F2B78D /* CoreGraphics.framework */; };
 		6329549618BC875800F2B78D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549518BC875800F2B78D /* UIKit.framework */; };
@@ -81,6 +85,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationViewController.h; sourceTree = SOURCE_ROOT; };
+		189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationViewController.m; sourceTree = SOURCE_ROOT; };
+		189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationViewController.xib; sourceTree = SOURCE_ROOT; };
+		189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationCell.xib; sourceTree = SOURCE_ROOT; };
+		189D1B7C18BDBA8C00C22D72 /* LHLNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationCell.h; sourceTree = SOURCE_ROOT; };
+		189D1B7D18BDBA8C00C22D72 /* LHLNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationCell.m; sourceTree = SOURCE_ROOT; };
 		6329548E18BC875800F2B78D /* cjzyb_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cjzyb_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6329549118BC875800F2B78D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6329549318BC875800F2B78D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -229,6 +239,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		189D1B6B18BD99A300C22D72 /* test1 */ = {
+			isa = PBXGroup;
+			children = (
+				189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */,
+				189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */,
+				189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */,
+			);
+			name = test1;
+			sourceTree = "<group>";
+		};
+		189D1B7618BDB83C00C22D72 /* test2 */ = {
+			isa = PBXGroup;
+			children = (
+				189D1B7C18BDBA8C00C22D72 /* LHLNotificationCell.h */,
+				189D1B7D18BDBA8C00C22D72 /* LHLNotificationCell.m */,
+				189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */,
+			);
+			name = test2;
+			sourceTree = "<group>";
+		};
 		6329548518BC875800F2B78D = {
 			isa = PBXGroup;
 			children = (
@@ -315,6 +345,7 @@
 		632954C018BC879B00F2B78D /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				189D1B6B18BD99A300C22D72 /* test1 */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -346,6 +377,7 @@
 		632954C418BC879B00F2B78D /* views */ = {
 			isa = PBXGroup;
 			children = (
+				189D1B7618BDB83C00C22D72 /* test2 */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -579,7 +611,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
+				189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
+				189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,6 +639,7 @@
 				6329553F18BC8D7C00F2B78D /* FMResultSet.m in Sources */,
 				6329551E18BC8AA700F2B78D /* ASICloudFilesObjectRequest.m in Sources */,
 				6329552418BC8AA700F2B78D /* ASIS3Bucket.m in Sources */,
+				189D1B7E18BDBA8C00C22D72 /* LHLNotificationCell.m in Sources */,
 				6329556C18BC900600F2B78D /* UIImage+MultiFormat.m in Sources */,
 				632954A218BC875800F2B78D /* AppDelegate.m in Sources */,
 				6329552518BC8AA700F2B78D /* ASIS3BucketObject.m in Sources */,
@@ -624,6 +659,7 @@
 				6329554218BC8D7C00F2B78D /* FMDatabasePool.m in Sources */,
 				6329552618BC8AA700F2B78D /* ASIS3BucketRequest.m in Sources */,
 				6329551D18BC8AA700F2B78D /* ASICloudFilesObject.m in Sources */,
+				189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */,
 				6329556718BC900600F2B78D /* SDWebImageDownloaderOperation.m in Sources */,
 				6329551418BC8AA700F2B78D /* ASIFormDataRequest.m in Sources */,
 				6329551218BC8AA700F2B78D /* ASIDataDecompressor.m in Sources */,
@@ -857,6 +893,7 @@
 				632954BC18BC875800F2B78D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		632954BD18BC875800F2B78D /* Build configuration list for PBXNativeTarget "cjzyb_iosTests" */ = {
 			isa = XCConfigurationList;
@@ -865,6 +902,7 @@
 				632954BF18BC875800F2B78D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

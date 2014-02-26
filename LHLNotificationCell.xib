@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LHLNotificationCell" rowHeight="156" id="CwL-y2-VrE" customClass="LHLNotificationCell">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="130"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CwL-y2-VrE" id="fgf-vE-JmX">
+                <rect key="frame" x="0.0" y="0.0" width="600" height="129"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="P9L-bG-aPO">
+                        <rect key="frame" x="41" y="25" width="80" height="80"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="80" id="MOy-ox-ahW"/>
+                            <constraint firstAttribute="width" constant="80" id="aAA-Yd-ow3"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="2014/2/15 13:59" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O5T-j2-DXJ" userLabel="timeLabel - 2014/2/15 13:59">
+                        <rect key="frame" x="129" y="17" width="113" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="18" id="I9W-Rv-2a2"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" showsHorizontalScrollIndicator="NO" text="恭喜你在2014/2/18日发布的作业里勇获&quot;十速挑战&quot;项目的班级第一,&quot;优异&quot;积分加100.斯蒂芬斯柯达积分还是的浪费空间说得好法律是看得见会发" translatesAutoresizingMaskIntoConstraints="NO" id="aZ2-52-odC">
+                        <rect key="frame" x="123" y="28" width="367" height="74"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="aZ2-52-odC" secondAttribute="trailing" constant="110" id="4hj-b5-dAB"/>
+                    <constraint firstItem="aZ2-52-odC" firstAttribute="top" secondItem="O5T-j2-DXJ" secondAttribute="bottom" constant="-7" id="5Ut-QG-cr6"/>
+                    <constraint firstItem="P9L-bG-aPO" firstAttribute="leading" secondItem="fgf-vE-JmX" secondAttribute="leading" constant="41" id="MbG-Xa-lr6"/>
+                    <constraint firstAttribute="centerY" secondItem="P9L-bG-aPO" secondAttribute="centerY" id="U9R-mu-mX0"/>
+                    <constraint firstItem="aZ2-52-odC" firstAttribute="leading" secondItem="P9L-bG-aPO" secondAttribute="trailing" constant="2" id="cAA-Pd-ugN"/>
+                    <constraint firstItem="O5T-j2-DXJ" firstAttribute="leading" secondItem="P9L-bG-aPO" secondAttribute="trailing" constant="8" id="eM6-4N-2RZ"/>
+                    <constraint firstAttribute="centerY" secondItem="aZ2-52-odC" secondAttribute="centerY" id="luh-en-CA4"/>
+                </constraints>
+            </tableViewCellContentView>
+        </tableViewCell>
+    </objects>
+</document>
