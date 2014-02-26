@@ -13,5 +13,9 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
 #import "Const.h"
 #endif
+
+
+#define platform [[[UIDevice currentDevice] systemVersion] floatValue]
