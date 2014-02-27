@@ -11,7 +11,7 @@
 #import "DAPagesContainerTopBar.h"
 #import "DAPageIndicatorView.h"
 
-
+#import "FirstViewController.h"
 @interface DAPagesContainer () <DAPagesContainerTopBarDelegate, UIScrollViewDelegate>
 
 @property (strong, nonatomic) DAPagesContainerTopBar *topBar;
@@ -124,6 +124,10 @@
     
     NSString *previosImg = [self.viewControllers[self.selectedIndex] valueForKey:@"title"];
     NSString *nextImg = [self.viewControllers[selectedIndex] valueForKey:@"title"];
+    if (selectedIndex != 0) {
+        FirstViewController *firstView = (FirstViewController *)[self.viewControllers objectAtIndex:0];
+        [firstView.textView resignFirstResponder];
+    }
     
     if (abs(self.selectedIndex - selectedIndex) <= 1) {
         [self.scrollView setContentOffset:CGPointMake(selectedIndex * self.scrollWidth, 0.) animated:animated];

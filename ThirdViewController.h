@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ThirdViewController : UIViewController
+@interface ThirdViewController : UIViewController <UITextViewDelegate>
+
+@property (nonatomic, assign) CGFloat keyboardHeight;
+@property (nonatomic, strong) IBOutlet UITextView *txtView;
+@property (nonatomic, strong) IBOutlet UIButton *sendBtn;
 
 @end

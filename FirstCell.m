@@ -18,6 +18,7 @@
 #define AnimationDuration 0.2
 @interface FirstCell ()
 
+@property (strong, nonatomic) UIButton *coverButton;
 @property (strong, nonatomic) UIButton *focusButton;
 @property (strong, nonatomic) UIButton *commentButton;
 @property (strong, nonatomic) UIButton *deleteButton;
@@ -38,7 +39,8 @@
 }
 
 - (void)setUp {
-    self.actualContentView = [[UIView alloc]initWithFrame:self.frame];
+    self.actualContentView = [[UIView alloc]initWithFrame:CGRectZero];
+    self.actualContentView.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:self.actualContentView];
     //头像
     self.headImg = [[UIImageView alloc]initWithFrame:CGRectZero];
@@ -98,21 +100,23 @@
     self.huifuLab.font = [UIFont systemFontOfSize:14];
     self.huifuLab.text = @"回复";
     [self.actualContentView addSubview:self.huifuLab];
+    //
+    self.arrowImg = [[UIImageView alloc]initWithFrame:CGRectZero];
+    self.arrowImg.backgroundColor = [UIColor clearColor];
+    self.arrowImg.image = [UIImage imageNamed:@"arrowImg"];
+    [self.actualContentView addSubview:self.arrowImg];
     
-    self.contextMenuView = [[UIView alloc] initWithFrame:CGRectMake(Custom_Width, 0, CELL_WIDTH, CELL_HEIGHT)];
+    self.contextMenuView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.contextMenuView.backgroundColor = [UIColor lightGrayColor];
     [self.contentView insertSubview:self.contextMenuView belowSubview:self.actualContentView];
     self.shouldDisplayContextMenuView = NO;
     self.editable = YES;
-    
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTapGesture:)];
-    [tapGesture setDelegate:self];
-    tapGesture.delegate = self;
-    [self addGestureRecognizer:tapGesture];
-    self.isSelected = NO;
-    [self setNeedsLayout];
+
 }
 #pragma mark -- Public
-
+-(void)setIsSelected:(BOOL)isSelected {
+    _isSelected = isSelected;
+}
 - (void)setEditable:(BOOL)editable
 {
     if (_editable != editable) {
@@ -128,7 +132,10 @@
 }
 
 - (void)layoutItemViews {
-    self.headImg.frame = CGRectMake(Insets, Insets, Head_Size, Head_Size);
+    self.coverButton.frame = CGRectMake(0, 0, CELL_WIDTH, CELL_HEIGHT);
+    self.actualContentView.frame = CGRectMake(0, 0, CELL_WIDTH, CELL_HEIGHT);
+    self.contextMenuView.frame = CGRectMake(Custom_Width, 0, CELL_WIDTH, CELL_HEIGHT);
+    self.headImg.frame = CGRectMake(Insets, Insets*2, Head_Size, Head_Size);
     
     self.nameFromLab.frame = CGRectMake(Insets*2+Head_Size, Insets*2, [self.aMessage.messageFrom sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
     
@@ -139,6 +146,8 @@
         
         self.focusImg.hidden = NO;self.focusLab.hidden = NO;
         self.commentImg.hidden = NO; self.commentLab.hidden = NO;
+        
+        self.arrowImg.hidden = YES;
         
         self.timeLab.frame = CGRectMake(self.nameFromLab.frame.origin.x+self.nameFromLab.frame.size.width+Insets, Insets*2, [self.aMessage.messageTime sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
         
@@ -164,6 +173,10 @@
         
         self.focusImg.hidden = YES;self.focusLab.hidden = YES;
         self.commentImg.hidden = YES; self.commentLab.hidden = YES;
+        
+        self.arrowImg.hidden = NO;
+        
+        self.arrowImg.frame = CGRectMake(Insets, Insets/2, Insets, Insets);
         
         self.huifuLab.frame = CGRectMake(self.nameFromLab.frame.origin.x+self.nameFromLab.frame.size.width, Insets*2, [self.huifuLab.text sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
         
@@ -200,47 +213,22 @@
     [self.headImg setImageWithURL:url placeholderImage:[UIImage imageNamed:@"commentBtn"]];
 }
 
-
-#pragma mark - Gesture recognizer delegate
--(void)didStartTap {
-    
-    if (self.delegate && [self.delegate respondsToSelector:@selector(tapCell:byIndex:)]) {
-        [self.delegate tapCell:self byIndex:self.idxPath];
-    }
-}
--(void)handleTapGesture:(UITapGestureRecognizer *)tapGestureRecognizer {
-    [self didStartTap];
-    if (self.isSelected==NO) {
-        [UIView animateWithDuration:AnimationDuration
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseIn
-                         animations:^{
-                             self.actualContentView.frame = CGRectOffset(self.contentView.bounds, 0-Custom_Width, 0);
-                             self.contextMenuView.frame = CGRectOffset(self.contentView.bounds, 0, 0);
-                         }
-                         completion:^(BOOL finished) {
-                             self.isSelected = YES;
-                         }
-         ];
-    }else {
-        [UIView animateWithDuration:AnimationDuration
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseOut
-                         animations:^{
-                             self.actualContentView.frame = CGRectOffset(self.contentView.bounds, 0, 0);
-                             self.contextMenuView.frame = CGRectOffset(self.contentView.bounds, Custom_Width, 0);
-                         }
-                         completion:^(BOOL finished) {
-                             self.isSelected = NO;
-                         }
-         ];
-    }
-}
-
-
-
-
 #pragma mark -- 按钮及其点击事件
+- (UIButton *)coverButton {
+    if (!_coverButton) {
+        CGRect frame = CGRectMake(0, 0, Button_Size, Button_Size);
+        _coverButton = [[UIButton alloc] initWithFrame:frame];
+        [self.actualContentView addSubview:_coverButton];
+        [_coverButton addTarget:self action:@selector(coverButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _coverButton;
+}
+
+- (void)coverButtonTapped {
+    if ([self.delegate respondsToSelector:@selector(contextMenuCellDidSelectCoverOption:)]) {
+        [self.delegate contextMenuCellDidSelectCoverOption:self];
+    }
+}
 
 - (UIButton *)focusButton
 {
@@ -304,6 +292,19 @@
     }
 }
 
+-(void)open {
+    [UIView animateWithDuration:AnimationDuration
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                         self.actualContentView.frame = CGRectOffset(self.contentView.bounds, 0-Custom_Width, 0);
+                         self.contextMenuView.frame = CGRectOffset(self.contentView.bounds, 0, 0);
+                     }
+                     completion:^(BOOL finished) {
+                         self.isSelected = YES;
+                     }
+     ];
+}
 -(void)close {
     [UIView animateWithDuration:AnimationDuration
                           delay:0

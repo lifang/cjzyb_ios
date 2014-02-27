@@ -8,6 +8,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FirstViewController">
             <connections>
                 <outlet property="firstTable" destination="3yB-PS-XwZ" id="h2h-nx-81k"/>
+                <outlet property="textBar" destination="gf5-hu-Ej1" id="Rmy-Jz-jQM"/>
+                <outlet property="textView" destination="El6-KP-Uhh" id="D3M-WC-yv7"/>
                 <outlet property="view" destination="2" id="3"/>
             </connections>
         </placeholder>
@@ -31,5 +33,20 @@
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
+        <view contentMode="scaleToFill" id="gf5-hu-Ej1" userLabel="textBar">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+        </view>
+        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" id="El6-KP-Uhh">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="send"/>
+            <connections>
+                <outlet property="delegate" destination="-1" id="rmQ-RF-aPx"/>
+            </connections>
+        </textView>
     </objects>
 </document>

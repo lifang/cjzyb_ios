@@ -34,6 +34,9 @@
 		0E92659E18BDE51F003ADEC3 /* deleteBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659A18BDE51F003ADEC3 /* deleteBtn.png */; };
 		0E92659F18BDE51F003ADEC3 /* focusBtn_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659B18BDE51F003ADEC3 /* focusBtn_active.png */; };
 		0E9265A018BDE51F003ADEC3 /* focusBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659C18BDE51F003ADEC3 /* focusBtn.png */; };
+		0E9265A418BEEA01003ADEC3 /* send.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9265A318BEEA01003ADEC3 /* send.png */; };
+		0E9265A618BF008C003ADEC3 /* arrowImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9265A518BF008C003ADEC3 /* arrowImg.png */; };
+		0E9265AD18BF152F003ADEC3 /* UITextView+TextEx.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9265AC18BF152F003ADEC3 /* UITextView+TextEx.m */; };
 		6329549218BC875800F2B78D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549118BC875800F2B78D /* Foundation.framework */; };
 		6329549418BC875800F2B78D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549318BC875800F2B78D /* CoreGraphics.framework */; };
 		6329549618BC875800F2B78D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549518BC875800F2B78D /* UIKit.framework */; };
@@ -165,6 +168,10 @@
 		0E92659A18BDE51F003ADEC3 /* deleteBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = deleteBtn.png; sourceTree = "<group>"; };
 		0E92659B18BDE51F003ADEC3 /* focusBtn_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focusBtn_active.png; sourceTree = "<group>"; };
 		0E92659C18BDE51F003ADEC3 /* focusBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focusBtn.png; sourceTree = "<group>"; };
+		0E9265A318BEEA01003ADEC3 /* send.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send.png; sourceTree = "<group>"; };
+		0E9265A518BF008C003ADEC3 /* arrowImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowImg.png; sourceTree = "<group>"; };
+		0E9265AB18BF152F003ADEC3 /* UITextView+TextEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+TextEx.h"; sourceTree = "<group>"; };
+		0E9265AC18BF152F003ADEC3 /* UITextView+TextEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+TextEx.m"; sourceTree = "<group>"; };
 		6329548E18BC875800F2B78D /* cjzyb_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cjzyb_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6329549118BC875800F2B78D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6329549318BC875800F2B78D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -367,6 +374,8 @@
 				0E92659A18BDE51F003ADEC3 /* deleteBtn.png */,
 				0E92659B18BDE51F003ADEC3 /* focusBtn_active.png */,
 				0E92659C18BDE51F003ADEC3 /* focusBtn.png */,
+				0E9265A318BEEA01003ADEC3 /* send.png */,
+				0E9265A518BF008C003ADEC3 /* arrowImg.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -524,6 +533,8 @@
 				636CF4EC18BDD2C00085C28E /* DRNavigationRightItem.h */,
 				636CF4ED18BDD2C00085C28E /* DRNavigationRightItem.m */,
 				636CF4EF18BDD2D70085C28E /* DRNavigationRightItem.xib */,
+				0E9265AB18BF152F003ADEC3 /* UITextView+TextEx.h */,
+				0E9265AC18BF152F003ADEC3 /* UITextView+TextEx.m */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -813,6 +824,7 @@
 				0E92655F18BD9295003ADEC3 /* FirstViewController.xib in Resources */,
 				0E92656418BD92A0003ADEC3 /* SecondViewController.xib in Resources */,
 				0E92657B18BDACDD003ADEC3 /* second_active.png in Resources */,
+				0E9265A418BEEA01003ADEC3 /* send.png in Resources */,
 				0E92657C18BDACDD003ADEC3 /* second.png in Resources */,
 				0E92658618BDC528003ADEC3 /* focus.png in Resources */,
 				636CF4F218BDD41E0085C28E /* arrow@2x.png in Resources */,
@@ -829,6 +841,7 @@
 				636CF4C618BDB0220085C28E /* notificationTabBarItem@2x.png in Resources */,
 				636CF4C318BDB0220085C28E /* carBarItem@2x.png in Resources */,
 				0E92659F18BDE51F003ADEC3 /* focusBtn_active.png in Resources */,
+				0E9265A618BF008C003ADEC3 /* arrowImg.png in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
 				636CF4C518BDB0220085C28E /* mainTabBarItem@2x.png in Resources */,
 			);
@@ -873,6 +886,7 @@
 				6329556418BC900600F2B78D /* SDWebImageCompat.m in Sources */,
 				0E92658118BDB42D003ADEC3 /* FirstCell.m in Sources */,
 				6329551C18BC8AA700F2B78D /* ASICloudFilesContainerXMLParserDelegate.m in Sources */,
+				0E9265AD18BF152F003ADEC3 /* UITextView+TextEx.m in Sources */,
 				0E92655918BD9228003ADEC3 /* DAPagesContainerTopBar.m in Sources */,
 				6329551A18BC8AA700F2B78D /* ASICloudFilesContainer.m in Sources */,
 				6329551818BC8AA700F2B78D /* ASIWebPageRequest.m in Sources */,

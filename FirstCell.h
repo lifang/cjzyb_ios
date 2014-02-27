@@ -24,6 +24,7 @@
 @property (nonatomic, assign) enum MessageType msgType;//消息类型
 @property (nonatomic, assign) enum MessageCellStyle msgStyle;
 
+@property (nonatomic, strong) UIImageView *arrowImg;
 @property (nonatomic, strong) UILabel *nameToLab;//昵称to
 @property (nonatomic, strong) UILabel *huifuLab;//回复
 
@@ -35,12 +36,12 @@
 @property (nonatomic, assign) id <FirstCellDelegate> delegate;
 @property (nonatomic, strong) NSIndexPath *idxPath;
 
+-(void)open;
 -(void)close;
 @end
 
 @protocol FirstCellDelegate <NSObject>
--(void)tapCell:(FirstCell *)cell byIndex:(NSIndexPath *)aIndex;
-
+- (void)contextMenuCellDidSelectCoverOption:(FirstCell *)cell;
 - (void)contextMenuCellDidSelectFocusOption:(FirstCell *)cell;
 - (void)contextMenuCellDidSelectCommentOption:(FirstCell *)cell;
 - (void)contextMenuCellDidSelectDeleteOption:(FirstCell *)cell;

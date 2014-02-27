@@ -28,16 +28,39 @@
     return self;
 }
 -(void)testData {
-    for (int i=0; i<10; i++) {
-        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"1",M_ID,@"陆平",M_From,@"拉开受",M_Content,@"2014-01-11 17:58",M_Time,@"dfwfs",M_head,@"334566",M_focus,@"4435",M_answer,@"ss",M_To, nil];
+    for (int i=0; i<20; i++) {
+        NSString *str = [NSString stringWithFormat:@"%d",i];
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"1",M_ID,@"陆平",M_From,str,M_Content,@"2014-01-11 17:58",M_Time,@"dfwfs",M_head,@"334566",M_focus,@"4435",M_answer,@"ss",M_To, nil];
         MessageObject *message = [MessageObject messageFromDictionary:dic];
         [self.firstArray addObject:message];
     }
+}
+-(void)textBarInit {
+    self.keyboardHeight = -46;
+    
+    self.textView.frame = CGRectMake(3, 3, 762, 44);
+    [self.textBar addSubview:self.textView];
+    
+    self.textBar.frame = CGRectMake(0, self.view.frame.size.height, 768, 50);
+    [self.view addSubview:self.textBar];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self testData];
+    [self textBarInit];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
+    
+    _flags.delegateWillReloadData = [self respondsToSelector:@selector(tableViewWillReloadData:)];
+    _flags.delegateDidReloadData = [self respondsToSelector:@selector(tableViewDidReloadData:)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,7 +82,7 @@
 }
 
 #pragma mark
-#pragma mark -- UITableViewDelegate
+#pragma mark - UITableViewDelegate
 
 -(CGSize)getSizeWithString:(NSString *)str{
     UIFont *aFont = [UIFont systemFontOfSize:18];
@@ -83,7 +106,7 @@
     return Insets*6+Label_Height+size.height;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString * identifier= @"firstCell";
+    static NSString * identifier = @"firstCell%d";
     FirstCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
         cell=[[FirstCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:identifier];
@@ -92,19 +115,39 @@
     cell.aMessage = message;
     cell.idxPath = indexPath;
     cell.delegate = self;
+    cell.isSelected = NO;
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    FirstCell *cell = (FirstCell *)[tableView cellForRowAtIndexPath:indexPath];
-    
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
 }
-
-
+- (void)tableViewReload {
+    [self.firstTable reloadData];
+    if (_flags.reloading == NO) {
+        _flags.reloading = YES;
+        if (_flags.delegateWillReloadData) {
+            [self tableViewWillReloadData:self.firstTable];
+        }
+        [self performSelector:@selector(finishReload) withObject:nil afterDelay:1.0f];
+    }
+}
+- (void)finishReload {
+    _flags.reloading = NO;
+    if (_flags.delegateDidReloadData) {
+        [self tableViewDidReloadData:self.firstTable];
+    }
+}
+- (void)tableViewWillReloadData:(UITableView *)tableView {
+    NSLog(@"will");
+}
+- (void)tableViewDidReloadData:(UITableView *)tableView {
+    NSLog(@"did");
+}
 #pragma mark
-#pragma mark -- FirstCellDelegate
+#pragma mark - FirstCellDelegate
 
--(void)tapCell:(FirstCell *)cell byIndex:(NSIndexPath *)aIndex {
+-(void)resetTableViewCellByIndex:(NSIndexPath *)aIndex{
     if (self.selectedArray.count > 0) {
         NSInteger aRow = [[self.selectedArray objectAtIndex:0]integerValue];
         if (aRow != aIndex.row) {
@@ -112,20 +155,135 @@
             FirstCell *cell = (FirstCell *)[self.firstTable cellForRowAtIndexPath:idx];
             [cell close];
             [self.selectedArray removeAllObjects];
+            
+            cell = (FirstCell *)[self.firstTable cellForRowAtIndexPath:aIndex];
+            [cell open];
             [self.selectedArray addObject:[NSString stringWithFormat:@"%d",aIndex.row]];
+        }else {
+            FirstCell *cell = (FirstCell *)[self.firstTable cellForRowAtIndexPath:aIndex];
+            [cell close];
+            [self.selectedArray removeAllObjects];
         }
     }else {
+        FirstCell *cell = (FirstCell *)[self.firstTable cellForRowAtIndexPath:aIndex];
+        [cell open];
         [self.selectedArray addObject:[NSString stringWithFormat:@"%d",aIndex.row]];
     }
 }
 
+- (void)contextMenuCellDidSelectCoverOption:(FirstCell *)cell {
+    [self.textView resignFirstResponder];
+    [self resetTableViewCellByIndex:cell.idxPath];
+}
 - (void)contextMenuCellDidSelectFocusOption:(FirstCell *)cell {
     
 }
 - (void)contextMenuCellDidSelectCommentOption:(FirstCell *)cell {
-    
+    [self.textView becomeFirstResponder];
+    self.theIndex = cell.idxPath;
 }
 - (void)contextMenuCellDidSelectDeleteOption:(FirstCell *)cell {
+    self.theIndex = cell.idxPath;
+    [self.firstArray removeObjectAtIndex:self.theIndex.row];
+    [self tableViewReload];
+    [self.selectedArray removeAllObjects];
+}
+
+#pragma mark
+#pragma mark - Keyboard notifications
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary *userInfo = [notification userInfo];
+    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    
+    CGRect keyboardRect = [aValue CGRectValue];
+    keyboardRect = [self.view convertRect:keyboardRect fromView:nil];
+    
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    [UIView animateWithDuration:animationDuration
+                     animations:^{
+                         CGRect frame = self.textBar.frame;
+                         frame.origin.y += self.keyboardHeight;
+                         frame.origin.y -= keyboardRect.size.height;
+                         self.textBar.frame = frame;
+                         
+                         self.keyboardHeight = keyboardRect.size.height;
+                     }];
     
 }
+- (void)keyboardWillHide:(NSNotification *)notification {
+    
+    NSDictionary *userInfo = [notification userInfo];
+    
+    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDuration;
+    [animationDurationValue getValue:&animationDuration];
+    
+    [UIView animateWithDuration:animationDuration
+                     animations:^{
+                         self.textBar.frame = CGRectMake(0, self.view.frame.size.height, 768, 50);
+                         
+                         self.keyboardHeight = -46;
+                     }];
+    
+}
+
+#pragma mark
+#pragma mark - Text view delegate
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    [textView becomeFirstResponder];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    [textView resignFirstResponder];
+}
+
+- (void)textViewDidChange:(UITextView *)_textView {
+    CGSize size = self.textView.contentSize;
+    size.height -= 2;
+    if ( size.height >= 368 ) {
+        size.height = 368;
+    }
+    else if ( size.height <= 44 ) {
+        size.height = 44;
+    }
+    if ( size.height != self.textView.frame.size.height ) {
+        CGFloat span = size.height - self.textView.frame.size.height;
+        CGRect frame = self.textBar.frame;
+        frame.origin.y -= span;
+        frame.size.height += span;
+        self.textBar.frame = frame;
+
+        frame = self.textView.frame;
+        frame.size = size;
+        self.textView.frame = frame;
+    }
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([text isEqualToString:@"\n"]) {
+        
+        [textView resignFirstResponder];
+        //TODO:添加事件
+        [self resetTableViewCellByIndex:self.theIndex];
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"1",M_ID,@"陆平wefw",M_From,self.textView.text,M_Content,@"2014-02-26 17:58",M_Time,@"dfwfs",M_head,@"334566",M_focus,@"4435",M_answer,@"ss",M_To, nil];
+        MessageObject *message = [MessageObject messageFromDictionary:dic];
+        
+        NSIndexPath *idxPath = [NSIndexPath indexPathForRow:self.theIndex.row+1 inSection:0];
+        [self.firstArray insertObject:message atIndex:idxPath.row];
+        [self tableViewReload];
+        
+        self.textView.text = @"";
+        
+        return NO;
+    }
+    
+    return YES;
+}
+
 @end
