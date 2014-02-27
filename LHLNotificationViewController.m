@@ -11,6 +11,9 @@
 @interface LHLNotificationViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (assign,nonatomic) BOOL loaded;
+@property (strong,nonatomic) LHLNotificationCell *tempCell;
+
 @end
 
 @implementation LHLNotificationViewController
@@ -27,8 +30,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.loaded = NO;
     UINib *nib = [UINib nibWithNibName:@"LHLNotificationCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"LHLNotificationCell"];
+    [self.tableView registerClass:[LHLNotificationHeader class] forHeaderFooterViewReuseIdentifier:@"LHLNotificationHeader"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -41,17 +46,87 @@
 
 #pragma mark -- UITableViewDatasource
 
+
+-(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return 6;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.loaded) {
+        CGFloat height = self.tempCell.cellHeight;
+        return height > 150 ? height : 150;
+    }
+    return 150;
+}
+
 -(LHLNotificationCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.loaded) {
+        self.loaded = NO;
+        return self.tempCell;
+    }
     LHLNotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LHLNotificationCell"];
+    [cell initCell];
+    cell.delegate = self;
+    cell.indexPath = indexPath;
+    CGRect cellFrame = cell.frame;
+    cellFrame.size.height = cell.textView.frame.size.height + 28 + 20;
+    if (cellFrame.size.height < 150) {
+        cellFrame.size.height = 150;
+    }
     return cell;
 }
 
--(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
-}
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+//    return YES;
+//}
+
+//实现此方法可启用滑动删除特性,此方法在点击删除后调用
+//-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+//    //code
+//}
 
 #pragma mark --
 
 #pragma mark -- UITableViewDelegate
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    LHLNotificationCell *cell = (LHLNotificationCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell makeSideButtons];
+    [UIView animateWithDuration:0.25 animations:^{
+        cell.scrollView.contentOffset = CGPointMake(80, 0);
+    } completion:^(BOOL finished) {
+        [cell.scrollView setUserInteractionEnabled:YES];
+    }];
+}
+
+-(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+    LHLNotificationCell *cell = (LHLNotificationCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    [cell.scrollView setUserInteractionEnabled:NO];
+    [UIView animateWithDuration:0.25 animations:^{
+        cell.scrollView.contentOffset = CGPointMake(0, 0);
+    }];
+}
+
+-(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 70;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    LHLNotificationHeader *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"LHLNotificationHeader"];
+    header.delegate = self;
+    return header;
+}
+
+#pragma mark -- LHLNotificationCellDelegate
+-(void)refreshHeightForCell:(LHLNotificationCell *)cell{
+    [self.tableView reloadRowsAtIndexPaths:@[cell.indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    self.tempCell = cell;
+    self.loaded = YES;
+}
+
+#pragma mark -- LHLNotificationHeaderDelegate
+//点击header按钮后触发
+-(void)header:(LHLNotificationHeader *)header didSelectedDisplayCategory:(NotificationDisplayCategory)category{
+    
+}
 
 @end
