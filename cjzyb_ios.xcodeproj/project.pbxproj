@@ -7,16 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */; };
-		189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */; };
-		189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */; };
-		189D1B7E18BDBA8C00C22D72 /* LHLNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7D18BDBA8C00C22D72 /* LHLNotificationCell.m */; };
-		18AA80B618BEE44A00EC08CE /* trash_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80B518BEE44A00EC08CE /* trash_icon@2x.png */; };
-		18AA80B818BEFFFD00EC08CE /* bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80B718BEFFFD00EC08CE /* bg@2x.png */; };
-		18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80B918BF030200EC08CE /* smile@2x.png */; };
-		18AA80BD18BF04E800EC08CE /* LHLNotificationHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */; };
-		18AA80C118BF14A200EC08CE /* smallTriangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80C018BF14A200EC08CE /* smallTriangle@2x.png */; };
-		18AA80C418BF1A3300EC08CE /* LHLReplyNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */; };
 		0E92654F18BD9016003ADEC3 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92654D18BD9016003ADEC3 /* MainViewController.m */; };
 		0E92655018BD9016003ADEC3 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92654E18BD9016003ADEC3 /* MainViewController.xib */; };
 		0E92655818BD9228003ADEC3 /* DAPagesContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92655318BD9228003ADEC3 /* DAPagesContainer.m */; };
@@ -47,6 +37,16 @@
 		0E9265A418BEEA01003ADEC3 /* send.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9265A318BEEA01003ADEC3 /* send.png */; };
 		0E9265A618BF008C003ADEC3 /* arrowImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9265A518BF008C003ADEC3 /* arrowImg.png */; };
 		0E9265AD18BF152F003ADEC3 /* UITextView+TextEx.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9265AC18BF152F003ADEC3 /* UITextView+TextEx.m */; };
+		189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */; };
+		189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */; };
+		189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */; };
+		189D1B7E18BDBA8C00C22D72 /* LHLNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7D18BDBA8C00C22D72 /* LHLNotificationCell.m */; };
+		18AA80B618BEE44A00EC08CE /* trash_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80B518BEE44A00EC08CE /* trash_icon@2x.png */; };
+		18AA80B818BEFFFD00EC08CE /* bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80B718BEFFFD00EC08CE /* bg@2x.png */; };
+		18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80B918BF030200EC08CE /* smile@2x.png */; };
+		18AA80BD18BF04E800EC08CE /* LHLNotificationHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */; };
+		18AA80C118BF14A200EC08CE /* smallTriangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80C018BF14A200EC08CE /* smallTriangle@2x.png */; };
+		18AA80C418BF1A3300EC08CE /* LHLReplyNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */; };
 		6329549218BC875800F2B78D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549118BC875800F2B78D /* Foundation.framework */; };
 		6329549418BC875800F2B78D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549318BC875800F2B78D /* CoreGraphics.framework */; };
 		6329549618BC875800F2B78D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549518BC875800F2B78D /* UIKit.framework */; };
@@ -140,20 +140,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationViewController.h; sourceTree = SOURCE_ROOT; };
-		189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationViewController.m; sourceTree = SOURCE_ROOT; };
-		189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationViewController.xib; sourceTree = SOURCE_ROOT; };
-		189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationCell.xib; sourceTree = SOURCE_ROOT; };
-		189D1B7C18BDBA8C00C22D72 /* LHLNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationCell.h; sourceTree = SOURCE_ROOT; };
-		189D1B7D18BDBA8C00C22D72 /* LHLNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationCell.m; sourceTree = SOURCE_ROOT; };
-		18AA80B518BEE44A00EC08CE /* trash_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trash_icon@2x.png"; sourceTree = "<group>"; };
-		18AA80B718BEFFFD00EC08CE /* bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@2x.png"; sourceTree = "<group>"; };
-		18AA80B918BF030200EC08CE /* smile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smile@2x.png"; sourceTree = "<group>"; };
-		18AA80BB18BF04E800EC08CE /* LHLNotificationHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationHeader.h; sourceTree = SOURCE_ROOT; };
-		18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationHeader.m; sourceTree = SOURCE_ROOT; };
-		18AA80C018BF14A200EC08CE /* smallTriangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smallTriangle@2x.png"; sourceTree = "<group>"; };
-		18AA80C218BF1A3300EC08CE /* LHLReplyNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLReplyNotificationCell.h; sourceTree = SOURCE_ROOT; };
-		18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLReplyNotificationCell.m; sourceTree = SOURCE_ROOT; };
 		0E92654C18BD9016003ADEC3 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = SOURCE_ROOT; };
 		0E92654D18BD9016003ADEC3 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = SOURCE_ROOT; };
 		0E92654E18BD9016003ADEC3 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -196,6 +182,20 @@
 		0E9265A518BF008C003ADEC3 /* arrowImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowImg.png; sourceTree = "<group>"; };
 		0E9265AB18BF152F003ADEC3 /* UITextView+TextEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+TextEx.h"; sourceTree = "<group>"; };
 		0E9265AC18BF152F003ADEC3 /* UITextView+TextEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+TextEx.m"; sourceTree = "<group>"; };
+		189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationViewController.h; sourceTree = SOURCE_ROOT; };
+		189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationViewController.m; sourceTree = SOURCE_ROOT; };
+		189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationViewController.xib; sourceTree = SOURCE_ROOT; };
+		189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationCell.xib; sourceTree = SOURCE_ROOT; };
+		189D1B7C18BDBA8C00C22D72 /* LHLNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationCell.h; sourceTree = SOURCE_ROOT; };
+		189D1B7D18BDBA8C00C22D72 /* LHLNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationCell.m; sourceTree = SOURCE_ROOT; };
+		18AA80B518BEE44A00EC08CE /* trash_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trash_icon@2x.png"; sourceTree = "<group>"; };
+		18AA80B718BEFFFD00EC08CE /* bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@2x.png"; sourceTree = "<group>"; };
+		18AA80B918BF030200EC08CE /* smile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smile@2x.png"; sourceTree = "<group>"; };
+		18AA80BB18BF04E800EC08CE /* LHLNotificationHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationHeader.h; sourceTree = SOURCE_ROOT; };
+		18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationHeader.m; sourceTree = SOURCE_ROOT; };
+		18AA80C018BF14A200EC08CE /* smallTriangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smallTriangle@2x.png"; sourceTree = "<group>"; };
+		18AA80C218BF1A3300EC08CE /* LHLReplyNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLReplyNotificationCell.h; sourceTree = SOURCE_ROOT; };
+		18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLReplyNotificationCell.m; sourceTree = SOURCE_ROOT; };
 		6329548E18BC875800F2B78D /* cjzyb_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cjzyb_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6329549118BC875800F2B78D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6329549318BC875800F2B78D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -370,49 +370,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		189D1B6B18BD99A300C22D72 /* test1 */ = {
-			isa = PBXGroup;
-			children = (
-				189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */,
-				189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */,
-				189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */,
-			);
-			name = test1;
-			sourceTree = "<group>";
-		};
-		189D1B7618BDB83C00C22D72 /* test2 */ = {
-			isa = PBXGroup;
-			children = (
-				189D1B7C18BDBA8C00C22D72 /* LHLNotificationCell.h */,
-				189D1B7D18BDBA8C00C22D72 /* LHLNotificationCell.m */,
-				189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */,
-				18AA80BB18BF04E800EC08CE /* LHLNotificationHeader.h */,
-				18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */,
-				18AA80C218BF1A3300EC08CE /* LHLReplyNotificationCell.h */,
-				18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */,
-			);
-			name = test2;
-			sourceTree = "<group>";
-		};
-		18AA80B318BEE42C00EC08CE /* image */ = {
-			isa = PBXGroup;
-			children = (
-				18AA80B418BEE43500EC08CE /* LHLimage */,
-			);
-			name = image;
-			sourceTree = "<group>";
-		};
-		18AA80B418BEE43500EC08CE /* LHLimage */ = {
-			isa = PBXGroup;
-			children = (
-				18AA80C018BF14A200EC08CE /* smallTriangle@2x.png */,
-				18AA80B918BF030200EC08CE /* smile@2x.png */,
-				18AA80B718BEFFFD00EC08CE /* bg@2x.png */,
-				18AA80B518BEE44A00EC08CE /* trash_icon@2x.png */,
-			);
-			name = LHLimage;
-			sourceTree = "<group>";
-		};
 		0E92655118BD920F003ADEC3 /* TabBarController */ = {
 			isa = PBXGroup;
 			children = (
@@ -445,6 +402,25 @@
 				0E9265A518BF008C003ADEC3 /* arrowImg.png */,
 			);
 			name = images;
+			sourceTree = "<group>";
+		};
+		18AA80B318BEE42C00EC08CE /* image */ = {
+			isa = PBXGroup;
+			children = (
+				18AA80B418BEE43500EC08CE /* LHLimage */,
+			);
+			name = image;
+			sourceTree = "<group>";
+		};
+		18AA80B418BEE43500EC08CE /* LHLimage */ = {
+			isa = PBXGroup;
+			children = (
+				18AA80C018BF14A200EC08CE /* smallTriangle@2x.png */,
+				18AA80B918BF030200EC08CE /* smile@2x.png */,
+				18AA80B718BEFFFD00EC08CE /* bg@2x.png */,
+				18AA80B518BEE44A00EC08CE /* trash_icon@2x.png */,
+			);
+			name = LHLimage;
 			sourceTree = "<group>";
 		};
 		6329548518BC875800F2B78D = {
@@ -537,7 +513,9 @@
 		632954C018BC879B00F2B78D /* controllers */ = {
 			isa = PBXGroup;
 			children = (
-				189D1B6B18BD99A300C22D72 /* test1 */,
+				189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */,
+				189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */,
+				189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */,
 				0E92654C18BD9016003ADEC3 /* MainViewController.h */,
 				0E92654D18BD9016003ADEC3 /* MainViewController.m */,
 				0E92654E18BD9016003ADEC3 /* MainViewController.xib */,
@@ -592,7 +570,13 @@
 		632954C418BC879B00F2B78D /* views */ = {
 			isa = PBXGroup;
 			children = (
-				189D1B7618BDB83C00C22D72 /* test2 */,
+				189D1B7C18BDBA8C00C22D72 /* LHLNotificationCell.h */,
+				189D1B7D18BDBA8C00C22D72 /* LHLNotificationCell.m */,
+				189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */,
+				18AA80BB18BF04E800EC08CE /* LHLNotificationHeader.h */,
+				18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */,
+				18AA80C218BF1A3300EC08CE /* LHLReplyNotificationCell.h */,
+				18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */,
 				0E92657F18BDB42D003ADEC3 /* FirstCell.h */,
 				0E92658018BDB42D003ADEC3 /* FirstCell.m */,
 				636CF4AC18BD8EA90085C28E /* LeftTabBarView.h */,
