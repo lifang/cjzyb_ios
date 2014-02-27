@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FirstCell.h"
+#import "MessageObject.h"
 
-@interface FirstViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface FirstViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,FirstCellDelegate>
 
 @property (nonatomic, strong) IBOutlet UITableView *firstTable;
 @property (nonatomic, strong) NSMutableArray *firstArray;
-
+@property (nonatomic, strong) NSMutableArray *selectedArray;
 @end

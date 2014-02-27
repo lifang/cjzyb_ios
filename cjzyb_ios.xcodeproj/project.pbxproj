@@ -26,6 +26,14 @@
 		0E92657E18BDACDD003ADEC3 /* third.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657818BDACDD003ADEC3 /* third.png */; };
 		0E92658118BDB42D003ADEC3 /* FirstCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92658018BDB42D003ADEC3 /* FirstCell.m */; };
 		0E92658418BDB695003ADEC3 /* MessageObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92658318BDB695003ADEC3 /* MessageObject.m */; };
+		0E92658618BDC528003ADEC3 /* focus.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92658518BDC528003ADEC3 /* focus.png */; };
+		0E92658818BDC546003ADEC3 /* comment.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92658718BDC546003ADEC3 /* comment.png */; };
+		0E92658B18BDC627003ADEC3 /* PersonObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92658A18BDC627003ADEC3 /* PersonObject.m */; };
+		0E92658E18BDCAAA003ADEC3 /* MessagePersonUnionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92658D18BDCAAA003ADEC3 /* MessagePersonUnionObject.m */; };
+		0E92659D18BDE51F003ADEC3 /* commentBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659918BDE51F003ADEC3 /* commentBtn.png */; };
+		0E92659E18BDE51F003ADEC3 /* deleteBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659A18BDE51F003ADEC3 /* deleteBtn.png */; };
+		0E92659F18BDE51F003ADEC3 /* focusBtn_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659B18BDE51F003ADEC3 /* focusBtn_active.png */; };
+		0E9265A018BDE51F003ADEC3 /* focusBtn.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659C18BDE51F003ADEC3 /* focusBtn.png */; };
 		6329549218BC875800F2B78D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549118BC875800F2B78D /* Foundation.framework */; };
 		6329549418BC875800F2B78D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549318BC875800F2B78D /* CoreGraphics.framework */; };
 		6329549618BC875800F2B78D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549518BC875800F2B78D /* UIKit.framework */; };
@@ -141,6 +149,16 @@
 		0E92658018BDB42D003ADEC3 /* FirstCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstCell.m; sourceTree = SOURCE_ROOT; };
 		0E92658218BDB695003ADEC3 /* MessageObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageObject.h; sourceTree = SOURCE_ROOT; };
 		0E92658318BDB695003ADEC3 /* MessageObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageObject.m; sourceTree = SOURCE_ROOT; };
+		0E92658518BDC528003ADEC3 /* focus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focus.png; sourceTree = "<group>"; };
+		0E92658718BDC546003ADEC3 /* comment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = comment.png; sourceTree = "<group>"; };
+		0E92658918BDC627003ADEC3 /* PersonObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonObject.h; sourceTree = SOURCE_ROOT; };
+		0E92658A18BDC627003ADEC3 /* PersonObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonObject.m; sourceTree = SOURCE_ROOT; };
+		0E92658C18BDCAAA003ADEC3 /* MessagePersonUnionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagePersonUnionObject.h; sourceTree = SOURCE_ROOT; };
+		0E92658D18BDCAAA003ADEC3 /* MessagePersonUnionObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagePersonUnionObject.m; sourceTree = SOURCE_ROOT; };
+		0E92659918BDE51F003ADEC3 /* commentBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = commentBtn.png; sourceTree = "<group>"; };
+		0E92659A18BDE51F003ADEC3 /* deleteBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = deleteBtn.png; sourceTree = "<group>"; };
+		0E92659B18BDE51F003ADEC3 /* focusBtn_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focusBtn_active.png; sourceTree = "<group>"; };
+		0E92659C18BDE51F003ADEC3 /* focusBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focusBtn.png; sourceTree = "<group>"; };
 		6329548E18BC875800F2B78D /* cjzyb_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cjzyb_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6329549118BC875800F2B78D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6329549318BC875800F2B78D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -322,12 +340,18 @@
 		0E92657218BDACCE003ADEC3 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E92658718BDC546003ADEC3 /* comment.png */,
+				0E92658518BDC528003ADEC3 /* focus.png */,
 				0E92657318BDACDD003ADEC3 /* first_active.png */,
 				0E92657418BDACDD003ADEC3 /* first.png */,
 				0E92657518BDACDD003ADEC3 /* second_active.png */,
 				0E92657618BDACDD003ADEC3 /* second.png */,
 				0E92657718BDACDD003ADEC3 /* third_active.png */,
 				0E92657818BDACDD003ADEC3 /* third.png */,
+				0E92659918BDE51F003ADEC3 /* commentBtn.png */,
+				0E92659A18BDE51F003ADEC3 /* deleteBtn.png */,
+				0E92659B18BDE51F003ADEC3 /* focusBtn_active.png */,
+				0E92659C18BDE51F003ADEC3 /* focusBtn.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -449,6 +473,10 @@
 			children = (
 				0E92658218BDB695003ADEC3 /* MessageObject.h */,
 				0E92658318BDB695003ADEC3 /* MessageObject.m */,
+				0E92658918BDC627003ADEC3 /* PersonObject.h */,
+				0E92658A18BDC627003ADEC3 /* PersonObject.m */,
+				0E92658C18BDCAAA003ADEC3 /* MessagePersonUnionObject.h */,
+				0E92658D18BDCAAA003ADEC3 /* MessagePersonUnionObject.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -750,6 +778,9 @@
 			files = (
 				0E92657A18BDACDD003ADEC3 /* first.png in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
+				0E92659D18BDE51F003ADEC3 /* commentBtn.png in Resources */,
+				0E92658818BDC546003ADEC3 /* comment.png in Resources */,
+				0E9265A018BDE51F003ADEC3 /* focusBtn.png in Resources */,
 				0E92657918BDACDD003ADEC3 /* first_active.png in Resources */,
 				0E92657E18BDACDD003ADEC3 /* third.png in Resources */,
 				0E92655018BD9016003ADEC3 /* MainViewController.xib in Resources */,
@@ -760,7 +791,9 @@
 				0E92656418BD92A0003ADEC3 /* SecondViewController.xib in Resources */,
 				0E92657B18BDACDD003ADEC3 /* second_active.png in Resources */,
 				0E92657C18BDACDD003ADEC3 /* second.png in Resources */,
+				0E92658618BDC528003ADEC3 /* focus.png in Resources */,
 				636CF4B018BD8EC80085C28E /* LeftTabBarView.xib in Resources */,
+				0E92659E18BDE51F003ADEC3 /* deleteBtn.png in Resources */,
 				636CF4C718BDB0220085C28E /* tabBarItemBack@2x.png in Resources */,
 				636CF4C418BDB0220085C28E /* homeworkTabBarItem@2x.png in Resources */,
 				636CF4C818BDB0220085C28E /* tabBarItemBack2@2x.png in Resources */,
@@ -769,6 +802,7 @@
 				636CF4C918BDB0220085C28E /* userGroupItem@2x.png in Resources */,
 				636CF4C618BDB0220085C28E /* notificationTabBarItem@2x.png in Resources */,
 				636CF4C318BDB0220085C28E /* carBarItem@2x.png in Resources */,
+				0E92659F18BDE51F003ADEC3 /* focusBtn_active.png in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
 				636CF4C518BDB0220085C28E /* mainTabBarItem@2x.png in Resources */,
 			);
@@ -803,6 +837,7 @@
 				632954CA18BC894F00F2B78D /* Utility.m in Sources */,
 				0E92658418BDB695003ADEC3 /* MessageObject.m in Sources */,
 				0E92654F18BD9016003ADEC3 /* MainViewController.m in Sources */,
+				0E92658B18BDC627003ADEC3 /* PersonObject.m in Sources */,
 				6329551918BC8AA700F2B78D /* ASICloudFilesCDNRequest.m in Sources */,
 				0E92656818BD92B0003ADEC3 /* ThirdViewController.m in Sources */,
 				6329556218BC900600F2B78D /* NSData+ImageContentType.m in Sources */,
@@ -845,6 +880,7 @@
 				6329551318BC8AA700F2B78D /* ASIDownloadCache.m in Sources */,
 				6329549E18BC875800F2B78D /* main.m in Sources */,
 				6329554018BC8D7C00F2B78D /* FMDatabaseQueue.m in Sources */,
+				0E92658E18BDCAAA003ADEC3 /* MessagePersonUnionObject.m in Sources */,
 				6329554118BC8D7C00F2B78D /* FMDatabaseAdditions.m in Sources */,
 				6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */,
 			);

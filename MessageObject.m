@@ -21,6 +21,8 @@
     [message setMessageContent:[NSString stringWithFormat:@"%@",[aDic objectForKey:M_Content]]];
     [message setMessageTime:[NSString stringWithFormat:@"%@",[aDic objectForKey:M_Time]]];
     [message setHeadUrl:[NSString stringWithFormat:@"%@",[aDic objectForKey:M_head]]];
+    [message setFocus:[NSString stringWithFormat:@"%@",[aDic objectForKey:M_focus]]];
+    [message setAnswer:[NSString stringWithFormat:@"%@",[aDic objectForKey:M_answer]]];
     
     return message;
 }

@@ -14,12 +14,19 @@ enum MessageType {
     MessageTypeAnswer = 1//回复
 };
 
-#define M_ID       @""
-#define M_From     @""
-#define M_To       @""
-#define M_Content  @""
-#define M_Time     @""
-#define M_head     @""
+//定义消息cell的类型
+enum MessageCellStyle {
+    MessageCellStyleMe = 0,
+    MessageCellStyleOther = 1,
+};
+#define M_ID       @"id"
+#define M_From     @"from"
+#define M_To       @"to"
+#define M_Content  @"cotent"
+#define M_Time     @"time"
+#define M_head     @"head"
+#define M_focus    @"focus"
+#define M_answer   @"answer"
 
 @interface MessageObject : NSObject
 
@@ -29,7 +36,8 @@ enum MessageType {
 @property (nonatomic, strong) NSString *messageContent;
 @property (nonatomic, strong) NSString *messageTime;
 @property (nonatomic, strong) NSString *headUrl;
-
+@property (nonatomic, strong) NSString *focus;//关注
+@property (nonatomic, strong) NSString *answer;//关注
 
 +(MessageObject *)messageFromDictionary:(NSDictionary *)aDic;
 @end
