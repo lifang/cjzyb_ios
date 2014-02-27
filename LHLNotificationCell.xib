@@ -14,7 +14,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="600" height="149"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h9T-wX-N0v">
+                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h9T-wX-N0v">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="149"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <subviews>
@@ -52,21 +52,24 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="600" id="D97-f0-Pa7"/>
                                     <constraint firstItem="P9L-bG-aPO" firstAttribute="leading" secondItem="zEb-8H-PJk" secondAttribute="leading" constant="41" id="XR0-Zh-sJP"/>
+                                    <constraint firstAttribute="width" constant="600" id="aSd-b3-q2T"/>
                                     <constraint firstItem="P9L-bG-aPO" firstAttribute="top" secondItem="zEb-8H-PJk" secondAttribute="top" constant="39" id="tPb-lP-rdo"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="zEb-8H-PJk" firstAttribute="leading" secondItem="h9T-wX-N0v" secondAttribute="leading" id="QOa-fI-f47"/>
-                            <constraint firstAttribute="bottom" secondItem="zEb-8H-PJk" secondAttribute="bottom" id="dTb-ic-llZ"/>
-                            <constraint firstItem="zEb-8H-PJk" firstAttribute="top" secondItem="h9T-wX-N0v" secondAttribute="top" id="plf-EA-QkZ"/>
+                            <constraint firstItem="zEb-8H-PJk" firstAttribute="leading" secondItem="h9T-wX-N0v" secondAttribute="leading" id="F09-qY-6uv"/>
+                            <constraint firstAttribute="bottom" secondItem="zEb-8H-PJk" secondAttribute="bottom" id="ifB-3Y-VAn"/>
+                            <constraint firstItem="zEb-8H-PJk" firstAttribute="top" secondItem="h9T-wX-N0v" secondAttribute="top" id="pdJ-eo-Kj6"/>
                         </constraints>
                     </scrollView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="h9T-wX-N0v" secondAttribute="trailing" id="9Aj-Iv-8IH"/>
+                    <constraint firstAttribute="bottom" secondItem="h9T-wX-N0v" secondAttribute="bottom" id="AdJ-MP-0wS"/>
+                    <constraint firstItem="h9T-wX-N0v" firstAttribute="leading" secondItem="fgf-vE-JmX" secondAttribute="leading" id="Qi7-V0-6ab"/>
+                    <constraint firstItem="h9T-wX-N0v" firstAttribute="top" secondItem="fgf-vE-JmX" secondAttribute="top" id="dzP-WE-2fd"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

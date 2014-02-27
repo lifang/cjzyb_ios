@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LHLNotificationCell.h"
+#import "LHLReplyNotificationCell.h"
 #import "LHLNotificationHeader.h"
 
 @interface LHLNotificationViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,LHLNotificationCellDelegate,LHLNotificationHeaderDelegate>

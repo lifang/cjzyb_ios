@@ -12,8 +12,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (assign,nonatomic) BOOL loaded;
+@property (strong,nonatomic) LHLNotificationHeader *header;
 @property (strong,nonatomic) LHLNotificationCell *tempCell;
-
+@property (assign,nonatomic) NotificationDisplayCategory displayCategory;//当前页面显示的通知类型
 @end
 
 @implementation LHLNotificationViewController
@@ -30,10 +31,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.displayCategory = NotificationDisplayCategoryDefault;
+    
     self.loaded = NO;
+    
     UINib *nib = [UINib nibWithNibName:@"LHLNotificationCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"LHLNotificationCell"];
     [self.tableView registerClass:[LHLNotificationHeader class] forHeaderFooterViewReuseIdentifier:@"LHLNotificationHeader"];
+    [self.tableView registerClass:[LHLReplyNotificationCell class] forCellReuseIdentifier:@"LHLReplyNotificationCell"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,21 +65,28 @@
     return 150;
 }
 
--(LHLNotificationCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+-(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.loaded) {
         self.loaded = NO;
         return self.tempCell;
     }
-    LHLNotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LHLNotificationCell"];
-    [cell initCell];
-    cell.delegate = self;
-    cell.indexPath = indexPath;
-    CGRect cellFrame = cell.frame;
-    cellFrame.size.height = cell.textView.frame.size.height + 28 + 20;
-    if (cellFrame.size.height < 150) {
-        cellFrame.size.height = 150;
+    
+    if (self.displayCategory == NotificationDisplayCategoryDefault) {
+        LHLNotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LHLNotificationCell"];
+        [cell initCell];
+        cell.delegate = self;
+        cell.indexPath = indexPath;
+        CGRect cellFrame = cell.frame;
+        cellFrame.size.height = cell.textView.frame.size.height + 28 + 20;
+        if (cellFrame.size.height < 150) {
+            cellFrame.size.height = 150;
+        }
+        return cell;
+    }else{
+        LHLReplyNotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LHLReplyNotificationCell"];
+        [cell setInfomations];
+        return cell;
     }
-    return cell;
 }
 
 //- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -111,8 +124,12 @@
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if (self.header) {  //防止被reload
+        return self.header;
+    }
     LHLNotificationHeader *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"LHLNotificationHeader"];
     header.delegate = self;
+    self.header = header;
     return header;
 }
 
@@ -126,7 +143,10 @@
 #pragma mark -- LHLNotificationHeaderDelegate
 //点击header按钮后触发
 -(void)header:(LHLNotificationHeader *)header didSelectedDisplayCategory:(NotificationDisplayCategory)category{
-    
+    if (self.displayCategory != category) {
+        self.displayCategory = category;
+        [self.tableView reloadData];
+    }
 }
 
 @end
