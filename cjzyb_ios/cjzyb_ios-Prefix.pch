@@ -14,5 +14,11 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+#import "AppDelegate.h"
 #import "Const.h"
+#import "UIImageView+WebCache.h"
+
 #endif
+
+
+#define platform [[[UIDevice currentDevice] systemVersion] floatValue]
