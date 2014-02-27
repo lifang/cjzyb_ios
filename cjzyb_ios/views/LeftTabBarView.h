@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LeftTabBarItem.h"
 typedef enum{
-    LeftTabBarItemType_main,
+    LeftTabBarItemType_main=0,
     LeftTabBarItemType_homework,
     LeftTabBarItemType_notification,
     LeftTabBarItemType_carBag,

@@ -8,9 +8,10 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"//主页
-
+#import "FirstViewController.h"
 #import "TestViewController.h"
-
+#import "SecondViewController.h"
+#import "DRLeftTabBarViewController.h"
 @implementation AppDelegate
 
 +(AppDelegate *)shareIntance {
@@ -22,13 +23,13 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
-    self.window.rootViewController = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
-    [self.window makeKeyAndVisible];
-    
-    MainViewController *mainView = [[MainViewController alloc]initWithNibName:@"MainViewController" bundle:nil];
-    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:mainView];
+    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
+    DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
+    tabController.childenControllerArray = @[main,first];
+    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
     self.window.rootViewController = navControl;
-    
+    [self.window makeKeyAndVisible];
     return YES;
 }
 

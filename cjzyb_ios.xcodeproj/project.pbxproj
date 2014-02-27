@@ -108,6 +108,12 @@
 		636CF4C718BDB0220085C28E /* tabBarItemBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4C018BDB0220085C28E /* tabBarItemBack@2x.png */; };
 		636CF4C818BDB0220085C28E /* tabBarItemBack2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4C118BDB0220085C28E /* tabBarItemBack2@2x.png */; };
 		636CF4C918BDB0220085C28E /* userGroupItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4C218BDB0220085C28E /* userGroupItem@2x.png */; };
+		636CF4D018BDC14B0085C28E /* navigationBarLeftItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4CF18BDC14B0085C28E /* navigationBarLeftItem@2x.png */; };
+		636CF4E818BDC7570085C28E /* DRLeftTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 636CF4E618BDC7570085C28E /* DRLeftTabBarViewController.m */; };
+		636CF4EB18BDD1030085C28E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 636CF4EA18BDD1030085C28E /* QuartzCore.framework */; };
+		636CF4EE18BDD2C00085C28E /* DRNavigationRightItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 636CF4ED18BDD2C00085C28E /* DRNavigationRightItem.m */; };
+		636CF4F018BDD2D70085C28E /* DRNavigationRightItem.xib in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4EF18BDD2D70085C28E /* DRNavigationRightItem.xib */; };
+		636CF4F218BDD41E0085C28E /* arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4F118BDD41E0085C28E /* arrow@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -292,6 +298,14 @@
 		636CF4C018BDB0220085C28E /* tabBarItemBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabBarItemBack@2x.png"; sourceTree = "<group>"; };
 		636CF4C118BDB0220085C28E /* tabBarItemBack2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabBarItemBack2@2x.png"; sourceTree = "<group>"; };
 		636CF4C218BDB0220085C28E /* userGroupItem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "userGroupItem@2x.png"; sourceTree = "<group>"; };
+		636CF4CF18BDC14B0085C28E /* navigationBarLeftItem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationBarLeftItem@2x.png"; sourceTree = "<group>"; };
+		636CF4E518BDC7570085C28E /* DRLeftTabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRLeftTabBarViewController.h; sourceTree = "<group>"; };
+		636CF4E618BDC7570085C28E /* DRLeftTabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRLeftTabBarViewController.m; sourceTree = "<group>"; };
+		636CF4EA18BDD1030085C28E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		636CF4EC18BDD2C00085C28E /* DRNavigationRightItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRNavigationRightItem.h; sourceTree = "<group>"; };
+		636CF4ED18BDD2C00085C28E /* DRNavigationRightItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRNavigationRightItem.m; sourceTree = "<group>"; };
+		636CF4EF18BDD2D70085C28E /* DRNavigationRightItem.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DRNavigationRightItem.xib; sourceTree = "<group>"; };
+		636CF4F118BDD41E0085C28E /* arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -299,6 +313,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				636CF4EB18BDD1030085C28E /* QuartzCore.framework in Frameworks */,
 				6329553118BC8CD700F2B78D /* libsqlite3.dylib in Frameworks */,
 				6329552F18BC8B9300F2B78D /* libxml2.dylib in Frameworks */,
 				6329552D18BC8B7D00F2B78D /* libz.dylib in Frameworks */,
@@ -378,6 +393,7 @@
 		6329549018BC875800F2B78D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				636CF4EA18BDD1030085C28E /* QuartzCore.framework */,
 				6329553018BC8CD700F2B78D /* libsqlite3.dylib */,
 				6329552E18BC8B9300F2B78D /* libxml2.dylib */,
 				6329552C18BC8B7D00F2B78D /* libz.dylib */,
@@ -457,6 +473,8 @@
 				0E92656618BD92B0003ADEC3 /* ThirdViewController.m */,
 				0E92656718BD92B0003ADEC3 /* ThirdViewController.xib */,
 				636CF4B618BD90350085C28E /* test */,
+				636CF4E518BDC7570085C28E /* DRLeftTabBarViewController.h */,
+				636CF4E618BDC7570085C28E /* DRLeftTabBarViewController.m */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -503,6 +521,9 @@
 				636CF4AF18BD8EC80085C28E /* LeftTabBarView.xib */,
 				636CF4B718BD94FD0085C28E /* LeftTabBarItem.h */,
 				636CF4B818BD94FD0085C28E /* LeftTabBarItem.m */,
+				636CF4EC18BDD2C00085C28E /* DRNavigationRightItem.h */,
+				636CF4ED18BDD2C00085C28E /* DRNavigationRightItem.m */,
+				636CF4EF18BDD2D70085C28E /* DRNavigationRightItem.xib */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -690,6 +711,8 @@
 		636CF4BB18BDAFFB0085C28E /* tabBar */ = {
 			isa = PBXGroup;
 			children = (
+				636CF4F118BDD41E0085C28E /* arrow@2x.png */,
+				636CF4CF18BDC14B0085C28E /* navigationBarLeftItem@2x.png */,
 				636CF4BC18BDB0220085C28E /* carBarItem@2x.png */,
 				636CF4BD18BDB0220085C28E /* homeworkTabBarItem@2x.png */,
 				636CF4BE18BDB0220085C28E /* mainTabBarItem@2x.png */,
@@ -792,14 +815,17 @@
 				0E92657B18BDACDD003ADEC3 /* second_active.png in Resources */,
 				0E92657C18BDACDD003ADEC3 /* second.png in Resources */,
 				0E92658618BDC528003ADEC3 /* focus.png in Resources */,
+				636CF4F218BDD41E0085C28E /* arrow@2x.png in Resources */,
 				636CF4B018BD8EC80085C28E /* LeftTabBarView.xib in Resources */,
 				0E92659E18BDE51F003ADEC3 /* deleteBtn.png in Resources */,
 				636CF4C718BDB0220085C28E /* tabBarItemBack@2x.png in Resources */,
 				636CF4C418BDB0220085C28E /* homeworkTabBarItem@2x.png in Resources */,
 				636CF4C818BDB0220085C28E /* tabBarItemBack2@2x.png in Resources */,
+				636CF4F018BDD2D70085C28E /* DRNavigationRightItem.xib in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				636CF4B518BD8F3B0085C28E /* TestViewController.xib in Resources */,
 				636CF4C918BDB0220085C28E /* userGroupItem@2x.png in Resources */,
+				636CF4D018BDC14B0085C28E /* navigationBarLeftItem@2x.png in Resources */,
 				636CF4C618BDB0220085C28E /* notificationTabBarItem@2x.png in Resources */,
 				636CF4C318BDB0220085C28E /* carBarItem@2x.png in Resources */,
 				0E92659F18BDE51F003ADEC3 /* focusBtn_active.png in Resources */,
@@ -856,6 +882,7 @@
 				6329554218BC8D7C00F2B78D /* FMDatabasePool.m in Sources */,
 				6329552618BC8AA700F2B78D /* ASIS3BucketRequest.m in Sources */,
 				636CF4AE18BD8EA90085C28E /* LeftTabBarView.m in Sources */,
+				636CF4E818BDC7570085C28E /* DRLeftTabBarViewController.m in Sources */,
 				636CF4B918BD94FD0085C28E /* LeftTabBarItem.m in Sources */,
 				636CF4AB18BD848E0085C28E /* MBProgressHUD.m in Sources */,
 				6329551D18BC8AA700F2B78D /* ASICloudFilesObject.m in Sources */,
@@ -881,6 +908,7 @@
 				6329549E18BC875800F2B78D /* main.m in Sources */,
 				6329554018BC8D7C00F2B78D /* FMDatabaseQueue.m in Sources */,
 				0E92658E18BDCAAA003ADEC3 /* MessagePersonUnionObject.m in Sources */,
+				636CF4EE18BDD2C00085C28E /* DRNavigationRightItem.m in Sources */,
 				6329554118BC8D7C00F2B78D /* FMDatabaseAdditions.m in Sources */,
 				6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */,
 			);
@@ -1011,6 +1039,7 @@
 				INFOPLIST_FILE = "cjzyb_ios/cjzyb_ios-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1028,6 +1057,7 @@
 				INFOPLIST_FILE = "cjzyb_ios/cjzyb_ios-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
