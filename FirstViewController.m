@@ -57,10 +57,6 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    
-    
-    _flags.delegateWillReloadData = [self respondsToSelector:@selector(tableViewWillReloadData:)];
-    _flags.delegateDidReloadData = [self respondsToSelector:@selector(tableViewDidReloadData:)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -122,31 +118,12 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
     return YES;
 }
-- (void)tableViewReload {
-    [self.firstTable reloadData];
-    if (_flags.reloading == NO) {
-        _flags.reloading = YES;
-        if (_flags.delegateWillReloadData) {
-            [self tableViewWillReloadData:self.firstTable];
-        }
-        [self performSelector:@selector(finishReload) withObject:nil afterDelay:1.0f];
-    }
-}
-- (void)finishReload {
-    _flags.reloading = NO;
-    if (_flags.delegateDidReloadData) {
-        [self tableViewDidReloadData:self.firstTable];
-    }
-}
-- (void)tableViewWillReloadData:(UITableView *)tableView {
-    NSLog(@"will");
-}
-- (void)tableViewDidReloadData:(UITableView *)tableView {
-    NSLog(@"did");
-}
+
 #pragma mark
 #pragma mark - FirstCellDelegate
-
+-(void)tableViewReload {
+    [self.firstTable reloadData];
+}
 -(void)resetTableViewCellByIndex:(NSIndexPath *)aIndex{
     if (self.selectedArray.count > 0) {
         NSInteger aRow = [[self.selectedArray objectAtIndex:0]integerValue];
@@ -173,20 +150,22 @@
 
 - (void)contextMenuCellDidSelectCoverOption:(FirstCell *)cell {
     [self.textView resignFirstResponder];
-    [self resetTableViewCellByIndex:cell.idxPath];
+    self.theIndex = [self.firstTable indexPathForCell:cell];
+    [self resetTableViewCellByIndex:self.theIndex];
 }
 - (void)contextMenuCellDidSelectFocusOption:(FirstCell *)cell {
     
 }
 - (void)contextMenuCellDidSelectCommentOption:(FirstCell *)cell {
     [self.textView becomeFirstResponder];
-    self.theIndex = cell.idxPath;
+    self.theIndex = [self.firstTable indexPathForCell:cell];
 }
 - (void)contextMenuCellDidSelectDeleteOption:(FirstCell *)cell {
-    self.theIndex = cell.idxPath;
-    [self.firstArray removeObjectAtIndex:self.theIndex.row];
-    [self tableViewReload];
+    [cell.superview sendSubviewToBack:cell];
+    self.theIndex = [self.firstTable indexPathForCell:cell];
     [self.selectedArray removeAllObjects];
+    [self.firstArray removeObjectAtIndex:self.theIndex.row];
+    [self.firstTable deleteRowsAtIndexPaths:[NSArray arrayWithObjects:self.theIndex, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark
@@ -276,7 +255,9 @@
         
         NSIndexPath *idxPath = [NSIndexPath indexPathForRow:self.theIndex.row+1 inSection:0];
         [self.firstArray insertObject:message atIndex:idxPath.row];
-        [self tableViewReload];
+        
+        [self.firstTable insertRowsAtIndexPaths:[NSArray arrayWithObjects:idxPath, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.firstTable reloadRowsAtIndexPaths:[NSArray arrayWithObjects:idxPath, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
         
         self.textView.text = @"";
         
