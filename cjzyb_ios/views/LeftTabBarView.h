@@ -18,6 +18,7 @@ typedef enum{
 @protocol LeftTabBarViewDelegate;
 @interface LeftTabBarView : UIView
 @property (weak,nonatomic) id <LeftTabBarViewDelegate> delegate;
+@property (weak, nonatomic) IBOutlet LeftTabBarItem *userGroupTabBarItem;
 -(void)defaultSelected;
 @end
 

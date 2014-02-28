@@ -13,7 +13,7 @@
 @property (weak, nonatomic) IBOutlet LeftTabBarItem *homeworkTabBarItem;
 @property (weak, nonatomic) IBOutlet LeftTabBarItem *notificationTabBarItem;
 @property (weak, nonatomic) IBOutlet LeftTabBarItem *carBarTabBarItem;
-@property (weak, nonatomic) IBOutlet LeftTabBarItem *userGroupTabBarItem;
+
 - (IBAction)userGroupItemClicked:(id)sender;
 - (IBAction)carBagItemClicked:(id)sender;
 - (IBAction)notificationItemClicked:(id)sender;
@@ -50,12 +50,13 @@
     self.homeworkTabBarItem.isSelected = NO;
     self.notificationTabBarItem.isSelected = NO;
     self.carBarTabBarItem.isSelected = NO;
-    self.userGroupTabBarItem.isSelected = NO;
+//    self.userGroupTabBarItem.isSelected = NO;
 }
 
 - (IBAction)userGroupItemClicked:(id)sender {
-    [self unSelectedAllItems];
-    self.userGroupTabBarItem.isSelected = YES;
+//    [self unSelectedAllItems];
+    self.userGroupTabBarItem.isSelected = !self.userGroupTabBarItem.isSelected;
+    [self.userGroupTabBarItem setUserInteractionEnabled:YES];
     if (self.delegate && [self.delegate respondsToSelector:@selector(leftTabBar:selectedItem:)]) {
         [self.delegate leftTabBar:self selectedItem:LeftTabBarItemType_userGroup];
     }
