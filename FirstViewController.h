@@ -9,15 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "FirstCell.h"
 #import "MessageObject.h"
+#import "ComtomTxt.h"
 
 @interface FirstViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,FirstCellDelegate,UITextViewDelegate>
-{
-    struct {
-        unsigned int delegateWillReloadData:1;
-        unsigned int delegateDidReloadData:1;
-        unsigned int reloading:1;
-    } _flags;
-}
+
 
 @property (nonatomic, strong) IBOutlet UITableView *firstTable;
 @property (nonatomic, strong) NSMutableArray *firstArray;//消息数目
@@ -25,10 +20,9 @@
 //回复
 @property (nonatomic, assign) CGFloat keyboardHeight;
 @property (nonatomic, strong) IBOutlet UIView *textBar;
-@property (nonatomic, strong) IBOutlet UITextView *textView;
+@property (nonatomic, strong) IBOutlet ComtomTxt *textView;
 @property (nonatomic, strong) NSIndexPath *theIndex;
 //删除
-@property (assign, nonatomic) BOOL customEditing;
 
 
 - (void)tableViewWillReloadData:(UITableView *)tableView;

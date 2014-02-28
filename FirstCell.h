@@ -30,12 +30,11 @@
 
 @property (nonatomic, strong) MessageObject *aMessage;
 
-@property (nonatomic, assign) BOOL editable;
 @property (nonatomic, assign) BOOL isSelected;
 
 @property (nonatomic, assign) id <FirstCellDelegate> delegate;
 @property (nonatomic, strong) NSIndexPath *idxPath;
-
+@property (strong, nonatomic) UIButton *coverButton;
 -(void)open;
 -(void)close;
 @end

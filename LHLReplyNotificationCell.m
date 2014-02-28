@@ -110,6 +110,11 @@
     
     size = [Utility getTextSizeWithString:@"哈哈哈哈哈,这个我也知道的,饿饿饿饿,怎么打字还打不满三行,快乐,块三行了,马上就要三行了可以看见效果了,哦也,搞定~~~~~~!!!!!" withFont:LHLFONT withWidth:365];
     _textView.frame = (CGRect){titleBgFrame.origin.x - 5,CGRectGetMaxY(titleBgFrame) - 7,365,size.height + 20};
+    
+    _coverButton.frame = self.contentView.bounds;
+    [self.contentView bringSubviewToFront:_coverButton];
+    
+    
 }
 
 //应有一个赋值方法

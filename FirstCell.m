@@ -18,7 +18,7 @@
 #define AnimationDuration 0.2
 @interface FirstCell ()
 
-@property (strong, nonatomic) UIButton *coverButton;
+
 @property (strong, nonatomic) UIButton *focusButton;
 @property (strong, nonatomic) UIButton *commentButton;
 @property (strong, nonatomic) UIButton *deleteButton;
@@ -110,20 +110,22 @@
     self.contextMenuView.backgroundColor = [UIColor lightGrayColor];
     [self.contentView insertSubview:self.contextMenuView belowSubview:self.actualContentView];
     self.shouldDisplayContextMenuView = NO;
-    self.editable = YES;
+//    
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTap:)];
+//    [self addGestureRecognizer:tap];
 
+}
+
+-(void)handleTap:(UITapGestureRecognizer *)tap {
+    if ([self.delegate respondsToSelector:@selector(contextMenuCellDidSelectCoverOption:)]) {
+        [self.delegate contextMenuCellDidSelectCoverOption:self];
+    }
 }
 #pragma mark -- Public
 -(void)setIsSelected:(BOOL)isSelected {
     _isSelected = isSelected;
 }
-- (void)setEditable:(BOOL)editable
-{
-    if (_editable != editable) {
-        _editable = editable;
-        [self setNeedsLayout];
-    }
-}
+
 
 -(CGSize)getSizeWithString:(NSString *)str{
     UIFont *aFont = [UIFont systemFontOfSize:18];
@@ -219,6 +221,7 @@
         CGRect frame = CGRectMake(0, 0, Button_Size, Button_Size);
         _coverButton = [[UIButton alloc] initWithFrame:frame];
         [self.actualContentView addSubview:_coverButton];
+        _coverButton.tag = self.idxPath.row;
         [_coverButton addTarget:self action:@selector(coverButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     }
     return _coverButton;
@@ -272,17 +275,14 @@
 
 - (UIButton *)deleteButton
 {
-    if (self.editable) {
-        if (!_deleteButton) {
-            CGRect frame = CGRectMake(0, 0, Button_Size, Button_Size);
-            _deleteButton = [[UIButton alloc] initWithFrame:frame];
-            [_deleteButton setImage:[UIImage imageNamed:@"deleteBtn"] forState:UIControlStateNormal];
-            [self.contextMenuView addSubview:_deleteButton];
-            [_deleteButton addTarget:self action:@selector(deleteButtonTapped) forControlEvents:UIControlEventTouchUpInside];
-        }
-        return _deleteButton;
+    if (!_deleteButton) {
+        CGRect frame = CGRectMake(0, 0, Button_Size, Button_Size);
+        _deleteButton = [[UIButton alloc] initWithFrame:frame];
+        [_deleteButton setImage:[UIImage imageNamed:@"deleteBtn"] forState:UIControlStateNormal];
+        [self.contextMenuView addSubview:_deleteButton];
+        [_deleteButton addTarget:self action:@selector(deleteButtonTapped) forControlEvents:UIControlEventTouchUpInside];
     }
-    return nil;
+    return _deleteButton;
 }
 
 - (void)deleteButtonTapped
