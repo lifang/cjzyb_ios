@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LHLNotificationViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

@@ -43,7 +43,7 @@
         UIAlertView *alert = [Utility defaultUtility].alert;
         [alert dismissWithClickedButtonIndex:0 animated:NO];
     }
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"财金通提示" message:message delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:message delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
     [[Utility defaultUtility] setAlert:alert];
     [alert show];
 }
