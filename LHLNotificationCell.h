@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LHLTextView.h"
 @protocol LHLNotificationCellDelegate;
 @interface LHLNotificationCell : UITableViewCell<UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
-@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet LHLTextView *textView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (assign,nonatomic) CGFloat cellHeight;

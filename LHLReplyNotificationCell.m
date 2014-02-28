@@ -9,16 +9,22 @@
 #import "LHLReplyNotificationCell.h"
 
 #define LHLTEXT_PADDING 5
-#define LHLFONT ([UIFont systemFontOfSize:17.0])
+#define LHLFONT [UIFont systemFontOfSize:17.0]
+#define LHLCELL_WIDTH self.contentView.bounds.size.width
+#define LHLCELL_HEIGHT self.contentView.bounds.size.height
 
 @interface LHLReplyNotificationCell()
+@property (nonatomic,strong) UIView *contentBgView;  //头像,名字,内容等的背景
 @property (nonatomic,strong) UIView *titleBgView;  //第一行的背景
+@property (nonatomic,strong) UIView *buttonBgView;  //按钮背景
 @property (nonatomic,strong) UIImageView *imgView;  //头像
 @property (nonatomic,strong) UILabel *myNameLabel;   //我的名字
 @property (nonatomic,strong) UILabel *replyerNameLabel;  //回复者的名字
 @property (nonatomic,strong) UILabel *timeLabel;   //时间
-@property (nonatomic,strong) UITextView *textView;   //内容
-
+@property (nonatomic,strong) LHLTextView *textView;   //内容
+@property (nonatomic,strong) UIButton *coverButton;  //覆盖CELL的按钮
+@property (nonatomic,strong) UIButton *replyButton;   //回复消息按钮
+@property (nonatomic,strong) UIButton *deleteButton;  //删除消息按钮
 @end
 
 @implementation LHLReplyNotificationCell
@@ -27,13 +33,21 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.contentBgView = [[UIView alloc] init];
+        _contentBgView.backgroundColor = [UIColor clearColor];
+        [self.contentView addSubview:_contentBgView];
+        
+        self.buttonBgView = [[UIView alloc] init];
+        _buttonBgView.backgroundColor = [UIColor clearColor];
+        [self.contentView insertSubview:_buttonBgView belowSubview:_contentBgView];
+        
         self.titleBgView = [[UIView alloc] init];
         _titleBgView.backgroundColor = [UIColor clearColor];
-        [self addSubview:_titleBgView];
+        [_contentBgView addSubview:_titleBgView];
         
         self.imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"smile.png"]];
         _imgView.layer.cornerRadius = 3.0;
-        [self addSubview:_imgView];
+        [_contentBgView addSubview:_imgView];
         
         self.replyerNameLabel = [[UILabel alloc] init];
         _replyerNameLabel.font = LHLFONT;
@@ -50,18 +64,36 @@
         _timeLabel.textColor = [UIColor lightGrayColor];
         [_titleBgView addSubview:_timeLabel];
         
-        self.textView = [[UITextView alloc] init];
+        self.textView = [[LHLTextView alloc] init];
         _textView.backgroundColor = [UIColor clearColor];
         _textView.font = LHLFONT;
         _textView.textColor = [UIColor darkGrayColor];
         [_textView setUserInteractionEnabled:NO];
-        [self addSubview:_textView];
+        [_contentBgView addSubview:_textView];
         
+        self.coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _coverButton.backgroundColor = [UIColor clearColor];
+        [_coverButton addTarget:self action:@selector(coverButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:_coverButton];
+        
+        self.replyButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _replyButton.backgroundColor = [UIColor clearColor];
+        [_replyButton addTarget:self action:@selector(replyButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_buttonBgView addSubview:_replyButton];
+        
+        self.deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _deleteButton.backgroundColor = [UIColor clearColor];
+        [_deleteButton addTarget:self action:@selector(deleteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_buttonBgView addSubview:_deleteButton];
     }
     return self;
 }
 
 -(void)layoutSubviews{
+    _contentBgView.frame = self.contentView.bounds;
+    
+    _buttonBgView.frame = (CGRect){LHLCELL_WIDTH - 80,0,80,LHLCELL_HEIGHT};
+    
     _imgView.frame = (CGRect){41,38,80,80};
     
     CGRect titleBgFrame = (CGRect){CGRectGetMaxX(_imgView.frame) + 20,38,365,20};
@@ -94,6 +126,20 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+#pragma mark -- 按钮响应方法
+
+- (void) coverButtonClicked:(id)sender{
+    
+}
+
+- (void) replyButtonClicked:(id)sender{
+    
+}
+
+- (void) deleteButtonClicked:(id)sender{
+    
 }
 
 @end

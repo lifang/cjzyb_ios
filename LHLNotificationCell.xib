@@ -41,7 +41,7 @@
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" text="恭喜你在2014/2/18日发布的作业里勇获&quot;十速挑战&quot;项目的班级第一,&quot;优异&quot;积分加100.斯蒂芬斯柯达积分还是的浪费空间说得好法律是看得见会发" translatesAutoresizingMaskIntoConstraints="NO" id="aZ2-52-odC">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" text="恭喜你在2014/2/18日发布的作业里勇获&quot;十速挑战&quot;项目的班级第一,&quot;优异&quot;积分加100.斯蒂芬斯柯达积分还是的浪费空间说得好法律是看得见会发" translatesAutoresizingMaskIntoConstraints="NO" id="aZ2-52-odC" customClass="LHLTextView">
                                         <rect key="frame" x="132" y="50" width="394" height="74"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

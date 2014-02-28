@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LHLTextView.h"
 
 @interface LHLReplyNotificationCell : UITableViewCell
 - (void) setInfomations;
