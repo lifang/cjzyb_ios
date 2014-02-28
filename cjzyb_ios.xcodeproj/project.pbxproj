@@ -38,6 +38,7 @@
 		0E9265A618BF008C003ADEC3 /* arrowImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9265A518BF008C003ADEC3 /* arrowImg.png */; };
 		0E9265BF18C028A9003ADEC3 /* ComtomTxt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9265BE18C028A9003ADEC3 /* ComtomTxt.m */; };
 		1802DC3318C01E4A0016F110 /* LHLTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3218C01E4A0016F110 /* LHLTextView.m */; };
+		1802DC3818C065320016F110 /* NotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3718C065320016F110 /* NotificationObject.m */; };
 		189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */; };
 		189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */; };
 		189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */; };
@@ -181,12 +182,12 @@
 		0E92659C18BDE51F003ADEC3 /* focusBtn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = focusBtn.png; sourceTree = "<group>"; };
 		0E9265A318BEEA01003ADEC3 /* send.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send.png; sourceTree = "<group>"; };
 		0E9265A518BF008C003ADEC3 /* arrowImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowImg.png; sourceTree = "<group>"; };
-		0E9265AC18BF152F003ADEC3 /* UITextView+TextEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+TextEx.m"; sourceTree = "<group>"; };
 		0E9265BD18C028A9003ADEC3 /* ComtomTxt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComtomTxt.h; sourceTree = "<group>"; };
 		0E9265BE18C028A9003ADEC3 /* ComtomTxt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComtomTxt.m; sourceTree = "<group>"; };
 		1802DC3118C01E4A0016F110 /* LHLTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLTextView.h; sourceTree = "<group>"; };
 		1802DC3218C01E4A0016F110 /* LHLTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLTextView.m; sourceTree = "<group>"; };
-		1802DC3518C02D750016F110 /* UITextView_TextEx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UITextView_TextEx.h; sourceTree = "<group>"; };
+		1802DC3618C065320016F110 /* NotificationObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationObject.h; sourceTree = SOURCE_ROOT; };
+		1802DC3718C065320016F110 /* NotificationObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationObject.m; sourceTree = SOURCE_ROOT; };
 		189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationViewController.h; sourceTree = SOURCE_ROOT; };
 		189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationViewController.m; sourceTree = SOURCE_ROOT; };
 		189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -556,6 +557,8 @@
 				0E92658A18BDC627003ADEC3 /* PersonObject.m */,
 				0E92658C18BDCAAA003ADEC3 /* MessagePersonUnionObject.h */,
 				0E92658D18BDCAAA003ADEC3 /* MessagePersonUnionObject.m */,
+				1802DC3618C065320016F110 /* NotificationObject.h */,
+				1802DC3718C065320016F110 /* NotificationObject.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -592,8 +595,6 @@
 				636CF4EC18BDD2C00085C28E /* DRNavigationRightItem.h */,
 				636CF4ED18BDD2C00085C28E /* DRNavigationRightItem.m */,
 				636CF4EF18BDD2D70085C28E /* DRNavigationRightItem.xib */,
-				1802DC3518C02D750016F110 /* UITextView_TextEx.h */,
-				0E9265AC18BF152F003ADEC3 /* UITextView+TextEx.m */,
 				1802DC3118C01E4A0016F110 /* LHLTextView.h */,
 				1802DC3218C01E4A0016F110 /* LHLTextView.m */,
 				0E9265BD18C028A9003ADEC3 /* ComtomTxt.h */,
@@ -999,6 +1000,7 @@
 				6329554018BC8D7C00F2B78D /* FMDatabaseQueue.m in Sources */,
 				0E92658E18BDCAAA003ADEC3 /* MessagePersonUnionObject.m in Sources */,
 				636CF4EE18BDD2C00085C28E /* DRNavigationRightItem.m in Sources */,
+				1802DC3818C065320016F110 /* NotificationObject.m in Sources */,
 				6329554118BC8D7C00F2B78D /* FMDatabaseAdditions.m in Sources */,
 				6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */,
 			);

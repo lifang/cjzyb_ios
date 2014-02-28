@@ -11,6 +11,6 @@
 #import "LHLReplyNotificationCell.h"
 #import "LHLNotificationHeader.h"
 
-@interface LHLNotificationViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,LHLNotificationCellDelegate,LHLNotificationHeaderDelegate>
+@interface LHLNotificationViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,LHLNotificationCellDelegate,LHLNotificationHeaderDelegate,LHLReplyNotificationCellDelegate>
 
 @end

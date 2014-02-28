@@ -13,8 +13,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet LHLTextView *textView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIView *contentBgView;
+- (IBAction)coverButtonClicked:(id)sender;
 @property (assign,nonatomic) CGFloat cellHeight;
 
 @property (strong,nonatomic) id<LHLNotificationCellDelegate> delegate;
@@ -29,7 +29,7 @@
 @protocol LHLNotificationCellDelegate <NSObject>
 
 @required
-
+-(void)cell:(LHLNotificationCell *)cell deleteButtonClicked:(id)sender;
 @optional
 -(void)refreshHeightForCell:(LHLNotificationCell *)cell;
 @end

@@ -15,6 +15,7 @@
 @property (strong,nonatomic) LHLNotificationHeader *header;
 @property (strong,nonatomic) LHLNotificationCell *tempCell;
 @property (assign,nonatomic) NotificationDisplayCategory displayCategory;//当前页面显示的通知类型
+@property (assign,nonatomic) NSInteger number;
 @end
 
 @implementation LHLNotificationViewController
@@ -31,6 +32,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.number = 6;
     
     self.displayCategory = NotificationDisplayCategoryDefault;
     
@@ -54,7 +56,7 @@
 
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 6;
+    return self.number;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -66,10 +68,10 @@
 }
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (self.loaded) {
-        self.loaded = NO;
-        return self.tempCell;
-    }
+//    if (self.loaded) {
+//        self.loaded = NO;
+//        return self.tempCell;
+//    }
     
     if (self.displayCategory == NotificationDisplayCategoryDefault) {
         LHLNotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LHLNotificationCell"];
@@ -85,39 +87,15 @@
     }else{
         LHLReplyNotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LHLReplyNotificationCell"];
         [cell setInfomations];
+        cell.delegate = self;
+        cell.indexPath = indexPath;
         return cell;
     }
 }
 
-//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return YES;
-//}
-
-//实现此方法可启用滑动删除特性,此方法在点击删除后调用
-//-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    //code
-//}
-
 #pragma mark --
 
 #pragma mark -- UITableViewDelegate
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    LHLNotificationCell *cell = (LHLNotificationCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    [cell makeSideButtons];
-    [UIView animateWithDuration:0.25 animations:^{
-        cell.scrollView.contentOffset = CGPointMake(80, 0);
-    } completion:^(BOOL finished) {
-        [cell.scrollView setUserInteractionEnabled:YES];
-    }];
-}
-
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
-    LHLNotificationCell *cell = (LHLNotificationCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    [cell.scrollView setUserInteractionEnabled:NO];
-    [UIView animateWithDuration:0.25 animations:^{
-        cell.scrollView.contentOffset = CGPointMake(0, 0);
-    }];
-}
 
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 70;
@@ -134,10 +112,27 @@
 }
 
 #pragma mark -- LHLNotificationCellDelegate
+-(void)cell:(LHLNotificationCell *)cell deleteButtonClicked:(id)sender{
+    self.number --;
+    [self.tableView deleteRowsAtIndexPaths:@[cell.indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView reloadData];
+}
+
 -(void)refreshHeightForCell:(LHLNotificationCell *)cell{
     [self.tableView reloadRowsAtIndexPaths:@[cell.indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     self.tempCell = cell;
     self.loaded = YES;
+}
+
+#pragma mark -- LHLReplyNotificationCellDelegate
+-(void) replyCell:(LHLReplyNotificationCell *)cell replyButtonClicked:(id)sender{
+    
+}
+
+-(void) replyCell:(LHLReplyNotificationCell *)cell deleteButtonClicked:(id)sender{
+    self.number --;
+    [self.tableView deleteRowsAtIndexPaths:@[cell.indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView reloadData];
 }
 
 #pragma mark -- LHLNotificationHeaderDelegate

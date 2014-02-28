@@ -14,67 +14,66 @@
                 <rect key="frame" x="0.0" y="0.0" width="600" height="149"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h9T-wX-N0v">
+                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zEb-8H-PJk" userLabel="bgView">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="149"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zEb-8H-PJk">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="149"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smile.png" translatesAutoresizingMaskIntoConstraints="NO" id="P9L-bG-aPO">
+                                <rect key="frame" x="41" y="39" width="80" height="80"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smile.png" translatesAutoresizingMaskIntoConstraints="NO" id="P9L-bG-aPO">
-                                        <rect key="frame" x="41" y="39" width="80" height="80"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                        <color key="backgroundColor" red="0.90810347579999995" green="0.90810347579999995" blue="0.90810347579999995" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="80" id="2up-mr-7Uk"/>
-                                            <constraint firstAttribute="width" constant="80" id="Ieu-xr-bg9"/>
-                                        </constraints>
-                                    </imageView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="2014/2/15 13:59" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O5T-j2-DXJ" userLabel="timeLabel - 2014/2/15 13:59">
-                                        <rect key="frame" x="137" y="39" width="120" height="20"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="I9W-Rv-2a2"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" text="恭喜你在2014/2/18日发布的作业里勇获&quot;十速挑战&quot;项目的班级第一,&quot;优异&quot;积分加100.斯蒂芬斯柯达积分还是的浪费空间说得好法律是看得见会发" translatesAutoresizingMaskIntoConstraints="NO" id="aZ2-52-odC" customClass="LHLTextView">
-                                        <rect key="frame" x="132" y="50" width="394" height="74"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                    </textView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.90810347579999995" green="0.90810347579999995" blue="0.90810347579999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="P9L-bG-aPO" firstAttribute="leading" secondItem="zEb-8H-PJk" secondAttribute="leading" constant="41" id="XR0-Zh-sJP"/>
-                                    <constraint firstAttribute="width" constant="600" id="aSd-b3-q2T"/>
-                                    <constraint firstItem="P9L-bG-aPO" firstAttribute="top" secondItem="zEb-8H-PJk" secondAttribute="top" constant="39" id="tPb-lP-rdo"/>
+                                    <constraint firstAttribute="height" constant="80" id="2up-mr-7Uk"/>
+                                    <constraint firstAttribute="width" constant="80" id="Ieu-xr-bg9"/>
                                 </constraints>
-                            </view>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="2014/2/15 13:59" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O5T-j2-DXJ" userLabel="timeLabel - 2014/2/15 13:59">
+                                <rect key="frame" x="137" y="39" width="120" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="I9W-Rv-2a2"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" text="恭喜你在2014/2/18日发布的作业里勇获&quot;十速挑战&quot;项目的班级第一,&quot;优异&quot;积分加100.斯蒂芬斯柯达积分还是的浪费空间说得好法律是看得见会发" translatesAutoresizingMaskIntoConstraints="NO" id="aZ2-52-odC" customClass="LHLTextView">
+                                <rect key="frame" x="132" y="50" width="394" height="74"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9sX-cP-gJi" userLabel="coverButton">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="coverButtonClicked:" destination="CwL-y2-VrE" eventType="touchUpInside" id="CeR-yJ-mOk"/>
+                                </connections>
+                            </button>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="zEb-8H-PJk" firstAttribute="leading" secondItem="h9T-wX-N0v" secondAttribute="leading" id="F09-qY-6uv"/>
-                            <constraint firstAttribute="bottom" secondItem="zEb-8H-PJk" secondAttribute="bottom" id="ifB-3Y-VAn"/>
-                            <constraint firstItem="zEb-8H-PJk" firstAttribute="top" secondItem="h9T-wX-N0v" secondAttribute="top" id="pdJ-eo-Kj6"/>
+                            <constraint firstAttribute="trailing" secondItem="9sX-cP-gJi" secondAttribute="trailing" id="BPB-FK-oyR"/>
+                            <constraint firstItem="P9L-bG-aPO" firstAttribute="leading" secondItem="zEb-8H-PJk" secondAttribute="leading" constant="41" id="XR0-Zh-sJP"/>
+                            <constraint firstAttribute="width" constant="600" id="aSd-b3-q2T"/>
+                            <constraint firstItem="9sX-cP-gJi" firstAttribute="top" secondItem="zEb-8H-PJk" secondAttribute="top" id="iJV-ih-m3z"/>
+                            <constraint firstItem="P9L-bG-aPO" firstAttribute="top" secondItem="zEb-8H-PJk" secondAttribute="top" constant="39" id="tPb-lP-rdo"/>
+                            <constraint firstItem="9sX-cP-gJi" firstAttribute="leading" secondItem="zEb-8H-PJk" secondAttribute="leading" id="x3U-hs-5dv"/>
+                            <constraint firstAttribute="bottom" secondItem="9sX-cP-gJi" secondAttribute="bottom" id="zwy-7N-kBP"/>
                         </constraints>
-                    </scrollView>
+                    </view>
                 </subviews>
-                <constraints>
-                    <constraint firstAttribute="trailing" secondItem="h9T-wX-N0v" secondAttribute="trailing" id="9Aj-Iv-8IH"/>
-                    <constraint firstAttribute="bottom" secondItem="h9T-wX-N0v" secondAttribute="bottom" id="AdJ-MP-0wS"/>
-                    <constraint firstItem="h9T-wX-N0v" firstAttribute="leading" secondItem="fgf-vE-JmX" secondAttribute="leading" id="Qi7-V0-6ab"/>
-                    <constraint firstItem="h9T-wX-N0v" firstAttribute="top" secondItem="fgf-vE-JmX" secondAttribute="top" id="dzP-WE-2fd"/>
-                </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="contentBgView" destination="zEb-8H-PJk" id="WSQ-jD-X12"/>
                 <outlet property="imgView" destination="P9L-bG-aPO" id="dde-AI-Wng"/>
-                <outlet property="scrollView" destination="h9T-wX-N0v" id="4sL-o4-wzo"/>
                 <outlet property="textView" destination="aZ2-52-odC" id="ab2-Qv-RYL"/>
                 <outlet property="timeLabel" destination="O5T-j2-DXJ" id="vAQ-PE-co3"/>
             </connections>
