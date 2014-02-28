@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "LeftTabBarView.h"
-
-@interface DRLeftTabBarViewController : UIViewController<LeftTabBarViewDelegate>
+#import "StudentListViewController.h"
+/** DRLeftTabBarViewController
+ *
+ * 左侧边栏的tabbarcontroller
+ 
+ */
+@interface DRLeftTabBarViewController : UIViewController<LeftTabBarViewDelegate,StudentListViewControllerDelegate>
 @property (assign,nonatomic) BOOL isHiddleLeftTabBar;
 
 /** childenControllerArray
