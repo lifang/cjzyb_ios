@@ -30,8 +30,8 @@
     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
     self.window.rootViewController = navControl;
     [self.window makeKeyAndVisible];
-    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
-    self.window.rootViewController = notificationViewController;
+//    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
+//    self.window.rootViewController = notificationViewController;
     return YES;
 }
 

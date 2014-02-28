@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "FirstCell.h"
 #import "MessageObject.h"
-
+#import "ComtomTxt.h"
 
 @interface FirstViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,FirstCellDelegate,UITextViewDelegate>
 
@@ -20,7 +20,7 @@
 //回复
 @property (nonatomic, assign) CGFloat keyboardHeight;
 @property (nonatomic, strong) IBOutlet UIView *textBar;
-@property (nonatomic, strong) IBOutlet UITextView *textView;
+@property (nonatomic, strong) IBOutlet ComtomTxt *textView;
 @property (nonatomic, strong) NSIndexPath *theIndex;
 //删除
 

@@ -124,11 +124,7 @@
     
     NSString *previosImg = [self.viewControllers[self.selectedIndex] valueForKey:@"title"];
     NSString *nextImg = [self.viewControllers[selectedIndex] valueForKey:@"title"];
-    if (selectedIndex != 0) {
-        FirstViewController *firstView = (FirstViewController *)[self.viewControllers objectAtIndex:0];
-        [firstView.textView resignFirstResponder];
-    }
-    
+
     if (abs(self.selectedIndex - selectedIndex) <= 1) {
         [self.scrollView setContentOffset:CGPointMake(selectedIndex * self.scrollWidth, 0.) animated:animated];
         if (selectedIndex == _selectedIndex) {
@@ -137,6 +133,9 @@
         }
         [UIView animateWithDuration:(animated) ? 0.3 : 0. delay:0. options:UIViewAnimationOptionBeginFromCurrentState animations:^
          {
+             UIViewController *viewControl = [self.viewControllers objectAtIndex:self.selectedIndex];
+             [viewControl viewWillDisappear:YES];
+             
              [previosSelectdItem setImage:[UIImage imageNamed:previosImg] forState:UIControlStateNormal];
              [nextSelectdItem setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_active",nextImg]] forState:UIControlStateNormal];
          } completion:nil];
@@ -164,6 +163,10 @@
             self.pageIndicatorView.center = CGPointMake([self.topBar centerForSelectedItemAtIndex:selectedIndex].x,
                                                         self.pageIndicatorView.center.y);
             self.topBar.scrollView.contentOffset = [self.topBar contentOffsetForSelectedItemAtIndex:selectedIndex];
+            
+            UIViewController *viewControl = [self.viewControllers objectAtIndex:self.selectedIndex];
+            [viewControl viewWillDisappear:YES];
+            
             [previosSelectdItem setImage:[UIImage imageNamed:previosImg] forState:UIControlStateNormal];
             [nextSelectdItem setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_active",nextImg]] forState:UIControlStateNormal];
         } completion:^(BOOL finished) {
