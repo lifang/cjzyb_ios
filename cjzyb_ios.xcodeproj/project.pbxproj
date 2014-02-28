@@ -39,6 +39,7 @@
 		0E9265BF18C028A9003ADEC3 /* ComtomTxt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9265BE18C028A9003ADEC3 /* ComtomTxt.m */; };
 		1802DC3318C01E4A0016F110 /* LHLTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3218C01E4A0016F110 /* LHLTextView.m */; };
 		1802DC3818C065320016F110 /* NotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3718C065320016F110 /* NotificationObject.m */; };
+		1802DC3B18C073FB0016F110 /* ReplyNotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3A18C073FB0016F110 /* ReplyNotificationObject.m */; };
 		189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */; };
 		189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */; };
 		189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */; };
@@ -218,6 +219,8 @@
 		1802DC3218C01E4A0016F110 /* LHLTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLTextView.m; sourceTree = "<group>"; };
 		1802DC3618C065320016F110 /* NotificationObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationObject.h; sourceTree = SOURCE_ROOT; };
 		1802DC3718C065320016F110 /* NotificationObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationObject.m; sourceTree = SOURCE_ROOT; };
+		1802DC3918C073FB0016F110 /* ReplyNotificationObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyNotificationObject.h; sourceTree = SOURCE_ROOT; };
+		1802DC3A18C073FB0016F110 /* ReplyNotificationObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyNotificationObject.m; sourceTree = SOURCE_ROOT; };
 		189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationViewController.h; sourceTree = SOURCE_ROOT; };
 		189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationViewController.m; sourceTree = SOURCE_ROOT; };
 		189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -636,6 +639,8 @@
 				0E92658D18BDCAAA003ADEC3 /* MessagePersonUnionObject.m */,
 				1802DC3618C065320016F110 /* NotificationObject.h */,
 				1802DC3718C065320016F110 /* NotificationObject.m */,
+				1802DC3918C073FB0016F110 /* ReplyNotificationObject.h */,
+				1802DC3A18C073FB0016F110 /* ReplyNotificationObject.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -668,14 +673,6 @@
 				18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */,
 				0E92657F18BDB42D003ADEC3 /* FirstCell.h */,
 				0E92658018BDB42D003ADEC3 /* FirstCell.m */,
-				636CF4AC18BD8EA90085C28E /* LeftTabBarView.h */,
-				636CF4AD18BD8EA90085C28E /* LeftTabBarView.m */,
-				636CF4AF18BD8EC80085C28E /* LeftTabBarView.xib */,
-				636CF4B718BD94FD0085C28E /* LeftTabBarItem.h */,
-				636CF4B818BD94FD0085C28E /* LeftTabBarItem.m */,
-				636CF4EC18BDD2C00085C28E /* DRNavigationRightItem.h */,
-				636CF4ED18BDD2C00085C28E /* DRNavigationRightItem.m */,
-				636CF4EF18BDD2D70085C28E /* DRNavigationRightItem.xib */,
 				1802DC3118C01E4A0016F110 /* LHLTextView.h */,
 				1802DC3218C01E4A0016F110 /* LHLTextView.m */,
 				0E9265BD18C028A9003ADEC3 /* ComtomTxt.h */,
@@ -1186,13 +1183,13 @@
 				6329551B18BC8AA700F2B78D /* ASICloudFilesContainerRequest.m in Sources */,
 				6329552918BC8AA700F2B78D /* ASIS3ServiceRequest.m in Sources */,
 				6329556318BC900600F2B78D /* SDImageCache.m in Sources */,
+				1802DC3B18C073FB0016F110 /* ReplyNotificationObject.m in Sources */,
 				6396579718C0377A002F2A90 /* DRProgressView.m in Sources */,
 				0E92656318BD92A0003ADEC3 /* SecondViewController.m in Sources */,
 				6329551318BC8AA700F2B78D /* ASIDownloadCache.m in Sources */,
 				6329549E18BC875800F2B78D /* main.m in Sources */,
 				6329554018BC8D7C00F2B78D /* FMDatabaseQueue.m in Sources */,
 				0E92658E18BDCAAA003ADEC3 /* MessagePersonUnionObject.m in Sources */,
-				636CF4EE18BDD2C00085C28E /* DRNavigationRightItem.m in Sources */,
 				1802DC3818C065320016F110 /* NotificationObject.m in Sources */,
 				6329554118BC8D7C00F2B78D /* FMDatabaseAdditions.m in Sources */,
 				6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */,

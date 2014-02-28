@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "LHLTextView.h"
+#import "ReplyNotificationObject.h"
 @protocol LHLReplyNotificationCellDelegate;
 @interface LHLReplyNotificationCell : UITableViewCell
 @property (strong,nonatomic) id<LHLReplyNotificationCellDelegate> delegate;
 @property (strong,nonatomic) NSIndexPath *indexPath;
+@property (strong,nonatomic) ReplyNotificationObject *replyObject;
 
-- (void) setInfomations;
+- (void) setInfomations:(ReplyNotificationObject *)reply;
 @end
 @protocol LHLReplyNotificationCellDelegate <NSObject>
 

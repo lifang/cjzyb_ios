@@ -40,16 +40,19 @@
         self.sideView.backgroundColor = [UIColor lightGrayColor];
         [self.contentView insertSubview:self.sideView belowSubview:self.contentBgView];
         
-//        UIImageView *bgImageView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed: @"bg.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)]];
-//        bgImageView.frame = (CGRect){0,0,self.sideView.frame.size};
-//        [self.sideView addSubview:bgImageView];
-
-        
         UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [deleteButton setImage:[UIImage imageNamed:@"trash_icon.png"] forState:UIControlStateNormal];
         [deleteButton addTarget:self action:@selector(deleteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [self.sideView addSubview:deleteButton];
         deleteButton.frame = (CGRect){0,0,self.sideView.frame.size};
+    }
+}
+
+-(void)setNotificationObject:(NotificationObject *)noti{
+    if (noti != nil) {
+        self.textView.text = noti.notiContent;
+        self.textView.frame = (CGRect){self.textView.frame.origin,self.textView.frame.size.width,self.textView.contentSize.height + 20};
+        self.timeLabel.text = noti.notiTime;
     }
 }
 
@@ -62,7 +65,6 @@
 #pragma mark TextViewDelegate
 
 -(void)textViewDidChange:(UITextView *)textView{
-//    self.textViewHeightConstraint.constant = self.textView.contentSize.height;
     self.cellHeight = self.textView.contentSize.height + 28 + 20;
     [self setNeedsUpdateConstraints];
     if(self.delegate && [self.delegate respondsToSelector:@selector(refreshHeightForCell:)]){

@@ -131,7 +131,7 @@
         
         _timeLabel.frame = (CGRect){CGRectGetMaxX(_myNameLabel.frame) + LHLTEXT_PADDING * 2,0,titleBgFrame.size.width - (CGRectGetMaxX(_myNameLabel.frame) + LHLTEXT_PADDING),titleBgFrame.size.height};
         
-        size = [Utility getTextSizeWithString:@"哈哈哈哈哈,这个我也知道的,饿饿饿饿,怎么打字还打不满三行,快乐,块三行了,马上就要三行了可以看见效果了,哦也,搞定~~~~~~!!!!!" withFont:LHLFONT withWidth:365];
+        size = [Utility getTextSizeWithString:@"哈哈哈哈哈,这个我也知道的,饿饿饿饿,怎么打字还打不满三行,快乐,块三行了,马上就要三行了可以看见效果了,哦也,搞定~~~~~~!!!!!" withFont: LHLFONT withWidth:365];
         _textView.frame = (CGRect){titleBgFrame.origin.x - 5,CGRectGetMaxY(titleBgFrame) - 7,365,size.height + 20};
         
         _coverButton.frame = (CGRect){0,0,self.bounds.size};
@@ -140,11 +140,17 @@
 }
 
 //应有一个赋值方法
--(void)setInfomations{
-    _replyerNameLabel.text = @"崔斯洛夫莫克";
-    _myNameLabel.text = @"回复 我";
-    _textView.text = @"哈哈哈哈哈,这个我也知道的,饿饿饿饿,怎么打字还打不满三行,快乐,块三行了,马上就要三行了可以看见效果了,哦也,搞定~~~~~~!!!!!";
-    _timeLabel.text = @"2014/02/15  20:59";
+-(void)setInfomations:(ReplyNotificationObject *)reply{
+    if (reply != nil) {
+        self.replyObject = reply;
+        
+        _replyerNameLabel.text = reply.replyerName;
+        _myNameLabel.text = @"回复 我";
+        _textView.text = reply.replyContent;
+        _timeLabel.text = reply.replyTime;
+    }else{
+        [Utility errorAlert:@"赋予的reply对象为nil!"];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
