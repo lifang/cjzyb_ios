@@ -12,6 +12,8 @@
 #import "TestViewController.h"
 #import "SecondViewController.h"
 #import "DRLeftTabBarViewController.h"
+#import "HomeworkDailyCollectionViewController.h"
+#import "HomeworkViewController.h"
 @implementation AppDelegate
 
 +(AppDelegate *)shareIntance {
@@ -27,14 +29,20 @@
     [popoverAppearance setFillTopColor:[UIColor colorWithRed:47/255.0 green:201/255.0 blue:133/255.0 alpha:1]];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    HomeworkViewController *homeController = [[HomeworkViewController alloc] initWithNibName:@"HomeworkViewController" bundle:nil];
+    self.window.rootViewController = homeController;
+//    HomeworkDailyCollectionViewController *dailyWork = [[HomeworkDailyCollectionViewController alloc] initWithNibName:@"HomeworkDailyCollectionViewController" bundle:nil];
+//    self.window.rootViewController = dailyWork;
+    
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-    SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
-    DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
-    tabController.childenControllerArray = @[main,first];
-    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
-    self.window.rootViewController = navControl;
+//    self.window.backgroundColor = [UIColor whiteColor];
+//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+//    SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
+//    DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
+//    tabController.childenControllerArray = @[main,first];
+//    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
+//    self.window.rootViewController = navControl;
     
     /*
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

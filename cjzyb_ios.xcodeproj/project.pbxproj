@@ -108,6 +108,14 @@
 		6329556C18BC900600F2B78D /* UIImage+MultiFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 6329555C18BC900600F2B78D /* UIImage+MultiFormat.m */; };
 		6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = 6329555E18BC900600F2B78D /* UIImage+WebP.m */; };
 		6329556E18BC900600F2B78D /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 6329556018BC900600F2B78D /* UIImageView+WebCache.m */; };
+		6341533418C17BEC00DE4480 /* TaskObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6341533318C17BEC00DE4480 /* TaskObj.m */; };
+		6341536018C1C90300DE4480 /* NSDate+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 6341535718C1C90300DE4480 /* NSDate+convenience.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		6341536118C1C90300DE4480 /* NSMutableArray+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 6341535918C1C90300DE4480 /* NSMutableArray+convenience.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		6341536218C1C90300DE4480 /* UIColor+expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = 6341535B18C1C90300DE4480 /* UIColor+expanded.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		6341536318C1C90300DE4480 /* UIView+convenience.m in Sources */ = {isa = PBXBuildFile; fileRef = 6341535D18C1C90300DE4480 /* UIView+convenience.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		6341536418C1C90300DE4480 /* VRGCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6341535F18C1C90300DE4480 /* VRGCalendarView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		6341536818C1C96C00DE4480 /* CalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6341536618C1C96C00DE4480 /* CalendarViewController.m */; };
+		6341536918C1C96C00DE4480 /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6341536718C1C96C00DE4480 /* CalendarViewController.xib */; };
 		636CF4AB18BD848E0085C28E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 636CF4AA18BD848E0085C28E /* MBProgressHUD.m */; };
 		636CF4B418BD8F3B0085C28E /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 636CF4B218BD8F3B0085C28E /* TestViewController.m */; };
 		636CF4B518BD8F3B0085C28E /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4B318BD8F3B0085C28E /* TestViewController.xib */; };
@@ -157,6 +165,27 @@
 		6396580418C038E2002F2A90 /* jinque_yellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 639657FE18C038E2002F2A90 /* jinque_yellow@2x.png */; };
 		6396580518C038E2002F2A90 /* xunsu_yellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 639657FF18C038E2002F2A90 /* xunsu_yellow@2x.png */; };
 		6396580618C038E2002F2A90 /* youxiu_yellow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396580018C038E2002F2A90 /* youxiu_yellow@2x.png */; };
+		6396580A18C04D4A002F2A90 /* HomeworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396580818C04D4A002F2A90 /* HomeworkViewController.m */; };
+		6396580B18C04D4A002F2A90 /* HomeworkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396580918C04D4A002F2A90 /* HomeworkViewController.xib */; };
+		6396581218C04F68002F2A90 /* HomeworkTypeCollctionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396581118C04F68002F2A90 /* HomeworkTypeCollctionCell.m */; };
+		6396581418C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396581318C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib */; };
+		6396582318C0578D002F2A90 /* homework_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396581618C0578D002F2A90 /* homework_back@2x.png */; };
+		6396582418C0578D002F2A90 /* homework_blank@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396581718C0578D002F2A90 /* homework_blank@2x.png */; };
+		6396582518C0578D002F2A90 /* homework_calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396581818C0578D002F2A90 /* homework_calendar@2x.png */; };
+		6396582618C0578D002F2A90 /* homework_finishedFalg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396581918C0578D002F2A90 /* homework_finishedFalg@2x.png */; };
+		6396582718C0578D002F2A90 /* homework_history@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396581A18C0578D002F2A90 /* homework_history@2x.png */; };
+		6396582818C0578D002F2A90 /* homework_left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396581B18C0578D002F2A90 /* homework_left@2x.png */; };
+		6396582918C0578D002F2A90 /* homework_line@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396581C18C0578D002F2A90 /* homework_line@2x.png */; };
+		6396582A18C0578D002F2A90 /* homework_quik@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396581D18C0578D002F2A90 /* homework_quik@2x.png */; };
+		6396582B18C0578D002F2A90 /* homework_reading@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396581E18C0578D002F2A90 /* homework_reading@2x.png */; };
+		6396582C18C0578D002F2A90 /* homework_right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396581F18C0578D002F2A90 /* homework_right@2x.png */; };
+		6396582D18C0578D002F2A90 /* homework_select@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396582018C0578D002F2A90 /* homework_select@2x.png */; };
+		6396582E18C0578D002F2A90 /* homework_sort@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396582118C0578D002F2A90 /* homework_sort@2x.png */; };
+		6396582F18C0578D002F2A90 /* homwwork_listenWrite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6396582218C0578D002F2A90 /* homwwork_listenWrite@2x.png */; };
+		6396583318C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396583118C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m */; };
+		6396583418C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396583218C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib */; };
+		6396583A18C07B37002F2A90 /* HomeworkTypeObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396583918C07B37002F2A90 /* HomeworkTypeObj.m */; };
+		6396583D18C083BF002F2A90 /* HomeworkHistoryCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396583C18C083BF002F2A90 /* HomeworkHistoryCollectionCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -342,6 +371,21 @@
 		6329555E18BC900600F2B78D /* UIImage+WebP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+WebP.m"; sourceTree = "<group>"; };
 		6329555F18BC900600F2B78D /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		6329556018BC900600F2B78D /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
+		6341533218C17BEC00DE4480 /* TaskObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskObj.h; sourceTree = SOURCE_ROOT; };
+		6341533318C17BEC00DE4480 /* TaskObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskObj.m; sourceTree = SOURCE_ROOT; };
+		6341535618C1C90300DE4480 /* NSDate+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+convenience.h"; sourceTree = "<group>"; };
+		6341535718C1C90300DE4480 /* NSDate+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+convenience.m"; sourceTree = "<group>"; };
+		6341535818C1C90300DE4480 /* NSMutableArray+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+convenience.h"; sourceTree = "<group>"; };
+		6341535918C1C90300DE4480 /* NSMutableArray+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+convenience.m"; sourceTree = "<group>"; };
+		6341535A18C1C90300DE4480 /* UIColor+expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+expanded.h"; sourceTree = "<group>"; };
+		6341535B18C1C90300DE4480 /* UIColor+expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+expanded.m"; sourceTree = "<group>"; };
+		6341535C18C1C90300DE4480 /* UIView+convenience.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+convenience.h"; sourceTree = "<group>"; };
+		6341535D18C1C90300DE4480 /* UIView+convenience.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+convenience.m"; sourceTree = "<group>"; };
+		6341535E18C1C90300DE4480 /* VRGCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VRGCalendarView.h; sourceTree = "<group>"; };
+		6341535F18C1C90300DE4480 /* VRGCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VRGCalendarView.m; sourceTree = "<group>"; };
+		6341536518C1C96C00DE4480 /* CalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarViewController.h; sourceTree = "<group>"; };
+		6341536618C1C96C00DE4480 /* CalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarViewController.m; sourceTree = "<group>"; };
+		6341536718C1C96C00DE4480 /* CalendarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarViewController.xib; sourceTree = "<group>"; };
 		636CF4A918BD848E0085C28E /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		636CF4AA18BD848E0085C28E /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		636CF4B118BD8F3B0085C28E /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
@@ -405,6 +449,32 @@
 		639657FE18C038E2002F2A90 /* jinque_yellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jinque_yellow@2x.png"; sourceTree = "<group>"; };
 		639657FF18C038E2002F2A90 /* xunsu_yellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xunsu_yellow@2x.png"; sourceTree = "<group>"; };
 		6396580018C038E2002F2A90 /* youxiu_yellow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "youxiu_yellow@2x.png"; sourceTree = "<group>"; };
+		6396580718C04D4A002F2A90 /* HomeworkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkViewController.h; sourceTree = "<group>"; };
+		6396580818C04D4A002F2A90 /* HomeworkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkViewController.m; sourceTree = "<group>"; };
+		6396580918C04D4A002F2A90 /* HomeworkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeworkViewController.xib; sourceTree = "<group>"; };
+		6396581018C04F68002F2A90 /* HomeworkTypeCollctionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkTypeCollctionCell.h; sourceTree = "<group>"; };
+		6396581118C04F68002F2A90 /* HomeworkTypeCollctionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkTypeCollctionCell.m; sourceTree = "<group>"; };
+		6396581318C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeworkTypeCollctionCell.xib; sourceTree = "<group>"; };
+		6396581618C0578D002F2A90 /* homework_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_back@2x.png"; sourceTree = "<group>"; };
+		6396581718C0578D002F2A90 /* homework_blank@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_blank@2x.png"; sourceTree = "<group>"; };
+		6396581818C0578D002F2A90 /* homework_calendar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_calendar@2x.png"; sourceTree = "<group>"; };
+		6396581918C0578D002F2A90 /* homework_finishedFalg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_finishedFalg@2x.png"; sourceTree = "<group>"; };
+		6396581A18C0578D002F2A90 /* homework_history@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_history@2x.png"; sourceTree = "<group>"; };
+		6396581B18C0578D002F2A90 /* homework_left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_left@2x.png"; sourceTree = "<group>"; };
+		6396581C18C0578D002F2A90 /* homework_line@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_line@2x.png"; sourceTree = "<group>"; };
+		6396581D18C0578D002F2A90 /* homework_quik@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_quik@2x.png"; sourceTree = "<group>"; };
+		6396581E18C0578D002F2A90 /* homework_reading@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_reading@2x.png"; sourceTree = "<group>"; };
+		6396581F18C0578D002F2A90 /* homework_right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_right@2x.png"; sourceTree = "<group>"; };
+		6396582018C0578D002F2A90 /* homework_select@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_select@2x.png"; sourceTree = "<group>"; };
+		6396582118C0578D002F2A90 /* homework_sort@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_sort@2x.png"; sourceTree = "<group>"; };
+		6396582218C0578D002F2A90 /* homwwork_listenWrite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homwwork_listenWrite@2x.png"; sourceTree = "<group>"; };
+		6396583018C06C9D002F2A90 /* HomeworkDailyCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkDailyCollectionViewController.h; sourceTree = "<group>"; };
+		6396583118C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkDailyCollectionViewController.m; sourceTree = "<group>"; };
+		6396583218C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeworkDailyCollectionViewController.xib; sourceTree = "<group>"; };
+		6396583818C07B37002F2A90 /* HomeworkTypeObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkTypeObj.h; sourceTree = SOURCE_ROOT; };
+		6396583918C07B37002F2A90 /* HomeworkTypeObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkTypeObj.m; sourceTree = SOURCE_ROOT; };
+		6396583B18C083BF002F2A90 /* HomeworkHistoryCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkHistoryCollectionCell.h; sourceTree = "<group>"; };
+		6396583C18C083BF002F2A90 /* HomeworkHistoryCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkHistoryCollectionCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -608,6 +678,12 @@
 				0E92656618BD92B0003ADEC3 /* ThirdViewController.m */,
 				0E92656718BD92B0003ADEC3 /* ThirdViewController.xib */,
 				636CF4B618BD90350085C28E /* test */,
+				6396580718C04D4A002F2A90 /* HomeworkViewController.h */,
+				6396580818C04D4A002F2A90 /* HomeworkViewController.m */,
+				6396580918C04D4A002F2A90 /* HomeworkViewController.xib */,
+				6396583018C06C9D002F2A90 /* HomeworkDailyCollectionViewController.h */,
+				6396583118C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m */,
+				6396583218C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -622,6 +698,7 @@
 		632954C218BC879B00F2B78D /* model */ = {
 			isa = PBXGroup;
 			children = (
+				6396583518C06EBD002F2A90 /* homework */,
 				0E92658218BDB695003ADEC3 /* MessageObject.h */,
 				0E92658318BDB695003ADEC3 /* MessageObject.m */,
 				0E92658918BDC627003ADEC3 /* PersonObject.h */,
@@ -635,6 +712,7 @@
 		632954C318BC879B00F2B78D /* thirtys */ = {
 			isa = PBXGroup;
 			children = (
+				6341534618C1C8A600DE4480 /* calendar */,
 				6396576218C0365B002F2A90 /* WYPopoverController */,
 				0E92655118BD920F003ADEC3 /* TabBarController */,
 				636CF4A818BD84830085C28E /* MBProgressView */,
@@ -648,6 +726,7 @@
 		632954C418BC879B00F2B78D /* views */ = {
 			isa = PBXGroup;
 			children = (
+				6396580C18C04E01002F2A90 /* homework */,
 				6396579418C03770002F2A90 /* userInfo */,
 				6396578618C0375C002F2A90 /* lefttabbar */,
 				6396577B18C0373F002F2A90 /* classList */,
@@ -669,6 +748,7 @@
 		632954C518BC87E100F2B78D /* jsonTestFile */ = {
 			isa = PBXGroup;
 			children = (
+				6396583618C071A9002F2A90 /* homework */,
 			);
 			path = jsonTestFile;
 			sourceTree = "<group>";
@@ -819,6 +899,26 @@
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
+		6341534618C1C8A600DE4480 /* calendar */ = {
+			isa = PBXGroup;
+			children = (
+				6341535618C1C90300DE4480 /* NSDate+convenience.h */,
+				6341535718C1C90300DE4480 /* NSDate+convenience.m */,
+				6341535818C1C90300DE4480 /* NSMutableArray+convenience.h */,
+				6341535918C1C90300DE4480 /* NSMutableArray+convenience.m */,
+				6341535A18C1C90300DE4480 /* UIColor+expanded.h */,
+				6341535B18C1C90300DE4480 /* UIColor+expanded.m */,
+				6341535C18C1C90300DE4480 /* UIView+convenience.h */,
+				6341535D18C1C90300DE4480 /* UIView+convenience.m */,
+				6341535E18C1C90300DE4480 /* VRGCalendarView.h */,
+				6341535F18C1C90300DE4480 /* VRGCalendarView.m */,
+				6341536518C1C96C00DE4480 /* CalendarViewController.h */,
+				6341536618C1C96C00DE4480 /* CalendarViewController.m */,
+				6341536718C1C96C00DE4480 /* CalendarViewController.xib */,
+			);
+			path = calendar;
+			sourceTree = "<group>";
+		};
 		636CF4A818BD84830085C28E /* MBProgressView */ = {
 			isa = PBXGroup;
 			children = (
@@ -889,6 +989,7 @@
 		639657CF18C03886002F2A90 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				6396581518C0574A002F2A90 /* homework */,
 				639657FA18C038D5002F2A90 /* classList */,
 				639657E318C038B1002F2A90 /* userInfo */,
 				639657D018C0389C002F2A90 /* tabBar */,
@@ -941,6 +1042,56 @@
 				6396580018C038E2002F2A90 /* youxiu_yellow@2x.png */,
 			);
 			name = classList;
+			sourceTree = "<group>";
+		};
+		6396580C18C04E01002F2A90 /* homework */ = {
+			isa = PBXGroup;
+			children = (
+				6396581018C04F68002F2A90 /* HomeworkTypeCollctionCell.h */,
+				6396581118C04F68002F2A90 /* HomeworkTypeCollctionCell.m */,
+				6396581318C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib */,
+				6396583B18C083BF002F2A90 /* HomeworkHistoryCollectionCell.h */,
+				6396583C18C083BF002F2A90 /* HomeworkHistoryCollectionCell.m */,
+			);
+			name = homework;
+			sourceTree = "<group>";
+		};
+		6396581518C0574A002F2A90 /* homework */ = {
+			isa = PBXGroup;
+			children = (
+				6396581618C0578D002F2A90 /* homework_back@2x.png */,
+				6396581718C0578D002F2A90 /* homework_blank@2x.png */,
+				6396581818C0578D002F2A90 /* homework_calendar@2x.png */,
+				6396581918C0578D002F2A90 /* homework_finishedFalg@2x.png */,
+				6396581A18C0578D002F2A90 /* homework_history@2x.png */,
+				6396581B18C0578D002F2A90 /* homework_left@2x.png */,
+				6396581C18C0578D002F2A90 /* homework_line@2x.png */,
+				6396581D18C0578D002F2A90 /* homework_quik@2x.png */,
+				6396581E18C0578D002F2A90 /* homework_reading@2x.png */,
+				6396581F18C0578D002F2A90 /* homework_right@2x.png */,
+				6396582018C0578D002F2A90 /* homework_select@2x.png */,
+				6396582118C0578D002F2A90 /* homework_sort@2x.png */,
+				6396582218C0578D002F2A90 /* homwwork_listenWrite@2x.png */,
+			);
+			name = homework;
+			sourceTree = "<group>";
+		};
+		6396583518C06EBD002F2A90 /* homework */ = {
+			isa = PBXGroup;
+			children = (
+				6396583818C07B37002F2A90 /* HomeworkTypeObj.h */,
+				6396583918C07B37002F2A90 /* HomeworkTypeObj.m */,
+				6341533218C17BEC00DE4480 /* TaskObj.h */,
+				6341533318C17BEC00DE4480 /* TaskObj.m */,
+			);
+			name = homework;
+			sourceTree = "<group>";
+		};
+		6396583618C071A9002F2A90 /* homework */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = homework;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1019,6 +1170,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				18AA80C118BF14A200EC08CE /* smallTriangle@2x.png in Resources */,
+				6396582F18C0578D002F2A90 /* homwwork_listenWrite@2x.png in Resources */,
 				18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */,
 				639657DC18C038A6002F2A90 /* carBarItem@2x.png in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
@@ -1029,8 +1181,11 @@
 				18AA80B818BEFFFD00EC08CE /* bg@2x.png in Resources */,
 				639657DB18C038A6002F2A90 /* navigationBarLeftItem@2x.png in Resources */,
 				639657F918C038BB002F2A90 /* line@2x.png in Resources */,
+				6396582918C0578D002F2A90 /* homework_line@2x.png in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
 				6396580518C038E2002F2A90 /* xunsu_yellow@2x.png in Resources */,
+				6396582418C0578D002F2A90 /* homework_blank@2x.png in Resources */,
+				6396582C18C0578D002F2A90 /* homework_right@2x.png in Resources */,
 				639657EF18C038BB002F2A90 /* addClass@2x.png in Resources */,
 				189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */,
 				0E92657A18BDACDD003ADEC3 /* first.png in Resources */,
@@ -1039,14 +1194,21 @@
 				6396578318C0374C002F2A90 /* StudentTableViewCell.xib in Resources */,
 				6396580218C038E2002F2A90 /* back@2x.png in Resources */,
 				0E92659D18BDE51F003ADEC3 /* commentBtn.png in Resources */,
+				6396581418C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib in Resources */,
+				6396582718C0578D002F2A90 /* homework_history@2x.png in Resources */,
 				0E92658818BDC546003ADEC3 /* comment.png in Resources */,
 				0E9265A018BDE51F003ADEC3 /* focusBtn.png in Resources */,
 				0E92657918BDACDD003ADEC3 /* first_active.png in Resources */,
+				6396582618C0578D002F2A90 /* homework_finishedFalg@2x.png in Resources */,
+				6396582318C0578D002F2A90 /* homework_back@2x.png in Resources */,
 				639657DD18C038A6002F2A90 /* homeworkTabBarItem@2x.png in Resources */,
 				0E92657E18BDACDD003ADEC3 /* third.png in Resources */,
+				6396582818C0578D002F2A90 /* homework_left@2x.png in Resources */,
 				6396580118C038E2002F2A90 /* arrowBack@2x.png in Resources */,
 				0E92655018BD9016003ADEC3 /* MainViewController.xib in Resources */,
 				639657F818C038BB002F2A90 /* userGroup@2x.png in Resources */,
+				6341536918C1C96C00DE4480 /* CalendarViewController.xib in Resources */,
+				6396582A18C0578D002F2A90 /* homework_quik@2x.png in Resources */,
 				0E92656918BD92B0003ADEC3 /* ThirdViewController.xib in Resources */,
 				639657F518C038BB002F2A90 /* xunsu@2x.png in Resources */,
 				6396580618C038E2002F2A90 /* youxiu_yellow@2x.png in Resources */,
@@ -1060,12 +1222,17 @@
 				639657E218C038A6002F2A90 /* userGroupItem@2x.png in Resources */,
 				0E92655F18BD9295003ADEC3 /* FirstViewController.xib in Resources */,
 				6396580318C038E2002F2A90 /* jiezu_yellow@2x.png in Resources */,
+				6396583418C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib in Resources */,
 				639657F618C038BB002F2A90 /* youxiu@2x.png in Resources */,
 				0E92656418BD92A0003ADEC3 /* SecondViewController.xib in Resources */,
 				0E92657B18BDACDD003ADEC3 /* second_active.png in Resources */,
+				6396582E18C0578D002F2A90 /* homework_sort@2x.png in Resources */,
 				6396578518C0374C002F2A90 /* StudentSummaryCell.xib in Resources */,
+				6396582D18C0578D002F2A90 /* homework_select@2x.png in Resources */,
+				6396582518C0578D002F2A90 /* homework_calendar@2x.png in Resources */,
 				0E9265A418BEEA01003ADEC3 /* send.png in Resources */,
 				639657F718C038BB002F2A90 /* user@2x.png in Resources */,
+				6396582B18C0578D002F2A90 /* homework_reading@2x.png in Resources */,
 				639657DE18C038A6002F2A90 /* mainTabBarItem@2x.png in Resources */,
 				0E92657C18BDACDD003ADEC3 /* second.png in Resources */,
 				0E92658618BDC528003ADEC3 /* focus.png in Resources */,
@@ -1079,6 +1246,7 @@
 				0E92659F18BDE51F003ADEC3 /* focusBtn_active.png in Resources */,
 				639657F118C038BB002F2A90 /* jinque@2x.png in Resources */,
 				0E9265A618BF008C003ADEC3 /* arrowImg.png in Resources */,
+				6396580B18C04D4A002F2A90 /* HomeworkViewController.xib in Resources */,
 				639657F218C038BB002F2A90 /* point@2x.png in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
 				639657DA18C038A6002F2A90 /* arrow@2x.png in Resources */,
@@ -1118,20 +1286,28 @@
 				6329552518BC8AA700F2B78D /* ASIS3BucketObject.m in Sources */,
 				632954CA18BC894F00F2B78D /* Utility.m in Sources */,
 				0E92658418BDB695003ADEC3 /* MessageObject.m in Sources */,
+				6396580A18C04D4A002F2A90 /* HomeworkViewController.m in Sources */,
 				6396578218C0374C002F2A90 /* StudentTableViewCell.m in Sources */,
+				6396583D18C083BF002F2A90 /* HomeworkHistoryCollectionCell.m in Sources */,
+				6341536318C1C90300DE4480 /* UIView+convenience.m in Sources */,
 				0E92654F18BD9016003ADEC3 /* MainViewController.m in Sources */,
 				0E92658B18BDC627003ADEC3 /* PersonObject.m in Sources */,
 				6329551918BC8AA700F2B78D /* ASICloudFilesCDNRequest.m in Sources */,
+				6341533418C17BEC00DE4480 /* TaskObj.m in Sources */,
 				0E92656818BD92B0003ADEC3 /* ThirdViewController.m in Sources */,
 				6329556218BC900600F2B78D /* NSData+ImageContentType.m in Sources */,
 				6329556B18BC900600F2B78D /* UIImage+GIF.m in Sources */,
 				6329551018BC8AA700F2B78D /* ASIAuthenticationDialog.m in Sources */,
+				6396583A18C07B37002F2A90 /* HomeworkTypeObj.m in Sources */,
+				6341536118C1C90300DE4480 /* NSMutableArray+convenience.m in Sources */,
 				6329556618BC900600F2B78D /* SDWebImageDownloader.m in Sources */,
+				6396581218C04F68002F2A90 /* HomeworkTypeCollctionCell.m in Sources */,
 				6396578418C0374C002F2A90 /* StudentSummaryCell.m in Sources */,
 				6329556418BC900600F2B78D /* SDWebImageCompat.m in Sources */,
 				18AA80BD18BF04E800EC08CE /* LHLNotificationHeader.m in Sources */,
 				0E92658118BDB42D003ADEC3 /* FirstCell.m in Sources */,
 				6329551C18BC8AA700F2B78D /* ASICloudFilesContainerXMLParserDelegate.m in Sources */,
+				6396583318C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m in Sources */,
 				0E92655918BD9228003ADEC3 /* DAPagesContainerTopBar.m in Sources */,
 				6329551A18BC8AA700F2B78D /* ASICloudFilesContainer.m in Sources */,
 				6329551818BC8AA700F2B78D /* ASIWebPageRequest.m in Sources */,
@@ -1157,7 +1333,9 @@
 				6329551618BC8AA700F2B78D /* ASIInputStream.m in Sources */,
 				6396576818C03664002F2A90 /* WYStoryboardPopoverSegue.m in Sources */,
 				6396577418C036B1002F2A90 /* DRLeftTabBarViewController.m in Sources */,
+				6341536418C1C90300DE4480 /* VRGCalendarView.m in Sources */,
 				6329556E18BC900600F2B78D /* UIImageView+WebCache.m in Sources */,
+				6341536018C1C90300DE4480 /* NSDate+convenience.m in Sources */,
 				0E92655A18BD9228003ADEC3 /* DAPageIndicatorView.m in Sources */,
 				6329551718BC8AA700F2B78D /* ASINetworkQueue.m in Sources */,
 				6329552718BC8AA700F2B78D /* ASIS3ObjectRequest.m in Sources */,
@@ -1170,7 +1348,9 @@
 				6396579718C0377A002F2A90 /* DRProgressView.m in Sources */,
 				0E92656318BD92A0003ADEC3 /* SecondViewController.m in Sources */,
 				6329551318BC8AA700F2B78D /* ASIDownloadCache.m in Sources */,
+				6341536218C1C90300DE4480 /* UIColor+expanded.m in Sources */,
 				6329549E18BC875800F2B78D /* main.m in Sources */,
+				6341536818C1C96C00DE4480 /* CalendarViewController.m in Sources */,
 				6329554018BC8D7C00F2B78D /* FMDatabaseQueue.m in Sources */,
 				0E92658E18BDCAAA003ADEC3 /* MessagePersonUnionObject.m in Sources */,
 				6329554118BC8D7C00F2B78D /* FMDatabaseAdditions.m in Sources */,
