@@ -36,7 +36,7 @@
 //    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
 //    self.window.rootViewController = navControl;
     
-    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
+    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
     self.window.rootViewController = notificationViewController;
     
     /*

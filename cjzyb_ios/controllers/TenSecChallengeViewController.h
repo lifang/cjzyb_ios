@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TenSecChallengeObject.h"
 
 @interface TenSecChallengeViewController : UIViewController
-
+@property (nonatomic,strong) NSMutableArray *questionArray;  //十个问题 
 @end
