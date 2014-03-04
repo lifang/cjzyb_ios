@@ -6,6 +6,8 @@
 //  Copyright (c) 2014年 david. All rights reserved.
 //
 
+//  十全挑战
+
 #import <UIKit/UIKit.h>
 #import "TenSecChallengeObject.h"
 

@@ -63,7 +63,7 @@
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
 }
 
-- (void)stopChallenge{
+- (void)pauseChallenge{
     [self.timer invalidate];
 }
 

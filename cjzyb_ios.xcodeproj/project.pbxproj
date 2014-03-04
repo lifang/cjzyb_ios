@@ -40,6 +40,8 @@
 		1802DC3318C01E4A0016F110 /* LHLTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3218C01E4A0016F110 /* LHLTextView.m */; };
 		1802DC3818C065320016F110 /* NotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3718C065320016F110 /* NotificationObject.m */; };
 		1802DC3B18C073FB0016F110 /* ReplyNotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3A18C073FB0016F110 /* ReplyNotificationObject.m */; };
+		1818F6A418C561D200DC6207 /* TenSecChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1818F6A318C561D200DC6207 /* TenSecChallengeResultView.m */; };
+		1818F6A618C561ED00DC6207 /* TenSecChallengeResultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1818F6A518C561ED00DC6207 /* TenSecChallengeResultView.xib */; };
 		181A786618C4206700D288D3 /* TenSecChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786418C4206700D288D3 /* TenSecChallengeViewController.m */; };
 		181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */; };
 		181A786A18C469AB00D288D3 /* TenSecChallengeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786918C469AB00D288D3 /* TenSecChallengeObject.m */; };
@@ -224,6 +226,9 @@
 		1802DC3718C065320016F110 /* NotificationObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationObject.m; sourceTree = SOURCE_ROOT; };
 		1802DC3918C073FB0016F110 /* ReplyNotificationObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyNotificationObject.h; sourceTree = SOURCE_ROOT; };
 		1802DC3A18C073FB0016F110 /* ReplyNotificationObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyNotificationObject.m; sourceTree = SOURCE_ROOT; };
+		1818F6A218C561D200DC6207 /* TenSecChallengeResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TenSecChallengeResultView.h; sourceTree = "<group>"; };
+		1818F6A318C561D200DC6207 /* TenSecChallengeResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TenSecChallengeResultView.m; sourceTree = "<group>"; };
+		1818F6A518C561ED00DC6207 /* TenSecChallengeResultView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TenSecChallengeResultView.xib; sourceTree = "<group>"; };
 		181A786318C4206700D288D3 /* TenSecChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TenSecChallengeViewController.h; sourceTree = "<group>"; };
 		181A786418C4206700D288D3 /* TenSecChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TenSecChallengeViewController.m; sourceTree = "<group>"; };
 		181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TenSecChallengeViewController.xib; sourceTree = "<group>"; };
@@ -690,6 +695,9 @@
 				1802DC3218C01E4A0016F110 /* LHLTextView.m */,
 				0E9265BD18C028A9003ADEC3 /* ComtomTxt.h */,
 				0E9265BE18C028A9003ADEC3 /* ComtomTxt.m */,
+				1818F6A218C561D200DC6207 /* TenSecChallengeResultView.h */,
+				1818F6A318C561D200DC6207 /* TenSecChallengeResultView.m */,
+				1818F6A518C561ED00DC6207 /* TenSecChallengeResultView.xib */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -1059,6 +1067,7 @@
 				639657F918C038BB002F2A90 /* line@2x.png in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
 				6396580518C038E2002F2A90 /* xunsu_yellow@2x.png in Resources */,
+				1818F6A618C561ED00DC6207 /* TenSecChallengeResultView.xib in Resources */,
 				639657EF18C038BB002F2A90 /* addClass@2x.png in Resources */,
 				189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */,
 				0E92657A18BDACDD003ADEC3 /* first.png in Resources */,
@@ -1181,6 +1190,7 @@
 				6396576718C03664002F2A90 /* WYPopoverController.m in Sources */,
 				636CF4B418BD8F3B0085C28E /* TestViewController.m in Sources */,
 				6329551218BC8AA700F2B78D /* ASIDataDecompressor.m in Sources */,
+				1818F6A418C561D200DC6207 /* TenSecChallengeResultView.m in Sources */,
 				632954CD18BC898B00F2B78D /* Reachability.m in Sources */,
 				6329551F18BC8AA700F2B78D /* ASICloudFilesRequest.m in Sources */,
 				0E92655818BD9228003ADEC3 /* DAPagesContainer.m in Sources */,
