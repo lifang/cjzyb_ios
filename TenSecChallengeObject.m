@@ -9,5 +9,56 @@
 #import "TenSecChallengeObject.h"
 
 @implementation TenSecChallengeObject
-
++ (NSArray *)parseTenSecQuestionsFromFile{
+    NSMutableArray *resultArray = [NSMutableArray array];//返回值
+    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    //把path拼成真实文件路径
+    
+    path = [[NSBundle mainBundle] pathForResource:@"questions_lastest" ofType:@"js"]; //测试
+    
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    if (!data) {
+        [Utility errorAlert:@"获取question文件失败!"];
+    }else{
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        if (!dic || ![dic objectForKey:@"time_limit"]) {
+            [Utility errorAlert:@"文件格式错误!"];
+            return nil;
+        }
+        NSDictionary *dicc = [dic objectForKey:@"time_limit"];
+        if (!(dicc && [dicc objectForKey:@"specified_time"] && [dicc objectForKey:@"questions"])) {
+            [Utility errorAlert:@"文件格式错误!"];
+        }else{
+            NSString *timeLimit = [dicc objectForKey:@"specified_time"];
+            NSArray *questions = [dicc objectForKey:@"questions"];
+            NSDictionary *bigQuestion = questions[0];  //大题
+            if (!(bigQuestion && [bigQuestion objectForKey:@"branch_questions"])) {
+                [Utility errorAlert:@"没有题目!"];
+            }else{
+                NSString *bigID = [bigQuestion objectForKey:@"id"];
+                NSArray *branchQuestions = [bigQuestion objectForKey:@"branch_questions"];
+                for (int i = 0; i < branchQuestions.count; i ++) {
+                    NSDictionary *question = branchQuestions[i];
+                    if (!(question && [question objectForKey:@"id"])) {
+                        [Utility errorAlert:@"没有题目!"];
+                    }else{
+                        TenSecChallengeObject *obj = [[TenSecChallengeObject alloc] init];
+                        obj.tenBigID = bigID;
+                        obj.tenTimeLimit = timeLimit;
+                        obj.tenID = [question objectForKey:@"id"];
+                        obj.tenQuestionContent = [question objectForKey:@"content"];
+                        obj.tenRightAnswer = [question objectForKey:@"anwser"];
+                        NSString *options = [question objectForKey:@"options"];
+                        NSArray *optionsArray = [options componentsSeparatedByString:@";||;"];
+                        obj.tenAnswerOne = [optionsArray firstObject];
+                        obj.tenAnswerTwo = [optionsArray lastObject];
+                        
+                        [resultArray addObject:obj];
+                    }
+                }
+            }
+        }
+    }
+    return [NSArray arrayWithArray:resultArray];
+}
 @end

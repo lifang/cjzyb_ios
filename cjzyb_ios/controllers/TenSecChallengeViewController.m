@@ -23,6 +23,7 @@
 @property (strong,nonatomic) TenSecChallengeObject *currentQuestion; //当前题目
 @property (assign,nonatomic) BOOL isLastQuestion; //是否最后一题
 @property (strong,nonatomic) NSArray *questionNumberImages; //题号图片数组
+@property (strong,nonatomic) NSMutableArray *answerArray; //选择的答案
 @end
 
 @implementation TenSecChallengeViewController
@@ -40,7 +41,13 @@
 {
     [super viewDidLoad];
     [self setupViews];
+    
+    
+    self.questionArray = [NSMutableArray arrayWithArray:[TenSecChallengeObject parseTenSecQuestionsFromFile]];
+    
     [self startChallenge];
+    
+    NSLog(@"sdf");
 }
 
 - (void)setupViews{  //控件初始设置
@@ -60,6 +67,8 @@
 - (void)startChallenge{
     self.timeCount = 0;
     self.currentNO = 0;
+    self.answerArray = [NSMutableArray array];
+    [self showNextQuestion];
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
 }
 
@@ -69,9 +78,11 @@
 
 - (void)finishChallenge{
     //终止计时
+    [self.timer invalidate];
     //计算成绩
     //保存挑战数据
     //显示结果界面
+    [self.view addSubview:self.resultView];
 }
 
 
@@ -81,30 +92,39 @@
 }
 
 - (void)upperClicked:(id)sender{
-    self.upperOptionLabel.backgroundColor = [UIColor greenColor];
-    [UIView animateWithDuration:0.1 animations:^{
-    
-    } completion:^(BOOL finished) {
-        if (self.isLastQuestion) {
-            [self finishChallenge];
-        }else{
-            [self showNextQuestion];
-        }
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.answerArray addObject:self.upperOptionLabel.text];
+        self.upperOptionLabel.backgroundColor = [UIColor greenColor];
+        [UIView animateWithDuration:0.5 animations:^{
+            self.upperButton.alpha = self.upperButton.alpha > 0.5 ? 0.5 : 1;
+        } completion:^(BOOL finished) {
+            self.upperOptionLabel.backgroundColor = [UIColor blackColor];
+            self.lowerOptionLabel.backgroundColor = [UIColor blackColor];
+            if (self.isLastQuestion) {
+                [self finishChallenge];
+            }else{
+                [self showNextQuestion];
+            }
+        }];
+    });
 }
 
 - (void)lowerClicked:(id)sender{
-    
-    self.lowerOptionLabel.backgroundColor = [UIColor greenColor];
-    [UIView animateWithDuration:0.1 animations:^{
-    
-    } completion:^(BOOL finished) {
-        if (self.isLastQuestion) {
-            [self finishChallenge];
-        }else{
-            [self showNextQuestion];
-        }
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.answerArray addObject:self.lowerOptionLabel.text];
+        self.lowerOptionLabel.backgroundColor = [UIColor greenColor];
+        [UIView animateWithDuration:0.5 animations:^{
+            self.upperButton.alpha = self.upperButton.alpha > 0.5 ? 0.5 : 1;
+        } completion:^(BOOL finished) {
+            self.upperOptionLabel.backgroundColor = [UIColor blackColor];
+            self.lowerOptionLabel.backgroundColor = [UIColor blackColor];
+            if (self.isLastQuestion) {
+                [self finishChallenge];
+            }else{
+                [self showNextQuestion];
+            }
+        }];
+    });
 }
 
 #pragma mark -- action
@@ -181,7 +201,6 @@
 - (TenSecChallengeResultView *)resultView{
     if (!_resultView) {
         _resultView = [[[NSBundle mainBundle]loadNibNamed:@"TenSecChallengeResultView" owner:self options:nil] lastObject];
-        [self.view addSubview:_resultView];
         _resultView.delegate = self;
         [_resultView initView];
     }
