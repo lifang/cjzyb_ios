@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MessageObject.h"
 #import "ReplyMessageObject.h"
 
 @protocol FirstCellDelegate;
@@ -18,18 +17,15 @@
 @property (nonatomic, strong) UIImageView *headImg;//头像
 @property (nonatomic, strong) UILabel *nameFromLab;//昵称from
 @property (nonatomic, strong) UILabel *timeLab;//时间
-@property (nonatomic, strong) UIImageView *focusImg,*commentImg;//关注／评论
-@property (nonatomic, strong) UILabel *focusLab,*commentLab;//关注／评论
+
 @property (nonatomic, strong) UILabel *contentLab;//内容
 
-@property (nonatomic, assign) enum MessageType msgType;//消息类型
-@property (nonatomic, assign) enum MessageCellStyle msgStyle;
+@property (nonatomic, assign) enum ReplyMessageCellStyle msgStyle;
 
 @property (nonatomic, strong) UIImageView *arrowImg;
 @property (nonatomic, strong) UILabel *nameToLab;//昵称to
 @property (nonatomic, strong) UILabel *huifuLab;//回复
 
-@property (nonatomic, strong) MessageObject *aMessage;
 @property (nonatomic, strong) ReplyMessageObject*aReplyMsg;
 
 @property (nonatomic, assign) BOOL isSelected;
@@ -38,6 +34,7 @@
 @property (nonatomic, strong) NSIndexPath *idxPath;
 @property (strong, nonatomic) UIButton *coverButton;
 
+@property (nonatomic,strong) UIImageView *lineImageView;
 -(void)open;
 -(void)close;
 @end

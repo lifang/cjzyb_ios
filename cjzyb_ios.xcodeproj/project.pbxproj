@@ -61,6 +61,11 @@
 		0EEF4C1C18C562900058606A /* ReplyMessageObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C1B18C562900058606A /* ReplyMessageObject.m */; };
 		0EEF4C2018C562D40058606A /* RTLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C1F18C562D40058606A /* RTLabel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0EEF4C2218C562FD0058606A /* divider.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EEF4C2118C562FD0058606A /* divider.png */; };
+		0EEF4C2518C571AD0058606A /* FocusInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C2418C571AD0058606A /* FocusInterface.m */; };
+		0EEF4C2818C5BAFD0058606A /* DeleteMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C2718C5BAFD0058606A /* DeleteMessage.m */; };
+		0EEF4C2B18C5C0490058606A /* SendMessageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C2A18C5C0490058606A /* SendMessageInterface.m */; };
+		0EEF4C2E18C5C6120058606A /* UserObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C2D18C5C6120058606A /* UserObject.m */; };
+		0EEF4C3118C5C8F00058606A /* ClassObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C3018C5C8F00058606A /* ClassObject.m */; };
 		1802DC3318C01E4A0016F110 /* LHLTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3218C01E4A0016F110 /* LHLTextView.m */; };
 		1802DC3818C065320016F110 /* NotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3718C065320016F110 /* NotificationObject.m */; };
 		1802DC3B18C073FB0016F110 /* ReplyNotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3A18C073FB0016F110 /* ReplyNotificationObject.m */; };
@@ -310,6 +315,16 @@
 		0EEF4C1E18C562D40058606A /* RTLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTLabel.h; sourceTree = "<group>"; };
 		0EEF4C1F18C562D40058606A /* RTLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTLabel.m; sourceTree = "<group>"; };
 		0EEF4C2118C562FD0058606A /* divider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = divider.png; sourceTree = "<group>"; };
+		0EEF4C2318C571AD0058606A /* FocusInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FocusInterface.h; sourceTree = "<group>"; };
+		0EEF4C2418C571AD0058606A /* FocusInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FocusInterface.m; sourceTree = "<group>"; };
+		0EEF4C2618C5BAFD0058606A /* DeleteMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteMessage.h; sourceTree = "<group>"; };
+		0EEF4C2718C5BAFD0058606A /* DeleteMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteMessage.m; sourceTree = "<group>"; };
+		0EEF4C2918C5C0490058606A /* SendMessageInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendMessageInterface.h; sourceTree = "<group>"; };
+		0EEF4C2A18C5C0490058606A /* SendMessageInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendMessageInterface.m; sourceTree = "<group>"; };
+		0EEF4C2C18C5C6120058606A /* UserObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserObject.h; sourceTree = "<group>"; };
+		0EEF4C2D18C5C6120058606A /* UserObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserObject.m; sourceTree = "<group>"; };
+		0EEF4C2F18C5C8F00058606A /* ClassObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassObject.h; sourceTree = "<group>"; };
+		0EEF4C3018C5C8F00058606A /* ClassObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassObject.m; sourceTree = "<group>"; };
 		1802DC3118C01E4A0016F110 /* LHLTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLTextView.h; sourceTree = "<group>"; };
 		1802DC3218C01E4A0016F110 /* LHLTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLTextView.m; sourceTree = "<group>"; };
 		1802DC3618C065320016F110 /* NotificationObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationObject.h; sourceTree = SOURCE_ROOT; };
@@ -631,6 +646,12 @@
 				0EEF4BE518C561700058606A /* PageMessageInterface.m */,
 				0EEF4BE618C561700058606A /* ReplyMessageInterface.h */,
 				0EEF4BE718C561700058606A /* ReplyMessageInterface.m */,
+				0EEF4C2318C571AD0058606A /* FocusInterface.h */,
+				0EEF4C2418C571AD0058606A /* FocusInterface.m */,
+				0EEF4C2618C5BAFD0058606A /* DeleteMessage.h */,
+				0EEF4C2718C5BAFD0058606A /* DeleteMessage.m */,
+				0EEF4C2918C5C0490058606A /* SendMessageInterface.h */,
+				0EEF4C2A18C5C0490058606A /* SendMessageInterface.m */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -725,6 +746,10 @@
 				0EEF4C0D18C561F30058606A /* MessageObject.m */,
 				0EEF4C1A18C562900058606A /* ReplyMessageObject.h */,
 				0EEF4C1B18C562900058606A /* ReplyMessageObject.m */,
+				0EEF4C2C18C5C6120058606A /* UserObject.h */,
+				0EEF4C2D18C5C6120058606A /* UserObject.m */,
+				0EEF4C2F18C5C8F00058606A /* ClassObject.h */,
+				0EEF4C3018C5C8F00058606A /* ClassObject.m */,
 				0EEF4BDD18C561700058606A /* Interface */,
 				0E92657218BDACCE003ADEC3 /* images */,
 				632954C618BC88EA00F2B78D /* Tools */,
@@ -787,8 +812,8 @@
 				6396576F18C036B1002F2A90 /* ClassGroupViewController.m */,
 				6396577018C036B1002F2A90 /* ClassGroupViewController.xib */,
 				6396577118C036B1002F2A90 /* StudentListViewController.h */,
-				6396577218C036B1002F2A90 /* StudentListViewController.m */,
 				6396577318C036B1002F2A90 /* StudentListViewController.xib */,
+				6396577218C036B1002F2A90 /* StudentListViewController.m */,
 				189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */,
 				189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */,
 				189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */,
@@ -1443,10 +1468,12 @@
 				0EEF4BE918C561700058606A /* InterfaceCache.m in Sources */,
 				0EEF4BEC18C561700058606A /* ReplyMessageInterface.m in Sources */,
 				632954CA18BC894F00F2B78D /* Utility.m in Sources */,
+				0EEF4C3118C5C8F00058606A /* ClassObject.m in Sources */,
 				6396580A18C04D4A002F2A90 /* HomeworkViewController.m in Sources */,
 				0EEF4BD818C561570058606A /* CardFirstView.m in Sources */,
 				6396578218C0374C002F2A90 /* StudentTableViewCell.m in Sources */,
 				6396583D18C083BF002F2A90 /* HomeworkHistoryCollectionCell.m in Sources */,
+				0EEF4C2E18C5C6120058606A /* UserObject.m in Sources */,
 				6341536318C1C90300DE4480 /* UIView+convenience.m in Sources */,
 				0EEF4C0418C561960058606A /* MJRefreshFooterView.m in Sources */,
 				0EEF4C1C18C562900058606A /* ReplyMessageObject.m in Sources */,
@@ -1462,6 +1489,7 @@
 				6396583A18C07B37002F2A90 /* HomeworkTypeObj.m in Sources */,
 				6341536118C1C90300DE4480 /* NSMutableArray+convenience.m in Sources */,
 				0EEF4C2018C562D40058606A /* RTLabel.m in Sources */,
+				0EEF4C2818C5BAFD0058606A /* DeleteMessage.m in Sources */,
 				6329556618BC900600F2B78D /* SDWebImageDownloader.m in Sources */,
 				6396581218C04F68002F2A90 /* HomeworkTypeCollctionCell.m in Sources */,
 				6396578418C0374C002F2A90 /* StudentSummaryCell.m in Sources */,
@@ -1492,12 +1520,14 @@
 				0EEF4C0518C561960058606A /* MJRefreshHeaderView.m in Sources */,
 				636CF4B418BD8F3B0085C28E /* TestViewController.m in Sources */,
 				0EEF4BF718C5618B0058606A /* NSString+URLEncoding.m in Sources */,
+				0EEF4C2B18C5C0490058606A /* SendMessageInterface.m in Sources */,
 				6329551218BC8AA700F2B78D /* ASIDataDecompressor.m in Sources */,
 				0EEF4C0E18C561F30058606A /* MessageObject.m in Sources */,
 				632954CD18BC898B00F2B78D /* Reachability.m in Sources */,
 				0EEF4C1918C562370058606A /* FirstViewHeader.m in Sources */,
 				6329551F18BC8AA700F2B78D /* ASICloudFilesRequest.m in Sources */,
 				0EEF4BDC18C561570058606A /* CMSCoinView.m in Sources */,
+				0EEF4C2518C571AD0058606A /* FocusInterface.m in Sources */,
 				0E92655818BD9228003ADEC3 /* DAPagesContainer.m in Sources */,
 				6329551618BC8AA700F2B78D /* ASIInputStream.m in Sources */,
 				6396576818C03664002F2A90 /* WYStoryboardPopoverSegue.m in Sources */,

@@ -1,25 +1,29 @@
 //
-//  ReplyMessageInterface.m
+//  FocusInterface.m
 //  cjzyb_ios
 //
-//  Created by comdosoft on 14-3-3.
+//  Created by comdosoft on 14-3-4.
 //  Copyright (c) 2014年 david. All rights reserved.
 //
 
-#import "ReplyMessageInterface.h"
+#import "FocusInterface.h"
 #import "NSDictionary+AllKeytoLowerCase.h"
 #import "NSString+URLEncoding.h"
 #import "NSString+HTML.h"
 
-@implementation ReplyMessageInterface
+@implementation FocusInterface
 
--(void)getReplyMessageInterfaceDelegateWithMessageId:(NSString *)messageId andPage:(NSInteger)page {
+-(void)getFocusInterfaceDelegateWithMessageId:(NSString *)messageId andUserId:(NSString *)userId andType:(NSInteger)type{
     NSMutableDictionary *reqheaders = [[NSMutableDictionary alloc] init];
     
     [reqheaders setValue:[NSString stringWithFormat:@"%@",messageId] forKey:@"micropost_id"];
-    [reqheaders setValue:[NSString stringWithFormat:@"%d",page] forKey:@"page"];
-    
-    self.interfaceUrl = @"http://58.240.210.42:3004/api/students/get_reply_microposts";
+    [reqheaders setValue:[NSString stringWithFormat:@"%@",userId] forKey:@"user_id"];
+    self.type = type;
+    if (type == 0) {//取消关注
+        self.interfaceUrl = @"http://58.240.210.42:3004/api/students/unfollow";
+    }else {//关注
+        self.interfaceUrl = @"http://58.240.210.42:3004/api/students/add_concern";
+    }
     
     self.baseDelegate = self;
     self.headers = reqheaders;
@@ -37,26 +41,25 @@
             if (jsonData) {
                 if ([[jsonData objectForKey:@"status"]isEqualToString:@"success"]) {
                     @try {
-                        [self.delegate getReplyMessageInfoDidFinished:jsonData];
+                        [self.delegate getFocusInfoDidFinished:jsonData andType:self.type];
                     }
                     @catch (NSException *exception) {
-                        [self.delegate getReplyMessageInfoDidFailed:@"获取数据失败!"];
+                        [self.delegate getFocusInfoDidFailed:@"获取数据失败!"];
                     }
                 }else {
-                    [self.delegate getReplyMessageInfoDidFailed:[jsonData objectForKey:@"notice"]];
+                    [self.delegate getFocusInfoDidFailed:[jsonData objectForKey:@"notice"]];
                 }
             }else {
-                [self.delegate getReplyMessageInfoDidFailed:@"获取数据失败!"];
+                [self.delegate getFocusInfoDidFailed:@"获取数据失败!"];
             }
         }else{
-            [self.delegate getReplyMessageInfoDidFailed:@"服务器连接失败，请稍后再试!"];
+            [self.delegate getFocusInfoDidFailed:@"服务器连接失败，请稍后再试!"];
         }
     }else{
-        [self.delegate getReplyMessageInfoDidFailed:@"服务器连接失败，请稍后再试!"];
+        [self.delegate getFocusInfoDidFailed:@"服务器连接失败，请稍后再试!"];
     }
 }
 -(void)requestIsFailed:(NSError *)error{
-    [self.delegate getReplyMessageInfoDidFailed:@"获取数据失败!"];
+    [self.delegate getFocusInfoDidFailed:@"获取数据失败!"];
 }
-
 @end
