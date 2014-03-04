@@ -15,8 +15,31 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        
     }
     return self;
+}
+
+//初始化设置
+-(void) initView{
+    self.resultBgView.layer.cornerRadius = 10.0;
+    
+    self.commitButton.layer.cornerRadius = 4.0;
+    
+    self.restartButton.layer.cornerRadius = 4.0;
+}
+
+#pragma mark 按键响应
+- (IBAction)commitButtonClicked:(id)sender {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(resultViewCommitButtonClicked)]) {
+        [self.delegate resultViewCommitButtonClicked];
+    }
+}
+
+- (IBAction)restartButtonClicked:(id)sender {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(resultViewRestartButtonClicked)]) {
+        [self.delegate resultViewRestartButtonClicked];
+    }
 }
 
 /*

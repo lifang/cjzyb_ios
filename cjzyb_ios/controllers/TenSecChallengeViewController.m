@@ -178,6 +178,27 @@
     }
 }
 
+- (TenSecChallengeResultView *)resultView{
+    if (!_resultView) {
+        _resultView = [[[NSBundle mainBundle]loadNibNamed:@"TenSecChallengeResultView" owner:self options:nil] lastObject];
+        [self.view addSubview:_resultView];
+        _resultView.delegate = self;
+        [_resultView initView];
+    }
+    return _resultView;
+}
+
+#pragma mark ResultView Delegate
+- (void)resultViewCommitButtonClicked{
+    [self.resultView removeFromSuperview];
+    self.resultView = nil;
+}
+
+- (void)resultViewRestartButtonClicked{
+    [self.resultView removeFromSuperview];
+    self.resultView = nil;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

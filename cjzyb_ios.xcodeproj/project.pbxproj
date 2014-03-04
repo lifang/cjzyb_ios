@@ -1467,7 +1467,6 @@
 				0EEF4BEC18C561700058606A /* ReplyMessageInterface.m in Sources */,
 				632954CA18BC894F00F2B78D /* Utility.m in Sources */,
 				181A786618C4206700D288D3 /* TenSecChallengeViewController.m in Sources */,
-				0E92658418BDB695003ADEC3 /* MessageObject.m in Sources */,
 				6396580A18C04D4A002F2A90 /* HomeworkViewController.m in Sources */,
 				0EEF4BD818C561570058606A /* CardFirstView.m in Sources */,
 				6396578218C0374C002F2A90 /* StudentTableViewCell.m in Sources */,
