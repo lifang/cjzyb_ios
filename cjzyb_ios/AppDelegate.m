@@ -44,16 +44,7 @@
     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:main];
     self.window.rootViewController = navControl;
     
-    
-//    self.window.backgroundColor = [UIColor whiteColor];
-//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-//    SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
-//    DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
-//    tabController.childenControllerArray = @[main,first];
-////    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
-////    self.window.rootViewController = navControl;
-//    
-//    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
+//    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
 //    self.window.rootViewController = notificationViewController;
     
     /*

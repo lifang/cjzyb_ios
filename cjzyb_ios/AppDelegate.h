@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LHLNotificationViewController.h"
+#import "TenSecChallengeViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

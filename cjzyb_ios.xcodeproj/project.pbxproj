@@ -69,6 +69,11 @@
 		1802DC3318C01E4A0016F110 /* LHLTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3218C01E4A0016F110 /* LHLTextView.m */; };
 		1802DC3818C065320016F110 /* NotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3718C065320016F110 /* NotificationObject.m */; };
 		1802DC3B18C073FB0016F110 /* ReplyNotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3A18C073FB0016F110 /* ReplyNotificationObject.m */; };
+		1818F6A418C561D200DC6207 /* TenSecChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1818F6A318C561D200DC6207 /* TenSecChallengeResultView.m */; };
+		1818F6A618C561ED00DC6207 /* TenSecChallengeResultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1818F6A518C561ED00DC6207 /* TenSecChallengeResultView.xib */; };
+		181A786618C4206700D288D3 /* TenSecChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786418C4206700D288D3 /* TenSecChallengeViewController.m */; };
+		181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */; };
+		181A786A18C469AB00D288D3 /* TenSecChallengeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786918C469AB00D288D3 /* TenSecChallengeObject.m */; };
 		189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */; };
 		189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */; };
 		189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */; };
@@ -331,6 +336,14 @@
 		1802DC3718C065320016F110 /* NotificationObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationObject.m; sourceTree = SOURCE_ROOT; };
 		1802DC3918C073FB0016F110 /* ReplyNotificationObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplyNotificationObject.h; sourceTree = SOURCE_ROOT; };
 		1802DC3A18C073FB0016F110 /* ReplyNotificationObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplyNotificationObject.m; sourceTree = SOURCE_ROOT; };
+		1818F6A218C561D200DC6207 /* TenSecChallengeResultView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TenSecChallengeResultView.h; sourceTree = "<group>"; };
+		1818F6A318C561D200DC6207 /* TenSecChallengeResultView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TenSecChallengeResultView.m; sourceTree = "<group>"; };
+		1818F6A518C561ED00DC6207 /* TenSecChallengeResultView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TenSecChallengeResultView.xib; sourceTree = "<group>"; };
+		181A786318C4206700D288D3 /* TenSecChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TenSecChallengeViewController.h; sourceTree = "<group>"; };
+		181A786418C4206700D288D3 /* TenSecChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TenSecChallengeViewController.m; sourceTree = "<group>"; };
+		181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TenSecChallengeViewController.xib; sourceTree = "<group>"; };
+		181A786818C469AB00D288D3 /* TenSecChallengeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TenSecChallengeObject.h; sourceTree = SOURCE_ROOT; };
+		181A786918C469AB00D288D3 /* TenSecChallengeObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TenSecChallengeObject.m; sourceTree = SOURCE_ROOT; };
 		189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationViewController.h; sourceTree = SOURCE_ROOT; };
 		189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationViewController.m; sourceTree = SOURCE_ROOT; };
 		189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -832,6 +845,9 @@
 				0EEF4C1718C562370058606A /* FirstViewHeader.h */,
 				0EEF4C1818C562370058606A /* FirstViewHeader.m */,
 				636CF4B618BD90350085C28E /* test */,
+				181A786318C4206700D288D3 /* TenSecChallengeViewController.h */,
+				181A786418C4206700D288D3 /* TenSecChallengeViewController.m */,
+				181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */,
 				6396580718C04D4A002F2A90 /* HomeworkViewController.h */,
 				6396580818C04D4A002F2A90 /* HomeworkViewController.m */,
 				6396580918C04D4A002F2A90 /* HomeworkViewController.xib */,
@@ -857,6 +873,8 @@
 				1802DC3718C065320016F110 /* NotificationObject.m */,
 				1802DC3918C073FB0016F110 /* ReplyNotificationObject.h */,
 				1802DC3A18C073FB0016F110 /* ReplyNotificationObject.m */,
+				181A786818C469AB00D288D3 /* TenSecChallengeObject.h */,
+				181A786918C469AB00D288D3 /* TenSecChallengeObject.m */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -897,6 +915,9 @@
 				1802DC3218C01E4A0016F110 /* LHLTextView.m */,
 				0E9265BD18C028A9003ADEC3 /* ComtomTxt.h */,
 				0E9265BE18C028A9003ADEC3 /* ComtomTxt.m */,
+				1818F6A218C561D200DC6207 /* TenSecChallengeResultView.h */,
+				1818F6A318C561D200DC6207 /* TenSecChallengeResultView.m */,
+				1818F6A518C561ED00DC6207 /* TenSecChallengeResultView.xib */,
 				0EEF4BD018C561570058606A /* CardFirstView.h */,
 				0EEF4BD118C561570058606A /* CardFirstView.m */,
 				0EEF4BD218C561570058606A /* CardFirstView.xib */,
@@ -1356,6 +1377,7 @@
 				6396582918C0578D002F2A90 /* homework_line@2x.png in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
 				6396580518C038E2002F2A90 /* xunsu_yellow@2x.png in Resources */,
+				1818F6A618C561ED00DC6207 /* TenSecChallengeResultView.xib in Resources */,
 				6396582418C0578D002F2A90 /* homework_blank@2x.png in Resources */,
 				6396582C18C0578D002F2A90 /* homework_right@2x.png in Resources */,
 				639657EF18C038BB002F2A90 /* addClass@2x.png in Resources */,
@@ -1422,6 +1444,7 @@
 				6396579318C03766002F2A90 /* DRNavigationRightItem.xib in Resources */,
 				0E92659F18BDE51F003ADEC3 /* focusBtn_active.png in Resources */,
 				639657F118C038BB002F2A90 /* jinque@2x.png in Resources */,
+				181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */,
 				0E9265A618BF008C003ADEC3 /* arrowImg.png in Resources */,
 				6396580B18C04D4A002F2A90 /* HomeworkViewController.xib in Resources */,
 				639657F218C038BB002F2A90 /* point@2x.png in Resources */,
@@ -1469,6 +1492,8 @@
 				0EEF4BEC18C561700058606A /* ReplyMessageInterface.m in Sources */,
 				632954CA18BC894F00F2B78D /* Utility.m in Sources */,
 				0EEF4C3118C5C8F00058606A /* ClassObject.m in Sources */,
+				181A786618C4206700D288D3 /* TenSecChallengeViewController.m in Sources */,
+				0E92658418BDB695003ADEC3 /* MessageObject.m in Sources */,
 				6396580A18C04D4A002F2A90 /* HomeworkViewController.m in Sources */,
 				0EEF4BD818C561570058606A /* CardFirstView.m in Sources */,
 				6396578218C0374C002F2A90 /* StudentTableViewCell.m in Sources */,
@@ -1522,6 +1547,7 @@
 				0EEF4BF718C5618B0058606A /* NSString+URLEncoding.m in Sources */,
 				0EEF4C2B18C5C0490058606A /* SendMessageInterface.m in Sources */,
 				6329551218BC8AA700F2B78D /* ASIDataDecompressor.m in Sources */,
+				1818F6A418C561D200DC6207 /* TenSecChallengeResultView.m in Sources */,
 				0EEF4C0E18C561F30058606A /* MessageObject.m in Sources */,
 				632954CD18BC898B00F2B78D /* Reachability.m in Sources */,
 				0EEF4C1918C562370058606A /* FirstViewHeader.m in Sources */,
@@ -1539,6 +1565,7 @@
 				0E92655A18BD9228003ADEC3 /* DAPageIndicatorView.m in Sources */,
 				1802DC3318C01E4A0016F110 /* LHLTextView.m in Sources */,
 				6329551718BC8AA700F2B78D /* ASINetworkQueue.m in Sources */,
+				181A786A18C469AB00D288D3 /* TenSecChallengeObject.m in Sources */,
 				6329552718BC8AA700F2B78D /* ASIS3ObjectRequest.m in Sources */,
 				6329556A18BC900600F2B78D /* UIButton+WebCache.m in Sources */,
 				0E9265BF18C028A9003ADEC3 /* ComtomTxt.m in Sources */,
