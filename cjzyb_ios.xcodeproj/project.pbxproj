@@ -74,6 +74,13 @@
 		18AA80BD18BF04E800EC08CE /* LHLNotificationHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */; };
 		18AA80C118BF14A200EC08CE /* smallTriangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80C018BF14A200EC08CE /* smallTriangle@2x.png */; };
 		18AA80C418BF1A3300EC08CE /* LHLReplyNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */; };
+		63289A2418C594DB00C0083E /* ReadingTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63289A2218C594DB00C0083E /* ReadingTaskViewController.m */; };
+		63289A2518C594DB00C0083E /* ReadingTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2318C594DB00C0083E /* ReadingTaskViewController.xib */; };
+		63289A2B18C595D300C0083E /* listening_start@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2718C595D300C0083E /* listening_start@2x.png */; };
+		63289A2C18C595D300C0083E /* listening_stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2818C595D300C0083E /* listening_stop@2x.png */; };
+		63289A2D18C595D300C0083E /* reading_start@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2918C595D300C0083E /* reading_start@2x.png */; };
+		63289A2E18C595D300C0083E /* reading_stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2A18C595D300C0083E /* reading_stop@2x.png */; };
+		63289A3018C5B11E00C0083E /* question.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2F18C5B11E00C0083E /* question.geojson */; };
 		6329549218BC875800F2B78D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549118BC875800F2B78D /* Foundation.framework */; };
 		6329549418BC875800F2B78D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549318BC875800F2B78D /* CoreGraphics.framework */; };
 		6329549618BC875800F2B78D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549518BC875800F2B78D /* UIKit.framework */; };
@@ -330,6 +337,14 @@
 		18AA80C018BF14A200EC08CE /* smallTriangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smallTriangle@2x.png"; sourceTree = "<group>"; };
 		18AA80C218BF1A3300EC08CE /* LHLReplyNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLReplyNotificationCell.h; sourceTree = SOURCE_ROOT; };
 		18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLReplyNotificationCell.m; sourceTree = SOURCE_ROOT; };
+		63289A2118C594DB00C0083E /* ReadingTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadingTaskViewController.h; sourceTree = "<group>"; };
+		63289A2218C594DB00C0083E /* ReadingTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadingTaskViewController.m; sourceTree = "<group>"; };
+		63289A2318C594DB00C0083E /* ReadingTaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReadingTaskViewController.xib; sourceTree = "<group>"; };
+		63289A2718C595D300C0083E /* listening_start@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "listening_start@2x.png"; sourceTree = "<group>"; };
+		63289A2818C595D300C0083E /* listening_stop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "listening_stop@2x.png"; sourceTree = "<group>"; };
+		63289A2918C595D300C0083E /* reading_start@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reading_start@2x.png"; sourceTree = "<group>"; };
+		63289A2A18C595D300C0083E /* reading_stop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reading_stop@2x.png"; sourceTree = "<group>"; };
+		63289A2F18C5B11E00C0083E /* question.geojson */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = question.geojson; sourceTree = SOURCE_ROOT; };
 		6329548E18BC875800F2B78D /* cjzyb_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cjzyb_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6329549118BC875800F2B78D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6329549318BC875800F2B78D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -678,6 +693,17 @@
 			name = LHLimage;
 			sourceTree = "<group>";
 		};
+		63289A2618C5956900C0083E /* reading */ = {
+			isa = PBXGroup;
+			children = (
+				63289A2718C595D300C0083E /* listening_start@2x.png */,
+				63289A2818C595D300C0083E /* listening_stop@2x.png */,
+				63289A2918C595D300C0083E /* reading_start@2x.png */,
+				63289A2A18C595D300C0083E /* reading_stop@2x.png */,
+			);
+			name = reading;
+			sourceTree = "<group>";
+		};
 		6329548518BC875800F2B78D = {
 			isa = PBXGroup;
 			children = (
@@ -813,6 +839,9 @@
 				6396583018C06C9D002F2A90 /* HomeworkDailyCollectionViewController.h */,
 				6396583118C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m */,
 				6396583218C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib */,
+				63289A2118C594DB00C0083E /* ReadingTaskViewController.h */,
+				63289A2218C594DB00C0083E /* ReadingTaskViewController.m */,
+				63289A2318C594DB00C0083E /* ReadingTaskViewController.xib */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -887,7 +916,7 @@
 		632954C518BC87E100F2B78D /* jsonTestFile */ = {
 			isa = PBXGroup;
 			children = (
-				6396583618C071A9002F2A90 /* homework */,
+				6396583618C071A9002F2A90 /* reading */,
 			);
 			path = jsonTestFile;
 			sourceTree = "<group>";
@@ -1136,6 +1165,7 @@
 		639657CF18C03886002F2A90 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				63289A2618C5956900C0083E /* reading */,
 				6396581518C0574A002F2A90 /* homework */,
 				639657FA18C038D5002F2A90 /* classList */,
 				639657E318C038B1002F2A90 /* userInfo */,
@@ -1234,11 +1264,12 @@
 			name = homework;
 			sourceTree = "<group>";
 		};
-		6396583618C071A9002F2A90 /* homework */ = {
+		6396583618C071A9002F2A90 /* reading */ = {
 			isa = PBXGroup;
 			children = (
+				63289A2F18C5B11E00C0083E /* question.geojson */,
 			);
-			name = homework;
+			name = reading;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1320,6 +1351,7 @@
 				6396582F18C0578D002F2A90 /* homwwork_listenWrite@2x.png in Resources */,
 				18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */,
 				639657DC18C038A6002F2A90 /* carBarItem@2x.png in Resources */,
+				63289A2D18C595D300C0083E /* reading_start@2x.png in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				6396579118C03766002F2A90 /* LeftTabBarView.xib in Resources */,
 				189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */,
@@ -1358,6 +1390,7 @@
 				639657F818C038BB002F2A90 /* userGroup@2x.png in Resources */,
 				0EEF4BCB18C561250058606A /* get_microposts.json in Resources */,
 				6341536918C1C96C00DE4480 /* CalendarViewController.xib in Resources */,
+				63289A2518C594DB00C0083E /* ReadingTaskViewController.xib in Resources */,
 				6396582A18C0578D002F2A90 /* homework_quik@2x.png in Resources */,
 				0E92656918BD92B0003ADEC3 /* ThirdViewController.xib in Resources */,
 				639657F518C038BB002F2A90 /* xunsu@2x.png in Resources */,
@@ -1374,11 +1407,13 @@
 				6396583418C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib in Resources */,
 				0EEF4BDB18C561570058606A /* CardSecondView.xib in Resources */,
 				639657F618C038BB002F2A90 /* youxiu@2x.png in Resources */,
+				63289A2E18C595D300C0083E /* reading_stop@2x.png in Resources */,
 				0E92656418BD92A0003ADEC3 /* SecondViewController.xib in Resources */,
 				0E92657B18BDACDD003ADEC3 /* second_active.png in Resources */,
 				6396582E18C0578D002F2A90 /* homework_sort@2x.png in Resources */,
 				0EEF4C1618C5622F0058606A /* FirstViewController.xib in Resources */,
 				6396578518C0374C002F2A90 /* StudentSummaryCell.xib in Resources */,
+				63289A2C18C595D300C0083E /* listening_stop@2x.png in Resources */,
 				0EEF4BCA18C561250058606A /* get_class_info.json in Resources */,
 				6396582D18C0578D002F2A90 /* homework_select@2x.png in Resources */,
 				6396582518C0578D002F2A90 /* homework_calendar@2x.png in Resources */,
@@ -1397,7 +1432,9 @@
 				6396579318C03766002F2A90 /* DRNavigationRightItem.xib in Resources */,
 				0E92659F18BDE51F003ADEC3 /* focusBtn_active.png in Resources */,
 				639657F118C038BB002F2A90 /* jinque@2x.png in Resources */,
+				63289A3018C5B11E00C0083E /* question.geojson in Resources */,
 				0E9265A618BF008C003ADEC3 /* arrowImg.png in Resources */,
+				63289A2B18C595D300C0083E /* listening_start@2x.png in Resources */,
 				6396580B18C04D4A002F2A90 /* HomeworkViewController.xib in Resources */,
 				639657F218C038BB002F2A90 /* point@2x.png in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
@@ -1504,6 +1541,7 @@
 				6396577418C036B1002F2A90 /* DRLeftTabBarViewController.m in Sources */,
 				6341536418C1C90300DE4480 /* VRGCalendarView.m in Sources */,
 				6329556E18BC900600F2B78D /* UIImageView+WebCache.m in Sources */,
+				63289A2418C594DB00C0083E /* ReadingTaskViewController.m in Sources */,
 				0EEF4BF618C5618B0058606A /* NSString+HTML.m in Sources */,
 				6341536018C1C90300DE4480 /* NSDate+convenience.m in Sources */,
 				0E92655A18BD9228003ADEC3 /* DAPageIndicatorView.m in Sources */,
