@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "MessageObject.h"
+#import "ReplyMessageObject.h"
 
 @protocol FirstCellDelegate;
-@interface FirstCell : UITableViewCell <UIGestureRecognizerDelegate>
+@interface FirstCell : UITableViewCell
 
 @property (nonatomic, strong) UIView *actualContentView;
 @property (strong, nonatomic) UIView *contextMenuView;
@@ -29,12 +30,14 @@
 @property (nonatomic, strong) UILabel *huifuLab;//回复
 
 @property (nonatomic, strong) MessageObject *aMessage;
+@property (nonatomic, strong) ReplyMessageObject*aReplyMsg;
 
 @property (nonatomic, assign) BOOL isSelected;
 
 @property (nonatomic, assign) id <FirstCellDelegate> delegate;
 @property (nonatomic, strong) NSIndexPath *idxPath;
 @property (strong, nonatomic) UIButton *coverButton;
+
 -(void)open;
 -(void)close;
 @end

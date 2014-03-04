@@ -90,7 +90,7 @@
     //昵称to
     self.nameToLab = [[UILabel alloc]initWithFrame:CGRectZero];
     self.nameToLab.backgroundColor = [UIColor clearColor];
-    self.nameToLab.textColor = [UIColor colorWithRed:0.4392 green:0.4431 blue:0.451 alpha:1];
+    self.nameToLab.textColor = [UIColor colorWithRed:0.2078 green:0.8157 blue:0.5647 alpha:1];
     self.nameToLab.font = [UIFont systemFontOfSize:14];
     [self.actualContentView addSubview:self.nameToLab];
     //回复
@@ -110,9 +110,6 @@
     self.contextMenuView.backgroundColor = [UIColor lightGrayColor];
     [self.contentView insertSubview:self.contextMenuView belowSubview:self.actualContentView];
     self.shouldDisplayContextMenuView = NO;
-//    
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(handleTap:)];
-//    [self addGestureRecognizer:tap];
 
 }
 
@@ -139,25 +136,18 @@
     self.contextMenuView.frame = CGRectMake(Custom_Width, 0, CELL_WIDTH, CELL_HEIGHT);
     self.headImg.frame = CGRectMake(Insets, Insets*2, Head_Size, Head_Size);
     
-    self.nameFromLab.frame = CGRectMake(Insets*2+Head_Size, Insets*2, [self.aMessage.messageFrom sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
+    self.nameFromLab.frame = CGRectMake(Insets*2+Head_Size, Insets*2, [self.nameFromLab.text sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
     
     
     if (self.msgType == MessageTypeSend) {
-        self.nameToLab.hidden = YES;
-        self.huifuLab.hidden = YES;
-        
-        self.focusImg.hidden = NO;self.focusLab.hidden = NO;
-        self.commentImg.hidden = NO; self.commentLab.hidden = NO;
-        
-        self.arrowImg.hidden = YES;
-        
+
         self.timeLab.frame = CGRectMake(self.nameFromLab.frame.origin.x+self.nameFromLab.frame.size.width+Insets, Insets*2, [self.aMessage.messageTime sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
         
         self.focusImg.frame = CGRectMake(self.timeLab.frame.origin.x+self.timeLab.frame.size.width+Insets*2, Insets*2, Label_Height, Label_Height);
-        self.focusLab.frame = CGRectMake(self.focusImg.frame.origin.x+self.focusImg.frame.size.width, Insets*2, [self.aMessage.focus sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
+        self.focusLab.frame = CGRectMake(self.focusImg.frame.origin.x+self.focusImg.frame.size.width, Insets*2, [self.aMessage.followCount sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
         
         self.commentImg.frame = CGRectMake(self.focusLab.frame.origin.x+self.focusLab.frame.size.width+Insets, Insets*2, Label_Height, Label_Height);
-        self.commentLab.frame = CGRectMake(self.commentImg.frame.origin.x+self.commentImg.frame.size.width, Insets*2, [self.aMessage.answer sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
+        self.commentLab.frame = CGRectMake(self.commentImg.frame.origin.x+self.commentImg.frame.size.width, Insets*2, [self.aMessage.replyCount sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
         
         if (self.msgStyle == MessageCellStyleMe) {
             self.focusButton.hidden = YES;self.deleteButton.hidden = NO;
@@ -170,23 +160,15 @@
         }
         
     }else {
-        self.nameToLab.hidden = NO;
-        self.huifuLab.hidden = NO;
-        
-        self.focusImg.hidden = YES;self.focusLab.hidden = YES;
-        self.commentImg.hidden = YES; self.commentLab.hidden = YES;
-        
-        self.arrowImg.hidden = NO;
-        
         self.arrowImg.frame = CGRectMake(Insets, Insets/2, Insets, Insets);
         
         self.huifuLab.frame = CGRectMake(self.nameFromLab.frame.origin.x+self.nameFromLab.frame.size.width, Insets*2, [self.huifuLab.text sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
         
-        self.nameToLab.frame = CGRectMake(self.huifuLab.frame.origin.x+self.huifuLab.frame.size.width, Insets*2, [self.aMessage.messageTo sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
+        self.nameToLab.frame = CGRectMake(self.huifuLab.frame.origin.x+self.huifuLab.frame.size.width, Insets*2, [self.aReplyMsg.reciver_name sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
         
-        self.timeLab.frame = CGRectMake(self.nameToLab.frame.origin.x+self.nameToLab.frame.size.width+Insets*2, Insets, [self.aMessage.messageTime sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
+        self.timeLab.frame = CGRectMake(self.nameToLab.frame.origin.x+self.nameToLab.frame.size.width+Insets, Insets*2, [self.aReplyMsg.created_at sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
     }
-    CGSize size = [self getSizeWithString:self.aMessage.messageContent];
+    CGSize size = [self getSizeWithString:self.contentLab.text];
     self.contentLab.frame = CGRectMake(Insets*2+Head_Size, Insets*3+Label_Height, size.width, size.height);
     
     
@@ -205,16 +187,42 @@
 
 -(void)setAMessage:(MessageObject *)aMessage {
     _aMessage = aMessage;
-    _nameFromLab.text = _aMessage.messageFrom;
+    
+    self.nameToLab.hidden = YES;
+    self.huifuLab.hidden = YES;
+    
+    self.focusImg.hidden = NO;self.focusLab.hidden = NO;
+    self.commentImg.hidden = NO; self.commentLab.hidden = NO;
+    
+    self.arrowImg.hidden = YES;
+    
+    _nameFromLab.text = _aMessage.name;
     _timeLab.text = _aMessage.messageTime;
-    _focusLab.text = _aMessage.focus;
-    _commentLab.text = _aMessage.answer;
+    _focusLab.text = _aMessage.followCount;
+    _commentLab.text = _aMessage.replyCount;
     _contentLab.text = _aMessage.messageContent;
-    _nameToLab.text = _aMessage.messageTo;
-    NSURL *url = [NSURL URLWithString:aMessage.headUrl];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://192.168.0.250:3004%@",aMessage.headUrl]];
     [self.headImg setImageWithURL:url placeholderImage:[UIImage imageNamed:@"commentBtn"]];
 }
 
+-(void)setAReplyMsg:(ReplyMessageObject *)aReplyMsg {
+    _aReplyMsg = aReplyMsg;
+    
+    self.nameToLab.hidden = NO;
+    self.huifuLab.hidden = NO;
+    
+    self.focusImg.hidden = YES;self.focusLab.hidden = YES;
+    self.commentImg.hidden = YES; self.commentLab.hidden = YES;
+    
+    self.arrowImg.hidden = NO;
+    
+    _nameFromLab.text = _aReplyMsg.sender_name;
+    _timeLab.text = _aReplyMsg.created_at;
+    _contentLab.text = _aReplyMsg.content;
+    _nameToLab.text = _aReplyMsg.reciver_name;
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://192.168.0.250:3004%@",_aReplyMsg.sender_avatar_url]];
+    [self.headImg setImageWithURL:url placeholderImage:[UIImage imageNamed:@"commentBtn"]];
+}
 #pragma mark -- 按钮及其点击事件
 - (UIButton *)coverButton {
     if (!_coverButton) {
