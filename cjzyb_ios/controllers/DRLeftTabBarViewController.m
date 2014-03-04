@@ -97,6 +97,7 @@
         self.currentViewController = to;
         [self.view bringSubviewToFront:self.leftTabBar];
     }];
+    [self.view bringSubviewToFront:self.leftTabBar];
 }
 #pragma mark --
 
@@ -178,8 +179,7 @@
         }
     }
     
-    [self hiddleStudentListViewController:self.studentListViewController];
-    if (itemType < self.childViewControllers.count) {
+    if (itemType < self.childenControllerArray.count) {
         [self changeFromController:self.currentViewController toController:[self.childenControllerArray objectAtIndex:itemType]];
     }
 }
