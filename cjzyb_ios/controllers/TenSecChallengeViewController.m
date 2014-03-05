@@ -32,7 +32,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        
     }
     return self;
 }
@@ -46,8 +46,6 @@
     self.questionArray = [NSMutableArray arrayWithArray:[TenSecChallengeObject parseTenSecQuestionsFromFile]];
     
     [self startChallenge];
-    
-    NSLog(@"sdf");
 }
 
 - (void)setupViews{  //控件初始设置
@@ -85,6 +83,29 @@
     [self.view addSubview:self.resultView];
 }
 
+- (void)makeResult{
+    //准确率,耗时,提交时间  判断精准/迅速/捷足成就
+    NSInteger numberOfRightAnswers = 0;
+    if (self.answerArray.count == self.questionArray.count) {
+        for (int i = 0; i < self.answerArray.count; i ++) {
+            NSString *answer = self.answerArray[i];
+            TenSecChallengeObject *question = self.questionArray[i];
+            if ([answer isEqualToString:question.tenRightAnswer]) {
+                numberOfRightAnswers ++;
+            }
+        }
+        NSInteger percentOfRightAnswers = numberOfRightAnswers * 10; //正确率
+        
+        TenSecChallengeObject *question = [self.questionArray firstObject];
+        if (self.timeCount <= [question.tenTimeLimit floatValue]) {
+            //迅速成就
+        }
+        
+        
+    }else{
+        [Utility errorAlert:@"题目与答案不匹配!"];
+    }
+}
 
 #pragma mark --按钮响应
 - (void)cancelButtonClicked:(id)sender{
