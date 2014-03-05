@@ -36,7 +36,7 @@
         <view contentMode="scaleToFill" id="gf5-hu-Ej1" userLabel="textBar">
             <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.81176470588235294" green="0.82352941176470584" blue="0.83921568627450982" alpha="1" colorSpace="calibratedRGB"/>
         </view>
         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" id="El6-KP-Uhh" customClass="ComtomTxt">
             <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>

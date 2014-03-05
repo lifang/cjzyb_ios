@@ -29,25 +29,36 @@
     return postString;
 }
 
--(void)connect {
+-(void)connectWithMethod:(NSString *)str {
     if (self.interfaceUrl) {
-        NSMutableString *urlStr = [NSMutableString stringWithFormat:@"%@",self.interfaceUrl];
-        NSString *postURL=[self createPostURL:self.headers];
-        [urlStr appendFormat:@"?%@",postURL];
-        //url含中文转化UTF8
-        urlStr = (NSMutableString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                                        (CFStringRef)urlStr,
-                                                                        NULL,
-                                                                        NULL,
-                                                                        kCFStringEncodingUTF8));
-        NSURL *url = [[NSURL alloc]initWithString:urlStr];
-        if (url) {
-            self.request = [ASIHTTPRequest requestWithURL:url];
-        }
+        if ([str isEqualToString:@"GET"]) {
+            NSMutableString *urlStr = [NSMutableString stringWithFormat:@"%@",self.interfaceUrl];
+            NSString *postURL=[self createPostURL:self.headers];
+            [urlStr appendFormat:@"?%@",postURL];
+            urlStr = (NSMutableString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                                                (CFStringRef)urlStr,
+                                                                                NULL,
+                                                                                NULL,
+                                                                                kCFStringEncodingUTF8));
 
-        [self.request setTimeOutSeconds:60];
+            self.request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+        }else {
+            NSMutableString *urlStr = [NSMutableString stringWithFormat:@"%@",self.interfaceUrl];
+            urlStr = (NSMutableString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                                                (CFStringRef)urlStr,
+                                                                                NULL,
+                                                                                NULL,
+                                                                                kCFStringEncodingUTF8));
+            self.request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+
+            NSString *postURL=[self createPostURL:self.headers];
+            NSMutableData *postData = [[NSMutableData alloc]initWithData:[postURL dataUsingEncoding:NSUTF8StringEncoding]];
+            [self.request setPostBody:postData];
+            [self.request addRequestHeader:@"Content-Type" value:@"application/x-www-form-urlencoded"];
+        }
         
-        [self.request setRequestMethod:@"GET"];
+        [self.request setTimeOutSeconds:60];
+        [self.request setRequestMethod:str];
         [self.request setDelegate:self];
         [self.request startAsynchronous];
 

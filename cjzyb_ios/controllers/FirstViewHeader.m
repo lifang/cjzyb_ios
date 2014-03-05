@@ -33,9 +33,6 @@
         self.actualContentView.backgroundColor = [UIColor whiteColor];
         [self addSubview:self.actualContentView];
         
-        self.lineImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"divider"]];
-        self.lineImageView.backgroundColor = [UIColor clearColor];
-        [self.actualContentView addSubview:self.lineImageView];
         //头像
         self.headImg = [[UIImageView alloc]initWithFrame:CGRectZero];
         self.headImg.backgroundColor = [UIColor clearColor];
@@ -53,38 +50,38 @@
         //昵称from
         self.nameFromLab = [[UILabel alloc]initWithFrame:CGRectZero];
         self.nameFromLab.backgroundColor = [UIColor clearColor];
-        self.nameFromLab.textColor = [UIColor colorWithRed:0.2078 green:0.8157 blue:0.5647 alpha:1];
+        self.nameFromLab.textColor = [UIColor colorWithRed:71/255.0 green:196/255.0 blue:145/255.0 alpha:1];
         self.nameFromLab.font = [UIFont systemFontOfSize:14];
         [self.actualContentView addSubview:self.nameFromLab];
         
         //时间
         self.timeLab = [[UILabel alloc]initWithFrame:CGRectZero];
         self.timeLab.backgroundColor = [UIColor clearColor];
-        self.timeLab.textColor = [UIColor colorWithRed:0.4392 green:0.4431 blue:0.451 alpha:1];
+        self.timeLab.textColor = [UIColor colorWithRed:144/255.0 green:148/255.0 blue:152/255.0 alpha:1];
         self.timeLab.font = [UIFont systemFontOfSize:14];
         [self.actualContentView addSubview:self.timeLab];
         //关注
         self.focusLab = [[UILabel alloc]initWithFrame:CGRectZero];
         self.focusLab.backgroundColor = [UIColor clearColor];
-        self.focusLab.textColor = [UIColor colorWithRed:0.4392 green:0.4431 blue:0.451 alpha:1];
+        self.focusLab.textColor = [UIColor colorWithRed:144/255.0 green:148/255.0 blue:152/255.0 alpha:1];
         self.focusLab.font = [UIFont systemFontOfSize:14];
         [self.actualContentView addSubview:self.focusLab];
         //评论
         self.commentLab = [[UILabel alloc]initWithFrame:CGRectZero];
         self.commentLab.backgroundColor = [UIColor clearColor];
-        self.commentLab.textColor = [UIColor colorWithRed:0.4392 green:0.4431 blue:0.451 alpha:1];
+        self.commentLab.textColor = [UIColor colorWithRed:144/255.0 green:148/255.0 blue:152/255.0 alpha:1];
         self.commentLab.font = [UIFont systemFontOfSize:14];
         [self.actualContentView addSubview:self.commentLab];
         //内容
         self.contentLab = [[UILabel alloc]initWithFrame:CGRectZero];
         self.contentLab.backgroundColor = [UIColor clearColor];
-        self.contentLab.textColor = [UIColor colorWithRed:0.4392 green:0.4431 blue:0.451 alpha:1];
+        self.contentLab.textColor = [UIColor colorWithRed:144/255.0 green:148/255.0 blue:152/255.0 alpha:1];
         self.contentLab.font = [UIFont systemFontOfSize:18];
         self.contentLab.numberOfLines = 0;
         [self.actualContentView addSubview:self.contentLab];
         
         self.contextMenuView = [[UIView alloc] initWithFrame:CGRectZero];
-        self.contextMenuView.backgroundColor = [UIColor lightGrayColor];
+        self.contextMenuView.backgroundColor = [UIColor colorWithRed:144/255.0 green:148/255.0 blue:152/255.0 alpha:1];
         [self insertSubview:self.contextMenuView belowSubview:self.actualContentView];
     }
     return self;
@@ -93,7 +90,14 @@
 -(void)setIsSelected:(BOOL)isSelected {
     _isSelected = isSelected;
 }
-
+-(void)setASection:(NSInteger)aSection {
+    _aSection = aSection;
+    if (_aSection%2==0) {
+        self.actualContentView.backgroundColor = [UIColor colorWithRed:254/255.0 green:254/255.0 blue:254/255.0 alpha:1];
+    }else {
+        self.actualContentView.backgroundColor = [UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1];
+    }
+}
 
 -(CGSize)getSizeWithString:(NSString *)str{
     UIFont *aFont = [UIFont systemFontOfSize:18];
@@ -131,7 +135,11 @@
     CGSize size = [self getSizeWithString:self.contentLab.text];
     self.contentLab.frame = CGRectMake(Insets*2+Head_Size, Insets*2+Label_Height, size.width, size.height);
     
-    self.lineImageView.frame = CGRectMake(0,CELL_HEIGHT-1,CELL_WIDTH,1);
+    if (self.isSelected) {
+        self.actualContentView.frame = CGRectOffset(self.contentView.bounds, -80, 0);
+        self.contextMenuView.frame = CGRectOffset(self.contentView.bounds, 0, 0);
+    }
+    
 }
 
 -(void)setAMessage:(MessageObject *)aMessage {
@@ -147,7 +155,7 @@
     }else {
         [self.focusButton setImage:[UIImage imageNamed:@"focusBtn"] forState:UIControlStateNormal];
     }
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://192.168.0.250:3004%@",aMessage.headUrl]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://58.240.210.42:3004%@",aMessage.headUrl]];
     [self.headImg setImageWithURL:url placeholderImage:[UIImage imageNamed:@"commentBtn"]];
 }
 
@@ -191,7 +199,6 @@
     if (!_commentButton) {
         CGRect frame = CGRectMake(0, 0, Button_Size, Button_Size);
         _commentButton = [[UIButton alloc] initWithFrame:frame];
-#warning 判断是否关注过
         [_commentButton setImage:[UIImage imageNamed:@"commentBtn"] forState:UIControlStateNormal];
         [self.contextMenuView addSubview:_commentButton];
         [_commentButton addTarget:self action:@selector(commentButtonTapped) forControlEvents:UIControlEventTouchUpInside];

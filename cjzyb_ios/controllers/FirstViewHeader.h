@@ -18,7 +18,7 @@
 @property (nonatomic,strong) UIView *actualContentView;
 @property (nonatomic,strong) UIView *contextMenuView;
 @property (nonatomic,assign) BOOL isSelected;
-@property (nonatomic,strong) UIImageView *lineImageView;
+
 
 @property (nonatomic, strong) MessageObject *aMessage;
 @property (nonatomic, assign) enum MessageCellStyle msgStyle;

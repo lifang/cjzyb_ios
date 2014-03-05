@@ -127,6 +127,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	MBProgressHUD *hud = [[self alloc] initWithView:view];
 	[view addSubview:hud];
 	[hud show:animated];
+    hud.labelText = @"努力加载中...";
 	return MB_AUTORELEASE(hud);
 }
 

@@ -19,12 +19,12 @@
     [reqheaders setValue:[NSString stringWithFormat:@"%@",userId] forKey:@"student_id"];
     [reqheaders setValue:[NSString stringWithFormat:@"%d",page] forKey:@"page"];
     
-    self.interfaceUrl = @"http://192.168.0.250:3004/api/students/get_microposts";
+    self.interfaceUrl = @"http://58.240.210.42:3004/api/students/get_microposts";
     
     self.baseDelegate = self;
     self.headers = reqheaders;
     
-    [self connect];
+    [self connectWithMethod:@"GET"];
 }
 
 

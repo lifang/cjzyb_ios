@@ -30,7 +30,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    HomeworkViewController *homeController = [[HomeworkViewController alloc] initWithNibName:@"HomeworkViewController" bundle:nil];
+//    HomeworkViewController *homeController = [[HomeworkViewController alloc] initWithNibName:@"HomeworkViewController" bundle:nil];
 //    self.window.rootViewController = homeController;
 //    HomeworkDailyCollectionViewController *dailyWork = [[HomeworkDailyCollectionViewController alloc] initWithNibName:@"HomeworkDailyCollectionViewController" bundle:nil];
 //    self.window.rootViewController = dailyWork;
@@ -41,11 +41,11 @@
 //    SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
 //    DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
 //    tabController.childenControllerArray = @[main,first];
-//    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
-    self.window.rootViewController = main;
+    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:main];
+    self.window.rootViewController = navControl;
     
-    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
-    self.window.rootViewController = notificationViewController;
+//    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
+//    self.window.rootViewController = notificationViewController;
     
 //    self.window.backgroundColor = [UIColor whiteColor];
 //    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];

@@ -7,10 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "UserObject.h"
+#import "ClassObject.h"
 
 @interface DataService : NSObject
 
-@property (nonatomic,strong) NSString *user_id;
+@property (nonatomic,strong) UserObject *user;
+@property (nonatomic,strong) ClassObject *theClass;
+
 + (DataService *)sharedService;
 
 @end

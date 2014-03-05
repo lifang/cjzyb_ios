@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSDictionary *bodys;
 @property (nonatomic, assign) id<BaseInterfaceDelegate> baseDelegate;
 
--(void)connect;
+-(void)connectWithMethod:(NSString *)str;
 @end
 
 @protocol BaseInterfaceDelegate <NSObject>
