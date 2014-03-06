@@ -17,5 +17,5 @@
 @property (nonatomic,strong) NSString *tenAnswerTwo;  //选项2
 @property (nonatomic,strong) NSString *tenRightAnswer; //正确答案
 
-+(NSArray *)parseTenSecQuestionsFromFile; //从文件解析出对象数组
++(NSArray *)parseTenSecQuestionsFromFile; //从question.js文件解析出对象数组
 @end

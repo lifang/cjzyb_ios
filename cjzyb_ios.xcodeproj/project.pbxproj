@@ -74,6 +74,17 @@
 		181A786618C4206700D288D3 /* TenSecChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786418C4206700D288D3 /* TenSecChallengeViewController.m */; };
 		181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */; };
 		181A786A18C469AB00D288D3 /* TenSecChallengeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786918C469AB00D288D3 /* TenSecChallengeObject.m */; };
+		1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */; };
+		1848613118C72D29002B6C78 /* 10速_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612718C72D29002B6C78 /* 10速_01@2x.png */; };
+		1848613218C72D29002B6C78 /* 10速_02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612818C72D29002B6C78 /* 10速_02@2x.png */; };
+		1848613318C72D29002B6C78 /* 10速_03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612918C72D29002B6C78 /* 10速_03@2x.png */; };
+		1848613418C72D29002B6C78 /* 10速_04@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612A18C72D29002B6C78 /* 10速_04@2x.png */; };
+		1848613518C72D29002B6C78 /* 10速_05@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612B18C72D29002B6C78 /* 10速_05@2x.png */; };
+		1848613618C72D29002B6C78 /* 10速_06@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612C18C72D29002B6C78 /* 10速_06@2x.png */; };
+		1848613718C72D29002B6C78 /* 10速_07@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612D18C72D29002B6C78 /* 10速_07@2x.png */; };
+		1848613818C72D29002B6C78 /* 10速_08@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612E18C72D29002B6C78 /* 10速_08@2x.png */; };
+		1848613918C72D29002B6C78 /* 10速_09@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612F18C72D29002B6C78 /* 10速_09@2x.png */; };
+		1848613A18C72D29002B6C78 /* 10速_10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848613018C72D29002B6C78 /* 10速_10@2x.png */; };
 		189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */; };
 		189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */; };
 		189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */; };
@@ -346,6 +357,18 @@
 		181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TenSecChallengeViewController.xib; sourceTree = "<group>"; };
 		181A786818C469AB00D288D3 /* TenSecChallengeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TenSecChallengeObject.h; sourceTree = SOURCE_ROOT; };
 		181A786918C469AB00D288D3 /* TenSecChallengeObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TenSecChallengeObject.m; sourceTree = SOURCE_ROOT; };
+		1821470918C6D26B0041A7E7 /* LHLTestInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLTestInterface.h; sourceTree = "<group>"; };
+		1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLTestInterface.m; sourceTree = "<group>"; };
+		1848612718C72D29002B6C78 /* 10速_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_01@2x.png"; sourceTree = "<group>"; };
+		1848612818C72D29002B6C78 /* 10速_02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_02@2x.png"; sourceTree = "<group>"; };
+		1848612918C72D29002B6C78 /* 10速_03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_03@2x.png"; sourceTree = "<group>"; };
+		1848612A18C72D29002B6C78 /* 10速_04@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_04@2x.png"; sourceTree = "<group>"; };
+		1848612B18C72D29002B6C78 /* 10速_05@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_05@2x.png"; sourceTree = "<group>"; };
+		1848612C18C72D29002B6C78 /* 10速_06@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_06@2x.png"; sourceTree = "<group>"; };
+		1848612D18C72D29002B6C78 /* 10速_07@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_07@2x.png"; sourceTree = "<group>"; };
+		1848612E18C72D29002B6C78 /* 10速_08@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_08@2x.png"; sourceTree = "<group>"; };
+		1848612F18C72D29002B6C78 /* 10速_09@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_09@2x.png"; sourceTree = "<group>"; };
+		1848613018C72D29002B6C78 /* 10速_10@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_10@2x.png"; sourceTree = "<group>"; };
 		189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationViewController.h; sourceTree = SOURCE_ROOT; };
 		189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationViewController.m; sourceTree = SOURCE_ROOT; };
 		189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -656,6 +679,8 @@
 				0EEF4BDF18C561700058606A /* BaseInterface.m */,
 				0EEF4BE018C561700058606A /* InterfaceCache.h */,
 				0EEF4BE118C561700058606A /* InterfaceCache.m */,
+				1821470918C6D26B0041A7E7 /* LHLTestInterface.h */,
+				1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */,
 				0EEF4BE218C561700058606A /* MessageInterface.h */,
 				0EEF4BE318C561700058606A /* MessageInterface.m */,
 				0EEF4BE418C561700058606A /* PageMessageInterface.h */,
@@ -694,6 +719,23 @@
 				0EEF4C1F18C562D40058606A /* RTLabel.m */,
 			);
 			path = UILabel;
+			sourceTree = "<group>";
+		};
+		1848612618C72D18002B6C78 /* tenSecChallenge */ = {
+			isa = PBXGroup;
+			children = (
+				1848612718C72D29002B6C78 /* 10速_01@2x.png */,
+				1848612818C72D29002B6C78 /* 10速_02@2x.png */,
+				1848612918C72D29002B6C78 /* 10速_03@2x.png */,
+				1848612A18C72D29002B6C78 /* 10速_04@2x.png */,
+				1848612B18C72D29002B6C78 /* 10速_05@2x.png */,
+				1848612C18C72D29002B6C78 /* 10速_06@2x.png */,
+				1848612D18C72D29002B6C78 /* 10速_07@2x.png */,
+				1848612E18C72D29002B6C78 /* 10速_08@2x.png */,
+				1848612F18C72D29002B6C78 /* 10速_09@2x.png */,
+				1848613018C72D29002B6C78 /* 10速_10@2x.png */,
+			);
+			name = tenSecChallenge;
 			sourceTree = "<group>";
 		};
 		18AA80B318BEE42C00EC08CE /* image */ = {
@@ -1255,6 +1297,7 @@
 		6396581518C0574A002F2A90 /* homework */ = {
 			isa = PBXGroup;
 			children = (
+				1848612618C72D18002B6C78 /* tenSecChallenge */,
 				6396581618C0578D002F2A90 /* homework_back@2x.png */,
 				6396581718C0578D002F2A90 /* homework_blank@2x.png */,
 				6396581818C0578D002F2A90 /* homework_calendar@2x.png */,
@@ -1367,16 +1410,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				18DB2F0418C5CE1500AA325A /* questions_lastest.js in Resources */,
+				1848613518C72D29002B6C78 /* 10速_05@2x.png in Resources */,
 				18AA80C118BF14A200EC08CE /* smallTriangle@2x.png in Resources */,
+				1848613718C72D29002B6C78 /* 10速_07@2x.png in Resources */,
 				6396582F18C0578D002F2A90 /* homwwork_listenWrite@2x.png in Resources */,
 				18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */,
 				639657DC18C038A6002F2A90 /* carBarItem@2x.png in Resources */,
+				1848613318C72D29002B6C78 /* 10速_03@2x.png in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				6396579118C03766002F2A90 /* LeftTabBarView.xib in Resources */,
 				189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */,
 				18AA80B618BEE44A00EC08CE /* trash_icon@2x.png in Resources */,
 				6396577618C036B1002F2A90 /* UserInfoPopViewController.xib in Resources */,
 				18AA80B818BEFFFD00EC08CE /* bg@2x.png in Resources */,
+				1848613418C72D29002B6C78 /* 10速_04@2x.png in Resources */,
 				639657DB18C038A6002F2A90 /* navigationBarLeftItem@2x.png in Resources */,
 				639657F918C038BB002F2A90 /* line@2x.png in Resources */,
 				6396582918C0578D002F2A90 /* homework_line@2x.png in Resources */,
@@ -1402,6 +1449,7 @@
 				0E92657918BDACDD003ADEC3 /* first_active.png in Resources */,
 				6396582618C0578D002F2A90 /* homework_finishedFalg@2x.png in Resources */,
 				6396582318C0578D002F2A90 /* homework_back@2x.png in Resources */,
+				1848613618C72D29002B6C78 /* 10速_06@2x.png in Resources */,
 				639657DD18C038A6002F2A90 /* homeworkTabBarItem@2x.png in Resources */,
 				0E92657E18BDACDD003ADEC3 /* third.png in Resources */,
 				6396582818C0578D002F2A90 /* homework_left@2x.png in Resources */,
@@ -1418,6 +1466,7 @@
 				0E92657D18BDACDD003ADEC3 /* third_active.png in Resources */,
 				639657F318C038BB002F2A90 /* progressBack@2x.png in Resources */,
 				639657DF18C038A6002F2A90 /* notificationTabBarItem@2x.png in Resources */,
+				1848613918C72D29002B6C78 /* 10速_09@2x.png in Resources */,
 				6396577818C036B1002F2A90 /* ClassGroupViewController.xib in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
 				639657F018C038BB002F2A90 /* jiezu@2x.png in Resources */,
@@ -1431,6 +1480,7 @@
 				6396582E18C0578D002F2A90 /* homework_sort@2x.png in Resources */,
 				0EEF4C1618C5622F0058606A /* FirstViewController.xib in Resources */,
 				6396578518C0374C002F2A90 /* StudentSummaryCell.xib in Resources */,
+				1848613118C72D29002B6C78 /* 10速_01@2x.png in Resources */,
 				0EEF4BCA18C561250058606A /* get_class_info.json in Resources */,
 				6396582D18C0578D002F2A90 /* homework_select@2x.png in Resources */,
 				6396582518C0578D002F2A90 /* homework_calendar@2x.png in Resources */,
@@ -1445,11 +1495,14 @@
 				0E92659E18BDE51F003ADEC3 /* deleteBtn.png in Resources */,
 				639657E018C038A6002F2A90 /* tabBarItemBack@2x.png in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
+				1848613818C72D29002B6C78 /* 10速_08@2x.png in Resources */,
 				636CF4B518BD8F3B0085C28E /* TestViewController.xib in Resources */,
+				1848613A18C72D29002B6C78 /* 10速_10@2x.png in Resources */,
 				6396579318C03766002F2A90 /* DRNavigationRightItem.xib in Resources */,
 				0E92659F18BDE51F003ADEC3 /* focusBtn_active.png in Resources */,
 				639657F118C038BB002F2A90 /* jinque@2x.png in Resources */,
 				181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */,
+				1848613218C72D29002B6C78 /* 10速_02@2x.png in Resources */,
 				0E9265A618BF008C003ADEC3 /* arrowImg.png in Resources */,
 				6396580B18C04D4A002F2A90 /* HomeworkViewController.xib in Resources */,
 				639657F218C038BB002F2A90 /* point@2x.png in Resources */,
@@ -1590,6 +1643,7 @@
 				0EEF4BDA18C561570058606A /* CardSecondView.m in Sources */,
 				1802DC3818C065320016F110 /* NotificationObject.m in Sources */,
 				6329554118BC8D7C00F2B78D /* FMDatabaseAdditions.m in Sources */,
+				1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */,
 				6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
