@@ -165,7 +165,7 @@
             {"id": "284",
                 "branch_questions": [
                     {"id": "181", "content": "This is ______ apple!", "options": "a;||;an;||;two", "answer": "an" },
-                    {"id": "181", "content": "<file>apple.jpg</file>", "options": "apple;||;banana;||;orange", "answer": "apple"},
+                    {"id": "181", "content": "<file>apple.jpg</file>选出图片中的单词", "options": "apple;||;banana;||;orange", "answer": "apple"},
                     {"id": "181", "content": "<file>apple.wav</file>", "options": "apple;||;banana;||;orange", "answer": "apple"}
                 ]}
         ]

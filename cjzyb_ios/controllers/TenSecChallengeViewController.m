@@ -27,6 +27,9 @@
 @property (strong,nonatomic) NSArray *questionNumberImages; //题号图片数组
 @property (strong,nonatomic) NSMutableArray *answerArray; //选择的答案
 @property (strong,nonatomic) NSString *homeworkFinishTime; //今日作业提交时间期限
+@property (strong,nonatomic) NSDictionary *answerJSONDic; //从文件中读取的answerJSON字典
+@property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
+@property (strong,nonatomic) NSString *answerStatus;    //文件中记载的是否完成
 @end
 
 @implementation TenSecChallengeViewController
@@ -217,48 +220,28 @@
     NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
     //把path拼成真实文件路径
     
-    path = [[NSBundle mainBundle] pathForResource:@"questions_lastest" ofType:@"js"]; //测试
+    path = [[NSBundle mainBundle] pathForResource:@"answer-1" ofType:@"js"]; //测试
     
     NSData *data = [NSData dataWithContentsOfFile:path];
     if (!data) {
-        [Utility errorAlert:@"获取question文件失败!"];
+        [Utility errorAlert:@"获取answer文件失败!"];
     }else{
         NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-        if (!dic || ![dic objectForKey:@"time_limit"]) {
+        if (!dic) {
             [Utility errorAlert:@"文件格式错误!"];
             return;
         }
+        self.answerJSONDic = dic;
         NSDictionary *dicc = [dic objectForKey:@"time_limit"];
-        if (!(dicc && [dicc objectForKey:@"specified_time"] && [dicc objectForKey:@"questions"])) {
-            [Utility errorAlert:@"文件格式错误!"];
+        if (!dicc) { //判断是否已有十速挑战数据
+            [Utility errorAlert:@"尚没有十速挑战内容"];
         }else{
-            NSString *timeLimit = [dicc objectForKey:@"specified_time"];
-            NSArray *questions = [dicc objectForKey:@"questions"];
-            NSDictionary *bigQuestion = questions[0];  //大题
-            if (!(bigQuestion && [bigQuestion objectForKey:@"branch_questions"])) {
-                [Utility errorAlert:@"没有题目!"];
-            }else{
-                NSString *bigID = [bigQuestion objectForKey:@"id"];
-                NSArray *branchQuestions = [bigQuestion objectForKey:@"branch_questions"];
-                for (int i = 0; i < branchQuestions.count; i ++) {
-                    NSDictionary *question = branchQuestions[i];
-                    if (!(question && [question objectForKey:@"id"])) {
-                        [Utility errorAlert:@"没有题目!"];
-                    }else{
-                        TenSecChallengeObject *obj = [[TenSecChallengeObject alloc] init];
-                        obj.tenBigID = bigID;
-                        obj.tenTimeLimit = timeLimit;
-                        obj.tenID = [question objectForKey:@"id"];
-                        obj.tenQuestionContent = [question objectForKey:@"content"];
-                        obj.tenRightAnswer = [question objectForKey:@"anwser"];
-                        NSString *options = [question objectForKey:@"options"];
-                        NSArray *optionsArray = [options componentsSeparatedByString:@";||;"];
-                        obj.tenAnswerOne = [optionsArray firstObject];
-                        obj.tenAnswerTwo = [optionsArray lastObject];
-                        
-                    }
-                }
-            }
+            self.answerStatus = [dicc objectForKey:@"status"];  //只要解析状态,开始时间,题号  其余的不解析
+            NSString *challengeStartTime = [dicc objectForKey:@"questions_item"];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            self.challengeStartTime = [dateFormatter dateFromString:challengeStartTime];;
+            self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"branch_item"] integerValue];
         }
     }
 }
@@ -275,15 +258,6 @@
 -(BOOL)compareNowWithTime:(NSString *) time{
     //获取当前时间
     NSDate *now = [NSDate date];
-//    NSCalendar *calendar = [NSCalendar currentCalendar];
-//    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
-//    NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:now];
-//    int year = [dateComponent year];
-//    int month = [dateComponent month];
-//    int day = [dateComponent day];
-//    int hour = [dateComponent hour];
-//    int minute = [dateComponent minute];
-//    int second = [dateComponent second];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSDate *timeDate = [dateFormatter dateFromString:time];
