@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "SelectingChallengeObject.h"
-@interface SelectingChallengeViewController : UIViewController
+@interface SelectingChallengeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @end

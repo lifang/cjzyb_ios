@@ -76,6 +76,12 @@
 		181A786A18C469AB00D288D3 /* TenSecChallengeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786918C469AB00D288D3 /* TenSecChallengeObject.m */; };
 		1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */; };
 		182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */ = {isa = PBXBuildFile; fileRef = 187222BA18C87A5700BBE2D1 /* questions_lastest.js */; };
+		182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */; };
+		182A89DC18C9972B00CF4B30 /* propOfAnswer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 182A89DA18C9972B00CF4B30 /* propOfAnswer@2x.png */; };
+		182A89DD18C9972B00CF4B30 /* propOfTime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 182A89DB18C9972B00CF4B30 /* propOfTime@2x.png */; };
+		182A89DF18C99B3100CF4B30 /* 选择_03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 182A89DE18C99B3100CF4B30 /* 选择_03@2x.png */; };
+		182A89E218C99BC500CF4B30 /* 选择_05@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 182A89E018C99BC500CF4B30 /* 选择_05@2x.png */; };
+		182A89E318C99BC500CF4B30 /* 选择_07@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 182A89E118C99BC500CF4B30 /* 选择_07@2x.png */; };
 		1848613118C72D29002B6C78 /* 10速_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612718C72D29002B6C78 /* 10速_01@2x.png */; };
 		1848613218C72D29002B6C78 /* 10速_02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612818C72D29002B6C78 /* 10速_02@2x.png */; };
 		1848613318C72D29002B6C78 /* 10速_03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612918C72D29002B6C78 /* 10速_03@2x.png */; };
@@ -363,6 +369,13 @@
 		181A786918C469AB00D288D3 /* TenSecChallengeObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TenSecChallengeObject.m; sourceTree = SOURCE_ROOT; };
 		1821470918C6D26B0041A7E7 /* LHLTestInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLTestInterface.h; sourceTree = "<group>"; };
 		1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLTestInterface.m; sourceTree = "<group>"; };
+		182A89D718C977BC00CF4B30 /* OrdinaryAnswerObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdinaryAnswerObject.h; sourceTree = SOURCE_ROOT; };
+		182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdinaryAnswerObject.m; sourceTree = SOURCE_ROOT; };
+		182A89DA18C9972B00CF4B30 /* propOfAnswer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "propOfAnswer@2x.png"; sourceTree = "<group>"; };
+		182A89DB18C9972B00CF4B30 /* propOfTime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "propOfTime@2x.png"; sourceTree = "<group>"; };
+		182A89DE18C99B3100CF4B30 /* 选择_03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "选择_03@2x.png"; sourceTree = "<group>"; };
+		182A89E018C99BC500CF4B30 /* 选择_05@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "选择_05@2x.png"; sourceTree = "<group>"; };
+		182A89E118C99BC500CF4B30 /* 选择_07@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "选择_07@2x.png"; sourceTree = "<group>"; };
 		1848612718C72D29002B6C78 /* 10速_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_01@2x.png"; sourceTree = "<group>"; };
 		1848612818C72D29002B6C78 /* 10速_02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_02@2x.png"; sourceTree = "<group>"; };
 		1848612918C72D29002B6C78 /* 10速_03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10速_03@2x.png"; sourceTree = "<group>"; };
@@ -1310,6 +1323,11 @@
 		6396581518C0574A002F2A90 /* homework */ = {
 			isa = PBXGroup;
 			children = (
+				182A89DE18C99B3100CF4B30 /* 选择_03@2x.png */,
+				182A89E018C99BC500CF4B30 /* 选择_05@2x.png */,
+				182A89E118C99BC500CF4B30 /* 选择_07@2x.png */,
+				182A89DA18C9972B00CF4B30 /* propOfAnswer@2x.png */,
+				182A89DB18C9972B00CF4B30 /* propOfTime@2x.png */,
 				1848612618C72D18002B6C78 /* tenSecChallenge */,
 				6396581618C0578D002F2A90 /* homework_back@2x.png */,
 				6396581718C0578D002F2A90 /* homework_blank@2x.png */,
@@ -1337,6 +1355,8 @@
 				6341533318C17BEC00DE4480 /* TaskObj.m */,
 				187222B718C86A0300BBE2D1 /* SelectingChallengeObject.h */,
 				187222B818C86A0300BBE2D1 /* SelectingChallengeObject.m */,
+				182A89D718C977BC00CF4B30 /* OrdinaryAnswerObject.h */,
+				182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */,
 			);
 			name = homework;
 			sourceTree = "<group>";
@@ -1428,6 +1448,7 @@
 				182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */,
 				1848613518C72D29002B6C78 /* 10速_05@2x.png in Resources */,
 				18AA80C118BF14A200EC08CE /* smallTriangle@2x.png in Resources */,
+				182A89DD18C9972B00CF4B30 /* propOfTime@2x.png in Resources */,
 				1848613718C72D29002B6C78 /* 10速_07@2x.png in Resources */,
 				6396582F18C0578D002F2A90 /* homwwork_listenWrite@2x.png in Resources */,
 				18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */,
@@ -1438,6 +1459,7 @@
 				189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */,
 				18AA80B618BEE44A00EC08CE /* trash_icon@2x.png in Resources */,
 				6396577618C036B1002F2A90 /* UserInfoPopViewController.xib in Resources */,
+				182A89E218C99BC500CF4B30 /* 选择_05@2x.png in Resources */,
 				18AA80B818BEFFFD00EC08CE /* bg@2x.png in Resources */,
 				1848613418C72D29002B6C78 /* 10速_04@2x.png in Resources */,
 				639657DB18C038A6002F2A90 /* navigationBarLeftItem@2x.png in Resources */,
@@ -1483,10 +1505,12 @@
 				639657F318C038BB002F2A90 /* progressBack@2x.png in Resources */,
 				639657DF18C038A6002F2A90 /* notificationTabBarItem@2x.png in Resources */,
 				1848613918C72D29002B6C78 /* 10速_09@2x.png in Resources */,
+				182A89DF18C99B3100CF4B30 /* 选择_03@2x.png in Resources */,
 				6396577818C036B1002F2A90 /* ClassGroupViewController.xib in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
 				639657F018C038BB002F2A90 /* jiezu@2x.png in Resources */,
 				639657E218C038A6002F2A90 /* userGroupItem@2x.png in Resources */,
+				182A89DC18C9972B00CF4B30 /* propOfAnswer@2x.png in Resources */,
 				6396580318C038E2002F2A90 /* jiezu_yellow@2x.png in Resources */,
 				6396583418C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib in Resources */,
 				0EEF4BDB18C561570058606A /* CardSecondView.xib in Resources */,
@@ -1520,6 +1544,7 @@
 				639657F118C038BB002F2A90 /* jinque@2x.png in Resources */,
 				181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */,
 				1848613218C72D29002B6C78 /* 10速_02@2x.png in Resources */,
+				182A89E318C99BC500CF4B30 /* 选择_07@2x.png in Resources */,
 				0E9265A618BF008C003ADEC3 /* arrowImg.png in Resources */,
 				6396580B18C04D4A002F2A90 /* HomeworkViewController.xib in Resources */,
 				639657F218C038BB002F2A90 /* point@2x.png in Resources */,
@@ -1580,6 +1605,7 @@
 				0EEF4C0418C561960058606A /* MJRefreshFooterView.m in Sources */,
 				0EEF4C1C18C562900058606A /* ReplyMessageObject.m in Sources */,
 				0EEF4BCF18C561300058606A /* DataService.m in Sources */,
+				182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */,
 				0E92654F18BD9016003ADEC3 /* MainViewController.m in Sources */,
 				6329551918BC8AA700F2B78D /* ASICloudFilesCDNRequest.m in Sources */,
 				6341533418C17BEC00DE4480 /* TaskObj.m in Sources */,

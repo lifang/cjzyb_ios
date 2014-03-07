@@ -29,7 +29,7 @@
 @property (strong,nonatomic) NSString *homeworkFinishTime; //今日作业提交时间期限
 @property (strong,nonatomic) NSDictionary *answerJSONDic; //从文件中读取的answerJSON字典
 @property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
-@property (strong,nonatomic) NSString *answerStatus;    //文件中记载的是否完成
+@property (strong,nonatomic) NSString *answerStatus;    //文件中记载的完成状态
 @end
 
 @implementation TenSecChallengeViewController
@@ -215,7 +215,7 @@
 }
 
 #pragma mark -- action
-//从answer.js中解析有用信息
+//从answer.js中解析有用信息,并保存JSONDic
 -(void)parseAnswerJSON{
     NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
     //把path拼成真实文件路径
@@ -236,11 +236,8 @@
         if (!dicc) { //判断是否已有十速挑战数据
             [Utility errorAlert:@"尚没有十速挑战内容"];
         }else{
-            self.answerStatus = [dicc objectForKey:@"status"];  //只要解析状态,开始时间,题号  其余的不解析
-            NSString *challengeStartTime = [dicc objectForKey:@"questions_item"];
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-            self.challengeStartTime = [dateFormatter dateFromString:challengeStartTime];;
+            self.answerStatus = [dicc objectForKey:@"status"];  //只要解析状态,已答题时间,题号  其余的不解析
+            self.timeCount = [[dicc objectForKey:@"use_time"] doubleValue];
             self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"branch_item"] integerValue];
         }
     }
