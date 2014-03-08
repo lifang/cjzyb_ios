@@ -16,11 +16,13 @@
 @property (weak, nonatomic) IBOutlet UIView *itemsView;   //道具背景
 
 @property (weak, nonatomic) IBOutlet UIButton *questionPlayButton;  //声音按钮
-@property (weak, nonatomic) IBOutlet UIImageView *questionImageView;  //图片
+- (IBAction)questionPlayButtonClicked:(id)sender;
+@property (weak, nonatomic) IBOutlet UIWebView *questionImageWebView;   //图片
 @property (weak, nonatomic) IBOutlet UITextView *questionTextView;          //问题题面
 @property (weak, nonatomic) IBOutlet UITableView *optionTable;  //选项table
 @property (weak, nonatomic) IBOutlet UIButton *nextButton;  //下一个/检查 按钮
 @property (weak, nonatomic) IBOutlet UILabel *currentNOLabel;  //当前题号  2/5
+- (IBAction)nextButtonClicked:(id)sender;
 @property (strong,nonatomic) UIButton *propOfShowingAnswer; //显示答案道具
 @property (strong,nonatomic) UIButton *propOfReduceTime; //时间-5道具
 
@@ -60,7 +62,8 @@
     if (!self.questionArray) {
         [Utility errorAlert:@"无法读取问题资料!"];
     }
-    [self viewHistory];
+    [self parseAnswer];
+    [self getStart];
 }
 
 #pragma mark -- 选择挑战的生命周期
@@ -180,7 +183,7 @@
     
 }
 
-//读取下一题,开始时触发,点击时触发
+//读取下一题,开始时触发,点击下一个时触发
 - (void)loadNextQuestion{
     if (self.currentNO < self.questionArray.count) {
         self.currentNO ++;
@@ -203,6 +206,7 @@
     }
 }
 
+//显示结果界面
 - (void)showResultView{
     
 }
@@ -232,6 +236,8 @@
     }
     return _propOfReduceTime;
 }
+
+
 
 -(UIButton *)propOfShowingAnswer{
     if (!_propOfShowingAnswer) {
@@ -263,55 +269,80 @@
 }
 
 #pragma mark action
+
+#pragma mark 被调方法
 //创建问题显示
 -(void)createQuestionView{
-    switch (self.selectingType) {
-        case SelectingTypeDefault:
+    dispatch_async(dispatch_get_main_queue(), ^{
+        switch (self.selectingType) {
+            case SelectingTypeDefault:
             {
-                self.questionImageView.hidden = YES;
+                self.questionImageWebView.hidden = YES;
                 self.questionPlayButton.hidden = YES;
                 self.questionTextView.hidden = NO;
                 
                 self.questionTextView.frame = (CGRect){38,17,650,200};
                 self.optionTable.frame = (CGRect){38,217,650,400};
+                
+                self.questionTextView.text = self.currentQuestion.seContent;
             }
-        break;
-        
-        case SelectingTypeListening:
+                break;
+                
+            case SelectingTypeListening:
             {
-                self.questionImageView.hidden = YES;
+                self.questionImageWebView.hidden = YES;
                 self.questionPlayButton.hidden = NO;
                 self.questionTextView.hidden = YES;
                 
                 self.questionPlayButton.frame = (CGRect){38,17,65,65};
-                self.optionTable.frame = (CGRect){138,17,550,400};
+                self.optionTable.frame = (CGRect){118,17,550,400};
             }
-        break;
-        
-        case SelectingTypeWatching:
+                break;
+                
+            case SelectingTypeWatching:
             {
-                self.questionImageView.hidden = NO;
+                self.questionImageWebView.hidden = NO;
                 self.questionPlayButton.hidden = YES;
                 self.questionTextView.hidden = NO;
                 
-                self.questionImageView.frame = (CGRect){38,17,250,265};
+                self.questionImageWebView.frame = (CGRect){38,17,250,265};
                 self.questionTextView.frame = (CGRect){290,17,430,265};
                 self.optionTable.frame = (CGRect){38,317,650,400};
+                
+                self.questionTextView.text = self.currentQuestion.seContent;
+                
             }
-        break;
-        
-        default:
-        break;
-    }
+                break;
+                
+            default:
+                break;
+        }
+        [self.view setNeedsDisplay];
+    });
 }
 
-#pragma mark 被调方法
+//检查正确与否
+-(void) checkAnswer{
+    
+}
 
 #pragma mark 界面交互
+- (IBAction)nextButtonClicked:(id)sender {
+    if (!self.isViewingHistory) {
+        [self checkAnswer];
+    }
+    [self loadNextQuestion];
+}
+
+- (IBAction)questionPlayButtonClicked:(id)sender {
+}
+
+//道具2
 -(void)propOfReduceTimeClicked:(id)sender{
     
 }
 
+//道具1
 -(void)propOfShowingAnswerClicked:(id)sender{
     
 }
@@ -332,5 +363,4 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 @end

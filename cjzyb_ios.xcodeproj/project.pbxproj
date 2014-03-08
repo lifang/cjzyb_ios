@@ -66,6 +66,7 @@
 		0EEF4C2B18C5C0490058606A /* SendMessageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C2A18C5C0490058606A /* SendMessageInterface.m */; };
 		0EEF4C2E18C5C6120058606A /* UserObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C2D18C5C6120058606A /* UserObject.m */; };
 		0EEF4C3118C5C8F00058606A /* ClassObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C3018C5C8F00058606A /* ClassObject.m */; };
+		16C0EA0F18CA82AE00123207 /* answer-1.js in Resources */ = {isa = PBXBuildFile; fileRef = 187222B018C8434D00BBE2D1 /* answer-1.js */; };
 		1802DC3318C01E4A0016F110 /* LHLTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3218C01E4A0016F110 /* LHLTextView.m */; };
 		1802DC3818C065320016F110 /* NotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3718C065320016F110 /* NotificationObject.m */; };
 		1802DC3B18C073FB0016F110 /* ReplyNotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3A18C073FB0016F110 /* ReplyNotificationObject.m */; };
@@ -1445,6 +1446,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				16C0EA0F18CA82AE00123207 /* answer-1.js in Resources */,
 				182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */,
 				1848613518C72D29002B6C78 /* 10速_05@2x.png in Resources */,
 				18AA80C118BF14A200EC08CE /* smallTriangle@2x.png in Resources */,

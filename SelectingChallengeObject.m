@@ -10,7 +10,7 @@
 
 @implementation SelectingChallengeObject
 +(NSArray *)parseSelectingChallengeFromQuestion{
-    NSMutableArray *resultArray;
+    NSMutableArray *resultArray = [NSMutableArray array];
     NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
     //把path拼成真实文件路径
     

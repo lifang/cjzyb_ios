@@ -113,7 +113,7 @@
         ]
     },
     "selecting": {
-        "status": "0",
+        "status": "1",
         "update_time": "2014-02-28 18:12:00",
         "questions_item": "1",
         "branch_item": "2",
@@ -125,7 +125,7 @@
                     {
                         "id": "181",
                         "answer": "This;||;apple;||;is",
-                        "ratio": "100"
+                        "ratio": "0"
                     },
                     {
                         "id": "181",
