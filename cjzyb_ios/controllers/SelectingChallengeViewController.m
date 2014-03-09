@@ -64,6 +64,8 @@
     }
     [self parseAnswer];
     [self getStart];
+    
+    [self.optionTable registerClass:[SelectingChallengeOptionCell class] forCellReuseIdentifier:@"cell"];
 }
 
 #pragma mark -- 选择挑战的生命周期
@@ -310,13 +312,16 @@
                 self.optionTable.frame = (CGRect){38,317,650,400};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
-                
+                NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.comdosoft.com/images/ad.jpg"]];
+                [self.questionImageWebView loadRequest:request];
+            
             }
                 break;
                 
             default:
                 break;
         }
+        [self.optionTable reloadData];
         [self.view setNeedsDisplay];
     });
 }
@@ -349,14 +354,36 @@
 
 #pragma mark TableViewDataSource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
+    return self.currentQuestion.seOptionsArray.count;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 100.0;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return [[UITableViewCell alloc] init];
+    SelectingChallengeOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    cell.indexPath = indexPath;
+    cell.optionString = self.currentQuestion.seOptionsArray[indexPath.row];
+    cell.delegate = self;
+    cell.maxLabelWidth = 0;
+    for (int i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
+        NSString *option = self.currentQuestion.seOptionsArray[i];
+        CGFloat width = [Utility getTextSizeWithString:option withFont:[UIFont systemFontOfSize:40.0]].width;
+        if (cell.maxLabelWidth <=  width) {
+            cell.maxLabelWidth = width;
+        }
+    }
+    
+    return cell;
 }
 
-#pragma mark TableViewDataDelegate
+#pragma mark TableViewDelegate
+
+#pragma mark cell Delegate
+-(void)selectingCell:(SelectingChallengeOptionCell *)cell clickedForSelecting:(BOOL)selected{
+    
+}
 
 -(void)didReceiveMemoryWarning
 {

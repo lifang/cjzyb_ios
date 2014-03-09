@@ -66,6 +66,7 @@
 		0EEF4C2B18C5C0490058606A /* SendMessageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C2A18C5C0490058606A /* SendMessageInterface.m */; };
 		0EEF4C2E18C5C6120058606A /* UserObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C2D18C5C6120058606A /* UserObject.m */; };
 		0EEF4C3118C5C8F00058606A /* ClassObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C3018C5C8F00058606A /* ClassObject.m */; };
+		160A4D4218CBE09D0020848C /* SelectingChallengeOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 160A4D4118CBE09D0020848C /* SelectingChallengeOptionCell.m */; };
 		16C0EA0F18CA82AE00123207 /* answer-1.js in Resources */ = {isa = PBXBuildFile; fileRef = 187222B018C8434D00BBE2D1 /* answer-1.js */; };
 		1802DC3318C01E4A0016F110 /* LHLTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3218C01E4A0016F110 /* LHLTextView.m */; };
 		1802DC3818C065320016F110 /* NotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3718C065320016F110 /* NotificationObject.m */; };
@@ -354,6 +355,8 @@
 		0EEF4C2D18C5C6120058606A /* UserObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserObject.m; sourceTree = "<group>"; };
 		0EEF4C2F18C5C8F00058606A /* ClassObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassObject.h; sourceTree = "<group>"; };
 		0EEF4C3018C5C8F00058606A /* ClassObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassObject.m; sourceTree = "<group>"; };
+		160A4D4018CBE09D0020848C /* SelectingChallengeOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectingChallengeOptionCell.h; sourceTree = "<group>"; };
+		160A4D4118CBE09D0020848C /* SelectingChallengeOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectingChallengeOptionCell.m; sourceTree = "<group>"; };
 		1802DC3118C01E4A0016F110 /* LHLTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLTextView.h; sourceTree = "<group>"; };
 		1802DC3218C01E4A0016F110 /* LHLTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLTextView.m; sourceTree = "<group>"; };
 		1802DC3618C065320016F110 /* NotificationObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationObject.h; sourceTree = SOURCE_ROOT; };
@@ -1317,6 +1320,8 @@
 				6396581318C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib */,
 				6396583B18C083BF002F2A90 /* HomeworkHistoryCollectionCell.h */,
 				6396583C18C083BF002F2A90 /* HomeworkHistoryCollectionCell.m */,
+				160A4D4018CBE09D0020848C /* SelectingChallengeOptionCell.h */,
+				160A4D4118CBE09D0020848C /* SelectingChallengeOptionCell.m */,
 			);
 			name = homework;
 			sourceTree = "<group>";
@@ -1671,6 +1676,7 @@
 				0E92655A18BD9228003ADEC3 /* DAPageIndicatorView.m in Sources */,
 				1802DC3318C01E4A0016F110 /* LHLTextView.m in Sources */,
 				6329551718BC8AA700F2B78D /* ASINetworkQueue.m in Sources */,
+				160A4D4218CBE09D0020848C /* SelectingChallengeOptionCell.m in Sources */,
 				181A786A18C469AB00D288D3 /* TenSecChallengeObject.m in Sources */,
 				6329552718BC8AA700F2B78D /* ASIS3ObjectRequest.m in Sources */,
 				6329556A18BC900600F2B78D /* UIButton+WebCache.m in Sources */,
