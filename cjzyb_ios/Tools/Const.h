@@ -16,3 +16,5 @@
 #import "Reachability.h"
 #import <QuartzCore/QuartzCore.h>
 #import "WYPopoverController.h"
+
+#define kHOST @"http://58.240.210.42:3004"
