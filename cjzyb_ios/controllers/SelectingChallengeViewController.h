@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "SelectingChallengeObject.h"
-@interface SelectingChallengeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
-
+#import "TenSecChallengeResultView.h"
+@interface SelectingChallengeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,TenSecChallengeResultViewDelegate>
+-(void)getStart;        //第一次做题,或浏览历史 ,调用此方法
+-(void)reDoingChallenge;   //重新做题,调用此方法
 @end

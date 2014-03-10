@@ -97,6 +97,9 @@
 		187222B618C8572E00BBE2D1 /* SelectingChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 187222B418C8572E00BBE2D1 /* SelectingChallengeViewController.xib */; };
 		187222B918C86A0300BBE2D1 /* SelectingChallengeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 187222B818C86A0300BBE2D1 /* SelectingChallengeObject.m */; };
 		187222BB18C87A5700BBE2D1 /* questions_lastest.js in Sources */ = {isa = PBXBuildFile; fileRef = 187222BA18C87A5700BBE2D1 /* questions_lastest.js */; };
+		188ED74118CD850700D1210F /* right_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 188ED73F18CD850700D1210F /* right_sound.mp3 */; };
+		188ED74218CD850700D1210F /* wrong_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 188ED74018CD850700D1210F /* wrong_sound.mp3 */; };
+		188ED74318CDA6BA00D1210F /* answer-1.js in Resources */ = {isa = PBXBuildFile; fileRef = 187222B018C8434D00BBE2D1 /* answer-1.js */; };
 		189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */; };
 		189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */; };
 		189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */; };
@@ -107,6 +110,7 @@
 		18AA80BD18BF04E800EC08CE /* LHLNotificationHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */; };
 		18AA80C118BF14A200EC08CE /* smallTriangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80C018BF14A200EC08CE /* smallTriangle@2x.png */; };
 		18AA80C418BF1A3300EC08CE /* LHLReplyNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */; };
+		18E01DA518CDB70B0016FA7D /* yourChoice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18E01DA418CDB70B0016FA7D /* yourChoice@2x.png */; };
 		6329549218BC875800F2B78D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549118BC875800F2B78D /* Foundation.framework */; };
 		6329549418BC875800F2B78D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549318BC875800F2B78D /* CoreGraphics.framework */; };
 		6329549618BC875800F2B78D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549518BC875800F2B78D /* UIKit.framework */; };
@@ -393,6 +397,8 @@
 		187222B718C86A0300BBE2D1 /* SelectingChallengeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectingChallengeObject.h; sourceTree = SOURCE_ROOT; };
 		187222B818C86A0300BBE2D1 /* SelectingChallengeObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectingChallengeObject.m; sourceTree = SOURCE_ROOT; };
 		187222BA18C87A5700BBE2D1 /* questions_lastest.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = questions_lastest.js; sourceTree = SOURCE_ROOT; };
+		188ED73F18CD850700D1210F /* right_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = right_sound.mp3; sourceTree = "<group>"; };
+		188ED74018CD850700D1210F /* wrong_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wrong_sound.mp3; sourceTree = "<group>"; };
 		189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationViewController.h; sourceTree = SOURCE_ROOT; };
 		189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationViewController.m; sourceTree = SOURCE_ROOT; };
 		189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -407,6 +413,7 @@
 		18AA80C018BF14A200EC08CE /* smallTriangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smallTriangle@2x.png"; sourceTree = "<group>"; };
 		18AA80C218BF1A3300EC08CE /* LHLReplyNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLReplyNotificationCell.h; sourceTree = SOURCE_ROOT; };
 		18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLReplyNotificationCell.m; sourceTree = SOURCE_ROOT; };
+		18E01DA418CDB70B0016FA7D /* yourChoice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yourChoice@2x.png"; sourceTree = "<group>"; };
 		6329548E18BC875800F2B78D /* cjzyb_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cjzyb_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6329549118BC875800F2B78D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6329549318BC875800F2B78D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -772,6 +779,9 @@
 		18AA80B418BEE43500EC08CE /* LHLimage */ = {
 			isa = PBXGroup;
 			children = (
+				18E01DA418CDB70B0016FA7D /* yourChoice@2x.png */,
+				188ED73F18CD850700D1210F /* right_sound.mp3 */,
+				188ED74018CD850700D1210F /* wrong_sound.mp3 */,
 				18AA80C018BF14A200EC08CE /* smallTriangle@2x.png */,
 				18AA80B918BF030200EC08CE /* smile@2x.png */,
 				18AA80B718BEFFFD00EC08CE /* bg@2x.png */,
@@ -1445,6 +1455,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				188ED74318CDA6BA00D1210F /* answer-1.js in Resources */,
 				182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */,
 				1848613518C72D29002B6C78 /* 10速_05@2x.png in Resources */,
 				18AA80C118BF14A200EC08CE /* smallTriangle@2x.png in Resources */,
@@ -1468,6 +1479,7 @@
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
 				6396580518C038E2002F2A90 /* xunsu_yellow@2x.png in Resources */,
 				1818F6A618C561ED00DC6207 /* TenSecChallengeResultView.xib in Resources */,
+				188ED74118CD850700D1210F /* right_sound.mp3 in Resources */,
 				6396582418C0578D002F2A90 /* homework_blank@2x.png in Resources */,
 				6396582C18C0578D002F2A90 /* homework_right@2x.png in Resources */,
 				639657EF18C038BB002F2A90 /* addClass@2x.png in Resources */,
@@ -1495,6 +1507,7 @@
 				0E92655018BD9016003ADEC3 /* MainViewController.xib in Resources */,
 				639657F818C038BB002F2A90 /* userGroup@2x.png in Resources */,
 				0EEF4BCB18C561250058606A /* get_microposts.json in Resources */,
+				188ED74218CD850700D1210F /* wrong_sound.mp3 in Resources */,
 				6341536918C1C96C00DE4480 /* CalendarViewController.xib in Resources */,
 				6396582A18C0578D002F2A90 /* homework_quik@2x.png in Resources */,
 				0E92656918BD92B0003ADEC3 /* ThirdViewController.xib in Resources */,
@@ -1508,6 +1521,7 @@
 				182A89DF18C99B3100CF4B30 /* 选择_03@2x.png in Resources */,
 				6396577818C036B1002F2A90 /* ClassGroupViewController.xib in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
+				18E01DA518CDB70B0016FA7D /* yourChoice@2x.png in Resources */,
 				639657F018C038BB002F2A90 /* jiezu@2x.png in Resources */,
 				639657E218C038A6002F2A90 /* userGroupItem@2x.png in Resources */,
 				182A89DC18C9972B00CF4B30 /* propOfAnswer@2x.png in Resources */,
