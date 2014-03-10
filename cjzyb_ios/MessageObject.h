@@ -8,11 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-//定义消息是发送还是回复
-enum MessageType {
-    MessageTypeSend = 0,//发送
-    MessageTypeReply = 1//回复
-};
 
 //定义消息cell的类型
 enum MessageCellStyle {
@@ -32,8 +27,8 @@ enum MessageCellStyle {
 @interface MessageObject : NSObject
 
 @property (nonatomic, strong) NSString *messageId;
-@property (nonatomic, strong) NSString *name;//发送方
-@property (nonatomic, strong) NSString *userId;//接受方
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *userId;
 @property (nonatomic, strong) NSString *messageContent;
 @property (nonatomic, strong) NSString *messageTime;
 @property (nonatomic, strong) NSString *headUrl;
@@ -43,5 +38,7 @@ enum MessageCellStyle {
 @property (nonatomic, strong) NSMutableArray *replyMessageArray;//回复的信息
 @property (nonatomic, assign) BOOL isFollow;
 
+@property (nonatomic, assign) NSInteger pageHeader;
+@property (nonatomic, assign) NSInteger pageCountHeader;
 +(MessageObject *)messageFromDictionary:(NSDictionary *)aDic;
 @end

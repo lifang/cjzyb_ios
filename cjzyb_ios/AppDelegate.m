@@ -47,9 +47,14 @@
 //    SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
 //    DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
 //    tabController.childenControllerArray = @[main,first];
+    
 //    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
 //    self.window.rootViewController = main;
+//    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:main];
+//    self.window.rootViewController = navControl;
     
+    SelectingChallengeViewController *notificationViewController = [[SelectingChallengeViewController alloc] initWithNibName:@"SelectingChallengeViewController" bundle:nil];
+    self.window.rootViewController = notificationViewController;
     
 //    self.window.backgroundColor = [UIColor whiteColor];
 //    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
