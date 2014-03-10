@@ -29,10 +29,13 @@
     [popoverAppearance setArrowBase:20];
     [popoverAppearance setFillTopColor:[UIColor colorWithRed:47/255.0 green:201/255.0 blue:133/255.0 alpha:1]];
     
+    //设置语音识别的apikey
+    [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     ReadingTaskViewController *reading = [[ReadingTaskViewController alloc] initWithNibName:@"ReadingTaskViewController" bundle:nil];
     self.window.rootViewController = reading;
+    
 //    HomeworkViewController *homeController = [[HomeworkViewController alloc] initWithNibName:@"HomeworkViewController" bundle:nil];
 //    self.window.rootViewController = homeController;
 //    HomeworkDailyCollectionViewController *dailyWork = [[HomeworkDailyCollectionViewController alloc] initWithNibName:@"HomeworkDailyCollectionViewController" bundle:nil];

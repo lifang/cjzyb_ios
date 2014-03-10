@@ -10,9 +10,47 @@
 #import <UIKit/UIKit.h>
 
 @interface Utility : NSObject
+
+@property (nonatomic, assign) int firstpoint;
+@property (nonatomic, assign) BOOL isOrg;
+@property (nonatomic, strong) NSArray *rangeArray;
+
+@property (nonatomic, strong) NSArray *orgArray;
+@property (nonatomic, strong) NSArray *metaphoneArray;
+
+@property (nonatomic, strong) NSMutableArray *greenArray;//绿色:正确，基本正确
+@property (nonatomic, strong) NSMutableArray *yellowArray;//黄色:部分匹配
+@property (nonatomic, strong) NSMutableArray *spaceLineArray;//下划线:缺词
+@property (nonatomic, strong) NSMutableArray *noticeArray;//标记需要提示的地方
+@property (nonatomic, strong) NSMutableArray *correctArray;//正确单词
+
+@property (nonatomic, strong) NSMutableArray *sureArray;//黄色匹配
++ (Utility *)shared;
++(NSString*)spellStringWithWord:(NSString*)word;
++(NSArray *)metaphoneArray:(NSArray *)array;
+
+//去除标点符号
++(NSArray *)handleTheString:(NSString *)string;
+//单词转化字母数组
++(NSArray *)handleTheLetter:(NSString *)string;
+//匹配相似度
++(int)DistanceBetweenTwoString:(NSString*)strA StrAbegin:(int)strAbegin StrAend:(int)strAend StrB:(NSString*)strB StrBbegin:(int)strBbegin StrBend:(int)strBend;
+//返回结果
++(NSDictionary *)compareWithArray:(NSArray *)arrA andArray:(NSArray *)arrAA WithArray:(NSArray *)arrB andArray:(NSArray *)arrBB WithRange:(NSArray *)rangeArray;
+
+
+/////////////上面都是单词匹配使用的
+
 +(Utility*)defaultUtility;
+
+///过滤json数据，可能出现<NULL>,null,等等情况
++(NSString *)filterValue:(NSString*)value;
+
 ///判断两个日期是否是同一天
 +(BOOL)isSameDay:(NSDate*)date1 date2:(NSDate*)date2;
+
+///把秒数转换成时间字符串，如：61 => 1'1"
++(NSString*)formateDateStringWithSecond:(int)second;
 
 +(BOOL)requestFailure:(NSError*)error tipMessageBlock:(void(^)(NSString *tipMsg))msg;
 + (UIImage *)getNormalImage:(UIView *)view;
