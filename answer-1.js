@@ -131,12 +131,7 @@
                         "id": "181",
                         "answer": "This;||;apple;||;is",
                         "ratio": "100"
-                    },
-                                     {
-                                     "id": "181",
-                                     "answer": "This;||;apple;||;is",
-                                     "ratio": "100"
-                                     }
+                    }
                 ]
             },
             {

@@ -10,6 +10,10 @@
 @class StudentTableViewCell;
 @class StudentSummaryCell;
 @protocol StudentListViewControllerDelegate;
+/** StudentListViewController
+ *
+ * 老师和学生列表
+ */
 @interface StudentListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 @property (assign,nonatomic) id<StudentListViewControllerDelegate> delegate;
 - (IBAction)backButtonClicked:(id)sender;
