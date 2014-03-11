@@ -109,7 +109,7 @@
 
 -(void)layoutItems{
     dispatch_async(dispatch_get_main_queue(), ^{
-        _buttonBgView.frame = (CGRect){LHLCELL_WIDTH - 80,0,80,LHLCELL_HEIGHT};
+        _buttonBgView.frame = (CGRect){LHLCELL_WIDTH - 103,0,103,LHLCELL_HEIGHT};
         
         _replyButton.frame = (CGRect){0,0,_buttonBgView.frame.size.width,_buttonBgView.frame.size.height / 2};
         
@@ -117,9 +117,9 @@
         
         _contentBgView.frame = (CGRect){0,0,self.bounds.size};
         
-        _imgView.frame = (CGRect){41,38,80,80};
+        _imgView.frame = (CGRect){53,50,103,103};
         
-        CGRect titleBgFrame = (CGRect){CGRectGetMaxX(_imgView.frame) + 20,38,365,20};
+        CGRect titleBgFrame = (CGRect){CGRectGetMaxX(_imgView.frame) + 20,50,510,30};
         _titleBgView.frame = titleBgFrame;
         
         
@@ -131,8 +131,8 @@
         
         _timeLabel.frame = (CGRect){CGRectGetMaxX(_myNameLabel.frame) + LHLTEXT_PADDING * 2,0,titleBgFrame.size.width - (CGRectGetMaxX(_myNameLabel.frame) + LHLTEXT_PADDING),titleBgFrame.size.height};
         
-        size = [Utility getTextSizeWithString:@"哈哈哈哈哈,这个我也知道的,饿饿饿饿,怎么打字还打不满三行,快乐,块三行了,马上就要三行了可以看见效果了,哦也,搞定~~~~~~!!!!!" withFont: LHLFONT withWidth:365];
-        _textView.frame = (CGRect){titleBgFrame.origin.x - 5,CGRectGetMaxY(titleBgFrame) - 7,365,size.height + 20};
+        size = [Utility getTextSizeWithString:_textView.text withFont: LHLFONT withWidth:510];
+        _textView.frame = (CGRect){titleBgFrame.origin.x - 5,CGRectGetMaxY(titleBgFrame) - 7,510,size.height + 20};
         
         _coverButton.frame = (CGRect){0,0,self.bounds.size};
         [_contentBgView bringSubviewToFront:_coverButton];
@@ -148,6 +148,8 @@
         _myNameLabel.text = @"回复 我";
         _textView.text = reply.replyContent;
         _timeLabel.text = reply.replyTime;
+        
+        [self layoutIfNeeded];
     }else{
         [Utility errorAlert:@"赋予的reply对象为nil!"];
     }
@@ -167,7 +169,6 @@
         _contentBgView.backgroundColor = [UIColor whiteColor];
         [UIView animateWithDuration:0.25 animations:^{
             _contentBgView.frame = (CGRect){0,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
-//            _coverButton.frame = (CGRect){0,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
         } completion:^(BOOL finished) {
             _buttonBgView.hidden = YES;
         }];
@@ -176,8 +177,7 @@
         _contentBgView.frame = (CGRect){-1,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
         _contentBgView.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];
         [UIView animateWithDuration:0.25 animations:^{
-            _contentBgView.frame = (CGRect){-80,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
-//            _coverButton.frame = (CGRect){-80,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
+            _contentBgView.frame = (CGRect){-103,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
         } completion:^(BOOL finished) {
             
         }];

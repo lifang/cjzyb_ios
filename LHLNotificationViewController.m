@@ -65,20 +65,20 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.displayCategory == NotificationDisplayCategoryDefault) {
         NotificationObject *noti = self.notificationArray[indexPath.row];
-        CGSize size = [Utility getTextSizeWithString:noti.notiContent withFont:[UIFont systemFontOfSize:17.0] withWidth:394];
-        if (size.height + 50 + 20 + 10 > 150) { //上沿坐标,textView高度加值,下方高度
+        CGSize size = [Utility getTextSizeWithString:noti.notiContent withFont:[UIFont systemFontOfSize:17.0] withWidth:510];
+        if (size.height + 50 + 20 + 10 > 192) { //上沿坐标,textView高度加值,下方高度
             return size.height + 50 + 20 + 10;
         }
-        return 150;
+        return 192;
     }else if (self.displayCategory == NotificationDisplayCategoryReply){
         ReplyNotificationObject *reply = self.replyNotificationArray[indexPath.row];
-        CGSize size = [Utility getTextSizeWithString:reply.replyContent withFont:[UIFont systemFontOfSize:17.0] withWidth:365];
-        if (size.height + 51 + 20 + 10  > 150) {  //上沿坐标,textView高度加值,下方高度
+        CGSize size = [Utility getTextSizeWithString:reply.replyContent withFont:[UIFont systemFontOfSize:17.0] withWidth:510];
+        if (size.height + 51 + 20 + 10  > 192) {  //上沿坐标,textView高度加值,下方高度
             return size.height + 51 + 20 + 10;
         }
-        return 150;
+        return 192;
     }
-    return 150;
+    return 192;
 }
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -103,7 +103,7 @@
 #pragma mark -- UITableViewDelegate
 
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 70;
+    return 90;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{

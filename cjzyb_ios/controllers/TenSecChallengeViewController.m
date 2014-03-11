@@ -245,10 +245,10 @@
 
 //获取作业完成期限
 -(void)fetchHomeworkFinishTime{
-    LHLTestInterface *inter = [[LHLTestInterface alloc] init];
-    inter.delegate = self;
-    
-    [inter getLHLTestDelegateWithClassId:@"1" andUserId:@"8"];
+//    LHLTestInterface *inter = [[LHLTestInterface alloc] init];
+//    inter.delegate = self;
+//    
+//    [inter getLHLTestDelegateWithClassId:@"1" andUserId:@"8"];
 }
 
 //比对当前时间是否早于给定时间
@@ -322,11 +322,11 @@
     if (!_questionNumberImages || _questionNumberImages.count < 1) {
         NSMutableArray *array = [NSMutableArray array];
         for (int i = 1; i <= 9; i ++) {
-            NSString *docName = [NSString stringWithFormat:@"10速_0%i",i];
+            NSString *docName = [NSString stringWithFormat:@"10_0%i",i];
             UIImage *img = [UIImage imageNamed:[NSString stringWithFormat:@"%@.png",docName]];
             [array addObject:img];
         }
-        UIImage *img = [UIImage imageNamed:@"10速_10.png"];
+        UIImage *img = [UIImage imageNamed:@"10_10.png"];
         [array addObject:img];
         
         _questionNumberImages = [NSArray arrayWithArray:array];
