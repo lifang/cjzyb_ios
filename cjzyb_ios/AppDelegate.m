@@ -15,6 +15,7 @@
 #import "HomeworkDailyCollectionViewController.h"
 #import "HomeworkViewController.h"
 #import "ReadingTaskViewController.h"
+#import "TenSecChallengeViewController.h"
 @implementation AppDelegate
 
 +(AppDelegate *)shareIntance {
@@ -53,7 +54,7 @@
 //    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:main];
 //    self.window.rootViewController = navControl;
     
-    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
+    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
     self.window.rootViewController = notificationViewController;
     
 //    self.window.backgroundColor = [UIColor whiteColor];

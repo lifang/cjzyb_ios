@@ -248,7 +248,7 @@
     LHLTestInterface *inter = [[LHLTestInterface alloc] init];
     inter.delegate = self;
     
-    [inter getLHLTestDelegateWithClassId:@"83" andUserId:@"73"];
+    [inter getLHLTestDelegateWithClassId:@"1" andUserId:@"8"];
 }
 
 //比对当前时间是否早于给定时间
