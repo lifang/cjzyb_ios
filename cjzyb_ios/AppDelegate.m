@@ -53,7 +53,7 @@
 //    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:main];
 //    self.window.rootViewController = navControl;
     
-    SelectingChallengeViewController *notificationViewController = [[SelectingChallengeViewController alloc] initWithNibName:@"SelectingChallengeViewController" bundle:nil];
+    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
     self.window.rootViewController = notificationViewController;
     
 //    self.window.backgroundColor = [UIColor whiteColor];

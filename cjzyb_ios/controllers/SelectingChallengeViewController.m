@@ -435,8 +435,8 @@
                 self.questionPlayButton.hidden = YES;
                 self.questionTextView.hidden = NO;
                 
-                self.questionTextView.frame = (CGRect){38,17,650,200};
-                self.optionTable.frame = (CGRect){38,217,650,400};
+                self.questionTextView.frame = (CGRect){38,17,650,100};
+                self.optionTable.frame = (CGRect){38,117,650,400};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
             }
@@ -536,23 +536,6 @@
     return NO;
 }
 
-//cell回调方法 ,点击选项时触发
--(void)cell:(NSIndexPath *)indexPath didSelected:(BOOL)selected{
-    if (selected) {
-        [self.currentSelectedOptions addObject:[NSString stringWithFormat:@"%d",indexPath.row]];
-    }else{
-        NSInteger index = 0;
-        for (NSInteger i = 0; i < self.currentSelectedOptions.count; i++) {
-            NSString *str = self.currentSelectedOptions[i];
-            if ([str isEqualToString:[NSString stringWithFormat:@"%d",indexPath.row]]) {
-                index = i;
-                break;
-            }
-        }
-        [self.currentSelectedOptions removeObjectAtIndex:index];
-    }
-}
-
 //根据已选择的选项,检查当前答案是否正确
 -(BOOL)judgeAnswer:(NSMutableArray *)selectedOptions{
     //判断不选
@@ -606,7 +589,7 @@
     BOOL answerRatio = [self judgeAnswer:selectedOptions];
     answer.answerRatio = answerRatio ? @"100" : @"0";
     [self.answerArray addObject:answer];
-    
+        
     if (answerRatio) {
         AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"right_sound" ofType:@"mp3"]] error:nil];
         if([player prepareToPlay]){
@@ -624,6 +607,7 @@
 #pragma mark 界面交互
 
 - (IBAction)questionPlayButtonClicked:(id)sender {
+    
 }
 
 //道具2
@@ -640,9 +624,10 @@
     for (NSString *rightOption in self.currentQuestion.seRightAnswers) {
         for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-            UITableViewCell *cell = [self.optionTable cellForRowAtIndexPath:indexPath];
-            if ([rightOption isEqualToString:@""]) {
+            SelectingChallengeOptionCell *cell = (SelectingChallengeOptionCell *)[self.optionTable cellForRowAtIndexPath:indexPath];
+            if ([rightOption isEqualToString:cell.optionString]) {
                 //调用cell代理方法,选中之
+                [self selectingCell:cell clickedForSelecting:YES];
             }
         }
     }
@@ -678,6 +663,8 @@
         }
     }
     
+    cell.optionSelected = NO;
+    
     return cell;
 }
 
@@ -685,7 +672,20 @@
 
 #pragma mark cell Delegate
 -(void)selectingCell:(SelectingChallengeOptionCell *)cell clickedForSelecting:(BOOL)selected{
-    
+    cell.optionSelected = selected;
+    if (selected) {
+        [self.currentSelectedOptions addObject:[NSString stringWithFormat:@"%d",cell.indexPath.row]];
+    }else{
+        NSInteger index = 0;
+        for (NSInteger i = 0; i < self.currentSelectedOptions.count; i++) {
+            NSString *str = self.currentSelectedOptions[i];
+            if ([str isEqualToString:[NSString stringWithFormat:@"%d",cell.indexPath.row]]) {
+                index = i;
+                break;
+            }
+        }
+        [self.currentSelectedOptions removeObjectAtIndex:index];
+    }
 }
 #pragma mark TenSecChallengeResultViewDelegate
 -(void)resultViewCommitButtonClicked{

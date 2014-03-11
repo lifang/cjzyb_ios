@@ -113,7 +113,7 @@
         ]
     },
     "selecting": {
-        "status": "1",
+        "status": "0",
         "update_time": "2014-02-28 18:12:00",
         "questions_item": "1",
         "branch_item": "2",
