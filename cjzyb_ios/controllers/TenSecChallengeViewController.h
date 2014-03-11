@@ -10,7 +10,10 @@
 
 #import <UIKit/UIKit.h>
 #import "TenSecChallengeObject.h"
+#import "TenSecChallengeResultView.h"
+#import "LHLTestInterface.h"
 
-@interface TenSecChallengeViewController : UIViewController
-@property (nonatomic,strong) NSMutableArray *questionArray;  //十个问题 
+@interface TenSecChallengeViewController : UIViewController<TenSecChallengeResultViewDelegate,LHLTestInterfaceDelegate>
+@property (nonatomic,strong) NSMutableArray *questionArray;  //十个问题
+@property (nonatomic,strong) TenSecChallengeResultView *resultView; //结果view
 @end

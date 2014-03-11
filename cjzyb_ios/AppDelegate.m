@@ -17,6 +17,9 @@
 
 #import "LogInViewController.h" //登录
 #import "CardpackageViewController.h"//卡包
+
+#import "ReadingTaskViewController.h"
+
 @implementation AppDelegate
 
 +(AppDelegate *)shareIntance {
@@ -51,7 +54,12 @@
     [popoverAppearance setArrowBase:20];
     [popoverAppearance setFillTopColor:[UIColor colorWithRed:47/255.0 green:201/255.0 blue:133/255.0 alpha:1]];
     
+    //设置语音识别的apikey
+    [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    ReadingTaskViewController *reading = [[ReadingTaskViewController alloc] initWithNibName:@"ReadingTaskViewController" bundle:nil];
+    self.window.rootViewController = reading;
     
 //    HomeworkViewController *homeController = [[HomeworkViewController alloc] initWithNibName:@"HomeworkViewController" bundle:nil];
 //    self.window.rootViewController = homeController;
@@ -60,13 +68,36 @@
     
     // Override point for customization after application launch.
 //    self.window.backgroundColor = [UIColor whiteColor];
+
     
 //    SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
 //    DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
 //    tabController.childenControllerArray = @[main,first];
     
+
+//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+//    SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
+//    DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
+//    tabController.childenControllerArray = @[main,first];
+
     
-//    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
+//    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
+//    self.window.rootViewController = main;
+//    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:main];
+//    self.window.rootViewController = navControl;
+    
+//    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
+//    self.window.rootViewController = notificationViewController;
+//    
+//    self.window.backgroundColor = [UIColor whiteColor];
+//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+//    SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
+//    DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
+//    tabController.childenControllerArray = @[main,first];
+////    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
+////    self.window.rootViewController = navControl;
+//    
+//    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
 //    self.window.rootViewController = notificationViewController;
     
     /*
