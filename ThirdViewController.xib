@@ -8,33 +8,45 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ThirdViewController">
             <connections>
                 <outlet property="sendBtn" destination="Gro-Rn-2YR" id="jsT-3Z-uu0"/>
+                <outlet property="textCountLabel" destination="ifm-hS-opP" id="OaY-uk-hgG"/>
                 <outlet property="txtView" destination="VDd-Rf-P7C" id="zyH-zg-f8R"/>
                 <outlet property="view" destination="2" id="3"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="2">
-            <rect key="frame" x="0.0" y="0.0" width="768" height="936"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="890"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VDd-Rf-P7C" customClass="ComtomTxt">
-                    <rect key="frame" x="63" y="20" width="642" height="190"/>
+                    <rect key="frame" x="63" y="20" width="642" height="210"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="0.92000000000000004" alpha="0.92000000000000004" colorSpace="calibratedWhite"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="send"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="RQN-uw-v38"/>
                     </connections>
                 </textView>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gro-Rn-2YR">
-                    <rect key="frame" x="299" y="240" width="171" height="42"/>
+                    <rect key="frame" x="299" y="286" width="171" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                    <state key="normal" title="发布" backgroundImage="send.png">
+                    <state key="normal" title="问答" backgroundImage="send.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="sendQuestion:" destination="-1" eventType="touchUpInside" id="Wlw-7Q-073"/>
+                    </connections>
                 </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="还可以输入60字" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ifm-hS-opP">
+                    <rect key="frame" x="591" y="214" width="107" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                    <color key="textColor" red="0.3921568627" green="0.3921568627" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
@@ -42,6 +54,6 @@
         </view>
     </objects>
     <resources>
-        <image name="send.png" width="287" height="83"/>
+        <image name="send.png" width="143" height="41"/>
     </resources>
 </document>

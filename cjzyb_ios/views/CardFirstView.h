@@ -12,7 +12,7 @@
 -(void)pressedTxtBtn:(UIButton *)btn;
 @end
 
-@interface CardFirstView : UIView
+@interface CardFirstView : UIControl
 
 @property (nonatomic, assign) id<CardFirstViewDelegate>delegate;
 

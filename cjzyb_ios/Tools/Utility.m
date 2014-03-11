@@ -115,7 +115,7 @@
 +(void)judgeNetWorkStatus:(void (^)(NSString*networkStatus))networkStatus{
 dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSString *str = @"NotReachable";
-	Reachability *r = [Reachability reachabilityWithHostName:@"lms.finance365.com"];
+	Reachability *r = [Reachability reachabilityWithHostName:@"www.baidu.com"];
     switch ([r currentReachabilityStatus]) {
         case NotReachable:
 			str = @"NotReachable";

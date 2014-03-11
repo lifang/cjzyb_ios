@@ -10,11 +10,12 @@
 #import "UserObject.h"
 #import "ClassObject.h"
 
+
 @interface DataService : NSObject
 
 @property (nonatomic,strong) UserObject *user;
 @property (nonatomic,strong) ClassObject *theClass;
-
+@property (nonatomic,assign) NSInteger first,second,third,fourth;//判断4个页面
 + (DataService *)sharedService;
 
 @end

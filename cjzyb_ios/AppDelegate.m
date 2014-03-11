@@ -14,12 +14,36 @@
 #import "DRLeftTabBarViewController.h"
 #import "HomeworkDailyCollectionViewController.h"
 #import "HomeworkViewController.h"
+
+#import "LogInViewController.h" //登录
+#import "CardpackageViewController.h"//卡包
+
 #import "ReadingTaskViewController.h"
 #import "TenSecChallengeViewController.h"
 @implementation AppDelegate
 
 +(AppDelegate *)shareIntance {
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
+}
+
+- (void)showRootView {
+    NSFileManager *fileManage = [NSFileManager defaultManager];
+    NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *filename = [Path stringByAppendingPathComponent:@"class.plist"];
+    if (![fileManage fileExistsAtPath:filename]) {
+        LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
+        self.window.rootViewController = logView;
+    }else {
+        NSDictionary *classDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
+        [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
+        filename = [Path stringByAppendingPathComponent:@"student.plist"];
+        NSDictionary *userDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
+        [DataService sharedService].user = [UserObject userFromDictionary:userDic];
+        
+        MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+        UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:main];
+        self.window.rootViewController = navControl;
+    }
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -37,54 +61,21 @@
     ReadingTaskViewController *reading = [[ReadingTaskViewController alloc] initWithNibName:@"ReadingTaskViewController" bundle:nil];
     self.window.rootViewController = reading;
     
-//    HomeworkViewController *homeController = [[HomeworkViewController alloc] initWithNibName:@"HomeworkViewController" bundle:nil];
-//    self.window.rootViewController = homeController;
-//    HomeworkDailyCollectionViewController *dailyWork = [[HomeworkDailyCollectionViewController alloc] initWithNibName:@"HomeworkDailyCollectionViewController" bundle:nil];
-//    self.window.rootViewController = dailyWork;
-    
-    // Override point for customization after application launch.
-//    self.window.backgroundColor = [UIColor whiteColor];
-//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-//    SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
-//    DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
-//    tabController.childenControllerArray = @[main,first];
-    
-//    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
-//    self.window.rootViewController = main;
-//    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:main];
-//    self.window.rootViewController = navControl;
     
     TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
     self.window.rootViewController = notificationViewController;
+
+//     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
+//     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
+//    self.window.rootViewController = navControl;
     
-//    self.window.backgroundColor = [UIColor whiteColor];
-//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-//    SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
-//    DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
-//    tabController.childenControllerArray = @[main,first];
-////    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
-////    self.window.rootViewController = navControl;
-//    
-//    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
-//    self.window.rootViewController = notificationViewController;
+//    UIRemoteNotificationType types = UIRemoteNotificationTypeSound|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert;
+//    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
     
-    /*
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-    SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
-    DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
-    tabController.childenControllerArray = @[main,first];
-    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
-    self.window.rootViewController = navControl;
     [self.window makeKeyAndVisible];
-    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
-    self.window.rootViewController = notificationViewController;
-//    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
-//    self.window.rootViewController = notificationViewController;
-    */
-    [self.window makeKeyAndVisible];
+    
+    
+    [DataService sharedService].first = 0;[DataService sharedService].second = 0;[DataService sharedService].third = 0;[DataService sharedService].fourth = 0;
     return YES;
 }
 
@@ -114,5 +105,38 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+//QQ
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
+    return [TencentOAuth HandleOpenURL:url];
+}
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
+    return [TencentOAuth HandleOpenURL:url];
+}
+
+//- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+//    //注册推送成功,收到设备token号
+//    NSString *tokenStr = [deviceToken description];
+//    NSString *pushToken = [[[tokenStr stringByReplacingOccurrencesOfString:@"<" withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""];
+//    NSString *urlStr = [NSString stringWithFormat:@"https://%@/push_token",@"58.240.210.42:3004"];
+//    NSURL *url = [NSURL URLWithString:urlStr];
+//    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
+//    [req setHTTPMethod:@"POST"];
+//    [req setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
+//    NSMutableData *postBody = [NSMutableData data];
+//    [postBody appendData:[[NSString stringWithFormat:@"username=%@",@"啦啦"] dataUsingEncoding:NSUTF8StringEncoding]];
+//    [postBody appendData:[[NSString stringWithFormat:@"&token=%@",pushToken] dataUsingEncoding:NSUTF8StringEncoding]];
+//    [req setHTTPBody:postBody];
+//    id a = [[NSURLConnection alloc] initWithRequest:req delegate:nil];
+//}
+
+//- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
+//    //注册推送不成功
+//}
+//
+//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+//    //收到远程通知推送
+//}
+
+
 
 @end
