@@ -12,13 +12,13 @@
 @interface DeleteMessage : BaseInterface<BaseInterfaceDelegate>
 
 @property (nonatomic, assign) id <DeleteMessageDelegate> delegate;
-
--(void)getDeleteMessageDelegateDelegateWithMessageId:(NSString *)messageId;
+@property (nonatomic, assign) NSInteger type;
+-(void)getDeleteMessageDelegateDelegateWithMessageId:(NSString *)messageId andType:(NSInteger)type;
 @end
 
 
 @protocol DeleteMessageDelegate <NSObject>
--(void)getDeleteMsgInfoDidFinished:(NSDictionary *)result;
+-(void)getDeleteMsgInfoDidFinished:(NSDictionary *)result andType:(NSInteger)type;
 -(void)getDeleteMsgInfoDidFailed:(NSString *)errorMsg;
 
 @end

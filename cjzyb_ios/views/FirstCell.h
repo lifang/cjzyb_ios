@@ -29,21 +29,21 @@
 @property (nonatomic, strong) ReplyMessageObject*aReplyMsg;
 
 @property (nonatomic, assign) BOOL isSelected;
-
+@property (nonatomic,assign) NSInteger aRow;
 @property (nonatomic, assign) id <FirstCellDelegate> delegate;
 @property (nonatomic, strong) NSIndexPath *idxPath;
 @property (strong, nonatomic) UIButton *coverButton;
 
-@property (nonatomic,strong) UIImageView *lineImageView;
+@property (nonatomic, assign) BOOL isHiddenLoadButton;
+@property (nonatomic, strong) UIButton *loadButton;
 -(void)open;
 -(void)close;
 @end
 
 @protocol FirstCellDelegate <NSObject>
 - (void)contextMenuCellDidSelectCoverOption:(FirstCell *)cell;
-- (void)contextMenuCellDidSelectFocusOption:(FirstCell *)cell;
 - (void)contextMenuCellDidSelectCommentOption:(FirstCell *)cell;
 - (void)contextMenuCellDidSelectDeleteOption:(FirstCell *)cell;
-
+- (void)contextMenuCellDidSelectLoadOption:(FirstCell *)cell;
 
 @end

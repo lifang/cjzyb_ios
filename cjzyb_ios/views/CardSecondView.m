@@ -14,7 +14,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"card_second_background"]];
     }
     return self;
 }

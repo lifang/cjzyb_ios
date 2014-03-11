@@ -7,16 +7,15 @@
 //
 
 #import "MainViewController.h"
-//顶部页面控制
-#import "DAPagesContainer.h"
-//3个子页面
+
+//4个子页面
 #import "FirstViewController.h"
 #import "SecondViewController.h"
 #import "ThirdViewController.h"
-
+#import "FourthViewController.h"
 
 @interface MainViewController ()
-@property (strong, nonatomic) DAPagesContainer *pagesContainer;
+
 @end
 
 @implementation MainViewController
@@ -34,7 +33,8 @@
     self.pagesContainer = [[DAPagesContainer alloc] init];
     [self.pagesContainer willMoveToParentViewController:self];
     self.pagesContainer.view.frame = self.view.bounds;
-    NSLog(@"%f",self.view.bounds.size.height);
+    
+    NSLog(@"%f",self.view.frame.size.height);
     self.pagesContainer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.pagesContainer.view];
     [self.pagesContainer didMoveToParentViewController:self];
@@ -43,18 +43,26 @@
     //TODO:加入子页面
     FirstViewController *firstView = [[FirstViewController alloc]initWithNibName:@"FirstViewController" bundle:nil];
     firstView.title = @"first";
+    firstView.view.frame = CGRectMake(0, 44+self.pagesContainer.topBarHeight, 768, 1024-44-self.pagesContainer.topBarHeight);
 
     SecondViewController *secondView = [[SecondViewController alloc]initWithNibName:@"SecondViewController" bundle:nil];
     secondView.title = @"second";
+    secondView.view.frame = firstView.view.frame;
     
     ThirdViewController *thirdView = [[ThirdViewController alloc]initWithNibName:@"ThirdViewController" bundle:nil];
     thirdView.title = @"third";
-    self.pagesContainer.viewControllers = [NSArray arrayWithObjects:firstView,secondView,thirdView, nil];
+    thirdView.view.frame = firstView.view.frame;
+    
+    FourthViewController *fourthView = [[FourthViewController alloc]initWithNibName:@"FourthViewController" bundle:nil];
+    fourthView.title = @"fourth";
+    fourthView.view.frame = firstView.view.frame;
+    
+    self.pagesContainer.viewControllers = [NSArray arrayWithObjects:firstView,secondView,fourthView,thirdView, nil];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self.navigationController.navigationBar setHidden:NO];
     if (platform>=7.0) {
         AppDelegate *appDel = [AppDelegate shareIntance];
         self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -65,8 +73,12 @@
     self.title = @"首页";
     
     [self tabBarInit];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedViewController:) name:@"selectedViewController" object:nil];
 }
-
+-(void)selectedViewController:(NSNotification *)notification {
+    [self.pagesContainer setSelectedIndex:0 animated:YES];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

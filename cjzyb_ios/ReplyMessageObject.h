@@ -28,10 +28,7 @@ enum ReplyMessageCellStyle {
 @property (nonatomic, strong) NSString *created_at;
 @property (nonatomic, strong) NSString *sender_types;
 
-@property (nonatomic, assign) BOOL isFollow;
-
 @property (nonatomic, assign) NSInteger pageCell;
 @property (nonatomic, assign) NSInteger pageCountCell;
-
 + (ReplyMessageObject *)replyMessageFromDictionary:(NSDictionary *)aDic;
 @end

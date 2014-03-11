@@ -7,20 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RTLabel.h"
+
 
 @protocol CardSecondViewDelegate <NSObject>
 -(void)pressedVoiceBtn:(UIButton *)btn;
 -(void)pressedDeleteBtn:(UIButton *)btn;
 @end
 
-@interface CardSecondView : UIView
+@interface CardSecondView : UIControl
 
 @property (nonatomic, assign) id<CardSecondViewDelegate>delegate;
 
 @property (nonatomic, strong) IBOutlet UILabel *titleLab;//原句
 
-@property (nonatomic, strong) IBOutlet RTLabel *rtLab;
+@property (nonatomic, strong) IBOutlet UILabel *rtLab;
 
 @property (nonatomic, strong) IBOutlet UIButton *voiceBtn,*deleteBtn;
 
