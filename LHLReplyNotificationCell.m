@@ -9,7 +9,7 @@
 #import "LHLReplyNotificationCell.h"
 
 #define LHLTEXT_PADDING 5
-#define LHLFONT [UIFont systemFontOfSize:17.0]
+#define LHLFONT [UIFont systemFontOfSize:21.0]
 #define LHLCELL_WIDTH self.bounds.size.width
 #define LHLCELL_HEIGHT self.bounds.size.height
 
@@ -18,6 +18,7 @@
 @property (nonatomic,strong) UIView *titleBgView;  //第一行的背景
 @property (nonatomic,strong) UIView *buttonBgView;  //按钮背景
 @property (nonatomic,strong) UIImageView *imgView;  //头像
+@property (nonatomic,strong) UILabel *unnamedLabel;   //"回复"二字
 @property (nonatomic,strong) UILabel *myNameLabel;   //我的名字
 @property (nonatomic,strong) UILabel *replyerNameLabel;  //回复者的名字
 @property (nonatomic,strong) UILabel *timeLabel;   //时间
@@ -37,14 +38,14 @@
         
         //按钮背景
         self.buttonBgView = [[UIView alloc] init];
-        _buttonBgView.backgroundColor = [UIColor colorWithRed:177.0/255.0 green:178.0/255.0 blue:179.0/255.0 alpha:1.0];
+        _buttonBgView.backgroundColor = [UIColor colorWithRed:182.0/255.0 green:183.0/255.0 blue:184.0/255.0 alpha:1.0];
         _buttonBgView.hidden = YES;
         [self addSubview:_buttonBgView];
         
         //回复按钮
         self.replyButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _replyButton.backgroundColor = [UIColor clearColor];
-        [_replyButton setImage:[UIImage imageNamed:@"smile.png"] forState:UIControlStateNormal];
+        [_replyButton setImage:[UIImage imageNamed:@"replyMessage.png"] forState:UIControlStateNormal];
         [_replyButton addTarget:self action:@selector(rreplyButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [_buttonBgView addSubview:_replyButton];
         
@@ -74,19 +75,26 @@
         //回复者名字
         self.replyerNameLabel = [[UILabel alloc] init];
         _replyerNameLabel.font = LHLFONT;
-        _replyerNameLabel.textColor = [UIColor colorWithRed:25.0/255.0 green:120.0/255.0 blue:50.0/255.0 alpha:1.0];
+        _replyerNameLabel.textColor = [UIColor colorWithRed:21.0/255.0 green:168.0/255.0 blue:95.0/255.0 alpha:1.0];
         [_titleBgView addSubview:_replyerNameLabel];
+        
+        //"回复"二字
+        self.unnamedLabel = [[UILabel alloc] init];
+        _unnamedLabel.font = LHLFONT;
+        _unnamedLabel.text = @"回复";
+        _unnamedLabel.textColor = [UIColor darkGrayColor];
+        [_titleBgView addSubview:_unnamedLabel];
         
         //我的名字
         self.myNameLabel = [[UILabel alloc] init];
         _myNameLabel.font = LHLFONT;
-        _myNameLabel.textColor = [UIColor blueColor];
+        _myNameLabel.textColor = [UIColor colorWithRed:22.0/255.0 green:168.0/255.0 blue:95.0/255.0 alpha:1.0];
         [_titleBgView addSubview:_myNameLabel];
         
         //回复时间
         self.timeLabel = [[UILabel alloc] init];
         _timeLabel.font = LHLFONT;
-        _timeLabel.textColor = [UIColor lightGrayColor];
+        _timeLabel.textColor = [UIColor grayColor];
         [_titleBgView addSubview:_timeLabel];
         
         //回复内容
@@ -123,11 +131,14 @@
         _titleBgView.frame = titleBgFrame;
         
         
-        CGSize size = [Utility getTextSizeWithString:@"崔斯洛夫莫克" withFont:LHLFONT];
-        _replyerNameLabel.frame = (CGRect){0,0,size.width,titleBgFrame.size.height};
+        CGSize size = [Utility getTextSizeWithString:self.replyObject.replyerName withFont:LHLFONT];
+        _replyerNameLabel.frame = (CGRect){0,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
         
-        size = [Utility getTextSizeWithString:[NSString stringWithFormat:@"回复 %@",@"我"] withFont:LHLFONT];
-        _myNameLabel.frame = (CGRect){CGRectGetMaxX(_replyerNameLabel.frame) + LHLTEXT_PADDING,0,size.width,titleBgFrame.size.height};
+        size = [Utility getTextSizeWithString:@"回复" withFont:LHLFONT];
+        _unnamedLabel.frame = (CGRect){CGRectGetMaxX(_replyerNameLabel.frame) + LHLTEXT_PADDING,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
+        
+        size = [Utility getTextSizeWithString:@"我" withFont:LHLFONT];
+        _myNameLabel.frame = (CGRect){CGRectGetMaxX(_unnamedLabel.frame) + LHLTEXT_PADDING,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
         
         _timeLabel.frame = (CGRect){CGRectGetMaxX(_myNameLabel.frame) + LHLTEXT_PADDING * 2,0,titleBgFrame.size.width - (CGRectGetMaxX(_myNameLabel.frame) + LHLTEXT_PADDING),titleBgFrame.size.height};
         
@@ -145,7 +156,7 @@
         self.replyObject = reply;
         
         _replyerNameLabel.text = reply.replyerName;
-        _myNameLabel.text = @"回复 我";
+        _myNameLabel.text = @"我";
         _textView.text = reply.replyContent;
         _timeLabel.text = reply.replyTime;
         
@@ -175,7 +186,7 @@
     }else{
         _buttonBgView.hidden = NO;
         _contentBgView.frame = (CGRect){-1,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
-        _contentBgView.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];
+        _contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
         [UIView animateWithDuration:0.25 animations:^{
             _contentBgView.frame = (CGRect){-103,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
         } completion:^(BOOL finished) {

@@ -95,17 +95,7 @@
                 "branch_questions": [
                     {
                         "id": "181",
-                        "answer": "This;||;apple;||;is",
-                        "ratio": "100"
-                    }
-                ]
-            },
-            {
-                "id": "284",
-                "branch_questions": [
-                    {
-                        "id": "181",
-                        "answer": "This;||;apple;||;is",
+                        "answer": "T",
                         "ratio": "100"
                     }
                 ]

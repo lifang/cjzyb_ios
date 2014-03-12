@@ -18,7 +18,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *countDownImageView;  //题目序号
 @property (weak, nonatomic) IBOutlet UIButton *upperButton;
 @property (weak, nonatomic) IBOutlet UIButton *lowerButton;
-@property (strong,nonatomic) NSDate *challengeStartTime; //挑战开始的时间
 @property (assign,nonatomic) double timeCount; //计时时间(单位为秒)
 @property (strong,nonatomic) NSTimer *timer;
 @property (assign,nonatomic) NSInteger currentNO;//当前正在做的题目序号,如超过问题数量代表答题完毕
@@ -30,6 +29,7 @@
 @property (strong,nonatomic) NSDictionary *answerJSONDic; //从文件中读取的answerJSON字典
 @property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
 @property (strong,nonatomic) NSString *answerStatus;    //文件中记载的完成状态
+@property (assign,nonatomic) BOOL isReDoingChallenge; //是否为重新挑战
 @end
 
 @implementation TenSecChallengeViewController
@@ -38,7 +38,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
+        self.isViewingHistory = NO;
+        self.isReDoingChallenge = NO;
     }
     return self;
 }
@@ -48,11 +49,15 @@
     [super viewDidLoad];
     [self setupViews];
     
-    
+    //载入question文件
     self.questionArray = [NSMutableArray arrayWithArray:[TenSecChallengeObject parseTenSecQuestionsFromFile]];
     
-    [self startChallenge];
+    //载入answer文件
+    [self parseAnswerJSON];
     
+    [self startChallenge];//到时此方法由外部调用
+    
+    //获取今日作业截止时间
     [self fetchHomeworkFinishTime];
 }
 
@@ -69,14 +74,24 @@
 }
 
 #pragma mark -- 挑战的生命周期
-
+//判断本界面的行为方式,并做初始化
 - (void)startChallenge{
-    self.challengeStartTime = [NSDate date];
-    self.timeCount = 0;
-    self.currentNO = 0;
-    self.answerArray = [NSMutableArray array];
+    if (self.isViewingHistory) {  //浏览历史
+        self.currentNO = 0;
+        //上方动作条添加"下一个"按钮
+    }else{
+        if ([self.answerStatus isEqualToString:@"1"]) { //重新做题
+            self.timeCount = 0;
+            self.isReDoingChallenge = YES;
+            self.currentNO = 0;
+            self.answerArray = [NSMutableArray array];
+        }else{ //继续做题
+            self.currentNO = self.lastTimeCurrentNO;
+        }
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+    }
+    self.isLastQuestion = NO;
     [self showNextQuestion];
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
 }
 
 - (void)pauseChallenge{
@@ -178,6 +193,8 @@
             [self.answerArray addObject:self.upperOptionLabel.text];
         }
         self.upperOptionLabel.backgroundColor = [UIColor greenColor];
+        self.upperButton.enabled = NO;
+        self.lowerButton.enabled = NO;
         [UIView animateWithDuration:0.5 animations:^{
             self.upperButton.alpha = self.upperButton.alpha > 0.5 ? 0.5 : 1;
         } completion:^(BOOL finished) {
@@ -199,6 +216,8 @@
             [self.answerArray addObject:self.lowerOptionLabel.text];
         }
         self.lowerOptionLabel.backgroundColor = [UIColor greenColor];
+        self.upperButton.enabled = NO;
+        self.lowerButton.enabled = NO;
         [UIView animateWithDuration:0.5 animations:^{
             self.upperButton.alpha = self.upperButton.alpha > 0.5 ? 0.5 : 1;
         } completion:^(BOOL finished) {
@@ -217,6 +236,8 @@
 #pragma mark -- action
 //从answer.js中解析有用信息,并保存JSONDic
 -(void)parseAnswerJSON{
+    self.answerArray = [NSMutableArray array];
+    
     NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
     //把path拼成真实文件路径
     
@@ -234,11 +255,25 @@
         self.answerJSONDic = dic;
         NSDictionary *dicc = [dic objectForKey:@"time_limit"];
         if (!dicc) { //判断是否已有十速挑战数据
-            [Utility errorAlert:@"尚没有十速挑战内容"];
+            
         }else{
-            self.answerStatus = [dicc objectForKey:@"status"];  //只要解析状态,已答题时间,题号  其余的不解析
+            self.answerStatus = [dicc objectForKey:@"status"];  //解析状态,已答题时间,题号,答案
             self.timeCount = [[dicc objectForKey:@"use_time"] doubleValue];
             self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"branch_item"] integerValue];
+            NSArray *questionsArray = [dicc objectForKey:@"questions"];
+            NSDictionary *bigQuestion = [questionsArray firstObject];
+            if (bigQuestion) {
+                NSArray *branchQuestionsArray = [bigQuestion objectForKey:@"branch_questions"];
+                for (NSInteger i = 0; i < branchQuestionsArray.count; i ++) {
+                    NSDictionary *branchQuestionDic = branchQuestionsArray[i];
+                    OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
+                    answer.answerID = [branchQuestionDic objectForKey:@"id"];
+                    answer.answerAnswer = [branchQuestionDic objectForKey:@"answer"];
+                    answer.answerRatio = [branchQuestionDic objectForKey:@"ratio"];
+                    
+                    [self.answerArray addObject:answer];
+                }
+            }
         }
     }
 }
@@ -249,6 +284,16 @@
 //    inter.delegate = self;
 //    
 //    [inter getLHLTestDelegateWithClassId:@"1" andUserId:@"8"];
+}
+
+//显示当前题目的正确答案,使用道具/浏览历史时调用
+-(void)showRightAnswer{
+    
+}
+
+//显示当前题目的历史答案,浏览历史时调用
+-(void)showHistoryAnswer{
+    
 }
 
 //比对当前时间是否早于给定时间
@@ -280,9 +325,13 @@
             }
             self.currentNO ++;
         }
+        
         if (self.currentNO == self.questionArray.count) {
             self.isLastQuestion = YES;
         }
+        
+        self.upperButton.enabled = YES;
+        self.lowerButton.enabled = YES;
         
     }else{
         [Utility errorAlert:@"未成功获取题目!"];
@@ -306,7 +355,7 @@
 
 //被计时器触发
 -(void) timerFired:(NSTimer *)timer{
-    self.timeCount = [[NSDate date] timeIntervalSinceDate:self.challengeStartTime];
+    self.timeCount += 0.1;
     [self refreshClock];
 }
 
@@ -344,6 +393,12 @@
         [self handleLabelFont:self.lowerOptionLabel];
         self.questionLabel.text = currentQuestion.tenQuestionContent;
         [self handleLabelFont:self.questionLabel];
+        if (self.isViewingHistory) {
+            self.upperButton.enabled = NO;
+            self.lowerButton.enabled = NO;
+            [self showRightAnswer];
+            [self showHistoryAnswer];
+        }
     }
 }
 
@@ -363,6 +418,8 @@
 }
 
 - (void)resultViewRestartButtonClicked{
+    [self.answerArray removeAllObjects];
+    [self startChallenge];
     [self.resultView removeFromSuperview];
     self.resultView = nil;
 }

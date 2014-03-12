@@ -18,24 +18,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="191"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smile.png" id="P9L-bG-aPO">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="systemMessage.png" id="P9L-bG-aPO">
                                 <rect key="frame" x="53" y="50" width="103" height="103"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.90810347579999995" green="0.90810347579999995" blue="0.90810347579999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2014/2/15 13:59" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="O5T-j2-DXJ" userLabel="timeLabel - 2014/2/15 13:59">
-                                <rect key="frame" x="178" y="50" width="307" height="20"/>
+                                <rect key="frame" x="178" y="48" width="307" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <color key="textColor" red="0.49803921580314636" green="0.49803921580314636" blue="0.49803921580314636" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" text="恭喜你在2014/2/18日发布的作业里勇获&quot;十速挑战&quot;项目的班级第一,&quot;优异&quot;积分加100.斯蒂芬斯柯达积分还是的浪费空间说得好法律是看得见会发" id="aZ2-52-odC" customClass="LHLTextView">
-                                <rect key="frame" x="173" y="61" width="510" height="74"/>
+                                <rect key="frame" x="173" y="66" width="510" height="88"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9sX-cP-gJi" userLabel="coverButton">
@@ -64,6 +64,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="smile.png" width="24" height="24"/>
+        <image name="systemMessage.png" width="109" height="109"/>
     </resources>
 </document>

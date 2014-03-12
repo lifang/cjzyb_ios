@@ -37,7 +37,7 @@
 - (void)makeSideButtons{
     if (!self.sideView) {
         self.sideView = [[UIView alloc] initWithFrame:(CGRect){self.frame.size.width - 103,0,103,self.frame.size.height}];
-        self.sideView.backgroundColor = [UIColor lightGrayColor];
+        self.sideView.backgroundColor = [UIColor colorWithRed:182.0/255.0 green:183.0/255.0 blue:184.0/255.0 alpha:1.0];
         [self.contentView insertSubview:self.sideView belowSubview:self.contentBgView];
         
         UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -83,7 +83,7 @@
             
         }];
     }else{
-        self.contentBgView.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];
+        self.contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
         [UIView animateWithDuration:0.25 animations:^{
             self.contentBgView.frame = (CGRect){-103,0,self.bounds.size};
         } completion:^(BOOL finished) {

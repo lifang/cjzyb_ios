@@ -29,7 +29,7 @@
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if (self) {
         self.backgroundView = [[UIView alloc] init];
-        self.backgroundView.backgroundColor = [UIColor colorWithRed:202.0/255.0 green:202.0/255.0 blue:202.0/255.0 alpha:1.0];
+        self.backgroundView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:205.0/255.0 blue:206.0/255.0 alpha:1.0];
         [self addSubview:self.backgroundView];
         
         self.replyButton = [UIButton buttonWithType:UIButtonTypeCustom];
