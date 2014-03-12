@@ -18,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *countDownImageView;  //题目序号
 @property (weak, nonatomic) IBOutlet UIButton *upperButton;
 @property (weak, nonatomic) IBOutlet UIButton *lowerButton;
+@property (weak, nonatomic) IBOutlet UIView *historyView;
+@property (weak, nonatomic) IBOutlet UILabel *historyYourChoiceLabel;
 @property (assign,nonatomic) double timeCount; //计时时间(单位为秒)
 @property (strong,nonatomic) NSTimer *timer;
 @property (assign,nonatomic) NSInteger currentNO;//当前正在做的题目序号,如超过问题数量代表答题完毕
@@ -38,8 +40,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.isViewingHistory = NO;
-        self.isReDoingChallenge = NO;
+
     }
     return self;
 }
@@ -48,6 +49,9 @@
 {
     [super viewDidLoad];
     [self setupViews];
+    
+    self.isViewingHistory = NO;
+    self.isReDoingChallenge = NO;
     
     //载入question文件
     self.questionArray = [NSMutableArray arrayWithArray:[TenSecChallengeObject parseTenSecQuestionsFromFile]];
@@ -71,6 +75,8 @@
     self.lowerOptionLabel.layer.cornerRadius = 8.0;
     
     [self.lowerButton addTarget:self action:@selector(lowerClicked:) forControlEvents:UIControlEventTouchDown];
+    
+    self.historyView.hidden = YES;
 }
 
 #pragma mark -- 挑战的生命周期
@@ -78,6 +84,7 @@
 - (void)startChallenge{
     if (self.isViewingHistory) {  //浏览历史
         self.currentNO = 0;
+        self.historyView.hidden = NO;
         //上方动作条添加"下一个"按钮
     }else{
         if ([self.answerStatus isEqualToString:@"1"]) { //重新做题
@@ -86,7 +93,7 @@
             self.currentNO = 0;
             self.answerArray = [NSMutableArray array];
         }else{ //继续做题
-            self.currentNO = self.lastTimeCurrentNO;
+            self.currentNO = self.lastTimeCurrentNO - 1;
         }
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
     }
@@ -106,6 +113,7 @@
     //显示结果界面
     [self.view addSubview:self.resultView];
     [self makeResult];
+    self.answerStatus = @"1";
 }
 
 - (void)makeResult{
@@ -113,9 +121,8 @@
     NSInteger numberOfRightAnswers = 0;
     if (self.answerArray.count == self.questionArray.count) {
         for (int i = 0; i < self.answerArray.count; i ++) {
-            NSString *answer = self.answerArray[i];
-            TenSecChallengeObject *question = self.questionArray[i];
-            if ([answer isEqualToString:question.tenRightAnswer]) {
+            OrdinaryAnswerObject *answer = self.answerArray[i];
+            if ([answer.answerRatio isEqualToString:@"100"]) {
                 numberOfRightAnswers ++;
             }
         }
@@ -166,12 +173,12 @@
         [questionDic setObject:anyQuestion.tenBigID forKey:@"id"];  //每个question中都含有大题号
             NSMutableArray *branches = [NSMutableArray array];
             for (int i = 0; i < self.answerArray.count; i ++) {
-                TenSecChallengeObject *question = self.questionArray[i];
-                NSString *answer = self.answerArray[i];
+//                TenSecChallengeObject *question = self.questionArray[i];
+                OrdinaryAnswerObject *answer = self.answerArray[i];
                 NSMutableDictionary *branchDic = [[NSMutableDictionary alloc] init];
-                [branchDic setObject:question.tenID forKey:@"id"];
-                [branchDic setObject:answer forKey:@"answer"];
-                [branchDic setObject:([answer isEqualToString:question.tenRightAnswer] ? @"100" : @"0") forKey:@"ratio"]; //正确:对-100  错-0
+                [branchDic setObject:answer.answerID forKey:@"id"];
+                [branchDic setObject:answer.answerAnswer forKey:@"answer"];
+                [branchDic setObject:answer.answerRatio forKey:@"ratio"]; //正确:对-100  错-0
                 [branches addObject:branchDic];
             }
     
@@ -190,7 +197,11 @@
 - (void)upperClicked:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.answerArray.count < self.questionArray.count) {
-            [self.answerArray addObject:self.upperOptionLabel.text];
+            OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
+            answer.answerID = self.currentQuestion.tenID;
+            answer.answerAnswer = self.upperOptionLabel.text;
+            answer.answerRatio = [self.upperOptionLabel.text isEqualToString:self.currentQuestion.tenRightAnswer] ? @"100" : @"0";
+            [self.answerArray addObject:answer];
         }
         self.upperOptionLabel.backgroundColor = [UIColor greenColor];
         self.upperButton.enabled = NO;
@@ -213,7 +224,11 @@
 - (void)lowerClicked:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.answerArray.count < self.questionArray.count) {
-            [self.answerArray addObject:self.lowerOptionLabel.text];
+            OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
+            answer.answerID = self.currentQuestion.tenID;
+            answer.answerAnswer = self.lowerOptionLabel.text;
+            answer.answerRatio = [self.lowerOptionLabel.text isEqualToString:self.currentQuestion.tenRightAnswer] ? @"100" : @"0";
+            [self.answerArray addObject:answer];
         }
         self.lowerOptionLabel.backgroundColor = [UIColor greenColor];
         self.upperButton.enabled = NO;
@@ -288,12 +303,23 @@
 
 //显示当前题目的正确答案,使用道具/浏览历史时调用
 -(void)showRightAnswer{
-    
+    if([_currentQuestion.tenRightAnswer isEqualToString:self.upperOptionLabel.text]){
+        self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:49.0/255.0 green:200.0/255.0 blue:124.0/255.0 alpha:1.0];
+        self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:49.0/255.0 green:55.0/255.0 blue:65.0/255.0 alpha:1.0];
+    }else{
+        self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:49.0/255.0 green:55.0/255.0 blue:65.0/255.0 alpha:1.0];
+        self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:49.0/255.0 green:200.0/255.0 blue:124.0/255.0 alpha:1.0];
+    }
 }
 
 //显示当前题目的历史答案,浏览历史时调用
 -(void)showHistoryAnswer{
-    
+    if (self.currentNO < self.answerArray.count) {
+        OrdinaryAnswerObject *answer = self.answerArray[self.currentNO];
+        self.historyYourChoiceLabel.text = answer.answerAnswer;
+    }else{
+        [Utility errorAlert:@"历史答案错误!"];
+    }
 }
 
 //比对当前时间是否早于给定时间
@@ -418,7 +444,6 @@
 }
 
 - (void)resultViewRestartButtonClicked{
-    [self.answerArray removeAllObjects];
     [self startChallenge];
     [self.resultView removeFromSuperview];
     self.resultView = nil;
