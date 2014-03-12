@@ -40,7 +40,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-
+        self.isViewingHistory = NO;
+        self.isReDoingChallenge = NO;
     }
     return self;
 }
@@ -49,9 +50,6 @@
 {
     [super viewDidLoad];
     [self setupViews];
-    
-    self.isViewingHistory = NO;
-    self.isReDoingChallenge = NO;
     
     //载入question文件
     self.questionArray = [NSMutableArray arrayWithArray:[TenSecChallengeObject parseTenSecQuestionsFromFile]];
@@ -345,6 +343,8 @@
 - (void) showNextQuestion{
     if (self.questionArray.count > 0) {
         if (self.currentNO < self.questionArray.count) {
+            self.upperButton.enabled = YES;
+            self.lowerButton.enabled = YES;
             self.currentQuestion = self.questionArray[self.currentNO];
             if (self.currentNO < self.questionNumberImages.count) {
                 self.countDownImageView.image = self.questionNumberImages[self.currentNO];
@@ -355,9 +355,6 @@
         if (self.currentNO == self.questionArray.count) {
             self.isLastQuestion = YES;
         }
-        
-        self.upperButton.enabled = YES;
-        self.lowerButton.enabled = YES;
         
     }else{
         [Utility errorAlert:@"未成功获取题目!"];
