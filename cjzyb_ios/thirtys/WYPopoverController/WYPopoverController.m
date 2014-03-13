@@ -1075,6 +1075,7 @@ static float edgeSizeFromCornerRadius(float cornerRadius) {
     }
     
     arrowOffset = value * coef;
+//    NSLog(@"array = %f",arrowOffset);
 }
 
 - (void)setViewController:(UIViewController *)viewController
@@ -2080,7 +2081,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
 {
     barButtonItem = aItem;
     UIView *itemView = [barButtonItem valueForKey:@"view"];
-    aArrowDirections = WYPopoverArrowDirectionDown | WYPopoverArrowDirectionUp;
+    aArrowDirections = WYPopoverArrowDirectionUp;
     [self presentPopoverFromRect:itemView.bounds
                           inView:itemView
         permittedArrowDirections:aArrowDirections
@@ -2138,10 +2139,6 @@ static WYPopoverTheme *defaultTheme_ = nil;
             containerViewSize.height = backgroundView.frame.size.width;
         }
         
-        //WY_LOG(@"containerView.arrowOffset = %f", containerView.arrowOffset);
-        //WY_LOG(@"containerViewSize = %@", NSStringFromCGSize(containerViewSize));
-        //WY_LOG(@"orientation = %@", WYStringFromOrientation(orientation));
-        
         if (arrowDirection == WYPopoverArrowDirectionDown)
         {
             transform = CGAffineTransformTranslate(transform, backgroundView.arrowOffset, containerViewSize.height / 2);
@@ -2193,7 +2190,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
     
     if (backgroundView.borderWidth == 0)
     {
-        viewController.view.layer.cornerRadius = backgroundView.outerCornerRadius;
+//        viewController.view.layer.cornerRadius = backgroundView.outerCornerRadius;
     }
 }
 
@@ -2317,8 +2314,10 @@ static WYPopoverTheme *defaultTheme_ = nil;
         
         backgroundView.frame = containerFrame;
         
-        backgroundView.center = CGPointMake(viewFrame.origin.x + viewFrame.size.width / 2, viewFrame.origin.y + viewFrame.size.height / 2);
+#warning 设置backgroundcenter
         
+        backgroundView.center = CGPointMake(viewFrame.origin.x + viewFrame.size.width / 2, viewFrame.origin.y + viewFrame.size.height / 2);
+//        NSLog(@"x=%f,y=%f",backgroundView.center.x,backgroundView.center.y);
         containerFrame = backgroundView.frame;
         
         offset = 0;
@@ -2520,8 +2519,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
     } else {
         backgroundView.frame = containerFrame;
     }
-    
-    WY_LOG(@"popoverContainerView.frame = %@", NSStringFromCGRect(backgroundView.frame));
+
 }
 
 - (void)dismissPopoverAnimated:(BOOL)aAnimated
@@ -3117,10 +3115,6 @@ static CGPoint WYPointRelativeToOrientation(CGPoint origin, CGSize size, UIInter
 {
     NSDictionary *info = [notification userInfo];
     keyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
-    //UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    //WY_LOG(@"orientation = %@", WYStringFromOrientation(orientation));
-    //WY_LOG(@"keyboardRect = %@", NSStringFromCGRect(keyboardRect));
     
     BOOL shouldIgnore = NO;
     

@@ -20,7 +20,7 @@
     [reqheaders setValue:[NSString stringWithFormat:@"%@",nick] forKey:@"nickname"];
     [reqheaders setValue:[NSString stringWithFormat:@"%@",name] forKey:@"name"];
     [reqheaders setValue:[NSString stringWithFormat:@"%@",code] forKey:@"verification_code"];
-    [reqheaders setValue:[NSString stringWithFormat:@"%@",code] forKey:@"avatar"];
+    
     
     self.interfaceUrl = @"http://58.240.210.42:3004/api/students/record_person_info";
     

@@ -22,7 +22,6 @@
 #import "DataService.h"
 
 #import "SVPullToRefresh.h"
-#import "CMRManager.h"
 
 #import "OrdinaryAnswerObject.h"
 

@@ -26,23 +26,26 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
 }
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [DataService sharedService].third = 1;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShowThird:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHideThird:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.txtView resignFirstResponder];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -50,7 +53,7 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - Keyboard notifications
-- (void)keyboardWillShow:(NSNotification *)notification {
+- (void)keyboardWillShowThird:(NSNotification *)notification {
         NSDictionary *userInfo = [notification userInfo];
         NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
         
@@ -67,7 +70,7 @@
                          }];
 
 }
-- (void)keyboardWillHide:(NSNotification *)notification {
+- (void)keyboardWillHideThird:(NSNotification *)notification {
     
         NSDictionary *userInfo = [notification userInfo];
         
@@ -165,7 +168,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
-            self.txtView.text = @"";
+            self.txtView.text = @"";self.textCountLabel.text = @"还可以输入60字";
             NSArray *array = [result objectForKey:@"micropost"];
             NSDictionary *dic = [array objectAtIndex:0];
             MessageObject *message = [MessageObject messageFromDictionary:dic];

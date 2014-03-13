@@ -14,6 +14,10 @@
 #import "CardCustomView.h"
 #import "MyPageControl.h"
 #import "DeleteCardInterface.h"
+#import "TagObject.h"
+#import "TagViewController.h"
+#import "CMRManager.h"
+
 @interface CardpackageViewController : UIViewController<CardFirstViewDelegate,CardSecondViewDelegate,CardInterfaceDelegate,UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,DeleteCardInterfaceDelegate>
 
 @property (strong, nonatomic) CardInterface *cardInter;
@@ -38,4 +42,7 @@
 @property (nonatomic, strong) IBOutlet UIScrollView *myScrollView;
 @property (nonatomic, strong) UITableView *myTable;
 @property (strong, nonatomic) MyPageControl *myPageControl;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 @end

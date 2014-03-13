@@ -49,6 +49,11 @@
 		0E9265A418BEEA01003ADEC3 /* send@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9265A318BEEA01003ADEC3 /* send@2x.png */; };
 		0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9265A518BF008C003ADEC3 /* arrowImg@2x.png */; };
 		0E9265BF18C028A9003ADEC3 /* ComtomTxt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9265BE18C028A9003ADEC3 /* ComtomTxt.m */; };
+		0E9C6E9818D1496000E807D1 /* SortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C6E9618D1496000E807D1 /* SortViewController.m */; };
+		0E9C6E9918D1496000E807D1 /* SortViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9C6E9718D1496000E807D1 /* SortViewController.xib */; };
+		0E9C6E9D18D1977E00E807D1 /* SelectedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C6E9B18D1977E00E807D1 /* SelectedViewController.m */; };
+		0E9C6E9E18D1977E00E807D1 /* SelectedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9C6E9C18D1977E00E807D1 /* SelectedViewController.xib */; };
+		0E9C6EA118D1A16300E807D1 /* ClozeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C6EA018D1A16300E807D1 /* ClozeView.m */; };
 		0E9D688918C9A96C00EACFA3 /* detail_logIn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9D688818C9A96C00EACFA3 /* detail_logIn@2x.png */; };
 		0E9D688B18C9AA2900EACFA3 /* detail_info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9D688A18C9AA2900EACFA3 /* detail_info@2x.png */; };
 		0E9D688D18C9AB6D00EACFA3 /* detail_sure@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9D688C18C9AB6D00EACFA3 /* detail_sure@2x.png */; };
@@ -71,13 +76,29 @@
 		0E9D68C718CD966400EACFA3 /* Array.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D68C418CD966400EACFA3 /* Array.mm */; };
 		0E9D68C818CD966400EACFA3 /* SearchCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D68C618CD966400EACFA3 /* SearchCore.mm */; };
 		0E9D68CA18CD972600EACFA3 /* multipy_unicode.dat in Resources */ = {isa = PBXBuildFile; fileRef = 0E9D68C918CD972600EACFA3 /* multipy_unicode.dat */; };
-		0E9D68CD18CD979A00EACFA3 /* CMRManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D68CC18CD979A00EACFA3 /* CMRManager.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0E9D68D318CDB6D800EACFA3 /* CardCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D68D218CDB6D800EACFA3 /* CardCustomView.m */; };
 		0E9D68D918CDC28700EACFA3 /* MyPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D68D818CDC28700EACFA3 /* MyPageControl.m */; };
 		0E9D68DC18CDC45400EACFA3 /* card_highted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9D68DA18CDC45400EACFA3 /* card_highted@2x.png */; };
 		0E9D68DD18CDC45400EACFA3 /* card_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9D68DB18CDC45400EACFA3 /* card_normal@2x.png */; };
 		0EAABD6218CEA35900CD2DE7 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EAABD6118CEA35900CD2DE7 /* MediaPlayer.framework */; };
 		0EAABD6518CEAC2C00CD2DE7 /* DeleteCardInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAABD6418CEAC2C00CD2DE7 /* DeleteCardInterface.m */; };
+		0EAABD6818CEE72C00CD2DE7 /* TagObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAABD6718CEE72C00CD2DE7 /* TagObject.m */; };
+		0EAABD7018CEEC7500CD2DE7 /* TagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAABD6F18CEEC7500CD2DE7 /* TagCell.m */; };
+		0EAABD7218CF052300CD2DE7 /* tag_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAABD7118CF052300CD2DE7 /* tag_back@2x.png */; };
+		0EAABD7B18CF136900CD2DE7 /* TagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAABD7918CF136900CD2DE7 /* TagViewController.m */; };
+		0EAABD7C18CF136900CD2DE7 /* TagViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EAABD7A18CF136900CD2DE7 /* TagViewController.xib */; };
+		0EAABD7F18CF15C900CD2DE7 /* card_noselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAABD7D18CF15C900CD2DE7 /* card_noselected@2x.png */; };
+		0EAABD8018CF15C900CD2DE7 /* card_hasselected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAABD7E18CF15C900CD2DE7 /* card_hasselected@2x.png */; };
+		0EAABD8218CF17B400CD2DE7 /* card_tg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAABD8118CF17B400CD2DE7 /* card_tg@2x.png */; };
+		0EAABD8518CF1B5500CD2DE7 /* CMRManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0EAABD8418CF1B5500CD2DE7 /* CMRManager.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		0EAABD8818CF1F6300CD2DE7 /* TagInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAABD8718CF1F6300CD2DE7 /* TagInterface.m */; };
+		0EAABD8B18CF22F700CD2DE7 /* TagViewFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAABD8A18CF22F700CD2DE7 /* TagViewFooter.m */; };
+		0EAABDA818D0062100CD2DE7 /* SelectedTagInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAABDA718D0062100CD2DE7 /* SelectedTagInterface.m */; };
+		0EAABDAC18D02DEC00CD2DE7 /* ListenWriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAABDAA18D02DEC00CD2DE7 /* ListenWriteViewController.m */; };
+		0EAABDAD18D02DEC00CD2DE7 /* ListenWriteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EAABDAB18D02DEC00CD2DE7 /* ListenWriteViewController.xib */; };
+		0EAABDB318D034AD00CD2DE7 /* question.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EAABDB218D034AD00CD2DE7 /* question.json */; };
+		0EAABDB518D034B800CD2DE7 /* answer.json in Sources */ = {isa = PBXBuildFile; fileRef = 0EAABDB418D034B800CD2DE7 /* answer.json */; };
+		0EAABDBF18D0416E00CD2DE7 /* listen_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAABDBE18D0416E00CD2DE7 /* listen_back@2x.png */; };
 		0EEF4BCF18C561300058606A /* DataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4BCE18C561300058606A /* DataService.m */; };
 		0EEF4BD818C561570058606A /* CardFirstView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4BD118C561570058606A /* CardFirstView.m */; };
 		0EEF4BD918C561570058606A /* CardFirstView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EEF4BD218C561570058606A /* CardFirstView.xib */; };
@@ -379,6 +400,14 @@
 		0E9265A518BF008C003ADEC3 /* arrowImg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrowImg@2x.png"; sourceTree = "<group>"; };
 		0E9265BD18C028A9003ADEC3 /* ComtomTxt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComtomTxt.h; sourceTree = "<group>"; };
 		0E9265BE18C028A9003ADEC3 /* ComtomTxt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComtomTxt.m; sourceTree = "<group>"; };
+		0E9C6E9518D1496000E807D1 /* SortViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortViewController.h; sourceTree = "<group>"; };
+		0E9C6E9618D1496000E807D1 /* SortViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortViewController.m; sourceTree = "<group>"; };
+		0E9C6E9718D1496000E807D1 /* SortViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortViewController.xib; sourceTree = "<group>"; };
+		0E9C6E9A18D1977E00E807D1 /* SelectedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedViewController.h; sourceTree = "<group>"; };
+		0E9C6E9B18D1977E00E807D1 /* SelectedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectedViewController.m; sourceTree = "<group>"; };
+		0E9C6E9C18D1977E00E807D1 /* SelectedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectedViewController.xib; sourceTree = "<group>"; };
+		0E9C6E9F18D1A16300E807D1 /* ClozeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClozeView.h; sourceTree = "<group>"; };
+		0E9C6EA018D1A16300E807D1 /* ClozeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClozeView.m; sourceTree = "<group>"; };
 		0E9D688818C9A96C00EACFA3 /* detail_logIn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detail_logIn@2x.png"; sourceTree = "<group>"; };
 		0E9D688A18C9AA2900EACFA3 /* detail_info@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detail_info@2x.png"; sourceTree = "<group>"; };
 		0E9D688C18C9AB6D00EACFA3 /* detail_sure@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "detail_sure@2x.png"; sourceTree = "<group>"; };
@@ -409,8 +438,6 @@
 		0E9D68C518CD966400EACFA3 /* SearchCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCore.h; sourceTree = "<group>"; };
 		0E9D68C618CD966400EACFA3 /* SearchCore.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SearchCore.mm; sourceTree = "<group>"; };
 		0E9D68C918CD972600EACFA3 /* multipy_unicode.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = multipy_unicode.dat; sourceTree = "<group>"; };
-		0E9D68CB18CD979A00EACFA3 /* CMRManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMRManager.h; sourceTree = "<group>"; };
-		0E9D68CC18CD979A00EACFA3 /* CMRManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CMRManager.mm; sourceTree = "<group>"; };
 		0E9D68D118CDB6D800EACFA3 /* CardCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardCustomView.h; sourceTree = "<group>"; };
 		0E9D68D218CDB6D800EACFA3 /* CardCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardCustomView.m; sourceTree = "<group>"; };
 		0E9D68D718CDC28700EACFA3 /* MyPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPageControl.h; sourceTree = "<group>"; };
@@ -420,6 +447,31 @@
 		0EAABD6118CEA35900CD2DE7 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		0EAABD6318CEAC2C00CD2DE7 /* DeleteCardInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteCardInterface.h; sourceTree = "<group>"; };
 		0EAABD6418CEAC2C00CD2DE7 /* DeleteCardInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteCardInterface.m; sourceTree = "<group>"; };
+		0EAABD6618CEE72C00CD2DE7 /* TagObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagObject.h; sourceTree = "<group>"; };
+		0EAABD6718CEE72C00CD2DE7 /* TagObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagObject.m; sourceTree = "<group>"; };
+		0EAABD6E18CEEC7500CD2DE7 /* TagCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagCell.h; sourceTree = "<group>"; };
+		0EAABD6F18CEEC7500CD2DE7 /* TagCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagCell.m; sourceTree = "<group>"; };
+		0EAABD7118CF052300CD2DE7 /* tag_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tag_back@2x.png"; sourceTree = "<group>"; };
+		0EAABD7818CF136900CD2DE7 /* TagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagViewController.h; sourceTree = "<group>"; };
+		0EAABD7918CF136900CD2DE7 /* TagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagViewController.m; sourceTree = "<group>"; };
+		0EAABD7A18CF136900CD2DE7 /* TagViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TagViewController.xib; sourceTree = "<group>"; };
+		0EAABD7D18CF15C900CD2DE7 /* card_noselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "card_noselected@2x.png"; sourceTree = "<group>"; };
+		0EAABD7E18CF15C900CD2DE7 /* card_hasselected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "card_hasselected@2x.png"; sourceTree = "<group>"; };
+		0EAABD8118CF17B400CD2DE7 /* card_tg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "card_tg@2x.png"; sourceTree = "<group>"; };
+		0EAABD8318CF1B5500CD2DE7 /* CMRManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMRManager.h; sourceTree = "<group>"; };
+		0EAABD8418CF1B5500CD2DE7 /* CMRManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CMRManager.mm; sourceTree = "<group>"; };
+		0EAABD8618CF1F6300CD2DE7 /* TagInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagInterface.h; sourceTree = "<group>"; };
+		0EAABD8718CF1F6300CD2DE7 /* TagInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagInterface.m; sourceTree = "<group>"; };
+		0EAABD8918CF22F700CD2DE7 /* TagViewFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagViewFooter.h; sourceTree = "<group>"; };
+		0EAABD8A18CF22F700CD2DE7 /* TagViewFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagViewFooter.m; sourceTree = "<group>"; };
+		0EAABDA618D0062100CD2DE7 /* SelectedTagInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedTagInterface.h; sourceTree = "<group>"; };
+		0EAABDA718D0062100CD2DE7 /* SelectedTagInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectedTagInterface.m; sourceTree = "<group>"; };
+		0EAABDA918D02DEC00CD2DE7 /* ListenWriteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListenWriteViewController.h; sourceTree = "<group>"; };
+		0EAABDAA18D02DEC00CD2DE7 /* ListenWriteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListenWriteViewController.m; sourceTree = "<group>"; };
+		0EAABDAB18D02DEC00CD2DE7 /* ListenWriteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListenWriteViewController.xib; sourceTree = "<group>"; };
+		0EAABDB218D034AD00CD2DE7 /* question.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = question.json; sourceTree = "<group>"; };
+		0EAABDB418D034B800CD2DE7 /* answer.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = answer.json; sourceTree = "<group>"; };
+		0EAABDBE18D0416E00CD2DE7 /* listen_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "listen_back@2x.png"; sourceTree = "<group>"; };
 		0EEF4BCD18C561300058606A /* DataService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataService.h; sourceTree = "<group>"; };
 		0EEF4BCE18C561300058606A /* DataService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataService.m; sourceTree = "<group>"; };
 		0EEF4BD018C561570058606A /* CardFirstView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardFirstView.h; sourceTree = "<group>"; };
@@ -846,6 +898,11 @@
 		0E92657218BDACCE003ADEC3 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0EAABDBE18D0416E00CD2DE7 /* listen_back@2x.png */,
+				0EAABD8118CF17B400CD2DE7 /* card_tg@2x.png */,
+				0EAABD7D18CF15C900CD2DE7 /* card_noselected@2x.png */,
+				0EAABD7E18CF15C900CD2DE7 /* card_hasselected@2x.png */,
+				0EAABD7118CF052300CD2DE7 /* tag_back@2x.png */,
 				0E9D68DA18CDC45400EACFA3 /* card_highted@2x.png */,
 				0E9D68DB18CDC45400EACFA3 /* card_normal@2x.png */,
 				0E9D68B718CD6C5500EACFA3 /* card_btn@2x.png */,
@@ -904,6 +961,93 @@
 			name = "搜索算法";
 			sourceTree = "<group>";
 		};
+		0EAABDAE18D02E3300CD2DE7 /* 登录 */ = {
+			isa = PBXGroup;
+			children = (
+				0E5D1C7718C99F3A008A13F2 /* LogInViewController.h */,
+				0E5D1C7818C99F3A008A13F2 /* LogInViewController.m */,
+				0E5D1C7918C99F3A008A13F2 /* LogInViewController.xib */,
+			);
+			name = "登录";
+			sourceTree = "<group>";
+		};
+		0EAABDAF18D02E3E00CD2DE7 /* 首页 */ = {
+			isa = PBXGroup;
+			children = (
+				0E92654C18BD9016003ADEC3 /* MainViewController.h */,
+				0E92654D18BD9016003ADEC3 /* MainViewController.m */,
+				0E92654E18BD9016003ADEC3 /* MainViewController.xib */,
+				0EEF4C1218C5622F0058606A /* FirstViewController.h */,
+				0EEF4C1318C5622F0058606A /* FirstViewController.m */,
+				0EEF4C1418C5622F0058606A /* FirstViewController.xib */,
+				0E92656018BD92A0003ADEC3 /* SecondViewController.h */,
+				0E92656118BD92A0003ADEC3 /* SecondViewController.m */,
+				0E92656218BD92A0003ADEC3 /* SecondViewController.xib */,
+				0E92656518BD92B0003ADEC3 /* ThirdViewController.h */,
+				0E92656618BD92B0003ADEC3 /* ThirdViewController.m */,
+				0E92656718BD92B0003ADEC3 /* ThirdViewController.xib */,
+				0E5D1C6418C85FD5008A13F2 /* FourthViewController.h */,
+				0E5D1C6518C85FD5008A13F2 /* FourthViewController.m */,
+				0E5D1C6618C85FD5008A13F2 /* FourthViewController.xib */,
+				0EEF4C1718C562370058606A /* FirstViewHeader.h */,
+				0EEF4C1818C562370058606A /* FirstViewHeader.m */,
+			);
+			name = "首页";
+			sourceTree = "<group>";
+		};
+		0EAABDB018D02E5100CD2DE7 /* 卡包 */ = {
+			isa = PBXGroup;
+			children = (
+				0E9D689A18CD670E00EACFA3 /* CardpackageViewController.h */,
+				0E9D689B18CD670E00EACFA3 /* CardpackageViewController.m */,
+				0E9D689C18CD670E00EACFA3 /* CardpackageViewController.xib */,
+				0EAABD7818CF136900CD2DE7 /* TagViewController.h */,
+				0EAABD7918CF136900CD2DE7 /* TagViewController.m */,
+				0EAABD7A18CF136900CD2DE7 /* TagViewController.xib */,
+			);
+			name = "卡包";
+			sourceTree = "<group>";
+		};
+		0EAABDB118D02E6400CD2DE7 /* 卡包 */ = {
+			isa = PBXGroup;
+			children = (
+				0EAABD6E18CEEC7500CD2DE7 /* TagCell.h */,
+				0EAABD6F18CEEC7500CD2DE7 /* TagCell.m */,
+				0EAABD8918CF22F700CD2DE7 /* TagViewFooter.h */,
+				0EAABD8A18CF22F700CD2DE7 /* TagViewFooter.m */,
+				0E9D68D118CDB6D800EACFA3 /* CardCustomView.h */,
+				0E9D68D218CDB6D800EACFA3 /* CardCustomView.m */,
+				0E9D68D718CDC28700EACFA3 /* MyPageControl.h */,
+				0E9D68D818CDC28700EACFA3 /* MyPageControl.m */,
+				0EEF4BD018C561570058606A /* CardFirstView.h */,
+				0EEF4BD118C561570058606A /* CardFirstView.m */,
+				0EEF4BD218C561570058606A /* CardFirstView.xib */,
+				0EEF4BD318C561570058606A /* CardSecondView.h */,
+				0EEF4BD418C561570058606A /* CardSecondView.m */,
+				0EEF4BD518C561570058606A /* CardSecondView.xib */,
+			);
+			name = "卡包";
+			sourceTree = "<group>";
+		};
+		0EAABDB618D0364800CD2DE7 /* modelmodel */ = {
+			isa = PBXGroup;
+			children = (
+				0EAABD6618CEE72C00CD2DE7 /* TagObject.h */,
+				0EAABD6718CEE72C00CD2DE7 /* TagObject.m */,
+				0E9D689F18CD671F00EACFA3 /* CardObject.h */,
+				0E9D68A018CD671F00EACFA3 /* CardObject.m */,
+				0EEF4C0C18C561F30058606A /* MessageObject.h */,
+				0EEF4C0D18C561F30058606A /* MessageObject.m */,
+				0EEF4C1A18C562900058606A /* ReplyMessageObject.h */,
+				0EEF4C1B18C562900058606A /* ReplyMessageObject.m */,
+				0EEF4C2C18C5C6120058606A /* UserObject.h */,
+				0EEF4C2D18C5C6120058606A /* UserObject.m */,
+				0EEF4C2F18C5C8F00058606A /* ClassObject.h */,
+				0EEF4C3018C5C8F00058606A /* ClassObject.m */,
+			);
+			name = modelmodel;
+			sourceTree = "<group>";
+		};
 		0EEF4BDD18C561700058606A /* Interface */ = {
 			isa = PBXGroup;
 			children = (
@@ -939,6 +1083,10 @@
 				0E9D68C018CD8CDF00EACFA3 /* CardInterface.m */,
 				0EAABD6318CEAC2C00CD2DE7 /* DeleteCardInterface.h */,
 				0EAABD6418CEAC2C00CD2DE7 /* DeleteCardInterface.m */,
+				0EAABD8618CF1F6300CD2DE7 /* TagInterface.h */,
+				0EAABD8718CF1F6300CD2DE7 /* TagInterface.m */,
+				0EAABDA618D0062100CD2DE7 /* SelectedTagInterface.h */,
+				0EAABDA718D0062100CD2DE7 /* SelectedTagInterface.m */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1062,16 +1210,9 @@
 		6329549718BC875800F2B78D /* cjzyb_ios */ = {
 			isa = PBXGroup;
 			children = (
-				0E9D689F18CD671F00EACFA3 /* CardObject.h */,
-				0E9D68A018CD671F00EACFA3 /* CardObject.m */,
-				0EEF4C0C18C561F30058606A /* MessageObject.h */,
-				0EEF4C0D18C561F30058606A /* MessageObject.m */,
-				0EEF4C1A18C562900058606A /* ReplyMessageObject.h */,
-				0EEF4C1B18C562900058606A /* ReplyMessageObject.m */,
-				0EEF4C2C18C5C6120058606A /* UserObject.h */,
-				0EEF4C2D18C5C6120058606A /* UserObject.m */,
-				0EEF4C2F18C5C8F00058606A /* ClassObject.h */,
-				0EEF4C3018C5C8F00058606A /* ClassObject.m */,
+				0EAABDB418D034B800CD2DE7 /* answer.json */,
+				0EAABDB218D034AD00CD2DE7 /* question.json */,
+				0EAABDB618D0364800CD2DE7 /* modelmodel */,
 				0EEF4BDD18C561700058606A /* Interface */,
 				0E92657218BDACCE003ADEC3 /* images */,
 				632954C618BC88EA00F2B78D /* Tools */,
@@ -1085,8 +1226,8 @@
 				632954A118BC875800F2B78D /* AppDelegate.m */,
 				0EEF4BCD18C561300058606A /* DataService.h */,
 				0EEF4BCE18C561300058606A /* DataService.m */,
-				0E9D68CB18CD979A00EACFA3 /* CMRManager.h */,
-				0E9D68CC18CD979A00EACFA3 /* CMRManager.mm */,
+				0EAABD8318CF1B5500CD2DE7 /* CMRManager.h */,
+				0EAABD8418CF1B5500CD2DE7 /* CMRManager.mm */,
 				632954A318BC875800F2B78D /* Images.xcassets */,
 				6329549818BC875800F2B78D /* Supporting Files */,
 			);
@@ -1128,9 +1269,8 @@
 		632954C018BC879B00F2B78D /* controllers */ = {
 			isa = PBXGroup;
 			children = (
-				0E5D1C7718C99F3A008A13F2 /* LogInViewController.h */,
-				0E5D1C7818C99F3A008A13F2 /* LogInViewController.m */,
-				0E5D1C7918C99F3A008A13F2 /* LogInViewController.xib */,
+				0EAABDAF18D02E3E00CD2DE7 /* 首页 */,
+				0EAABDAE18D02E3300CD2DE7 /* 登录 */,
 				6396576918C036B1002F2A90 /* DRLeftTabBarViewController.h */,
 				6396576A18C036B1002F2A90 /* DRLeftTabBarViewController.m */,
 				6396576B18C036B1002F2A90 /* UserInfoPopViewController.h */,
@@ -1145,36 +1285,17 @@
 				189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */,
 				189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */,
 				189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */,
-				0E92654C18BD9016003ADEC3 /* MainViewController.h */,
-				0E92654D18BD9016003ADEC3 /* MainViewController.m */,
-				0E92654E18BD9016003ADEC3 /* MainViewController.xib */,
-				0EEF4C1218C5622F0058606A /* FirstViewController.h */,
-				0EEF4C1318C5622F0058606A /* FirstViewController.m */,
-				0EEF4C1418C5622F0058606A /* FirstViewController.xib */,
-				0E92656018BD92A0003ADEC3 /* SecondViewController.h */,
-				0E92656118BD92A0003ADEC3 /* SecondViewController.m */,
-				0E92656218BD92A0003ADEC3 /* SecondViewController.xib */,
-				0E92656518BD92B0003ADEC3 /* ThirdViewController.h */,
-				0E92656618BD92B0003ADEC3 /* ThirdViewController.m */,
-				0E92656718BD92B0003ADEC3 /* ThirdViewController.xib */,
-				0E5D1C6418C85FD5008A13F2 /* FourthViewController.h */,
-				0E5D1C6518C85FD5008A13F2 /* FourthViewController.m */,
-				0E5D1C6618C85FD5008A13F2 /* FourthViewController.xib */,
-				0EEF4C1718C562370058606A /* FirstViewHeader.h */,
-				0EEF4C1818C562370058606A /* FirstViewHeader.m */,
 				636CF4B618BD90350085C28E /* test */,
 				181A786318C4206700D288D3 /* TenSecChallengeViewController.h */,
 				181A786418C4206700D288D3 /* TenSecChallengeViewController.m */,
 				181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */,
+				0EAABDB018D02E5100CD2DE7 /* 卡包 */,
 				6396580718C04D4A002F2A90 /* HomeworkViewController.h */,
 				6396580818C04D4A002F2A90 /* HomeworkViewController.m */,
 				6396580918C04D4A002F2A90 /* HomeworkViewController.xib */,
 				6396583018C06C9D002F2A90 /* HomeworkDailyCollectionViewController.h */,
 				6396583118C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m */,
 				6396583218C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib */,
-				0E9D689A18CD670E00EACFA3 /* CardpackageViewController.h */,
-				0E9D689B18CD670E00EACFA3 /* CardpackageViewController.m */,
-				0E9D689C18CD670E00EACFA3 /* CardpackageViewController.xib */,
 				63289A2118C594DB00C0083E /* ReadingTaskViewController.h */,
 				63289A2218C594DB00C0083E /* ReadingTaskViewController.m */,
 				63289A2318C594DB00C0083E /* ReadingTaskViewController.xib */,
@@ -1184,6 +1305,15 @@
 				187222B218C8572E00BBE2D1 /* SelectingChallengeViewController.h */,
 				187222B318C8572E00BBE2D1 /* SelectingChallengeViewController.m */,
 				187222B418C8572E00BBE2D1 /* SelectingChallengeViewController.xib */,
+				0EAABDA918D02DEC00CD2DE7 /* ListenWriteViewController.h */,
+				0EAABDAA18D02DEC00CD2DE7 /* ListenWriteViewController.m */,
+				0EAABDAB18D02DEC00CD2DE7 /* ListenWriteViewController.xib */,
+				0E9C6E9518D1496000E807D1 /* SortViewController.h */,
+				0E9C6E9618D1496000E807D1 /* SortViewController.m */,
+				0E9C6E9718D1496000E807D1 /* SortViewController.xib */,
+				0E9C6E9A18D1977E00E807D1 /* SelectedViewController.h */,
+				0E9C6E9B18D1977E00E807D1 /* SelectedViewController.m */,
+				0E9C6E9C18D1977E00E807D1 /* SelectedViewController.xib */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -1233,16 +1363,9 @@
 		632954C418BC879B00F2B78D /* views */ = {
 			isa = PBXGroup;
 			children = (
-				0E9D68D118CDB6D800EACFA3 /* CardCustomView.h */,
-				0E9D68D218CDB6D800EACFA3 /* CardCustomView.m */,
-				0E9D68D718CDC28700EACFA3 /* MyPageControl.h */,
-				0E9D68D818CDC28700EACFA3 /* MyPageControl.m */,
-				0EEF4BD018C561570058606A /* CardFirstView.h */,
-				0EEF4BD118C561570058606A /* CardFirstView.m */,
-				0EEF4BD218C561570058606A /* CardFirstView.xib */,
-				0EEF4BD318C561570058606A /* CardSecondView.h */,
-				0EEF4BD418C561570058606A /* CardSecondView.m */,
-				0EEF4BD518C561570058606A /* CardSecondView.xib */,
+				0E9C6E9F18D1A16300E807D1 /* ClozeView.h */,
+				0E9C6EA018D1A16300E807D1 /* ClozeView.m */,
+				0EAABDB118D02E6400CD2DE7 /* 卡包 */,
 				63DD5C7618C9E9E30034512D /* reading */,
 				0EEF4C0F18C562110058606A /* FirstCell.h */,
 				0EEF4C1018C562110058606A /* FirstCell.m */,
@@ -1783,6 +1906,7 @@
 				18AA80C118BF14A200EC08CE /* smallTriangle@2x.png in Resources */,
 				182A89DD18C9972B00CF4B30 /* propOfTime@2x.png in Resources */,
 				1848613718C72D29002B6C78 /* 10速_07@2x.png in Resources */,
+				0EAABD8018CF15C900CD2DE7 /* card_hasselected@2x.png in Resources */,
 				6396582F18C0578D002F2A90 /* homwwork_listenWrite@2x.png in Resources */,
 				18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */,
 				639657DC18C038A6002F2A90 /* carBarItem@2x.png in Resources */,
@@ -1806,6 +1930,7 @@
 				188ED74118CD850700D1210F /* right_sound.mp3 in Resources */,
 				6396582418C0578D002F2A90 /* homework_blank@2x.png in Resources */,
 				6396582C18C0578D002F2A90 /* homework_right@2x.png in Resources */,
+				0EAABD7C18CF136900CD2DE7 /* TagViewController.xib in Resources */,
 				0E9D68BA18CD6C5500EACFA3 /* card_btn@2x.png in Resources */,
 				639657EF18C038BB002F2A90 /* addClass@2x.png in Resources */,
 				0EEF4BD918C561570058606A /* CardFirstView.xib in Resources */,
@@ -1842,11 +1967,14 @@
 				0E92655018BD9016003ADEC3 /* MainViewController.xib in Resources */,
 				639657F818C038BB002F2A90 /* userGroup@2x.png in Resources */,
 				188ED74218CD850700D1210F /* wrong_sound.mp3 in Resources */,
+				0EAABDAD18D02DEC00CD2DE7 /* ListenWriteViewController.xib in Resources */,
+				0EAABDB318D034AD00CD2DE7 /* question.json in Resources */,
 				6341536918C1C96C00DE4480 /* CalendarViewController.xib in Resources */,
 				63289A2518C594DB00C0083E /* ReadingTaskViewController.xib in Resources */,
 				6396582A18C0578D002F2A90 /* homework_quik@2x.png in Resources */,
 				0E92656918BD92B0003ADEC3 /* ThirdViewController.xib in Resources */,
 				639657F518C038BB002F2A90 /* xunsu@2x.png in Resources */,
+				0EAABD7218CF052300CD2DE7 /* tag_back@2x.png in Resources */,
 				6396580618C038E2002F2A90 /* youxiu_yellow@2x.png in Resources */,
 				639657E118C038A6002F2A90 /* tabBarItemBack2@2x.png in Resources */,
 				0E9D689E18CD670E00EACFA3 /* CardpackageViewController.xib in Resources */,
@@ -1874,13 +2002,17 @@
 				0E9D68AA18CD685100EACFA3 /* card_back_selected@2x.png in Resources */,
 				63289A2E18C595D300C0083E /* reading_stop@2x.png in Resources */,
 				0E92656418BD92A0003ADEC3 /* SecondViewController.xib in Resources */,
+				0EAABD7F18CF15C900CD2DE7 /* card_noselected@2x.png in Resources */,
 				0E92657B18BDACDD003ADEC3 /* second_active@2x.png in Resources */,
 				6396582E18C0578D002F2A90 /* homework_sort@2x.png in Resources */,
 				0E5D1C7118C96B45008A13F2 /* fourth_active@2x.png in Resources */,
 				0EEF4C1618C5622F0058606A /* FirstViewController.xib in Resources */,
+				0E9C6E9918D1496000E807D1 /* SortViewController.xib in Resources */,
 				6396578518C0374C002F2A90 /* StudentSummaryCell.xib in Resources */,
 				63289A2C18C595D300C0083E /* listening_stop@2x.png in Resources */,
 				1848613118C72D29002B6C78 /* 10速_01@2x.png in Resources */,
+				0E9C6E9E18D1977E00E807D1 /* SelectedViewController.xib in Resources */,
+				0EAABDBF18D0416E00CD2DE7 /* listen_back@2x.png in Resources */,
 				6396582D18C0578D002F2A90 /* homework_select@2x.png in Resources */,
 				0E5D1C8718C9A13C008A13F2 /* logo@2x.png in Resources */,
 				6396582518C0578D002F2A90 /* homework_calendar@2x.png in Resources */,
@@ -1907,6 +2039,7 @@
 				6396579318C03766002F2A90 /* DRNavigationRightItem.xib in Resources */,
 				0E92659F18BDE51F003ADEC3 /* focusBtn_active@2x.png in Resources */,
 				0E5D1C8518C9A0FE008A13F2 /* logIn@2x.png in Resources */,
+				0EAABD8218CF17B400CD2DE7 /* card_tg@2x.png in Resources */,
 				639657F118C038BB002F2A90 /* jinque@2x.png in Resources */,
 				63289A3018C5B11E00C0083E /* question.geojson in Resources */,
 				181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */,
@@ -1941,6 +2074,8 @@
 			files = (
 				6329551118BC8AA700F2B78D /* ASIDataCompressor.m in Sources */,
 				18AA80C418BF1A3300EC08CE /* LHLReplyNotificationCell.m in Sources */,
+				0EAABD8818CF1F6300CD2DE7 /* TagInterface.m in Sources */,
+				0EAABD8B18CF22F700CD2DE7 /* TagViewFooter.m in Sources */,
 				6329556918BC900600F2B78D /* SDWebImagePrefetcher.m in Sources */,
 				6329556118BC900600F2B78D /* MKAnnotationView+WebCache.m in Sources */,
 				6329552818BC8AA700F2B78D /* ASIS3Request.m in Sources */,
@@ -1953,6 +2088,7 @@
 				6329551E18BC8AA700F2B78D /* ASICloudFilesObjectRequest.m in Sources */,
 				6396577918C036B1002F2A90 /* StudentListViewController.m in Sources */,
 				6329552418BC8AA700F2B78D /* ASIS3Bucket.m in Sources */,
+				0EAABD7018CEEC7500CD2DE7 /* TagCell.m in Sources */,
 				187222B518C8572E00BBE2D1 /* SelectingChallengeViewController.m in Sources */,
 				0EEF4BEB18C561700058606A /* PageMessageInterface.m in Sources */,
 				0EAABD6518CEAC2C00CD2DE7 /* DeleteCardInterface.m in Sources */,
@@ -1963,11 +2099,13 @@
 				0EEF4BEA18C561700058606A /* MessageInterface.m in Sources */,
 				6329556C18BC900600F2B78D /* UIImage+MultiFormat.m in Sources */,
 				0E9D689018C9B7F400EACFA3 /* LogInterface.m in Sources */,
+				0E9C6E9D18D1977E00E807D1 /* SelectedViewController.m in Sources */,
 				187222BB18C87A5700BBE2D1 /* questions_lastest.js in Sources */,
 				632954A218BC875800F2B78D /* AppDelegate.m in Sources */,
 				6329552518BC8AA700F2B78D /* ASIS3BucketObject.m in Sources */,
 				63289A3A18C5B46400C0083E /* ReadingSentenceObj.m in Sources */,
 				0EEF4BE918C561700058606A /* InterfaceCache.m in Sources */,
+				0EAABDAC18D02DEC00CD2DE7 /* ListenWriteViewController.m in Sources */,
 				0EEF4BEC18C561700058606A /* ReplyMessageInterface.m in Sources */,
 				632954CA18BC894F00F2B78D /* Utility.m in Sources */,
 				0EEF4C3118C5C8F00058606A /* ClassObject.m in Sources */,
@@ -1980,11 +2118,14 @@
 				187222B918C86A0300BBE2D1 /* SelectingChallengeObject.m in Sources */,
 				0EEF4C2E18C5C6120058606A /* UserObject.m in Sources */,
 				6341536318C1C90300DE4480 /* UIView+convenience.m in Sources */,
+				0EAABD6818CEE72C00CD2DE7 /* TagObject.m in Sources */,
+				0EAABDB518D034B800CD2DE7 /* answer.json in Sources */,
 				63DD5C6F18C9B7860034512D /* double_metaphone.c in Sources */,
 				63B8D28118C87FA0004141E9 /* Base64.m in Sources */,
 				0EEF4C1C18C562900058606A /* ReplyMessageObject.m in Sources */,
 				0EEF4BCF18C561300058606A /* DataService.m in Sources */,
 				182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */,
+				0E9C6E9818D1496000E807D1 /* SortViewController.m in Sources */,
 				0E92654F18BD9016003ADEC3 /* MainViewController.m in Sources */,
 				0E5D1C7A18C99F3A008A13F2 /* LogInViewController.m in Sources */,
 				63B8D27318C860B6004141E9 /* CarnetResultViewController.m in Sources */,
@@ -2030,6 +2171,7 @@
 				6396578F18C03766002F2A90 /* DRNavigationRightItem.m in Sources */,
 				187222B118C8434D00BBE2D1 /* answer-1.js in Sources */,
 				6396579218C03766002F2A90 /* LeftTabBarItem.m in Sources */,
+				0EAABDA818D0062100CD2DE7 /* SelectedTagInterface.m in Sources */,
 				6396576718C03664002F2A90 /* WYPopoverController.m in Sources */,
 				0E5D1C6318C84BA8008A13F2 /* QuestionInterface.m in Sources */,
 				636CF4B418BD8F3B0085C28E /* TestViewController.m in Sources */,
@@ -2037,6 +2179,7 @@
 				0EEF4BF718C5618B0058606A /* NSString+URLEncoding.m in Sources */,
 				0EEF4C2B18C5C0490058606A /* SendMessageInterface.m in Sources */,
 				6329551218BC8AA700F2B78D /* ASIDataDecompressor.m in Sources */,
+				0EAABD7B18CF136900CD2DE7 /* TagViewController.m in Sources */,
 				1818F6A418C561D200DC6207 /* TenSecChallengeResultView.m in Sources */,
 				0EEF4C0E18C561F30058606A /* MessageObject.m in Sources */,
 				632954CD18BC898B00F2B78D /* Reachability.m in Sources */,
@@ -2057,7 +2200,6 @@
 				0EEF4BF618C5618B0058606A /* NSString+HTML.m in Sources */,
 				6341536018C1C90300DE4480 /* NSDate+convenience.m in Sources */,
 				0E92655A18BD9228003ADEC3 /* DAPageIndicatorView.m in Sources */,
-				0E9D68CD18CD979A00EACFA3 /* CMRManager.mm in Sources */,
 				1802DC3318C01E4A0016F110 /* LHLTextView.m in Sources */,
 				6329551718BC8AA700F2B78D /* ASINetworkQueue.m in Sources */,
 				160A4D4218CBE09D0020848C /* SelectingChallengeOptionCell.m in Sources */,
@@ -2076,6 +2218,7 @@
 				0EEF4C1118C562110058606A /* FirstCell.m in Sources */,
 				6329551318BC8AA700F2B78D /* ASIDownloadCache.m in Sources */,
 				6341536218C1C90300DE4480 /* UIColor+expanded.m in Sources */,
+				0E9C6EA118D1A16300E807D1 /* ClozeView.m in Sources */,
 				6329549E18BC875800F2B78D /* main.m in Sources */,
 				6341536818C1C96C00DE4480 /* CalendarViewController.m in Sources */,
 				6329554018BC8D7C00F2B78D /* FMDatabaseQueue.m in Sources */,
@@ -2084,6 +2227,7 @@
 				1802DC3818C065320016F110 /* NotificationObject.m in Sources */,
 				6329554118BC8D7C00F2B78D /* FMDatabaseAdditions.m in Sources */,
 				1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */,
+				0EAABD8518CF1B5500CD2DE7 /* CMRManager.mm in Sources */,
 				6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2222,8 +2366,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/cjzyb_ios/thirtys/iSpeech/\"",
 				);
+				OTHER_LDFLAGS = "-fobjc-arc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3D7D0286-24FF-47FA-B504-B1444003EF14";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -2252,8 +2397,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/cjzyb_ios/thirtys/iSpeech/\"",
 				);
+				OTHER_LDFLAGS = "-fobjc-arc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3D7D0286-24FF-47FA-B504-B1444003EF14";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;

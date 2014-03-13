@@ -363,7 +363,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 +(NSArray *)handleTheString:(NSString *)string {
     NSMutableArray *tempArray = [[NSMutableArray alloc]init];
     NSError *error;
-    NSString *regTags = @"([a-zA-Z]+[-']*[a-zA-Z]+)|([a-zA-Z]+)";//added by david
+    NSString *regTags = @"([a-zA-Z]+[-',.!?]*[a-zA-Z]+)|([a-zA-Z]+)";//added by david
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regTags
                                                                            options:NSRegularExpressionCaseInsensitive
                                                                              error:&error];
@@ -435,8 +435,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             return strAend -strAbegin +1;
         }
     }
-    
-    //    if ([strA characterAtIndex:(NSUInteger)(strAbegin)] == [strB characterAtIndex:(NSUInteger)(strBbegin)]) {
     if ([[[strA substringWithRange:NSMakeRange(strAbegin, 1)]uppercaseString] isEqualToString:[[strB substringWithRange:NSMakeRange(strBbegin, 1)]uppercaseString]]) {
         return [Utility DistanceBetweenTwoString:strA StrAbegin:strAbegin+1 StrAend:strAend StrB:strB StrBbegin: strBbegin+1 StrBend: strBend];
     }else {
@@ -482,11 +480,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                     }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {
                                         NSLog(@"基本正确");
                                         isSure = YES;
-                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                        
+//                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                                         [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
-                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                     }else {
                                         NSLog(@"黑户");
+                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                         [Utility shared].firstpoint +=1;
                                     }
                                     if (isSure == YES) {
@@ -525,11 +527,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                     }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {
                                         NSLog(@"基本正确");
                                         isSure = YES;
-                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:index]];
+                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                        
+//                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                                         [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:index]];
-                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+//                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
                                     }else {
                                         NSLog(@"黑户");
+                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:index]];
                                         [Utility shared].firstpoint +=1;
                                     }
                                     if (isSure == YES) {
@@ -585,11 +591,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                     }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
                                                         NSLog(@"基本正确");
                                                         isSure = YES;
-                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        
+//                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                                                         [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
-                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                                     }else {
                                                         NSLog(@"黑户");
+                                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                                         [Utility shared].firstpoint +=1;
                                                     }
                                                     if (isSure == YES) {
@@ -630,11 +640,16 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                     }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
                                                         NSLog(@"基本正确");
                                                         isSure = YES;
-                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        
+                                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:index]];
+                                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+//                                                        
+//                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                                                         [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:index]];
-                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+//                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
                                                     }else {
                                                         NSLog(@"黑户");
+                                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:index]];
                                                         [Utility shared].firstpoint +=1;
                                                     }
                                                     if (isSure == YES) {
@@ -661,11 +676,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                 }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
                                                     NSLog(@"基本正确");
                                                     isSure = YES;
-                                                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                                                    [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:index]];
+                                                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                                    
+//                                                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                                                     [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:index]];
-                                                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+//                                                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
                                                 }else {
                                                     NSLog(@"黑户");
+                                                    [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:index]];
                                                     [Utility shared].firstpoint +=1;
                                                 }
                                                 if (isSure == YES) {
@@ -689,11 +708,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                 }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
                                                     NSLog(@"基本正确");
                                                     isSure = YES;
-                                                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                                                    [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:index]];
+                                                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                                    
+//                                                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                                                     [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:index]];
-                                                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+//                                                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
                                                 }else {
                                                     NSLog(@"黑户");
+                                                    [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:index]];
                                                     [Utility shared].firstpoint +=1;
                                                 }
                                                 [temp_arrA removeObjectAtIndex:index];
@@ -719,11 +742,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                             }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
                                 NSLog(@"基本正确");
                                 isSure = YES;
-                                [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                                [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:index]];
+                                [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                
+//                                [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                                 [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:index]];
-                                [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+//                                [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
                             }else {
                                 NSLog(@"黑户");
+                                [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:index]];
                                 [Utility shared].firstpoint +=1;
                             }
                             if (isSure == YES) {
@@ -759,11 +786,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                     }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
                                                         NSLog(@"基本正确");
                                                         isSure = YES;
-                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        
+//                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                                                         [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
-                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                                     }else {
                                                         NSLog(@"黑户");
+                                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                                         [Utility shared].firstpoint +=1;
                                                     }
                                                     if (isSure == YES) {
@@ -805,11 +836,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                     }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
                                                         NSLog(@"基本正确");
                                                         isSure = YES;
-                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:j]];
+                                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        
+//                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                                                         [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:j]];
-                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:j]];
+//                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:j]];
                                                     }else {
                                                         NSLog(@"黑户");
+                                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:j]];
                                                         [Utility shared].firstpoint +=1;
                                                     }
                                                     
@@ -847,11 +882,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                                     }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
                                                         NSLog(@"基本正确");
                                                         isSure = YES;
-                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        
+//                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                                                         [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
-                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                                     }else {
                                                         NSLog(@"黑户");
+                                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                                         [Utility shared].firstpoint +=1;
                                                     }
                                                     if (isSure == YES) {
@@ -895,11 +934,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                     }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
                                         NSLog(@"基本正确");
                                         isSure = YES;
-                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                        
+//                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                                         [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
-                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                     }else {
                                         NSLog(@"黑户");
+                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                         [Utility shared].firstpoint +=1;
                                     }
                                     if (isSure == YES) {
@@ -941,11 +984,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                             }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
                                 NSLog(@"基本正确");
                                 isSure = YES;
-                                [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                                [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                
+//                                [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                                 [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
-                                [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                             }else {
                                 NSLog(@"黑户");
+                                [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                 [Utility shared].firstpoint +=1;
                             }
                             
@@ -987,11 +1034,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                     }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
                         NSLog(@"基本正确");
                         isSure = YES;
-                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                        
+//                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                         [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
-                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                     }else {
                         NSLog(@"黑户");
+                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                         [Utility shared].firstpoint +=1;
                     }
                     
@@ -1034,11 +1085,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
                     NSLog(@"基本正确");
                     isSure = YES;
-                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+                    [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                    
+//                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
                     [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
-                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                 }else {
                     NSLog(@"黑户");
+                    [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                     [Utility shared].firstpoint +=1;
                 }
                 if (isSure == YES) {
@@ -1062,11 +1117,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {
                     NSLog(@"基本正确");
                     isSure = YES;
-                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:[Utility shared].firstpoint]];
+                    [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:[Utility shared].firstpoint]];
+                    
+//                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:[Utility shared].firstpoint]];
                     [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
-                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                 }else {
                     NSLog(@"黑户");
+                    [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                     [Utility shared].firstpoint +=1;
                 }
                 if (isSure == YES) {
@@ -1089,9 +1148,12 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                         NSString *strLetter = [strBB substringFromIndex:range.length];
                         if ([strLetter isEqualToString:@"S"]) {
                             NSLog(@"基本正确");
-                            [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:i]];
+                            [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                            [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:i]];
+                            
+//                            [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:i]];
                             [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
-                            [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                            [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                             if (i > [Utility shared].firstpoint) {
                                 NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
                                 NSRange range = [match rangeAtIndex:0];
@@ -1126,9 +1188,12 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                             NSString *strLetter = [strAA substringFromIndex:range2.length];
                             if ([strLetter isEqualToString:@"S"]) {
                                 NSLog(@"基本正确");
-                                [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:i]];
+                                [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:i]];
+//                                
+//                                [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:i]];
                                 [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
-                                [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                 if (i > [Utility shared].firstpoint) {
                                     NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
                                     NSRange range = [match rangeAtIndex:0];
@@ -1165,31 +1230,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                 m++;
                             }
                         }
-                        //<<<<<<< HEAD
-                        //                        float y = (float)strB.length/2;
-                        //                        if (n-y>=0) {//原文部分匹配
-                        //                            exit = YES;
-                        //                            NSLog(@"部分匹配");
-                        //                            [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
-                        //                            [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:[Utility shared].firstpoint]];
-                        //                            if (i > [Utility shared].firstpoint) {
-                        //                                NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
-                        //                                NSRange range = [match rangeAtIndex:0];
-                        //                                NSString *str = [NSString stringWithFormat:@"%d_%d",range.location,i-[Utility shared].firstpoint];//从起点x开始之前少x个单词
-                        //                                [[Utility shared].spaceLineArray addObject:str];
-                        //=======
-                        //                        float x = (float)strBB.length/2;
-                        //                        if (m-x>0) {//简化部分匹配
-                        //                            NSString *strA = [temp_arrA objectAtIndex:[Utility shared].firstpoint];
-                        //                            NSString *strB = [temp_arrB objectAtIndex:i];
-                        //                            NSArray *arrayA = [Utility handleTheLetter:strA];
-                        //                            NSArray *arrayB = [Utility handleTheLetter:strB];
-                        //                            for (int k=0; k<arrayA.count; k++) {
-                        //                                NSString *letter = [arrayA objectAtIndex:k];
-                        //                                if ([arrayB containsObject:letter]) {
-                        //                                    n++;
-                        //                                }
-                        //>>>>>>> d3ed293a20584cb517f103632f9a878596ab0dd1
                         
                         float x = (float)strBB.length/2;
                         if (m-x>0) {//简化部分匹配
@@ -1202,8 +1242,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                 if ([arrayB containsObject:letter]) {
                                     n++;
                                 }
-                                //                                        >>>>>>> d3ed293a20584cb517f103632f9a878596ab0dd1
-                                
                             }
                             float y = (float)strB.length/2;
                             if (n-y>=0) {//原文部分匹配
@@ -1211,6 +1249,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                 NSLog(@"部分匹配");
                                 [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                 [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:[Utility shared].firstpoint]];
+                                [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                                 if (i > [Utility shared].firstpoint) {
                                     NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
                                     NSRange range = [match rangeAtIndex:0];
@@ -1241,6 +1280,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 }
                 if (i==temp_arrBB.count-1 && exit==NO) {//没有部分匹配
                     NSLog(@"黑户");
+                    [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                     [Utility shared].firstpoint +=1;
                 }
             }
@@ -1268,17 +1308,18 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [mutableDic setObject:[Utility shared].noticeArray forKey:@"notice"];
             [mutableDic setObject:[Utility shared].correctArray forKey:@"correct"];
         }
+        if ([Utility shared].wrongArray.count>0) {
+            [mutableDic setObject:[Utility shared].wrongArray forKey:@"wrong"];
+        }
         [Utility shared].noticeArray = nil;
         [Utility shared].correctArray = nil;
         [Utility shared].greenArray = nil;
         [Utility shared].yellowArray = nil;
         [Utility shared].sureArray = nil;
         [Utility shared].spaceLineArray = nil;
+        [Utility shared].wrongArray = nil;
         return mutableDic;
     }
     return nil;
 }
-///////////////////////////////////////////////////////////////
-
-
 @end

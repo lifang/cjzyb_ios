@@ -26,7 +26,8 @@
     [card setOptions:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"options"]]];
     [card setCard_tag_id:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"card_tag_id"]]];
     [card setCreated_at:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"created_at"]]];
-
+    [card setFull_text:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"full_text"]]];
+    [card setTagArray:[NSMutableArray arrayWithArray:[aDic objectForKey:@"card_tags_id"]]];
     return card;
 }
 @end
