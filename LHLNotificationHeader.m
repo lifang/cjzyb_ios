@@ -29,12 +29,13 @@
     self = [super initWithReuseIdentifier:reuseIdentifier];
     if (self) {
         self.backgroundView = [[UIView alloc] init];
-        self.backgroundView.backgroundColor = [UIColor colorWithRed:202.0/255.0 green:202.0/255.0 blue:202.0/255.0 alpha:1.0];
+        self.backgroundView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:205.0/255.0 blue:206.0/255.0 alpha:1.0];
         [self addSubview:self.backgroundView];
         
         self.replyButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.replyButton.backgroundColor = [UIColor clearColor];
         [self.replyButton setTitle:@"回复通知" forState:UIControlStateNormal];
+        [self.replyButton.titleLabel setFont:[UIFont systemFontOfSize:22.0]];
         [self.replyButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self.replyButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled]; //禁用时为白色标题,代表选中
         [self.replyButton addTarget:self action:@selector(replyButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -43,6 +44,7 @@
         self.noticeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.noticeButton.backgroundColor = [UIColor clearColor];
         [self.noticeButton setTitle:@"系统通知" forState:UIControlStateNormal];
+        [self.noticeButton.titleLabel setFont:[UIFont systemFontOfSize:22.0]];
         [self.noticeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [self.noticeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled]; //禁用时为白色标题,代表选中
         self.noticeButton.enabled = NO;

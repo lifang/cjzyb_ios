@@ -29,15 +29,15 @@
 - (void)initCell{
     [self.imgView.layer setCornerRadius:3.0];
 
-    self.textView.delegate = self;
-        
+//    self.textView.delegate = self;
+    
     [self makeSideButtons];
 }
 
 - (void)makeSideButtons{
     if (!self.sideView) {
-        self.sideView = [[UIView alloc] initWithFrame:(CGRect){self.frame.size.width - 80,0,80,self.frame.size.height}];
-        self.sideView.backgroundColor = [UIColor lightGrayColor];
+        self.sideView = [[UIView alloc] initWithFrame:(CGRect){self.frame.size.width - 103,0,103,self.frame.size.height}];
+        self.sideView.backgroundColor = [UIColor colorWithRed:182.0/255.0 green:183.0/255.0 blue:184.0/255.0 alpha:1.0];
         [self.contentView insertSubview:self.sideView belowSubview:self.contentBgView];
         
         UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -48,6 +48,7 @@
     }
 }
 
+//为cell赋值 ,textView自动增长
 -(void)setNotificationObject:(NotificationObject *)noti{
     if (noti != nil) {
         self.textView.text = noti.notiContent;
@@ -62,15 +63,15 @@
     }
 }
 
-#pragma mark TextViewDelegate
-
--(void)textViewDidChange:(UITextView *)textView{
-    self.cellHeight = self.textView.contentSize.height + 28 + 20;
-    [self setNeedsUpdateConstraints];
-    if(self.delegate && [self.delegate respondsToSelector:@selector(refreshHeightForCell:)]){
-        [self.delegate refreshHeightForCell:self];
-    }
-}
+//#pragma mark TextViewDelegate
+//
+//-(void)textViewDidChange:(UITextView *)textView{
+//    self.cellHeight = self.textView.contentSize.height + 28 + 20;
+//    [self setNeedsUpdateConstraints];
+//    if(self.delegate && [self.delegate respondsToSelector:@selector(refreshHeightForCell:)]){
+//        [self.delegate refreshHeightForCell:self];
+//    }
+//}
 
 
 - (IBAction)coverButtonClicked:(id)sender {
@@ -82,9 +83,9 @@
             
         }];
     }else{
-        self.contentBgView.backgroundColor = [UIColor colorWithRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0];
+        self.contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
         [UIView animateWithDuration:0.25 animations:^{
-            self.contentBgView.frame = (CGRect){-80,0,self.bounds.size};
+            self.contentBgView.frame = (CGRect){-103,0,self.bounds.size};
         } completion:^(BOOL finished) {
             
         }];
