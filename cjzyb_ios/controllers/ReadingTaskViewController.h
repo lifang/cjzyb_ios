@@ -11,6 +11,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "ISpeechSDK.h"
 #import "ParseQuestionJsonFileTool.h"
+@class HomeworkContainerController;
 /** ReadingTaskViewController
  *
  * 朗读任务
@@ -24,4 +25,7 @@
 @property (strong,nonatomic) NSArray *readingHomeworksArr;
 ///当前正在听的句子
 @property (strong,nonatomic) ReadingSentenceObj *currentSentence;
+
+///切换到下一句
+-(void)updateNextSentence;
 @end

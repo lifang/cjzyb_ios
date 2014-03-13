@@ -23,6 +23,58 @@
     return defaultUti;
 }
 
+///异步请求网络数据
++(void)requestDataWithRequest:(NSURLRequest*)request withSuccess:(void (^)(NSDictionary *dicData))success withFailure:(void (^)(NSError *error))failure{
+    if (!request) {
+        if (failure) {
+            failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"请求参数不能为空"}]);
+        }
+        return;
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSURLResponse *response = nil;
+        NSError *error = nil;
+        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        DLog(@"%@,%@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding],error);
+        if (error) {
+            [Utility requestFailure:error tipMessageBlock:^(NSString *tipMsg) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (failure) {
+                        failure([NSError errorWithDomain:@"" code:2002 userInfo:@{@"msg": tipMsg}]);
+                    }
+                });
+            }];
+            
+            return ;
+        }
+        
+        NSError *jsonError = nil;
+        NSDictionary *dicData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
+        if (!dicData || dicData.count <= 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure([NSError errorWithDomain:@"" code:2002 userInfo:@{@"msg": @"获取空数据"}]);
+                }
+            });
+            return ;
+        }
+        
+        
+        if (![dicData objectForKey:@"status"] || [[dicData objectForKey:@"status"] isEqualToString:@"error"]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure([NSError errorWithDomain:@"" code:2006 userInfo:@{@"msg": [dicData objectForKey:@"notice"]?:@"获取数据失败"}]);
+                }
+            });
+            return;
+        }
+        
+        if (success) {
+            success(dicData);
+        }
+    });
+}
+
 +(NSString *)filterValue:(NSString*)filterValue{
     NSString *value = [NSString stringWithFormat:@"%@",filterValue];
     if ([value isEqualToString:@""] || [value isEqualToString:@"<NULL>"] || [value isEqualToString:@"null"] || [value isEqualToString:@"<null>"]) {

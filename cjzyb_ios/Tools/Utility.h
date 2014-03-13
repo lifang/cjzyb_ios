@@ -43,6 +43,9 @@
 
 +(Utility*)defaultUtility;
 
+///异步请求网络数据
++(void)requestDataWithRequest:(NSURLRequest*)request withSuccess:(void (^)(NSDictionary *dicData))success withFailure:(void (^)(NSError *error))failure;
+
 ///过滤json数据，可能出现<NULL>,null,等等情况
 +(NSString *)filterValue:(NSString*)value;
 

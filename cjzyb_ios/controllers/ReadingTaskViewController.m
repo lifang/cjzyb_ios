@@ -11,6 +11,7 @@
 #import "GoogleTTSAPI.h"
 #import "DRSentenceSpellMatch.h"
 #import <QuartzCore/QuartzCore.h>
+#import "HomeworkContainerController.h"
 @interface ReadingTaskViewController ()
 ///当前读句子下标
 @property (nonatomic,assign) int currentSentenceIndex;
@@ -101,7 +102,7 @@
         return;
     }
     self.currentSentence = currentSentence;
-    
+    [self updateAllFrame];
     if (ani) {
         CATransition *animation = [CATransition animation];
         [animation setType:kCATransitionPush];
@@ -119,7 +120,7 @@
     if (!self.currentSentence) {
         [self updateFirstHomework];
     }
-    self.currentSentence = [self.currentHomework.readingHomeworkSentenceObjArray firstObject];
+    [self setCurrentSentence:[self.currentHomework.readingHomeworkSentenceObjArray firstObject] withAnimation:YES];
     self.currentSentenceIndex = 0;
     if (self.currentSentence) {
         
@@ -135,7 +136,7 @@
     if (self.currentSentence) {
         if (self.currentSentenceIndex+1 < self.currentHomework.readingHomeworkSentenceObjArray.count) {
             self.currentSentenceIndex++;
-            self.currentSentence = [self.currentHomework.readingHomeworkSentenceObjArray objectAtIndex:self.currentSentenceIndex];
+            [self setCurrentSentence:[self.currentHomework.readingHomeworkSentenceObjArray objectAtIndex:self.currentSentenceIndex] withAnimation:YES];
         }else{//已经是最后一个句子
         
         }

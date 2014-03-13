@@ -15,6 +15,8 @@
 #import "HomeworkDailyCollectionViewController.h"
 #import "HomeworkViewController.h"
 #import "ReadingTaskViewController.h"
+#import "LiningHomeworkViewController.h"
+#import "HomeworkContainerController.h"
 @implementation AppDelegate
 
 +(AppDelegate *)shareIntance {
@@ -32,9 +34,16 @@
     //设置语音识别的apikey
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
+//    HomeworkContainerController *homeworkContainer = [[HomeworkContainerController alloc] initWithNibName:@"HomeworkContainerController" bundle:nil];
+//    homeworkContainer.homeworkType = HomeworkType_reading;
+//    self.window.rootViewController = homeworkContainer;
     
-    ReadingTaskViewController *reading = [[ReadingTaskViewController alloc] initWithNibName:@"ReadingTaskViewController" bundle:nil];
-    self.window.rootViewController = reading;
+//    LiningHomeworkViewController *lineController = [[LiningHomeworkViewController alloc] initWithNibName:@"LiningHomeworkViewController" bundle:nil];
+//    self.window.rootViewController = lineController;
+    
+//    ReadingTaskViewController *reading = [[ReadingTaskViewController alloc] initWithNibName:@"ReadingTaskViewController" bundle:nil];
+//    self.window.rootViewController = reading;
     
 //    HomeworkViewController *homeController = [[HomeworkViewController alloc] initWithNibName:@"HomeworkViewController" bundle:nil];
 //    self.window.rootViewController = homeController;
@@ -53,8 +62,8 @@
 //    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:main];
 //    self.window.rootViewController = navControl;
     
-    SelectingChallengeViewController *notificationViewController = [[SelectingChallengeViewController alloc] initWithNibName:@"SelectingChallengeViewController" bundle:nil];
-    self.window.rootViewController = notificationViewController;
+//    SelectingChallengeViewController *notificationViewController = [[SelectingChallengeViewController alloc] initWithNibName:@"SelectingChallengeViewController" bundle:nil];
+//    self.window.rootViewController = notificationViewController;
     
 //    self.window.backgroundColor = [UIColor whiteColor];
 //    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
@@ -67,7 +76,7 @@
 //    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
 //    self.window.rootViewController = notificationViewController;
     
-    /*
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
@@ -75,14 +84,11 @@
     SecondViewController *first = [[SecondViewController alloc] initWithNibName:@"SecondViewController" bundle:nil];
     DRLeftTabBarViewController *tabController = [[DRLeftTabBarViewController alloc] init];
     tabController.childenControllerArray = @[main,first];
-    UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:tabController];
-    self.window.rootViewController = navControl;
-    [self.window makeKeyAndVisible];
-    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
-    self.window.rootViewController = notificationViewController;
+    self.window.rootViewController = tabController;
+    
 //    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
 //    self.window.rootViewController = notificationViewController;
-    */
+    
     [self.window makeKeyAndVisible];
     return YES;
 }

@@ -155,6 +155,12 @@
     }
 }
 
+#pragma mark HomeworkDailyCollectionViewControllerDelegate每一个题目类型cell代理
+-(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller didSelectedAtIndexPath:(NSIndexPath *)path{
+
+}
+#pragma mark --
+
 #pragma mark UICollectionViewDelegate
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -169,6 +175,7 @@
         [cell.dailyCollectionViewController resizeItemSize];
         [cell addSubview:cell.dailyCollectionViewController.view];
     }
+    cell.dailyCollectionViewController.delegate = self;
     if (self.isShowHistory) {
         TaskObj *task = [self.allHistoryTaskArray objectAtIndex:indexPath.item];
         cell.dailyCollectionViewController.taskObj = task;

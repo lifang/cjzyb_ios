@@ -18,3 +18,9 @@
 #import "WYPopoverController.h"
 
 #define kHOST @"http://58.240.210.42:3004"
+
+#if 1 
+#define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#define DLog(...)
+#endif

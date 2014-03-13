@@ -15,7 +15,18 @@
 @property (nonatomic, strong) NSString *nickName;
 @property (nonatomic, strong) NSString *headUrl;
 @property (nonatomic, strong) NSString *userId;
+///是否是老师
+@property (nonatomic,assign) BOOL isTeacher;
+///精准分数，满100升一级
+@property (assign,nonatomic) int jingzhunScore;
+///迅速分数，满100升一级
+@property (assign,nonatomic) int xunsuScore;
+///捷足分数，满100升一级
+@property (assign,nonatomic) int jiezuScore;
+///优异分数，满100升一级
+@property (assign,nonatomic) int youyiScore;
 
-
+///同学列表界面使用
+@property (nonatomic,assign) BOOL isExtend;
 +(UserObject *)userFromDictionary:(NSDictionary *)aDic;
 @end

@@ -9,6 +9,7 @@
 #import "UserInfoPopViewController.h"
 #import "DRProgressView.h"
 #import "ClassGroupViewController.h"
+#import "ModelTypeViewController.h"
 @interface UserInfoPopViewController ()
 ///用户所在班级按钮
 @property (weak, nonatomic) IBOutlet UIButton *userClassButton;
@@ -24,8 +25,12 @@
 @property (weak, nonatomic) IBOutlet DRProgressView *xunsuProgressView;
 ///捷足进度条
 @property (weak, nonatomic) IBOutlet DRProgressView *jiezuProgressView;
+
+///显示加入的班级列表
 - (IBAction)userClassButtonClicked:(id)sender;
 
+///修改用户名称
+- (IBAction)modifyUserNameButtonClicked:(id)sender;
 @end
 
 @implementation UserInfoPopViewController
@@ -64,5 +69,12 @@
     [self.popViewController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:WYPopoverArrowDirectionRight animated:YES completion:^{
         [self.userClassButton setUserInteractionEnabled:YES];
     }];
+}
+
+- (IBAction)modifyUserNameButtonClicked:(id)sender {
+    
+    [ModelTypeViewController presentTypeViewWithTipString:@"请输入名称：" withFinishedInput:^(NSString *inputString) {
+        
+    } withCancel:nil];
 }
 @end

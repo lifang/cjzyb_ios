@@ -16,14 +16,14 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MdG-p4-RbS" userLabel="userNameLabel - Label">
-                            <rect key="frame" x="55" y="2" width="165" height="53"/>
+                            <rect key="frame" x="68" y="2" width="139" height="53"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="w06-Ba-2qQ" userLabel="userImage View">
-                            <rect key="frame" x="8" y="9" width="39" height="39"/>
+                            <rect key="frame" x="19" y="9" width="39" height="39"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                         </imageView>
                     </subviews>
@@ -48,7 +48,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LTO-nT-KMV">
-                                    <rect key="frame" x="0.0" y="30.000000076125264" width="34" height="16"/>
+                                    <rect key="frame" x="0.0" y="30.000000116687961" width="34" height="16"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -68,7 +68,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="H3q-Yx-sFP">
-                                    <rect key="frame" x="0.0" y="30.000000076125488" width="34" height="16"/>
+                                    <rect key="frame" x="0.0" y="30.000000116688195" width="34" height="16"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -88,7 +88,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hxu-G5-ZHe">
-                                    <rect key="frame" x="0.0" y="30.000000076125488" width="34" height="16"/>
+                                    <rect key="frame" x="0.0" y="30.000000116688195" width="34" height="16"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -108,7 +108,7 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </imageView>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9Fm-n7-rno">
-                                    <rect key="frame" x="0.0" y="30.000000076125488" width="34" height="16"/>
+                                    <rect key="frame" x="0.0" y="30.000000116688195" width="34" height="16"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -135,10 +135,10 @@
         </view>
     </objects>
     <resources>
-        <image name="arrowBack.png" width="170" height="60"/>
-        <image name="jiezu_yellow.png" width="27" height="27"/>
-        <image name="jinque_yellow.png" width="29" height="27"/>
-        <image name="xunsu_yellow.png" width="23" height="27"/>
-        <image name="youxiu_yellow.png" width="27" height="27"/>
+        <image name="arrowBack.png" width="218" height="79"/>
+        <image name="jiezu_yellow.png" width="37" height="37"/>
+        <image name="jinque_yellow.png" width="37" height="37"/>
+        <image name="xunsu_yellow.png" width="37" height="37"/>
+        <image name="youxiu_yellow.png" width="37" height="37"/>
     </resources>
 </document>

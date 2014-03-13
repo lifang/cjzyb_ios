@@ -50,7 +50,9 @@
 
 #pragma mark UICollectionViewDelegate
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(homeworkDailyController:didSelectedAtIndexPath:)]) {
+        [self.delegate homeworkDailyController:self didSelectedAtIndexPath:indexPath];
+    }
 }
 #pragma mark --
 
