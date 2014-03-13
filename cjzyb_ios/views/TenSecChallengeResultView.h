@@ -6,6 +6,8 @@
 //  Copyright (c) 2014年 david. All rights reserved.
 //
 
+
+
 #import <UIKit/UIKit.h>
 @protocol TenSecChallengeResultViewDelegate;
 
@@ -20,16 +22,22 @@
 @property (weak, nonatomic) IBOutlet UILabel *earlyAchievementLabel;     //捷足成就
 
 @property (strong,nonatomic) id<TenSecChallengeResultViewDelegate> delegate;
+//以下为界面需传入的参数
+@property (assign,nonatomic) NSInteger ratio; //正确率0-100
+@property (assign,nonatomic) NSInteger timeCount; //用时(秒)
+@property (assign,nonatomic) NSInteger timeLimit; //时限(秒)
+@property (assign,nonatomic) BOOL isEarly;   //是否提前两小时完成挑战
+
+- (void) initView;  //赋予所有参数之后调用
 
 - (IBAction)commitButtonClicked:(id)sender;
-- (void) initView;
 - (IBAction)restartButtonClicked:(id)sender;
 
 @end
 
 @protocol TenSecChallengeResultViewDelegate <NSObject>
 @required
--(void)resultViewCommitButtonClicked;
--(void)resultViewRestartButtonClicked;
+-(void)resultViewCommitButtonClicked;  //确认完成
+-(void)resultViewRestartButtonClicked;   //再次挑战
 
 @end
