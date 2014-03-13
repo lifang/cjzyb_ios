@@ -62,7 +62,7 @@
     self.window.rootViewController = reading;
     
     
-    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
+    SelectingChallengeViewController *notificationViewController = [[SelectingChallengeViewController alloc] initWithNibName:@"SelectingChallengeViewController" bundle:nil];
     self.window.rootViewController = notificationViewController;
 
 //     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
