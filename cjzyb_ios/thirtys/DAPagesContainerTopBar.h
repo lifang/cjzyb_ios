@@ -21,9 +21,7 @@
 @interface DAPagesContainerTopBar : UIView
 
 @property (strong, nonatomic) NSArray *itemTitles;
-@property (strong, nonatomic) UIFont *font;
 @property (readonly, strong, nonatomic) NSArray *itemViews;
-@property (readonly, strong, nonatomic) UIScrollView *scrollView;
 @property (weak, nonatomic) id<DAPagesContainerTopBarDelegate> delegate;
 
 - (CGPoint)centerForSelectedItemAtIndex:(NSUInteger)index;

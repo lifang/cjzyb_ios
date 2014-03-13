@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
@@ -8,43 +8,39 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="LHLNotificationCell" rowHeight="156" id="CwL-y2-VrE" customClass="LHLNotificationCell">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="192"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CwL-y2-VrE" id="fgf-vE-JmX">
-                <rect key="frame" x="0.0" y="0.0" width="600" height="149"/>
+                <rect key="frame" x="0.0" y="0.0" width="768" height="191"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zEb-8H-PJk" userLabel="bgView">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="149"/>
+                    <view contentMode="scaleToFill" id="zEb-8H-PJk" userLabel="bgView">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="191"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="smile.png" translatesAutoresizingMaskIntoConstraints="NO" id="P9L-bG-aPO">
-                                <rect key="frame" x="41" y="39" width="80" height="80"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" red="0.90810347579999995" green="0.90810347579999995" blue="0.90810347579999995" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="e1y-pP-Gnp"/>
-                                    <constraint firstAttribute="width" constant="80" id="ozc-ep-cbK"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2014/2/15 13:59" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O5T-j2-DXJ" userLabel="timeLabel - 2014/2/15 13:59">
-                                <rect key="frame" x="137" y="39" width="120" height="20"/>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="systemMessage.png" id="P9L-bG-aPO">
+                                <rect key="frame" x="53" y="50" width="103" height="103"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2014/2/15 13:59" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="O5T-j2-DXJ" userLabel="timeLabel - 2014/2/15 13:59">
+                                <rect key="frame" x="178" y="48" width="307" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <color key="textColor" red="0.49803921580314636" green="0.49803921580314636" blue="0.49803921580314636" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" showsHorizontalScrollIndicator="NO" text="恭喜你在2014/2/18日发布的作业里勇获&quot;十速挑战&quot;项目的班级第一,&quot;优异&quot;积分加100.斯蒂芬斯柯达积分还是的浪费空间说得好法律是看得见会发" translatesAutoresizingMaskIntoConstraints="NO" id="aZ2-52-odC" customClass="LHLTextView">
-                                <rect key="frame" x="132" y="50" width="394" height="74"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" text="恭喜你在2014/2/18日发布的作业里勇获&quot;十速挑战&quot;项目的班级第一,&quot;优异&quot;积分加100.斯蒂芬斯柯达积分还是的浪费空间说得好法律是看得见会发" id="aZ2-52-odC" customClass="LHLTextView">
+                                <rect key="frame" x="173" y="66" width="510" height="88"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9sX-cP-gJi" userLabel="coverButton">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="150"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9sX-cP-gJi" userLabel="coverButton">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="191"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal">
@@ -56,27 +52,8 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="9sX-cP-gJi" secondAttribute="trailing" id="2r6-aY-tyO"/>
-                            <constraint firstItem="aZ2-52-odC" firstAttribute="top" secondItem="zEb-8H-PJk" secondAttribute="top" constant="50" id="34p-qQ-rKH"/>
-                            <constraint firstAttribute="trailing" secondItem="aZ2-52-odC" secondAttribute="trailing" constant="74" id="3ue-hs-UYU"/>
-                            <constraint firstItem="P9L-bG-aPO" firstAttribute="leading" secondItem="zEb-8H-PJk" secondAttribute="leading" constant="41" id="Fsq-qb-FD1"/>
-                            <constraint firstAttribute="bottom" secondItem="9sX-cP-gJi" secondAttribute="bottom" constant="-1" id="OdN-Hl-4IF"/>
-                            <constraint firstItem="P9L-bG-aPO" firstAttribute="top" secondItem="zEb-8H-PJk" secondAttribute="top" constant="39" id="Qi1-ji-Bl2"/>
-                            <constraint firstItem="9sX-cP-gJi" firstAttribute="top" secondItem="zEb-8H-PJk" secondAttribute="top" id="jyd-V8-hzl"/>
-                            <constraint firstItem="9sX-cP-gJi" firstAttribute="leading" secondItem="zEb-8H-PJk" secondAttribute="leading" id="k5T-MG-Nr2"/>
-                            <constraint firstItem="aZ2-52-odC" firstAttribute="leading" secondItem="zEb-8H-PJk" secondAttribute="leading" constant="132" id="mFu-9I-QYc"/>
-                            <constraint firstItem="O5T-j2-DXJ" firstAttribute="top" secondItem="zEb-8H-PJk" secondAttribute="top" constant="39" id="t4G-pD-2jq"/>
-                            <constraint firstItem="O5T-j2-DXJ" firstAttribute="leading" secondItem="zEb-8H-PJk" secondAttribute="leading" constant="137" id="vBo-ps-TeH"/>
-                        </constraints>
                     </view>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="zEb-8H-PJk" firstAttribute="top" secondItem="fgf-vE-JmX" secondAttribute="top" id="ChZ-Fc-L2n"/>
-                    <constraint firstAttribute="trailing" secondItem="zEb-8H-PJk" secondAttribute="trailing" id="PxD-nK-De3"/>
-                    <constraint firstItem="zEb-8H-PJk" firstAttribute="leading" secondItem="fgf-vE-JmX" secondAttribute="leading" id="UGC-4v-EDc"/>
-                    <constraint firstAttribute="bottom" secondItem="zEb-8H-PJk" secondAttribute="bottom" id="wS6-Hb-cPo"/>
-                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="contentBgView" destination="zEb-8H-PJk" id="WSQ-jD-X12"/>
@@ -87,6 +64,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="smile.png" width="24" height="24"/>
+        <image name="systemMessage.png" width="109" height="109"/>
     </resources>
 </document>

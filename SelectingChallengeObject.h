@@ -24,8 +24,8 @@ typedef enum{
 @property (nonatomic,strong) NSString *seContent;  //题面
 @property (nonatomic,strong) NSString *seContentAttachment;  //附件  (default型为nil)
 @property (nonatomic,assign) SelectingType seType; //问题类型  填空/看图/听音
-@property (nonatomic,strong) NSString *seRightAnswer;  //正确答案
 @property (nonatomic,strong) NSArray *seOptionsArray;   //选项
+@property (nonatomic,strong) NSArray *seRightAnswers;  //正确答案
 
 +(NSArray *)parseSelectingChallengeFromQuestion; // 从question文件中解析所有选择题
 @end

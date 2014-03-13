@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+
 @protocol CardFirstViewDelegate <NSObject>
 -(void)pressedTxtBtn:(UIButton *)btn;
 @end
 
-@interface CardFirstView : UIView
+@interface CardFirstView : UIControl<UIScrollViewDelegate>
 
 @property (nonatomic, assign) id<CardFirstViewDelegate>delegate;
 
@@ -24,6 +25,10 @@
 
 @property (nonatomic, strong) IBOutlet UIButton *txtBtn;
 
+@property (nonatomic, strong) NSMutableArray *tagNameArray;
+@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 
+-(void)setTagNameArray:(NSMutableArray *)tagNameArray;
+-(void)initData;
 @end
 

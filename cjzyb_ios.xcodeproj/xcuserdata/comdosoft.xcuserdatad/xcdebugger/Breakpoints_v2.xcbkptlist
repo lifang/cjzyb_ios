@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "cjzyb_ios/controllers/FirstViewController.m"
-            timestampString = "415622593.956084"
+            filePath = "cjzyb_ios/thirtys/WYPopoverController/WYPopoverController.m"
+            timestampString = "416219009.579044"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "633"
-            endingLineNumber = "633"
-            landmarkName = "-getSendInfoDidFinished:anType:"
+            startingLineNumber = "1798"
+            endingLineNumber = "1798"
+            landmarkName = "-topViewControllerContentSize"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

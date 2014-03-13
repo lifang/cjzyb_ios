@@ -95,17 +95,7 @@
                 "branch_questions": [
                     {
                         "id": "181",
-                        "answer": "This;||;apple;||;is",
-                        "ratio": "100"
-                    }
-                ]
-            },
-            {
-                "id": "284",
-                "branch_questions": [
-                    {
-                        "id": "181",
-                        "answer": "This;||;apple;||;is",
+                        "answer": "T",
                         "ratio": "100"
                     }
                 ]
@@ -116,7 +106,7 @@
         "status": "0",
         "update_time": "2014-02-28 18:12:00",
         "questions_item": "1",
-        "branch_item": "2",
+        "branch_item": "1",
         "use_time": "99",
         "questions": [
             {
@@ -124,28 +114,8 @@
                 "branch_questions": [
                     {
                         "id": "181",
-                        "answer": "This;||;apple;||;is",
-                        "ratio": "100"
-                    },
-                    {
-                        "id": "181",
-                        "answer": "This;||;apple;||;is",
-                        "ratio": "100"
-                    },
-                                     {
-                                     "id": "181",
-                                     "answer": "This;||;apple;||;is",
-                                     "ratio": "100"
-                                     }
-                ]
-            },
-            {
-                "id": "284",
-                "branch_questions": [
-                    {
-                        "id": "181",
-                        "answer": "This;||;apple;||;is",
-                        "ratio": "100"
+                        "answer": "an",
+                        "ratio": "0"
                     }
                 ]
             }

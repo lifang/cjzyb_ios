@@ -8,13 +8,17 @@
 
 #import "FirstViewHeader.h"
 
-#define Head_Size 80.0
+#define Head_Size 102.75
+#define Space_Height 30
+#define Space_head_text 23.25
+
+
 #define Insets 10.0
 #define Label_Height 20
 #define CELL_WIDTH self.frame.size.width
 #define CELL_HEIGHT self.frame.size.height
-#define Custom_Width  80
-#define Button_Size 50
+#define Custom_Width  102
+#define Button_Size 45.78
 #define AnimationDuration 0.2
 
 @interface FirstViewHeader ()
@@ -36,6 +40,8 @@
         //头像
         self.headImg = [[UIImageView alloc]initWithFrame:CGRectZero];
         self.headImg.backgroundColor = [UIColor clearColor];
+        [self.headImg.layer setCornerRadius:8.0f];
+        [self.headImg.layer setMasksToBounds:YES];
         [self.actualContentView addSubview:self.headImg];
         //关注
         self.focusImg = [[UIImageView alloc]initWithFrame:CGRectZero];
@@ -51,37 +57,38 @@
         self.nameFromLab = [[UILabel alloc]initWithFrame:CGRectZero];
         self.nameFromLab.backgroundColor = [UIColor clearColor];
         self.nameFromLab.textColor = [UIColor colorWithRed:71/255.0 green:196/255.0 blue:145/255.0 alpha:1];
-        self.nameFromLab.font = [UIFont systemFontOfSize:14];
+        self.nameFromLab.font = [UIFont systemFontOfSize:18];
         [self.actualContentView addSubview:self.nameFromLab];
         
         //时间
         self.timeLab = [[UILabel alloc]initWithFrame:CGRectZero];
         self.timeLab.backgroundColor = [UIColor clearColor];
         self.timeLab.textColor = [UIColor colorWithRed:144/255.0 green:148/255.0 blue:152/255.0 alpha:1];
-        self.timeLab.font = [UIFont systemFontOfSize:14];
+        self.timeLab.font = [UIFont systemFontOfSize:18];
         [self.actualContentView addSubview:self.timeLab];
         //关注
         self.focusLab = [[UILabel alloc]initWithFrame:CGRectZero];
         self.focusLab.backgroundColor = [UIColor clearColor];
         self.focusLab.textColor = [UIColor colorWithRed:144/255.0 green:148/255.0 blue:152/255.0 alpha:1];
-        self.focusLab.font = [UIFont systemFontOfSize:14];
+        self.focusLab.font = [UIFont systemFontOfSize:18];
         [self.actualContentView addSubview:self.focusLab];
         //评论
         self.commentLab = [[UILabel alloc]initWithFrame:CGRectZero];
         self.commentLab.backgroundColor = [UIColor clearColor];
         self.commentLab.textColor = [UIColor colorWithRed:144/255.0 green:148/255.0 blue:152/255.0 alpha:1];
-        self.commentLab.font = [UIFont systemFontOfSize:14];
+        self.commentLab.font = [UIFont systemFontOfSize:18];
         [self.actualContentView addSubview:self.commentLab];
         //内容
         self.contentLab = [[UILabel alloc]initWithFrame:CGRectZero];
         self.contentLab.backgroundColor = [UIColor clearColor];
         self.contentLab.textColor = [UIColor colorWithRed:144/255.0 green:148/255.0 blue:152/255.0 alpha:1];
-        self.contentLab.font = [UIFont systemFontOfSize:18];
+        self.contentLab.font = [UIFont systemFontOfSize:20];
         self.contentLab.numberOfLines = 0;
+        self.contentLab.lineBreakMode = NSLineBreakByCharWrapping;
         [self.actualContentView addSubview:self.contentLab];
         
         self.contextMenuView = [[UIView alloc] initWithFrame:CGRectZero];
-        self.contextMenuView.backgroundColor = [UIColor colorWithRed:144/255.0 green:148/255.0 blue:152/255.0 alpha:1];
+        self.contextMenuView.backgroundColor = [UIColor colorWithRed:0.8235 green:0.8275 blue:0.8314 alpha:1];
         [self insertSubview:self.contextMenuView belowSubview:self.actualContentView];
     }
     return self;
@@ -98,30 +105,28 @@
         self.actualContentView.backgroundColor = [UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1];
     }
 }
-
 -(CGSize)getSizeWithString:(NSString *)str{
-    UIFont *aFont = [UIFont systemFontOfSize:18];
-    CGSize size = [str sizeWithFont:aFont constrainedToSize:CGSizeMake(CELL_WIDTH-Insets*4-Head_Size, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    UIFont *aFont = [UIFont systemFontOfSize:20];
+    CGSize size = [str sizeWithFont:aFont constrainedToSize:CGSizeMake(CELL_WIDTH-108-Head_Size-Space_head_text, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     return size;
 }
-
 -(void)layoutSubviews {
     [super layoutSubviews];
     
     self.coverButton.frame = CGRectMake(0, 0, CELL_WIDTH, CELL_HEIGHT);
     self.actualContentView.frame = CGRectMake(0, 0, CELL_WIDTH, CELL_HEIGHT);
     self.contextMenuView.frame = CGRectMake(Custom_Width, 0, CELL_WIDTH, CELL_HEIGHT);
-    self.headImg.frame = CGRectMake(Insets, Insets, Head_Size, Head_Size);
+    self.headImg.frame = CGRectMake(54, Space_Height, Head_Size, Head_Size);
     
-    self.nameFromLab.frame = CGRectMake(Insets*2+Head_Size, Insets, [self.nameFromLab.text sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
+    self.nameFromLab.frame = CGRectMake(54+Head_Size+Space_head_text, Space_Height, [self.nameFromLab.text sizeWithFont:[UIFont systemFontOfSize:18]].width, Label_Height);
     
-    self.timeLab.frame = CGRectMake(self.nameFromLab.frame.origin.x+self.nameFromLab.frame.size.width+Insets, Insets, [self.aMessage.messageTime sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
+    self.timeLab.frame = CGRectMake(self.nameFromLab.frame.origin.x+self.nameFromLab.frame.size.width+Insets, Space_Height, [self.aMessage.messageTime sizeWithFont:[UIFont systemFontOfSize:18]].width, Label_Height);
     
-    self.focusImg.frame = CGRectMake(self.timeLab.frame.origin.x+self.timeLab.frame.size.width+Insets*2, Insets, Label_Height, Label_Height);
-    self.focusLab.frame = CGRectMake(self.focusImg.frame.origin.x+self.focusImg.frame.size.width, Insets, [self.aMessage.followCount sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
+    self.focusImg.frame = CGRectMake(self.timeLab.frame.origin.x+self.timeLab.frame.size.width+Insets*2, Space_Height, Label_Height, Label_Height);
+    self.focusLab.frame = CGRectMake(self.focusImg.frame.origin.x+self.focusImg.frame.size.width, Space_Height, [self.aMessage.followCount sizeWithFont:[UIFont systemFontOfSize:18]].width, Label_Height);
     
-    self.commentImg.frame = CGRectMake(self.focusLab.frame.origin.x+self.focusLab.frame.size.width+Insets, Insets, Label_Height, Label_Height);
-    self.commentLab.frame = CGRectMake(self.commentImg.frame.origin.x+self.commentImg.frame.size.width, Insets, [self.aMessage.replyCount sizeWithFont:[UIFont systemFontOfSize:14]].width, Label_Height);
+    self.commentImg.frame = CGRectMake(self.focusLab.frame.origin.x+self.focusLab.frame.size.width+Insets, Space_Height, Label_Height, Label_Height);
+    self.commentLab.frame = CGRectMake(self.commentImg.frame.origin.x+self.commentImg.frame.size.width, Space_Height, CELL_WIDTH-self.commentImg.frame.origin.x-self.commentImg.frame.size.width, Label_Height);
     
     if (self.msgStyle == MessageCellStyleMe) {
         self.focusButton.hidden = YES;self.deleteButton.hidden = NO;
@@ -133,11 +138,14 @@
         self.commentButton.frame = CGRectMake(CELL_WIDTH-Custom_Width+(Custom_Width-Button_Size)/2, (CELL_HEIGHT-Button_Size*2)/3*2+Button_Size, Button_Size, Button_Size);
     }
     CGSize size = [self getSizeWithString:self.contentLab.text];
-    self.contentLab.frame = CGRectMake(Insets*2+Head_Size, Insets*2+Label_Height, size.width, size.height);
+    self.contentLab.frame = CGRectMake(54+Head_Size+Space_head_text, Space_Height+Label_Height+Insets, size.width, size.height);
     
     if (self.isSelected) {
-        self.actualContentView.frame = CGRectOffset(self.contentView.bounds, -80, 0);
+        self.actualContentView.frame = CGRectOffset(self.contentView.bounds, 0-Custom_Width, 0);
         self.contextMenuView.frame = CGRectOffset(self.contentView.bounds, 0, 0);
+    }else {
+        self.actualContentView.frame = CGRectOffset(self.contentView.bounds, 0, 0);
+        self.contextMenuView.frame = CGRectOffset(self.contentView.bounds, Custom_Width, 0);
     }
     
 }

@@ -8,11 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "LHLNotificationViewController.h"
+
+#import "TenSecChallengeViewController.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <AVFoundation/AVFoundation.h> 
 #import "SelectingChallengeViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+@property (nonatomic, strong) MPMoviePlayerController *player;
+@property (strong, nonatomic) AVAudioPlayer *avPlayer;
+- (void)showRootView;
 +(AppDelegate *)shareIntance;
 @end

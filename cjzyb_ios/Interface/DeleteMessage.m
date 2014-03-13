@@ -12,18 +12,29 @@
 #import "NSString+HTML.h"
 
 @implementation DeleteMessage
-
--(void)getDeleteMessageDelegateDelegateWithMessageId:(NSString *)messageId{
+//1删除主消息      0 删除子消息
+-(void)getDeleteMessageDelegateDelegateWithMessageId:(NSString *)messageId andType:(NSInteger)type{
     NSMutableDictionary *reqheaders = [[NSMutableDictionary alloc] init];
     
-    [reqheaders setValue:[NSString stringWithFormat:@"%@",messageId] forKey:@"micropost_id"];
-
-    self.interfaceUrl = @"http://58.240.210.42:3004/api/students/delete_posts";
-
-    self.baseDelegate = self;
-    self.headers = reqheaders;
+    self.type = type;
     
-    [self connectWithMethod:@"GET"];;
+    if (type==1) {
+        [reqheaders setValue:[NSString stringWithFormat:@"%@",messageId] forKey:@"micropost_id"];
+        self.interfaceUrl = @"http://58.240.210.42:3004/api/students/delete_posts";
+        
+        self.baseDelegate = self;
+        self.headers = reqheaders;
+        
+        [self connectWithMethod:@"GET"];
+    }else {
+        [reqheaders setValue:[NSString stringWithFormat:@"%@",messageId] forKey:@"reply_micropost_id"];
+        self.interfaceUrl = @"http://58.240.210.42:3004/api/students/delete_reply_microposts";
+        
+        self.baseDelegate = self;
+        self.headers = reqheaders;
+        
+        [self connectWithMethod:@"POST"];
+    }
 }
 
 #pragma mark - BaseInterfaceDelegate
@@ -36,7 +47,7 @@
             if (jsonData) {
                 if ([[jsonData objectForKey:@"status"]isEqualToString:@"success"]) {
                     @try {
-                        [self.delegate getDeleteMsgInfoDidFinished:jsonData];
+                        [self.delegate getDeleteMsgInfoDidFinished:jsonData andType:self.type];
                     }
                     @catch (NSException *exception) {
                         [self.delegate getDeleteMsgInfoDidFailed:@"获取数据失败!"];

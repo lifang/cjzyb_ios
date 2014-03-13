@@ -40,5 +40,6 @@ enum MessageCellStyle {
 
 @property (nonatomic, assign) NSInteger pageHeader;
 @property (nonatomic, assign) NSInteger pageCountHeader;
+
 +(MessageObject *)messageFromDictionary:(NSDictionary *)aDic;
 @end

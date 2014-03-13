@@ -26,20 +26,26 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [DataService sharedService].third = 1;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
+                                             selector:@selector(keyboardWillShowThird:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
+                                             selector:@selector(keyboardWillHideThird:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 }
-
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.txtView resignFirstResponder];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -47,7 +53,7 @@
     // Dispose of any resources that can be recreated.
 }
 #pragma mark - Keyboard notifications
-- (void)keyboardWillShow:(NSNotification *)notification {
+- (void)keyboardWillShowThird:(NSNotification *)notification {
         NSDictionary *userInfo = [notification userInfo];
         NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
         
@@ -64,7 +70,7 @@
                          }];
 
 }
-- (void)keyboardWillHide:(NSNotification *)notification {
+- (void)keyboardWillHideThird:(NSNotification *)notification {
     
         NSDictionary *userInfo = [notification userInfo];
         
@@ -80,6 +86,40 @@
 }
 
 #pragma mark - Text view delegate
+#pragma mark ---- 计算文本的字数
+- (int)textLength:(NSString *)text
+{
+    float number = 0.0;
+    for (int index = 0; index < [text length]; index++)
+    {
+        NSString *character = [text substringWithRange:NSMakeRange(index, 1)];
+        
+        if ([character lengthOfBytesUsingEncoding:NSUTF8StringEncoding] == 3)
+        {
+            number++;
+        }
+        else
+        {
+            number = number + 0.5;
+        }
+    }
+    return ceil(number);
+}
+
+- (void)calculateTextLength
+{
+    NSString *string = self.txtView.text;
+    int wordcount = [self textLength:string];
+    
+	NSInteger count  = 60 - wordcount;
+    if (count<0) {
+        [self.textCountLabel setText:[NSString stringWithFormat:@"还可以输入%i个字",0]];
+    }else {
+        [self.textCountLabel setText:[NSString stringWithFormat:@"还可以输入%i个字",count]];
+    }
+}
+
+
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     [textView becomeFirstResponder];
 }
@@ -101,26 +141,50 @@
 }
 
 - (void)textViewDidChange:(UITextView *)_textView {
-    CGSize size = self.txtView.contentSize;
-    size.height -= 2;
-    NSInteger maxHeight = self.view.frame.size.height-100-self.keyboardHeight;
-    if ( size.height >= maxHeight ) {
-        size.height = maxHeight;
+    [self calculateTextLength];
+}
+-(AppDelegate *)appDel {
+    if (!_appDel) {
+        _appDel = [AppDelegate shareIntance];
     }
-    else if ( size.height <= 190 ) {
-        size.height = 190;
-    }
-    if ( size.height != self.txtView.frame.size.height ) {
-        CGFloat span = size.height - self.txtView.frame.size.height;
-        
-        CGRect frame = self.sendBtn.frame;
-        frame.origin.y += span;
-        self.sendBtn.frame = frame;
-        
-        frame = self.txtView.frame;
-        frame.size = size;
-        self.txtView.frame = frame;
+    return _appDel;
+}
+-(IBAction)sendQuestion:(id)sender {
+    [self.txtView resignFirstResponder];
+    
+    int wordcount = [self textLength:self.txtView.text];
+    if (wordcount>60) {
+        [Utility errorAlert:@"最多输入60个字!"];
+    }else {
+        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+        self.questionInter = [[QuestionInterface alloc]init];
+        self.questionInter.delegate = self;
+        [self.questionInter getQuestionInterfaceDelegateWithUserId:[DataService sharedService].user.userId andUserType:@"1" andClassId:[DataService sharedService].theClass.classId andContent:self.txtView.text];
     }
 }
+#pragma mark 
+#pragma mark - QuestionInterfaceDelegate
+-(void)getQuestionInfoDidFinished:(NSDictionary *)result {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            self.txtView.text = @"";self.textCountLabel.text = @"还可以输入60字";
+            NSArray *array = [result objectForKey:@"micropost"];
+            NSDictionary *dic = [array objectAtIndex:0];
+            MessageObject *message = [MessageObject messageFromDictionary:dic];
 
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadFirstArrayByThirdView" object:message];
+            if ([DataService sharedService].second == 1) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadSecondArrayByThirdView" object:message];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"selectedViewController" object:nil];
+//            [Utility errorAlert:@"问题发布成功!"];
+        });
+    });
+}
+-(void)getQuestionInfoDidFailed:(NSString *)errorMsg {
+    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [Utility errorAlert:errorMsg];
+}
 @end
