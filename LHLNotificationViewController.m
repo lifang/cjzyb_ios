@@ -15,9 +15,14 @@
 @property (strong,nonatomic) LHLNotificationCell *tempCell;
 @property (assign,nonatomic) NotificationDisplayCategory displayCategory;//当前页面显示的通知类型
 @property (strong,nonatomic) NSMutableArray *notificationArray; //系统通知数组
+@property (assign,nonatomic) NSInteger pageOfNotification; //系统通知页码(分页加载)
 @property (strong,nonatomic) NSMutableArray *replyNotificationArray;  //回复通知数组
-@property (assign,nonatomic) NSInteger numberOfRows;
-@property (assign,nonatomic) NSInteger numberOfReplys;
+@property (assign,nonatomic) NSInteger pageOfReplyNotification; //回复通知页码(分页加载)
+@property (strong,nonatomic) NSIndexPath *deletingIndexPath;  //正在被删除的cell的indexPath(在请求接口的过程中有效)
+@property (strong,nonatomic) LHLGetMyNoticeInterface *getMyNoticeInterface;
+@property (strong,nonatomic) LHLGetSysNoticeInterface *getSysNoticeInterface;
+@property (strong,nonatomic) LHLDeleteMyNoticeInterface *deleteMyNoticeInterface;
+@property (strong,nonatomic) LHLDeleteSysNoticeInterface *deleteSysNoticeInterface;
 @end
 
 @implementation LHLNotificationViewController
@@ -36,13 +41,26 @@
     [super viewDidLoad];
     
     self.displayCategory = NotificationDisplayCategoryDefault;
-    self.numberOfRows = 6;
-    self.numberOfReplys = 6;
     
     UINib *nib = [UINib nibWithNibName:@"LHLNotificationCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"LHLNotificationCell"];
     [self.tableView registerClass:[LHLNotificationHeader class] forHeaderFooterViewReuseIdentifier:@"LHLNotificationHeader"];
     [self.tableView registerClass:[LHLReplyNotificationCell class] forCellReuseIdentifier:@"LHLReplyNotificationCell"];
+}
+
+//获取数据
+- (void)initData{
+    self.notificationArray = [NSMutableArray array];
+    self.pageOfNotification = 1;
+    self.replyNotificationArray = [NSMutableArray array];
+    self.pageOfReplyNotification = 1;
+    
+    [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
+        if (![@"NotReachable" isEqualToString:networkStatus]) {
+            [self.getMyNoticeInterface getMyNoticeWithUserID:@"1" andSchoolClassID:@"1" andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification]];
+            [self.getSysNoticeInterface getSysNoticeWithUserID:@"1" andSchoolClassID:@"1" andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification]];
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,18 +75,12 @@
 
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    if (self.displayCategory == NotificationDisplayCategoryDefault) {
-//        return self.notificationArray.count;
-//    }else if (self.displayCategory == NotificationDisplayCategoryReply){
-//        return self.replyNotificationArray.count;
-//    }
-//    return 0;
     if (self.displayCategory == NotificationDisplayCategoryDefault) {
-        return self.numberOfRows;
-    }else{
-        return self.numberOfReplys;
+        return self.notificationArray.count;
+    }else if (self.displayCategory == NotificationDisplayCategoryReply){
+        return self.replyNotificationArray.count;
     }
-    
+    return 0;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -130,16 +142,49 @@
     return header;
 }
 
+#pragma mark -- property
+-(LHLGetSysNoticeInterface *)getSysNoticeInterface{
+    if (!_getSysNoticeInterface) {
+        _getSysNoticeInterface = [LHLGetSysNoticeInterface new];
+        _getSysNoticeInterface.delegate = self;
+    }
+    return _getSysNoticeInterface;
+}
+
+-(LHLGetMyNoticeInterface *)getMyNoticeInterface{
+    if (!_getMyNoticeInterface) {
+        _getMyNoticeInterface = [LHLGetMyNoticeInterface new];
+        _getMyNoticeInterface.delegate = self;
+    }
+    return _getMyNoticeInterface;
+}
+
+-(LHLDeleteSysNoticeInterface *)deleteSysNoticeInterface{
+    if (!_deleteSysNoticeInterface) {
+        _deleteSysNoticeInterface = [LHLDeleteSysNoticeInterface new];
+        _deleteSysNoticeInterface.delegate = self;
+    }
+    return _deleteSysNoticeInterface;
+}
+
+-(LHLDeleteMyNoticeInterface *)deleteMyNoticeInterface{
+    if (!_deleteMyNoticeInterface) {
+        _deleteMyNoticeInterface = [LHLDeleteMyNoticeInterface new];
+        _deleteMyNoticeInterface.delegate = self;
+    }
+    return _deleteMyNoticeInterface;
+}
+
 #pragma mark -- LHLNotificationCellDelegate
 -(void)cell:(LHLNotificationCell *)cell deleteButtonClicked:(id)sender{
-//    [self.notificationArray removeObjectAtIndex:cell.indexPath.row];
-    self.numberOfRows --;
-    [self.tableView deleteRowsAtIndexPaths:@[cell.indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [UIView animateWithDuration:0.3 animations:^{
-        self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
-    } completion:^(BOOL finished) {
-        [self.tableView reloadData];
+    //请求接口
+    NotificationObject *notice = self.notificationArray[cell.indexPath.row];
+    [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
+        if (![@"NotReachable" isEqualToString:networkStatus]) {
+            [self.deleteSysNoticeInterface deleteSysNoticeWithUserID:@"1" andClassID:@"1" andSysNoticeID:notice.notiID];
+        }
     }];
+    self.deletingIndexPath = cell.indexPath;
 }
 
 -(void)refreshHeightForCell:(LHLNotificationCell *)cell{
@@ -152,14 +197,14 @@
 }
 
 -(void) replyCell:(LHLReplyNotificationCell *)cell deleteButtonClicked:(id)sender{
-//    [self.replyNotificationArray removeObjectAtIndex:cell.indexPath.row];
-    self.numberOfReplys --;
-    [self.tableView deleteRowsAtIndexPaths:@[cell.indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [UIView animateWithDuration:0.3 animations:^{
-        self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
-    } completion:^(BOOL finished) {
-        [self.tableView reloadData];
+    //请求接口
+    ReplyNotificationObject *notice = self.replyNotificationArray[cell.indexPath.row];
+    [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
+        if (![@"NotReachable" isEqualToString:networkStatus]) {
+            [self.deleteMyNoticeInterface deleteMyNoticeWithUserID:@"1" andClassID:@"1" andNoticeID:notice.replyId];
+        }
     }];
+    self.deletingIndexPath = cell.indexPath;
 }
 
 #pragma mark -- LHLNotificationHeaderDelegate
@@ -169,6 +214,106 @@
         self.displayCategory = category;
         [self.tableView reloadData];
     }
+}
+
+#pragma mark -- getSysNoti Delegate
+-(void)getSysNoticeDidFinished:(NSDictionary *)result{
+    NSArray *notices = [result objectForKey:@"sysmessage"];
+    for (NSInteger i = 0; i < notices.count; i ++) {
+        NSDictionary *noticeDic = notices[i];
+        NotificationObject *obj = [[NotificationObject alloc] init];
+        obj.notiID = [noticeDic objectForKey:@"id"];
+        obj.notiSchoolClassID = [noticeDic objectForKey:@"school_class_id"];
+        obj.notiStudentID = [noticeDic objectForKey:@"student_id"];
+        obj.notiContent = [noticeDic objectForKey:@"content"];
+        obj.notiTime = [noticeDic objectForKey:@"created_at"];
+        [self.notificationArray addObject:obj];
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+
+-(void)getSysNoticeDidFailed:(NSString *)errorMsg{
+    [Utility errorAlert:errorMsg];
+}
+
+#pragma mark -- getMyNoti Delegate
+-(void)getMyNoticeDidFinished:(NSDictionary *)result{
+    NSArray *notices = [result objectForKey:@"messages"];
+    for (NSInteger i = 0; i < notices.count; i ++) {
+        //从content字符串中拆分出被回复者的name,和content
+        NSDictionary *noticeDic = notices[i];
+        NSString *content = [noticeDic objectForKey:@"content"];
+        NSArray *ary = [content componentsSeparatedByString:@"]]"];
+        if (ary.count >= 2) {
+            content = ary[1];
+        }
+        NSRange range = [content rangeOfString:@"："];
+        NSString *name = [content substringToIndex:range.location];
+        range = [content rangeOfString:@";||;"];
+        NSString *realContent = [content substringFromIndex:range.location + range.length];
+        
+        ReplyNotificationObject *obj = [ReplyNotificationObject new];
+        obj.replyId = [noticeDic objectForKey:@"id"];
+        obj.replyTime = [noticeDic objectForKey:@"created_at"];
+        obj.replyContent = realContent;
+        obj.replyMicropostId = [noticeDic objectForKey:@"micropost_id"];
+        obj.replyReciverID = [noticeDic objectForKey:@"reciver_id"];
+        obj.replyReciverType = [noticeDic objectForKey:@"reciver_types"];
+        obj.replyerImageAddress = [noticeDic objectForKey:@"sender_avatar_url"];
+        obj.replyerName = [noticeDic objectForKey:@"sender_name"];
+        obj.replyTargetName = name;
+        
+        [self.replyNotificationArray addObject:obj];
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+}
+
+-(void)getMyNoticeDidFailed:(NSString *)errorMsg{
+    [Utility errorAlert:errorMsg];
+}
+
+#pragma mark -- deleteSysNoti Delegate
+-(void)deleteSysNoticeDidFinished:(NSDictionary *)result{
+    [self.notificationArray removeObjectAtIndex:self.deletingIndexPath.row];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
+        } completion:^(BOOL finished) {
+            [self.tableView reloadData];
+        }];
+        self.deletingIndexPath = nil;
+    });
+    [Utility errorAlert:@"删除成功!"];
+}
+
+-(void)deleteSysNoticeDidFailed:(NSString *)errorMsg{
+    [Utility errorAlert:errorMsg];
+    self.deletingIndexPath = nil;
+}
+
+#pragma mark -- deleteMyNoti Delegate
+-(void)deleteMyNoticeDidFinished:(NSDictionary *)result{
+    [self.replyNotificationArray removeObjectAtIndex:self.deletingIndexPath.row];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
+        } completion:^(BOOL finished) {
+            [self.tableView reloadData];
+        }];
+        self.deletingIndexPath = nil;
+    });
+    [Utility errorAlert:@"删除成功!"];
+}
+
+-(void)deleteMyNoticeDidFailed:(NSString *)errorMsg{
+    [Utility errorAlert:errorMsg];
+    self.deletingIndexPath = nil;
 }
 
 @end
