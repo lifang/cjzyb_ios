@@ -293,7 +293,14 @@
         <image name="jiezu.png" width="32" height="29"/>
         <image name="jinque.png" width="32" height="29"/>
         <image name="line.png" width="217" height="3"/>
+        <image name="line.png" width="217" height="3"/>
         <image name="progressBack.png" width="128" height="20"/>
+        <image name="progressBack.png" width="128" height="20"/>
+        <image name="progressBack.png" width="128" height="20"/>
+        <image name="progressBack.png" width="128" height="20"/>
+        <image name="progressTrack.png" width="128" height="20"/>
+        <image name="progressTrack.png" width="128" height="20"/>
+        <image name="progressTrack.png" width="128" height="20"/>
         <image name="progressTrack.png" width="128" height="20"/>
         <image name="user.png" width="21" height="21"/>
         <image name="userGroup.png" width="21" height="21"/>
