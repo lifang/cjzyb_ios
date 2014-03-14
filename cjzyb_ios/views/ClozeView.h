@@ -7,11 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreText/CoreText.h>
+
+#import "UnderLineLabel.h"
+
+@protocol ClozeViewDelegate <NSObject>
+-(void)pressedLabel:(UIControl *)unLabel;
+
+@end
 
 @interface ClozeView : UIView
-
+@property (nonatomic, assign) id<ClozeViewDelegate>delegate;
 @property (nonatomic, strong) NSString *text;
-
+@property (nonatomic, strong) NSMutableArray *modelArray;
+@property (nonatomic, assign) NSInteger number;//记录换行
 - (void)setText:(NSString*)text;
 @end

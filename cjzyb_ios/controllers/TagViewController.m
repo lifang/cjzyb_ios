@@ -28,6 +28,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view.layer setMasksToBounds:YES];
+    [self.view.layer setCornerRadius:9];
     [self.tagTable registerClass:[TagViewFooter class] forHeaderFooterViewReuseIdentifier:DETAIL_HEADER];
     //输入框添加观察者
     [[NSNotificationCenter defaultCenter] addObserver:self
