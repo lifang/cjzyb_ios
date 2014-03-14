@@ -47,17 +47,6 @@
     [self.fourthTable registerClass:[FirstViewHeader class] forHeaderFooterViewReuseIdentifier:FOURTH_HEADER_IDENTIFIER];
     [self textBarInit];
     
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-    
-    
     //下拉刷新
     __block FourthViewController *fourthView = self;
     __block UITableView *table = self.fourthTable;
@@ -74,12 +63,25 @@
         [self getMyfocusData];
         [DataService sharedService].fourth = 1;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShowFourth:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHideFourth:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.textView resignFirstResponder];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 -(void)getMyfocusData {
+    self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
     [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
     [self.mFocusInter getMyFocusInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId andPage:1];
 }
@@ -168,7 +170,7 @@
 }
 #pragma mark
 #pragma mark - Keyboard notifications
-- (void)keyboardWillShow:(NSNotification *)notification {
+- (void)keyboardWillShowFourth:(NSNotification *)notification {
     NSDictionary *userInfo = [notification userInfo];
     NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     
@@ -188,7 +190,7 @@
                      }];
     
 }
-- (void)keyboardWillHide:(NSNotification *)notification {
+- (void)keyboardWillHideFourth:(NSNotification *)notification {
     
     NSDictionary *userInfo = [notification userInfo];
     
@@ -484,7 +486,9 @@
         }else {
             [self.arrSelSection removeAllObjects];
             [self resetTableViewHeaderByIndex:[string2 integerValue]];
+            [self.fourthTable beginUpdates];
             [self.fourthTable reloadSections:[NSIndexSet indexSetWithIndex:[string2 integerValue]] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.fourthTable endUpdates];
         }
     }
     
@@ -498,9 +502,9 @@
                 message.pageHeader = 1;
                 [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
             }else {
-                
+                [self.fourthTable beginUpdates];
                 [self.fourthTable reloadSections:[NSIndexSet indexSetWithIndex:header.aSection] withRowAnimation:UITableViewRowAnimationAutomatic];
-                
+                [self.fourthTable endUpdates];
                 [self resetTableViewHeaderByIndex:header.aSection];
                 [self scrollToBottomAnimated:YES];
             }
@@ -510,8 +514,9 @@
         
     }else {//打开状态
         [self resetTableViewHeaderByIndex:header.aSection];
+        [self.fourthTable beginUpdates];
         [self.fourthTable reloadSections:[NSIndexSet indexSetWithIndex:header.aSection] withRowAnimation:UITableViewRowAnimationAutomatic];
-        
+        [self.fourthTable endUpdates];
     }
 }
 - (void)contextMenuHeaderDidSelectFocusOption:(FirstViewHeader *)header {
@@ -636,7 +641,9 @@
                     replyMsg.pageCountCell = [[aDic objectForKey:@"pages_count"]integerValue];
                     [message.replyMessageArray addObject:replyMsg];
                 }
+                [self.fourthTable beginUpdates];
                 [self.fourthTable reloadSections:[NSIndexSet indexSetWithIndex:self.tmpSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.fourthTable endUpdates];
             }
             [self.headerArray removeAllObjects];
             [self resetTableViewHeaderByIndex:self.tmpSection];
@@ -660,7 +667,9 @@
             
             [self.arrSelSection removeAllObjects];
             [self.fourthArray removeObjectAtIndex:self.tmpSection];
-            [self.fourthTable deleteSections:[NSIndexSet indexSetWithIndex:self.tmpSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.fourthTable beginUpdates];
+            [self.fourthTable deleteSections:[NSIndexSet indexSetWithIndex:self.tmpSection] withRowAnimation:UITableViewRowAnimationFade];
+            [self.fourthTable endUpdates];
             for (int i=0; i<self.fourthArray.count; i++) {
                 FirstViewHeader *header = (FirstViewHeader *)[self.fourthTable headerViewForSection:i];
                 header.aSection =i;
@@ -683,7 +692,9 @@
             if (type==1) {
                 [self.arrSelSection removeAllObjects];
                 [self.fourthArray removeObjectAtIndex:self.tmpSection];
-                [self.fourthTable deleteSections:[NSIndexSet indexSetWithIndex:self.tmpSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.fourthTable beginUpdates];
+                [self.fourthTable deleteSections:[NSIndexSet indexSetWithIndex:self.tmpSection] withRowAnimation:UITableViewRowAnimationFade];
+                [self.fourthTable endUpdates];
                 for (int i=0; i<self.fourthArray.count; i++) {
                     FirstViewHeader *header = (FirstViewHeader *)[self.fourthTable headerViewForSection:i];
                     header.aSection =i;
@@ -696,8 +707,9 @@
                 message.replyCount = [NSString stringWithFormat:@"%d",[message.replyCount integerValue]-1];
                 [message.replyMessageArray removeObjectAtIndex:self.theIndex.row];
                 header.aMessage = message;
-                
-                [self.fourthTable deleteRowsAtIndexPaths:[NSArray arrayWithObjects:self.theIndex, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.fourthTable beginUpdates];
+                [self.fourthTable deleteRowsAtIndexPaths:[NSArray arrayWithObjects:self.theIndex, nil] withRowAnimation:UITableViewRowAnimationFade];
+                [self.fourthTable endUpdates];
                 [self.cellArray removeAllObjects];
                 
                 for (int i=0; i<message.replyMessageArray.count; i++) {
@@ -719,7 +731,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
-            self.textView.text = @"";
+            self.textView.text = @"";self.textCountLabel.text = @"0/60";
             if (type==1) {//回复的主消息
                 NSArray *array = [result objectForKey:@"replymicropost"];
                 NSDictionary *dic = [array objectAtIndex:0];
@@ -731,11 +743,15 @@
                 header.aMessage = message;
                 if ([message.replyCount integerValue]==1) {
                     [self.arrSelSection addObject:[NSString stringWithFormat:@"%d",self.tmpSection]];
+                    [self.fourthTable beginUpdates];
                     [self.fourthTable reloadSections:[NSIndexSet indexSetWithIndex:self.tmpSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.fourthTable endUpdates];
                 }else {
                     NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:self.tmpSection];
-                    [self.fourthTable insertRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.fourthTable beginUpdates];
+                    [self.fourthTable insertRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationFade];
                     [self.fourthTable reloadRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.fourthTable endUpdates];
                 }
                 for (int i=0; i<message.replyMessageArray.count; i++) {
                     FirstCell *cell = (FirstCell *)[self.fourthTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:self.tmpSection]];
@@ -753,8 +769,10 @@
                 [self.cellArray removeAllObjects];
                 
                 NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:self.theIndex.section];
-                [self.fourthTable insertRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.fourthTable beginUpdates];
+                [self.fourthTable insertRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationFade];
                 [self.fourthTable reloadRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.fourthTable endUpdates];
                 
                 for (int i=0; i<message.replyMessageArray.count; i++) {
                     FirstCell *cell = (FirstCell *)[self.fourthTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:self.theIndex.section]];

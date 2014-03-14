@@ -23,7 +23,8 @@
 @property (nonatomic, strong) NSString *options;//选项
 @property (nonatomic, strong) NSString *card_tag_id;
 @property (nonatomic, strong) NSString *created_at;
-
+@property (nonatomic, strong) NSString *full_text;
+@property (nonatomic, strong) NSMutableArray *tagArray;
 
 +(CardObject *)cardFromDictionary:(NSDictionary *)aDic;
 @end

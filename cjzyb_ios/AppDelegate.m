@@ -19,7 +19,15 @@
 #import "CardpackageViewController.h"//卡包
 
 #import "ReadingTaskViewController.h"
+#import "LiningHomeworkViewController.h"
+#import "HomeworkContainerController.h"
+
+#import "ListenWriteViewController.h"//听写
+#import "SortViewController.h"//排序
+#import "SelectedViewController.h"//完形填空
+
 #import "TenSecChallengeViewController.h"
+
 @implementation AppDelegate
 
 +(AppDelegate *)shareIntance {
@@ -57,11 +65,11 @@
     //设置语音识别的apikey
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    ReadingTaskViewController *reading = [[ReadingTaskViewController alloc] initWithNibName:@"ReadingTaskViewController" bundle:nil];
-    self.window.rootViewController = reading;
-    
-    
+
+    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+    tabBarController.childenControllerArray = @[main];
+    self.window.rootViewController = tabBarController;
     TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
     self.window.rootViewController = notificationViewController;
 
@@ -69,9 +77,15 @@
 //     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
 //    self.window.rootViewController = navControl;
     
-//    UIRemoteNotificationType types = UIRemoteNotificationTypeSound|UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert;
-//    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
-    
+
+//     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
+//    ListenWriteViewController *lwView = [[ListenWriteViewController alloc]initWithNibName:@"ListenWriteViewController" bundle:nil];
+//    SortViewController *sortView = [[SortViewController alloc]initWithNibName:@"SortViewController" bundle:nil];
+//    SelectedViewController *selectedView = [[SelectedViewController alloc]initWithNibName:@"SelectedViewController" bundle:nil];
+//     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:selectedView];
+//    self.window.rootViewController = navControl;
+//    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
+
     [self.window makeKeyAndVisible];
     
     

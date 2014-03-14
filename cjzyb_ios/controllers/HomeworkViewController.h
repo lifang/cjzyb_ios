@@ -14,7 +14,7 @@
  *
  * 管理作业界面
  */
-@interface HomeworkViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate>
+@interface HomeworkViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,HomeworkDailyCollectionViewControllerDelegate>
 @property (nonatomic,assign) BOOL isShowHistory;
 /// 当前作业类型
 @property (strong,nonatomic) TaskObj *taskObj;

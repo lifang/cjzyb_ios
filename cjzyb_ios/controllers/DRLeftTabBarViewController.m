@@ -7,13 +7,12 @@
 //
 
 #import "DRLeftTabBarViewController.h"
-#import "DRNavigationRightItem.h"
+#import "DRNavigationBar.h"
 #import "UserInfoPopViewController.h"
 
 @interface DRLeftTabBarViewController ()
 @property (nonatomic,strong) LeftTabBarView *leftTabBar;
-@property (nonatomic,strong) UIButton *leftItemButton;
-@property (nonatomic,strong) DRNavigationRightItem *rightItemButton;
+@property (nonatomic,strong) DRNavigationBar *drNavigationBar;
 @property (nonatomic,strong) UserInfoPopViewController *userInfoPopViewController;
 @property (nonatomic,strong) WYPopoverController *poprController;
 @property (nonatomic,strong) StudentListViewController *studentListViewController;
@@ -33,29 +32,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[UINavigationBar appearance] setBackgroundColor:[UIColor colorWithRed:47/255.0 green:201/255.0 blue:133/255.0 alpha:1]];
-    //设置左边按钮
-     self.leftItemButton = [[UIButton alloc] initWithFrame:(CGRect){0,0,50,44}];
-    [self.leftItemButton setImage:[UIImage imageNamed:@"navigationBarLeftItem.png"] forState:UIControlStateNormal];
-    [self.leftItemButton addTarget:self action:@selector(navigationLeftItemClicked) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.leftItemButton];
-    
     //设置左边栏
     NSArray *bundles = [[NSBundle mainBundle] loadNibNamed:@"LeftTabBarView" owner:self options:nil];
     self.leftTabBar = (LeftTabBarView*)[bundles objectAtIndex:0];
     self.leftTabBar.delegate = self;
     _isHiddleLeftTabBar = YES;
-    self.leftTabBar.frame = (CGRect){-100,44,100,1024-44};
+    self.leftTabBar.frame = (CGRect){-120,67,120,1024-67};
     [self.view addSubview:self.leftTabBar];
     [self.leftTabBar defaultSelected];
     
-    //设置右边按钮
-    NSArray *rightItemBundles = [[NSBundle mainBundle] loadNibNamed:@"DRNavigationRightItem" owner:self options:nil];
-    self.rightItemButton = (DRNavigationRightItem*)[rightItemBundles objectAtIndex:0];
-    [self.rightItemButton.itemCoverButton addTarget:self action:@selector(navigationRightItemClicked) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightItemButton];
-    // Do any additional setup after loading the view from its nib.
-    
+    //设置导航栏
+    self.drNavigationBar = [[[NSBundle mainBundle]  loadNibNamed:@"DRNavigationBar" owner:self options:nil] firstObject];
+    [self.drNavigationBar.rightButtonItem addTarget:self action:@selector(navigationRightItemClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.drNavigationBar.leftButtonItem addTarget:self action:@selector(navigationLeftItemClicked) forControlEvents:UIControlEventTouchUpInside];
+    self.drNavigationBar.frame = (CGRect){0,0,768,67};
+    [self.view addSubview:self.drNavigationBar];
     //设置子controller
     self.currentViewController = [self.childenControllerArray firstObject];
     if (self.currentViewController) {
@@ -77,7 +68,7 @@
         return;
     }
     [childController willMoveToParentViewController:childController];
-    childController.view.frame = (CGRect){0,44,768,1024-44};
+    childController.view.frame = (CGRect){0,67,768,1024-67};
     [self.view addSubview:childController.view];
     [childController didMoveToParentViewController:self];
     [self.view bringSubviewToFront:self.leftTabBar];
@@ -90,7 +81,7 @@
     if (from == to) {
         return;
     }
-    to.view.frame =  (CGRect){0,44,768,1024-44};
+    to.view.frame =  (CGRect){0,67,768,1024-67};
     [self transitionFromViewController:from toViewController:to duration:0 options:UIViewAnimationOptionTransitionNone animations:^{
         
     } completion:^(BOOL finished) {
@@ -118,11 +109,12 @@
 }
 ///导航栏右边item点击事件
 -(void)navigationRightItemClicked{
-    [self.rightItemButton setUserInteractionEnabled:NO];
+    [self.drNavigationBar.rightButtonItem setUserInteractionEnabled:NO];
      self.poprController= [[WYPopoverController alloc] initWithContentViewController:self.userInfoPopViewController];
     self.poprController.popoverContentSize = (CGSize){224,293};
-    [self.poprController presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES completion:^{
-        [self.rightItemButton setUserInteractionEnabled:YES];
+    CGRect rect = (CGRect){720,0,50,70};
+    [self.poprController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES completion:^{
+        [self.drNavigationBar.rightButtonItem setUserInteractionEnabled:YES];
     }];
 }
 #pragma mark --
@@ -194,7 +186,7 @@
 
 ///设置隐藏左侧边栏
 -(void)hiddleLeftTabBar:(BOOL)isHiddle withAnimation:(BOOL)animation{
-     [self.leftItemButton setEnabled:NO];
+     [self.drNavigationBar.leftButtonItem setEnabled:NO];
     if (animation) {
         [self.leftTabBar.layer removeAllAnimations];
         if (isHiddle) {
@@ -210,7 +202,7 @@
                 self.leftTabBar.center = (CGPoint){CGRectGetWidth(self.leftTabBar.frame)/2,self.leftTabBar.center.y};
             }
         } completion:^(BOOL finished) {
-            [self.leftItemButton setEnabled:YES];
+            [self.drNavigationBar.leftButtonItem setEnabled:YES];
         }];
     }else{
         if (isHiddle) {
@@ -218,7 +210,7 @@
         }else{
             self.leftTabBar.center = (CGPoint){CGRectGetWidth(self.leftTabBar.frame)/2,self.leftTabBar.center.y};
         }
-        [self.leftItemButton setEnabled:YES];
+        [self.drNavigationBar.leftButtonItem setEnabled:YES];
     }
 }
 

@@ -27,6 +27,16 @@ static CMRManager *dataService = nil;
     return dataService;
 }
 
+//+ (CMRManager *)sharedService {
+//    static dispatch_once_t once;
+//    static CMRManager *dataService = nil;
+//    
+//    dispatch_once(&once, ^{
+//        dataService = [[CMRManager alloc] init];
+//    });
+//    return dataService;
+//}
+
 - (void)SetMatchFunction:(NSString*) matchFunc {
     if (matchFunction==matchFunc || [matchFunction isEqualToString:matchFunc]) {
         return;
@@ -63,20 +73,52 @@ static CMRManager *dataService = nil;
         [arrayDes addObject:[NSNumber numberWithInt:aID]];
     }
 }
-
-- (void)addCardId:(int)cardId wrong:(NSString *)wrong right:(NSString *)right {
+- (void)AddContact:(int)localID name:(NSString*)name phone:(NSArray*)phoneArray {
+    //将联系人的号码用分隔符拼接添加到搜索,不直接用Array,为了优化号码搜索(KMP复杂度M+N)
     
-    u2char wrongBuf[wrong.length + 1];
-    [self string_u2char:wrong u2char:wrongBuf];
+    NSMutableString *phoneStr = [[NSMutableString alloc] init];
+    for (int i = 0; i < [phoneArray count]; i ++) {
+        NSString *phone = [phoneArray objectAtIndex:i];
+        [phoneStr appendString:phone];
+        [phoneStr appendString:separateWord];
+    }
     
-    u2char rightBuf[right.length + 1];
-    [self string_u2char:right u2char:rightBuf];
-
-    Tree_AddData(&iSearchTree,cardId,wrongBuf,rightBuf);
+    u2char nameBuf[name.length + 1];
+    [self string_u2char:name u2char:nameBuf];
+    
+    u2char phoneBuf[phoneStr.length + 1];
+    [self string_u2char:phoneStr u2char:phoneBuf];
+    
+    Tree_AddData(&iSearchTree,localID,nameBuf,phoneBuf);
+    
+    [phoneStr release];
 }
 
+- (void)ReplaceContact:(int)localID name:(NSString*)name phone:(NSArray*)phoneArray {
+    
+    NSMutableString *phoneStr = [[NSMutableString alloc] init];
+    for (int i = 0; i < [phoneArray count]; i ++) {
+        NSString *phone = [phoneArray objectAtIndex:i];
+        [phoneStr appendString:phone];
+        [phoneStr appendString:separateWord];
+    }
+    
+    u2char nameBuf[name.length + 1];
+    [self string_u2char:name u2char:nameBuf];
+    
+    u2char phoneBuf[phoneStr.length + 1];
+    [self string_u2char:phoneStr u2char:phoneBuf];
+    
+    Tree_ReplaceData(&iSearchTree,localID,nameBuf,phoneBuf);
+    
+    [phoneStr release];
+}
 
-- (void)SearchDefault:(NSString*)searchText searchArray:(NSArray*)aSearchedArray wrongMatch:(NSMutableArray*)wrongMatchArray rightMatch:(NSMutableArray*)rightMatchArray {
+- (void)DeleteContact:(int)localID {
+	Tree_DeleteData(&iSearchTree,localID);
+}
+
+- (void)SearchDefault:(NSString*)searchText searchArray:(NSArray*)aSearchedArray nameMatch:(NSMutableArray*)nameMatchArray phoneMatch:(NSMutableArray*)phoneMatchArray {
     
     u2char searchTextBuf[searchText.length + 1];
     [self string_u2char:searchText u2char:searchTextBuf];
@@ -94,15 +136,15 @@ static CMRManager *dataService = nil;
         }
     }
 	
-	if (wrongMatchArray) {
-        [wrongMatchArray removeAllObjects];
+	if (nameMatchArray) {
+        [nameMatchArray removeAllObjects];
         
 		nameMatchHits = new Array;
 		ArrayInit(nameMatchHits);
     }
 	
-	if (rightMatchArray) {
-        [rightMatchArray removeAllObjects];
+	if (phoneMatchArray) {
+        [phoneMatchArray removeAllObjects];
         
 		phoneMatchHits = new Array;
 		ArrayInit(phoneMatchHits);
@@ -111,13 +153,13 @@ static CMRManager *dataService = nil;
 	Tree_Search(&iSearchTree,searchTextBuf,searchedArray,nameMatchHits,phoneMatchHits);
 	
 	if (nameMatchHits) {
-        [self ArrayToNSArray:nameMatchHits NSArray:wrongMatchArray];
+        [self ArrayToNSArray:nameMatchHits NSArray:nameMatchArray];
 		nameMatchHits->Reset(nameMatchHits);
 		delete nameMatchHits;
     }
 	
 	if (phoneMatchHits) {
-        [self ArrayToNSArray:phoneMatchHits NSArray:rightMatchArray];
+        [self ArrayToNSArray:phoneMatchHits NSArray:phoneMatchArray];
 		phoneMatchHits->Reset(phoneMatchHits);
 		delete phoneMatchHits;
     }
@@ -130,15 +172,104 @@ static CMRManager *dataService = nil;
 }
 
 //搜索 MatchFunction为空
-- (void)Search:(NSString*)searchText searchArray:(NSArray*)aSearchedArray wrongMatch:(NSMutableArray*)wrongMatchArray rightMatch:(NSMutableArray*)rightMatchArray {
+- (void)Search:(NSString*)searchText searchArray:(NSArray*)aSearchedArray nameMatch:(NSMutableArray*)nameMatchArray phoneMatch:(NSMutableArray*)phoneMatchArray {
     [self SetMatchFunction:KStringNull];
-    [self SearchDefault:searchText searchArray:aSearchedArray wrongMatch:wrongMatchArray rightMatch:rightMatchArray];
+    [self SearchDefault:searchText searchArray:aSearchedArray nameMatch:nameMatchArray phoneMatch:phoneMatchArray];
 }
 
 //搜索 带MatchFunction
-- (void)SearchWithFunc:(NSString*)matchFunc searchText:(NSString*)searchText searchArray:(NSArray*)aSearchedArray wrongMatch:(NSMutableArray*)wrongMatchArray rightMatch:(NSMutableArray*)rightMatchArray {
+- (void)SearchWithFunc:(NSString*)matchFunc searchText:(NSString*)searchText searchArray:(NSArray*)aSearchedArray nameMatch:(NSMutableArray*)nameMatchArray phoneMatch:(NSMutableArray*)phoneMatchArray {
     [self SetMatchFunction:matchFunc];
-    [self SearchDefault:searchText searchArray:aSearchedArray wrongMatch:wrongMatchArray rightMatch:rightMatchArray];
+    [self SearchDefault:searchText searchArray:aSearchedArray nameMatch:nameMatchArray phoneMatch:phoneMatchArray];
+}
+- (BOOL)GetPinYin:(NSNumber*)localID pinYin:(NSMutableString*)pinyinDes matchPos:(NSMutableArray*)matchPosInPinYin {
+    [pinyinDes setString:@""];
+    
+    u2char pinyinBuf[256];
+    
+    Array* aMatchPosInPinYin = NULL;
+	if (matchPosInPinYin ) {
+		aMatchPosInPinYin = new Array;
+		ArrayInit(aMatchPosInPinYin);
+    }
+	
+	BOOL result = Tree_GetPinYin(&iSearchTree,[localID intValue],pinyinBuf,aMatchPosInPinYin);
+    
+    int length = u2slen(pinyinBuf);
+    [pinyinDes appendString:[NSString stringWithCharacters:(unichar*)pinyinBuf length:length]];
+	
+	if (aMatchPosInPinYin) {
+        [self ArrayToNSArray:aMatchPosInPinYin NSArray:matchPosInPinYin];
+        aMatchPosInPinYin->Reset(aMatchPosInPinYin);
+		delete aMatchPosInPinYin;
+    }
+	
+	return result;
+}
+
+//用分隔符拼接的号码，转换到原有的样式，提取匹配的号码及匹配位置
+- (void) ChangeToOranagePhones:(NSString*)phones matchPos:(NSArray*)matchPos phoneArray:(NSMutableArray*)phoneArray matchPosArray:(NSMutableArray*)matchPosArray {
+    
+    int start = [[matchPos objectAtIndex:0] intValue];
+    while (start >= 0) {
+        unichar word = [phones characterAtIndex:start];
+        if (word == KSeparateWord) {
+            break;
+        }
+        start --;
+    }
+    start ++;
+    
+    int end = [[matchPos objectAtIndex:matchPos.count-1] intValue];
+    while (end < [phones length]) {
+        unichar word = [phones characterAtIndex:end];
+        if (word == KSeparateWord) {
+            break;
+        }
+        end ++;
+    }
+    NSRange range = NSMakeRange(start, end - start);
+    NSString *phone = [phones substringWithRange:range];
+    
+    NSMutableArray *matchPosDes = [[NSMutableArray alloc] init];
+    for (int i = 0; i < [matchPos count]; i ++) {
+        int pos = [[matchPos objectAtIndex:i] intValue];
+        pos -= start;
+        [matchPosDes addObject:[NSNumber numberWithInt:pos]];
+    }
+    [phoneArray addObject:phone];
+    [matchPosArray addObject:matchPosDes];
+    [matchPosDes release];
+}
+
+- (BOOL)GetPhoneNum:(NSNumber*)localID phone:(NSMutableArray*)phoneArray matchPos:(NSMutableArray*)matchPosArray {
+    [phoneArray removeAllObjects];
+    [matchPosArray removeAllObjects];
+    
+    u2char phoneBuf[256];
+    
+    Array* aMatchPosInPhoneNum = NULL;
+	if  (matchPosArray) {
+		aMatchPosInPhoneNum = new Array;
+		ArrayInit(aMatchPosInPhoneNum);
+    }
+    
+    NSMutableString *phoneDes = [[NSMutableString alloc] init];
+    NSMutableArray *matchPos = [[NSMutableArray alloc] init];
+    BOOL result = Tree_GetPhoneNum(&iSearchTree,[localID intValue],(u2char*)phoneBuf,aMatchPosInPhoneNum);
+    int length = u2slen(phoneBuf);
+    [phoneDes appendString:[NSString stringWithCharacters:(unichar*)phoneBuf length:length]];
+	if (aMatchPosInPhoneNum) {
+        [self ArrayToNSArray:aMatchPosInPhoneNum NSArray:matchPos];
+        aMatchPosInPhoneNum->Reset(aMatchPosInPhoneNum);
+		delete aMatchPosInPhoneNum;
+    }
+    
+    [self ChangeToOranagePhones:phoneDes matchPos:matchPos phoneArray:phoneArray matchPosArray:matchPosArray];
+    
+    [phoneDes release];
+    [matchPos release];
+    return result;
 }
 
 - (void)Reset {

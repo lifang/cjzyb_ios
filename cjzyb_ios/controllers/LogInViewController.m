@@ -8,8 +8,8 @@
 
 #import "LogInViewController.h"
 
-#define AppId @"101028511"
-#define Appkey @"58386c3cf14fe320d1bea3adf1e70a3f"
+#define AppId @"101036106"
+#define Appkey @"be777eef6e2140ab8f4a729834234579"
 
 @interface LogInViewController ()
 

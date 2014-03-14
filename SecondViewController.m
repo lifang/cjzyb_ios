@@ -44,17 +44,7 @@
     self.isReloading = NO;
     [self.secondTable registerClass:[FirstViewHeader class] forHeaderFooterViewReuseIdentifier:SECOND_HEADER_IDENTIFIER];
     [self textBarInit];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-    
+
     //问答之后更新界面
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSecondArrayByThirdView:) name:@"reloadSecondArrayByThirdView" object:nil];
     
@@ -72,8 +62,9 @@
     MessageObject *message = [notification object];
     
     [self.secondArray insertObject:message atIndex:0];
-    [self.secondTable insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.secondTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
+
+    [self.secondTable reloadData];
     
     for (int i=0; i<self.secondArray.count; i++) {
         FirstViewHeader *header = (FirstViewHeader *)[self.secondTable headerViewForSection:i];
@@ -86,13 +77,26 @@
         [self getMymessageData];
         [DataService sharedService].second = 1;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShowSecond:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHideSecond:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.textView resignFirstResponder];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 //获取我的主消息
 -(void)getMymessageData {
+    self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
     [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
     [self.mMessageInter getMyMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.userId andPage:1];
 }
@@ -181,7 +185,7 @@
 }
 #pragma mark
 #pragma mark - Keyboard notifications
-- (void)keyboardWillShow:(NSNotification *)notification {
+- (void)keyboardWillShowSecond:(NSNotification *)notification {
     NSDictionary *userInfo = [notification userInfo];
     NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     
@@ -201,7 +205,7 @@
                      }];
     
 }
-- (void)keyboardWillHide:(NSNotification *)notification {
+- (void)keyboardWillHideSecond:(NSNotification *)notification {
     
     NSDictionary *userInfo = [notification userInfo];
     
@@ -498,7 +502,9 @@
         }else {
             [self.arrSelSection removeAllObjects];
             [self resetTableViewHeaderByIndex:[string2 integerValue]];
+            [self.secondTable beginUpdates];
             [self.secondTable reloadSections:[NSIndexSet indexSetWithIndex:[string2 integerValue]] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.secondTable endUpdates];
         }
     }
     
@@ -512,9 +518,9 @@
                 message.pageHeader = 1;
                 [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
             }else {
-                
+                [self.secondTable beginUpdates];
                 [self.secondTable reloadSections:[NSIndexSet indexSetWithIndex:header.aSection] withRowAnimation:UITableViewRowAnimationAutomatic];
-                
+                [self.secondTable endUpdates];
                 [self resetTableViewHeaderByIndex:header.aSection];
                 [self scrollToBottomAnimated:YES];
             }
@@ -524,8 +530,9 @@
         
     }else {//打开状态
         [self resetTableViewHeaderByIndex:header.aSection];
+        [self.secondTable beginUpdates];
         [self.secondTable reloadSections:[NSIndexSet indexSetWithIndex:header.aSection] withRowAnimation:UITableViewRowAnimationAutomatic];
-        
+        [self.secondTable endUpdates];
     }
 }
 - (void)contextMenuHeaderDidSelectFocusOption:(FirstViewHeader *)header {
@@ -650,7 +657,9 @@
                     replyMsg.pageCountCell = [[aDic objectForKey:@"pages_count"]integerValue];
                     [message.replyMessageArray addObject:replyMsg];
                 }
+                [self.secondTable beginUpdates];
                 [self.secondTable reloadSections:[NSIndexSet indexSetWithIndex:self.tmpSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.secondTable endUpdates];
             }
             [self.headerArray removeAllObjects];
             [self resetTableViewHeaderByIndex:self.tmpSection];
@@ -696,7 +705,9 @@
                 MessageObject *message = [self.secondArray objectAtIndex:self.tmpSection];
                 [self.arrSelSection removeAllObjects];
                 [self.secondArray removeObjectAtIndex:self.tmpSection];
-                [self.secondTable deleteSections:[NSIndexSet indexSetWithIndex:self.tmpSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.secondTable beginUpdates];
+                [self.secondTable deleteSections:[NSIndexSet indexSetWithIndex:self.tmpSection] withRowAnimation:UITableViewRowAnimationFade];
+                [self.secondTable endUpdates];
                 for (int i=0; i<self.secondArray.count; i++) {
                     FirstViewHeader *header = (FirstViewHeader *)[self.secondTable headerViewForSection:i];
                     header.aSection =i;
@@ -711,8 +722,9 @@
                 message.replyCount = [NSString stringWithFormat:@"%d",[message.replyCount integerValue]-1];
                 [message.replyMessageArray removeObjectAtIndex:self.theIndex.row];
                 header.aMessage = message;
-                
-                [self.secondTable deleteRowsAtIndexPaths:[NSArray arrayWithObjects:self.theIndex, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.secondTable beginUpdates];
+                [self.secondTable deleteRowsAtIndexPaths:[NSArray arrayWithObjects:self.theIndex, nil] withRowAnimation:UITableViewRowAnimationFade];
+                [self.secondTable endUpdates];
                 [self.cellArray removeAllObjects];
                 
                 for (int i=0; i<message.replyMessageArray.count; i++) {
@@ -736,7 +748,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
-            self.textView.text = @"";
+            self.textView.text = @"";self.textCountLabel.text = @"0/60";
             if (type==1) {//回复的主消息
                 NSArray *array = [result objectForKey:@"replymicropost"];
                 NSDictionary *dic = [array objectAtIndex:0];
@@ -748,11 +760,15 @@
                 header.aMessage = message;
                 if ([message.replyCount integerValue]==1) {
                     [self.arrSelSection addObject:[NSString stringWithFormat:@"%d",self.tmpSection]];
+                    [self.secondTable beginUpdates];
                     [self.secondTable reloadSections:[NSIndexSet indexSetWithIndex:self.tmpSection] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.secondTable endUpdates];
                 }else {
                     NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:self.tmpSection];
-                    [self.secondTable insertRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.secondTable beginUpdates];
+                    [self.secondTable insertRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationFade];
                     [self.secondTable reloadRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.secondTable endUpdates];
                 }
                 
                 for (int i=0; i<message.replyMessageArray.count; i++) {
@@ -771,8 +787,10 @@
                 [self.cellArray removeAllObjects];
                 
                 NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:self.theIndex.section];
-                [self.secondTable insertRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.secondTable beginUpdates];
+                [self.secondTable insertRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationFade];
                 [self.secondTable reloadRowsAtIndexPaths:[NSArray arrayWithObjects:index, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.secondTable endUpdates];
                 
                 for (int i=0; i<message.replyMessageArray.count; i++) {
                     FirstCell *cell = (FirstCell *)[self.secondTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:self.theIndex.section]];

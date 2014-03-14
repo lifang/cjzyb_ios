@@ -7,11 +7,11 @@
 //
 
 #import "CardpackageViewController.h"
-
 @interface CardpackageViewController ()
-
+@property (nonatomic,strong) WYPopoverController *poprController;
 @end
 
+#define TableTag 100999
 static NSInteger tmpPage = 0;
 @implementation CardpackageViewController
 
@@ -48,13 +48,15 @@ static NSInteger tmpPage = 0;
     
     [self getCardData];
     self.myScrollView.backgroundColor = [UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1];
-    self.myPageControl = [[MyPageControl alloc]initWithFrame:CGRectMake(0, 895, 768, 30)];
+    self.myPageControl = [[MyPageControl alloc]initWithFrame:CGRectMake(0, 920, 768, 30)];
     self.myPageControl.backgroundColor = [UIColor clearColor];
     [self.myPageControl addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.myPageControl];
     
     //翻页之后停止播放声音
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePlayerByView:) name:@"changePlayerByView" object:nil];
+    //选择或者取消标签
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeTagByView:) name:@"changeTagByView" object:nil];
 }
 -(void)changePage:(id)sender {
     int whichPage = self.myPageControl.currentPage;
@@ -70,6 +72,48 @@ static NSInteger tmpPage = 0;
         NSInteger tmpTag = [[self.arrSelSection objectAtIndex:0]integerValue];
         if ([postStr integerValue] == tmpTag) {
             [self stop];
+        }
+    }
+}
+
+- (void)changeTagByView:(NSNotification *)notification {
+    CardObject *card = [notification object];
+    
+    NSInteger card_Id = [card.carId integerValue];
+    
+    for (int i=0; i<self.dataArray.count; i++) {
+        CardObject *card2 = [self.dataArray objectAtIndex:i];
+        if ([card2.carId integerValue]==card_Id){
+            [self.dataArray replaceObjectAtIndex:i withObject:card];
+        }
+    }
+    
+    for (int i=0; i<self.cardArray.count; i++) {
+        CardObject *card2 = [self.cardArray objectAtIndex:i];
+        if ([card2.carId integerValue]==card_Id) {
+            [self.cardArray replaceObjectAtIndex:i withObject:card];
+            
+            NSInteger tag = i/4+TableTag;
+            UITableView *table = (UITableView *)[self.myScrollView viewWithTag:tag];
+            NSInteger section = 0;
+            if (i%4==0 || i%4==1) {
+                section=0;
+            }else if (i%4==2 || i%4==3){
+                section = 1;
+            }
+
+            NSIndexPath *idPath = [NSIndexPath indexPathForRow:section inSection:0];
+            UITableViewCell *cell = [table cellForRowAtIndexPath:idPath];
+
+            NSArray *subViews = [cell.contentView subviews];
+            for (UIView *vv in subViews) {
+                if ([vv isKindOfClass:[CardCustomView class]] && vv.tag==i) {
+                    CardCustomView *cardCustom = (CardCustomView *)vv;
+                    [cardCustom.cardFirst setTagNameArray:card.tagArray];
+                }
+            }
+            
+            break;
         }
     }
 }
@@ -99,6 +143,7 @@ static NSInteger tmpPage = 0;
     }
     return _arrSelSection;
 }
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -120,14 +165,13 @@ static NSInteger tmpPage = 0;
         self.myScrollView.contentSize = CGSizeMake(768*count, self.myScrollView.frame.size.height);
         for (int i=0; i<count; i++) {
             self.myTable = [[UITableView alloc] initWithFrame:CGRectMake(768*i, 0, 768, self.myScrollView.frame.size.height)];
-            self.myTable.tag = i;
+            self.myTable.tag = i+TableTag;
             self.myTable.delegate = self;
             self.myTable.dataSource = self;
             self.myTable.scrollEnabled = NO;
             self.myTable.backgroundColor = [UIColor clearColor];
             [self.myScrollView addSubview:self.myTable];
         }
-        NSLog(@"count = %d,page = %d",count,tmpPage);
         if (count<=tmpPage) {
             self.myPageControl.currentPage = count;
             [self.myScrollView setContentOffset:CGPointMake((count-1)*768, 0)];
@@ -158,7 +202,7 @@ static NSInteger tmpPage = 0;
         cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         for (int i = 0; i<count; i++) {
-            if (tableView.tag==i) {
+            if ((tableView.tag-TableTag)==i) {
                 [self drawTableViewCell:cell index:[indexPath row] category:i];
             }
         }
@@ -189,11 +233,13 @@ static NSInteger tmpPage = 0;
     CardObject *aCard = (CardObject *)[self.cardArray objectAtIndex:currentTag];
     NSArray *viewArray = [[NSBundle mainBundle] loadNibNamed:@"CardFirstView" owner:self options:nil];
     CardFirstView *cardFirst = (CardFirstView *)[viewArray objectAtIndex:0];
+    
     viewArray = [[NSBundle mainBundle] loadNibNamed:@"CardSecondView" owner:self options:nil];
     CardSecondView *cardSecond = (CardSecondView *)[viewArray objectAtIndex:0];
     
     CardCustomView *cView = [[CardCustomView alloc]initWithFrame:CGRectMake(34.67+(332+34.67)*col, 14, 332, 332) andFirst:cardFirst andSecond:cardSecond andObj:aCard];
     cView.viewtag = currentTag;
+    cView.tag = currentTag;
     cView.cardFirst.delegate = self;
     cView.cardSecond.delegate = self;
     [cell.contentView addSubview:cView];
@@ -290,7 +336,7 @@ static NSInteger tmpPage = 0;
     NSMutableArray *tempArray = [[NSMutableArray alloc]init];
     NSMutableArray *tempArray2 = [[NSMutableArray alloc]init];
     self.cardArray = nil;
-    [[CMRManager sharedService] Search:self.searchTxt.text searchArray:nil wrongMatch:tempArray rightMatch:tempArray2];
+    [[CMRManager sharedService] Search:self.searchTxt.text searchArray:nil nameMatch:tempArray phoneMatch:tempArray2];;
     
     NSMutableArray *tmpArr = [self getDatafromArray:tempArray array:tempArray2];
     if (tmpArr.count>0) {
@@ -310,18 +356,50 @@ static NSInteger tmpPage = 0;
 }
 #pragma mark
 #pragma mark - CardInterfaceDelegate
+-(NSMutableArray *)compareArray:(NSMutableArray *)array1 array:(NSMutableArray *)array2 {
+    NSMutableArray *tempArray = [[NSMutableArray alloc]init];
+    
+    for (int i=0; i<array1.count; i++) {
+        TagObject *tagObj = (TagObject *)[array1 objectAtIndex:i];
+        for (int k=0; k<array2.count; k++) {
+            NSInteger t_id = [[array2 objectAtIndex:k]integerValue];
+            if ([tagObj.tagId integerValue]==t_id) {
+                [tempArray addObject:tagObj.tagName];
+            }
+        }
+    }
+    
+    return tempArray;
+}
 -(void)getCardInfoDidFinished:(NSDictionary *)result {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
+            NSArray *arrayTag = [result objectForKey:@"tags"];
+            if (arrayTag.count>0) {
+                [DataService sharedService].tagsArray = [[NSMutableArray alloc]init];
+                for (int i=0; i<arrayTag.count; i++) {
+                    NSDictionary *dic = [arrayTag objectAtIndex:i];
+                    TagObject *tagObj = [TagObject tagFromDictionary:dic];
+                    [[DataService sharedService].tagsArray addObject:tagObj];
+                }
+            }
+            
             NSArray *array = [result objectForKey:@"knowledges_card"];
             if (array.count>0) {
                 for (int i=0; i<array.count; i++) {
                     NSDictionary *dic = [array objectAtIndex:i];
                     CardObject *card = [CardObject cardFromDictionary:dic];
-                    [[CMRManager sharedService] addCardId:[card.carId intValue] wrong:card.your_answer right:card.answer];
+                    
+                    if (card.tagArray.count>0) {
+                        NSMutableArray *tmpArray = [self compareArray:[DataService sharedService].tagsArray array:card.tagArray];
+                        [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.content phone:tmpArray];
+                    }else {
+                        [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.content phone:nil];
+                    }
+                    
                     [self.cardArray addObject:card];
-  
+                    
                 }
                 self.dataArray = [[NSMutableArray alloc]initWithArray:self.cardArray];
                 [self displayNewView];
@@ -383,6 +461,7 @@ static NSInteger tmpPage = 0;
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             CardObject *card = [self.cardArray objectAtIndex:tag];
+            [[CMRManager sharedService]DeleteContact:[card.carId intValue]];
             for (CardObject *card2 in self.dataArray) {
                 if ([card.carId integerValue] == [card2.carId integerValue]) {
                     [self.dataArray removeObject:card2];
@@ -401,6 +480,22 @@ static NSInteger tmpPage = 0;
 #pragma mark
 #pragma mark - 第一个页面
 -(void)pressedTxtBtn:(UIButton *)btn {
-    NSLog(@"text");
+    CardObject *card = [self.cardArray objectAtIndex:btn.tag];
+    TagViewController *tagView = [[TagViewController alloc]initWithNibName:@"TagViewController" bundle:nil];
+    tagView.tagArray = [DataService sharedService].tagsArray;
+    tagView.filteredArray = [DataService sharedService].tagsArray;
+    tagView.aCard = card;
+    
+    UIBarButtonItem *barItem = [[UIBarButtonItem alloc]initWithCustomView:btn];
+    __block UIBarButtonItem *barItemm = barItem;
+    self.poprController = [[WYPopoverController alloc] initWithContentViewController:tagView];
+    self.poprController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.fillTopColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.glossShadowColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.popoverContentSize = (CGSize){265,263};
+    [self.poprController presentPopoverFromBarButtonItem:barItem permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES completion:^{
+        barItemm=nil;
+    }];
 }
 @end

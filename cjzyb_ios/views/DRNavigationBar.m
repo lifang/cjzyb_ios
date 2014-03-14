@@ -1,19 +1,14 @@
 //
-//  DRNavigationRightItem.m
+//  DRNavigationBar.m
 //  cjzyb_ios
 //
-//  Created by david on 14-2-26.
+//  Created by david on 14-3-13.
 //  Copyright (c) 2014年 david. All rights reserved.
 //
 
-#import "DRNavigationRightItem.h"
-@interface DRNavigationRightItem()
-@property (weak, nonatomic) IBOutlet UIImageView *userImageView;
-@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+#import "DRNavigationBar.h"
 
-@end
-
-@implementation DRNavigationRightItem
+@implementation DRNavigationBar
 
 - (id)initWithFrame:(CGRect)frame
 {

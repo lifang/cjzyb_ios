@@ -18,12 +18,12 @@
 @property (nonatomic, strong) NSArray *orgArray;
 @property (nonatomic, strong) NSArray *metaphoneArray;
 
-@property (nonatomic, strong) NSMutableArray *greenArray;//绿色:正确，基本正确
-@property (nonatomic, strong) NSMutableArray *yellowArray;//黄色:部分匹配
+@property (nonatomic, strong) NSMutableArray *greenArray;//绿色:正确，
+@property (nonatomic, strong) NSMutableArray *yellowArray;//黄色:部分匹配基本正确
 @property (nonatomic, strong) NSMutableArray *spaceLineArray;//下划线:缺词
 @property (nonatomic, strong) NSMutableArray *noticeArray;//标记需要提示的地方
 @property (nonatomic, strong) NSMutableArray *correctArray;//正确单词
-
+@property (nonatomic, strong) NSMutableArray *wrongArray;//错误的单词
 @property (nonatomic, strong) NSMutableArray *sureArray;//黄色匹配
 + (Utility *)shared;
 +(NSString*)spellStringWithWord:(NSString*)word;
@@ -42,6 +42,9 @@
 /////////////上面都是单词匹配使用的
 
 +(Utility*)defaultUtility;
+
+///异步请求网络数据
++(void)requestDataWithRequest:(NSURLRequest*)request withSuccess:(void (^)(NSDictionary *dicData))success withFailure:(void (^)(NSError *error))failure;
 
 ///过滤json数据，可能出现<NULL>,null,等等情况
 +(NSString *)filterValue:(NSString*)value;

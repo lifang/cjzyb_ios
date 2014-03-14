@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DownloadClassmatesInfo.h"
 @class StudentTableViewCell;
 @class StudentSummaryCell;
 @protocol StudentListViewControllerDelegate;
@@ -24,6 +25,9 @@
 ///和老师信息列表
 @property (strong,nonatomic) NSMutableArray *teacherArray;
 
+
+///更新数据
+-(void)reloadClassmatesData;
 @end
 
 @protocol StudentListViewControllerDelegate <NSObject>

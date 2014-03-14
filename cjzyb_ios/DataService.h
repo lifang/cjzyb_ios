@@ -16,6 +16,8 @@
 @property (nonatomic,strong) UserObject *user;
 @property (nonatomic,strong) ClassObject *theClass;
 @property (nonatomic,assign) NSInteger first,second,third,fourth;//判断4个页面
+
+@property (nonatomic, strong) NSMutableArray *tagsArray;//卡包标签
 + (DataService *)sharedService;
 
 @end

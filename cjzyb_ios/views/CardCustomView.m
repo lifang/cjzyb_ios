@@ -37,9 +37,9 @@
         [self.cardSecond addTarget:self action:@selector(flipTouched) forControlEvents:UIControlEventTouchUpInside];
         
         self.aCard = object;
+        [self.cardFirst setTagNameArray:self.aCard.tagArray];
         self.cardFirst.wrongLetterLab.text = self.aCard.your_answer;
         self.cardFirst.rightLetterLab.text = self.aCard.answer;
-        
         [self.cardSecond.rtLab setText:self.aCard.content];
     
     }
