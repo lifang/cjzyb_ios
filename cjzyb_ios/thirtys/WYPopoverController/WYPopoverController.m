@@ -447,7 +447,7 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
     
     WYPopoverTheme *result = [[WYPopoverTheme alloc] init];
     
-    result.tintColor = [UIColor colorWithRed:55./255. green:63./255. blue:71./255. alpha:1.0];
+    result.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
     result.outerStrokeColor = nil;
     result.innerStrokeColor = nil;
     result.fillTopColor = result.tintColor;
@@ -477,7 +477,7 @@ static char const * const UINavigationControllerEmbedInPopoverTagKey = "UINaviga
     
     WYPopoverTheme *result = [[WYPopoverTheme alloc] init];
     
-    result.tintColor = [UIColor colorWithRed:244./255. green:244./255. blue:244./255. alpha:1.0];
+    result.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
     result.outerStrokeColor = [UIColor clearColor];
     result.innerStrokeColor = [UIColor clearColor];
     result.fillTopColor = nil;
@@ -2313,11 +2313,8 @@ static WYPopoverTheme *defaultTheme_ = nil;
         containerFrame.size.height = MIN(maxY - minY, containerFrame.size.height);
         
         backgroundView.frame = containerFrame;
-        
-#warning 设置backgroundcenter
-        
+
         backgroundView.center = CGPointMake(viewFrame.origin.x + viewFrame.size.width / 2, viewFrame.origin.y + viewFrame.size.height / 2);
-//        NSLog(@"x=%f,y=%f",backgroundView.center.x,backgroundView.center.y);
         containerFrame = backgroundView.frame;
         
         offset = 0;

@@ -363,7 +363,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 +(NSArray *)handleTheString:(NSString *)string {
     NSMutableArray *tempArray = [[NSMutableArray alloc]init];
     NSError *error;
-    NSString *regTags = @"([a-zA-Z]+[-',.!?]*[a-zA-Z]+)|([a-zA-Z]+)";//added by david
+    NSString *regTags = @"([a-zA-Z]+[-']*[a-zA-Z]+)|([a-zA-Z]+)";//added by david
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regTags
                                                                            options:NSRegularExpressionCaseInsensitive
                                                                              error:&error];

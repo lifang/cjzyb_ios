@@ -102,9 +102,9 @@
          {"id": "282",
          "content": "This is [[tag]] apple,[[tag]] is a book.Car has [[tag]] wheels.",
          "branch_questions": [
-                              {"id": "179", "opption": "a;||;an;||;two", "answer": "an"},
-                              {"id": "179", "opption": "This;||;those;||;these", "answer": "This"},
-                              {"id": "179", "opption": "a;||;an;||;four", "answer": "This"}
+                              {"id": "179", "opption": "a;||;an;||;two;||;three", "answer": "an"},
+                              {"id": "179", "opption": "This;||;those;||;these;||;these", "answer": "This"},
+                              {"id": "179", "opption": "a;||;an;||;four;||;these", "answer": "four"}
                               ]},
          {"id": "282",
          "content": "This is [[tag]] apple,[[tag]] is a book.Car has [[tag]] wheels.",
