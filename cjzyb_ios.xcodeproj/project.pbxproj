@@ -134,7 +134,6 @@
 		1818F6A418C561D200DC6207 /* TenSecChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1818F6A318C561D200DC6207 /* TenSecChallengeResultView.m */; };
 		1818F6A618C561ED00DC6207 /* TenSecChallengeResultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1818F6A518C561ED00DC6207 /* TenSecChallengeResultView.xib */; };
 		181A786618C4206700D288D3 /* TenSecChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786418C4206700D288D3 /* TenSecChallengeViewController.m */; };
-		181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */; };
 		181A786A18C469AB00D288D3 /* TenSecChallengeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786918C469AB00D288D3 /* TenSecChallengeObject.m */; };
 		1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */; };
 		182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */ = {isa = PBXBuildFile; fileRef = 187222BA18C87A5700BBE2D1 /* questions_lastest.js */; };
@@ -326,7 +325,6 @@
 		6396580A18C04D4A002F2A90 /* HomeworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396580818C04D4A002F2A90 /* HomeworkViewController.m */; };
 		6396580B18C04D4A002F2A90 /* HomeworkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396580918C04D4A002F2A90 /* HomeworkViewController.xib */; };
 		6396581218C04F68002F2A90 /* HomeworkTypeCollctionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396581118C04F68002F2A90 /* HomeworkTypeCollctionCell.m */; };
-		6396581418C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396581318C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib */; };
 		6396583318C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396583118C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m */; };
 		6396583418C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396583218C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib */; };
 		6396583A18C07B37002F2A90 /* HomeworkTypeObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396583918C07B37002F2A90 /* HomeworkTypeObj.m */; };
@@ -2068,7 +2066,6 @@
 				630DBE1D18D15CB1009DA0EB /* homework_line@2x.png in Resources */,
 				6396578318C0374C002F2A90 /* StudentTableViewCell.xib in Resources */,
 				0E92659D18BDE51F003ADEC3 /* commentBtn@2x.png in Resources */,
-				6396581418C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib in Resources */,
 				63B81C5018CF05F900004745 /* HomeworkContainerController.xib in Resources */,
 				630DBDD818D15936009DA0EB /* tabBarItemBack@2x.png in Resources */,
 				0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */,
@@ -2086,7 +2083,6 @@
 				0E5D1C7218C96B45008A13F2 /* fourth@2x.png in Resources */,
 				0E5D1C7B18C99F3A008A13F2 /* LogInViewController.xib in Resources */,
 				0E92659D18BDE51F003ADEC3 /* commentBtn@2x.png in Resources */,
-				6396581418C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib in Resources */,
 				0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */,
 				0E5D1C8918C9A18F008A13F2 /* QQLogIn@2x.png in Resources */,
 				0E9265A018BDE51F003ADEC3 /* focusBtn@2x.png in Resources */,
@@ -2169,7 +2165,6 @@
 				0E92659F18BDE51F003ADEC3 /* focusBtn_active@2x.png in Resources */,
 				63289A3018C5B11E00C0083E /* question.geojson in Resources */,
 				187C4AC818D304AC0006461D /* 10_03@2x.png in Resources */,
-				181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */,
 				0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */,
 				0E9C6E9E18D1977E00E807D1 /* SelectedViewController.xib in Resources */,
 				0EAABDBF18D0416E00CD2DE7 /* listen_back@2x.png in Resources */,
@@ -2192,7 +2187,6 @@
 				0E92ECE018D2B03600B6806C /* ClozeAnswerViewController.xib in Resources */,
 				0EAABD8218CF17B400CD2DE7 /* card_tg@2x.png in Resources */,
 				63289A3018C5B11E00C0083E /* question.geojson in Resources */,
-				181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */,
 				187C4ACE18D304AC0006461D /* 10_09@2x.png in Resources */,
 				0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */,
 				0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */,
