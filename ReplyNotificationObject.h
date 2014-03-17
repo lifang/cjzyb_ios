@@ -18,4 +18,5 @@
 @property (strong,nonatomic) NSString *replyMicropostId;  //被回复的帖子/消息ID
 @property (strong,nonatomic) NSString *replyReciverID;  //你回复消息时的被回复者ID
 @property (strong,nonatomic) NSString *replyReciverType;  //你回复消息时的被回复者类型 (默认学生都为1)
+@property (assign,nonatomic) BOOL isEditing;//正在编辑状态
 @end

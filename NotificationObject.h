@@ -14,4 +14,5 @@
 @property (strong,nonatomic) NSString *notiStudentID;      //学生id
 @property (strong,nonatomic) NSString *notiContent;         //内容
 @property (strong,nonatomic) NSString *notiTime;        //通知时间
+@property (assign,nonatomic) BOOL isEditing;  //正在编辑状态
 @end

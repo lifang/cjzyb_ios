@@ -142,9 +142,13 @@
 		1867B53718D006AB0042A95D /* systemMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53618D006AB0042A95D /* systemMessage@2x.png */; };
 		1867B53A18D008C50042A95D /* trash_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53918D008C50042A95D /* trash_icon@2x.png */; };
 		1867B53C18D00D710042A95D /* replyMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53B18D00D710042A95D /* replyMessage@2x.png */; };
+		186F216618D6D5BA0089A329 /* MJRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 186F215C18D6D5BA0089A329 /* MJRefresh.bundle */; };
+		186F216718D6D5BA0089A329 /* MJRefreshBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F215F18D6D5BA0089A329 /* MJRefreshBaseView.m */; };
+		186F216818D6D5BA0089A329 /* MJRefreshConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F216118D6D5BA0089A329 /* MJRefreshConst.m */; };
+		186F216918D6D5BA0089A329 /* MJRefreshFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F216318D6D5BA0089A329 /* MJRefreshFooterView.m */; };
+		186F216A18D6D5BA0089A329 /* MJRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F216518D6D5BA0089A329 /* MJRefreshHeaderView.m */; };
 		187222B118C8434D00BBE2D1 /* answer-1.js in Sources */ = {isa = PBXBuildFile; fileRef = 187222B018C8434D00BBE2D1 /* answer-1.js */; };
 		187222B518C8572E00BBE2D1 /* SelectingChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187222B318C8572E00BBE2D1 /* SelectingChallengeViewController.m */; };
-		187222B618C8572E00BBE2D1 /* SelectingChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 187222B418C8572E00BBE2D1 /* SelectingChallengeViewController.xib */; };
 		187222B918C86A0300BBE2D1 /* SelectingChallengeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 187222B818C86A0300BBE2D1 /* SelectingChallengeObject.m */; };
 		187222BB18C87A5700BBE2D1 /* questions_lastest.js in Sources */ = {isa = PBXBuildFile; fileRef = 187222BA18C87A5700BBE2D1 /* questions_lastest.js */; };
 		187C4AC618D304AC0006461D /* 10_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4ABC18D304AC0006461D /* 10_01@2x.png */; };
@@ -564,6 +568,16 @@
 		1867B53618D006AB0042A95D /* systemMessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "systemMessage@2x.png"; sourceTree = "<group>"; };
 		1867B53918D008C50042A95D /* trash_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trash_icon@2x.png"; sourceTree = "<group>"; };
 		1867B53B18D00D710042A95D /* replyMessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "replyMessage@2x.png"; sourceTree = "<group>"; };
+		186F215C18D6D5BA0089A329 /* MJRefresh.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MJRefresh.bundle; sourceTree = "<group>"; };
+		186F215D18D6D5BA0089A329 /* MJRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefresh.h; sourceTree = "<group>"; };
+		186F215E18D6D5BA0089A329 /* MJRefreshBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshBaseView.h; sourceTree = "<group>"; };
+		186F215F18D6D5BA0089A329 /* MJRefreshBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshBaseView.m; sourceTree = "<group>"; };
+		186F216018D6D5BA0089A329 /* MJRefreshConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshConst.h; sourceTree = "<group>"; };
+		186F216118D6D5BA0089A329 /* MJRefreshConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshConst.m; sourceTree = "<group>"; };
+		186F216218D6D5BA0089A329 /* MJRefreshFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshFooterView.h; sourceTree = "<group>"; };
+		186F216318D6D5BA0089A329 /* MJRefreshFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshFooterView.m; sourceTree = "<group>"; };
+		186F216418D6D5BA0089A329 /* MJRefreshHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshHeaderView.h; sourceTree = "<group>"; };
+		186F216518D6D5BA0089A329 /* MJRefreshHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshHeaderView.m; sourceTree = "<group>"; };
 		187222B018C8434D00BBE2D1 /* answer-1.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "answer-1.js"; sourceTree = SOURCE_ROOT; };
 		187222B218C8572E00BBE2D1 /* SelectingChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectingChallengeViewController.h; sourceTree = "<group>"; };
 		187222B318C8572E00BBE2D1 /* SelectingChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectingChallengeViewController.m; sourceTree = "<group>"; };
@@ -1183,6 +1197,23 @@
 			name = notification;
 			sourceTree = "<group>";
 		};
+		186F215B18D6D5BA0089A329 /* MJRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				186F215C18D6D5BA0089A329 /* MJRefresh.bundle */,
+				186F215D18D6D5BA0089A329 /* MJRefresh.h */,
+				186F215E18D6D5BA0089A329 /* MJRefreshBaseView.h */,
+				186F215F18D6D5BA0089A329 /* MJRefreshBaseView.m */,
+				186F216018D6D5BA0089A329 /* MJRefreshConst.h */,
+				186F216118D6D5BA0089A329 /* MJRefreshConst.m */,
+				186F216218D6D5BA0089A329 /* MJRefreshFooterView.h */,
+				186F216318D6D5BA0089A329 /* MJRefreshFooterView.m */,
+				186F216418D6D5BA0089A329 /* MJRefreshHeaderView.h */,
+				186F216518D6D5BA0089A329 /* MJRefreshHeaderView.m */,
+			);
+			path = MJRefresh;
+			sourceTree = "<group>";
+		};
 		18AA80B318BEE42C00EC08CE /* image */ = {
 			isa = PBXGroup;
 			children = (
@@ -1442,6 +1473,7 @@
 				0E92655118BD920F003ADEC3 /* TabBarController */,
 				636CF4A818BD84830085C28E /* MBProgressView */,
 				6329554318BC900600F2B78D /* SDWebImage */,
+				186F215B18D6D5BA0089A329 /* MJRefresh */,
 				6329553218BC8D5B00F2B78D /* FMDB */,
 				632954D218BC8AA700F2B78D /* ASIHttprequest */,
 			);
@@ -2032,6 +2064,7 @@
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				630DBDFE18D15AFB009DA0EB /* xunsu_yellow@2x.png in Resources */,
 				6396579118C03766002F2A90 /* LeftTabBarView.xib in Resources */,
+				186F216618D6D5BA0089A329 /* MJRefresh.bundle in Resources */,
 				630DBE0618D15BF4009DA0EB /* homeworkCheck@2x.png in Resources */,
 				630DBE2218D15CB1009DA0EB /* homework_sort@2x.png in Resources */,
 				630DBDEF18D15A95009DA0EB /* progressTrack@2x.png in Resources */,
@@ -2150,7 +2183,6 @@
 				6396577A18C036B1002F2A90 /* StudentListViewController.xib in Resources */,
 				630DBDEE18D15A95009DA0EB /* progressBack@2x.png in Resources */,
 				630DBDD418D15936009DA0EB /* carBarItem@2x.png in Resources */,
-				187222B618C8572E00BBE2D1 /* SelectingChallengeViewController.xib in Resources */,
 				63DB91CA18CD7FB100157D74 /* LiningHomeworkViewController.xib in Resources */,
 				0E92659E18BDE51F003ADEC3 /* deleteBtn@2x.png in Resources */,
 				187C4AC618D304AC0006461D /* 10_01@2x.png in Resources */,
@@ -2177,7 +2209,6 @@
 				0E9D68A618CD680700EACFA3 /* card_voiceBtn@2x.png in Resources */,
 				0E9D68A718CD680700EACFA3 /* txtBtn@2x.png in Resources */,
 				0E92659E18BDE51F003ADEC3 /* deleteBtn@2x.png in Resources */,
-				187222B618C8572E00BBE2D1 /* SelectingChallengeViewController.xib in Resources */,
 				0E92659E18BDE51F003ADEC3 /* deleteBtn@2x.png in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				636CF4B518BD8F3B0085C28E /* TestViewController.xib in Resources */,
@@ -2291,6 +2322,7 @@
 				0E5D1C6718C85FD5008A13F2 /* FourthViewController.m in Sources */,
 				18B4EB7E18D29D9F00986766 /* LHLGetSysNoticeInterface.m in Sources */,
 				0E9D68A118CD671F00EACFA3 /* CardObject.m in Sources */,
+				186F216718D6D5BA0089A329 /* MJRefreshBaseView.m in Sources */,
 				0EEF4C2818C5BAFD0058606A /* DeleteMessage.m in Sources */,
 				6329556618BC900600F2B78D /* SDWebImageDownloader.m in Sources */,
 				6396581218C04F68002F2A90 /* HomeworkTypeCollctionCell.m in Sources */,
@@ -2318,6 +2350,7 @@
 				189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */,
 				6329556718BC900600F2B78D /* SDWebImageDownloaderOperation.m in Sources */,
 				6329551418BC8AA700F2B78D /* ASIFormDataRequest.m in Sources */,
+				186F216918D6D5BA0089A329 /* MJRefreshFooterView.m in Sources */,
 				187222B118C8434D00BBE2D1 /* answer-1.js in Sources */,
 				6396579218C03766002F2A90 /* LeftTabBarItem.m in Sources */,
 				0EAABDA818D0062100CD2DE7 /* SelectedTagInterface.m in Sources */,
@@ -2342,6 +2375,7 @@
 				0E5D1C6B18C87EBD008A13F2 /* MyMessageInterface.m in Sources */,
 				6396576818C03664002F2A90 /* WYStoryboardPopoverSegue.m in Sources */,
 				6396577418C036B1002F2A90 /* DRLeftTabBarViewController.m in Sources */,
+				186F216818D6D5BA0089A329 /* MJRefreshConst.m in Sources */,
 				0E9D68C818CD966400EACFA3 /* SearchCore.mm in Sources */,
 				63DD5C7518C9C2740034512D /* SpellMatchObj.m in Sources */,
 				6341536418C1C90300DE4480 /* VRGCalendarView.m in Sources */,
@@ -2370,6 +2404,7 @@
 				6396579718C0377A002F2A90 /* DRProgressView.m in Sources */,
 				0E92656318BD92A0003ADEC3 /* SecondViewController.m in Sources */,
 				630DBDC918D1562D009DA0EB /* DRNavigationBar.m in Sources */,
+				186F216A18D6D5BA0089A329 /* MJRefreshHeaderView.m in Sources */,
 				0EEF4C1118C562110058606A /* FirstCell.m in Sources */,
 				6329551318BC8AA700F2B78D /* ASIDownloadCache.m in Sources */,
 				6341536218C1C90300DE4480 /* UIColor+expanded.m in Sources */,

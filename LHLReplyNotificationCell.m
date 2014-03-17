@@ -159,6 +159,7 @@
         _myNameLabel.text = @"我";
         _textView.text = reply.replyContent;
         _timeLabel.text = reply.replyTime;
+        self.isEditing = reply.isEditing;
         
         [self layoutIfNeeded];
     }else{
@@ -176,6 +177,10 @@
 #pragma mark -- 按钮响应方法
 
 - (void) coverButtonClicked:(id)sender{
+    _isEditing = !_isEditing;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(replyCell:setIsEditing:)]) {
+        [self.delegate replyCell:self setIsEditing:self.isEditing];
+    }
     if (_contentBgView.frame.origin.x < 0) {
         _contentBgView.backgroundColor = [UIColor whiteColor];
         [UIView animateWithDuration:0.25 animations:^{
@@ -204,6 +209,21 @@
 - (void) ddeleteButtonClicked:(UIButton *)sender{
     if (self.delegate && [self.delegate respondsToSelector:@selector(replyCell:deleteButtonClicked:)]) {
         [self.delegate replyCell:self deleteButtonClicked:sender];
+    }
+}
+
+#pragma  mark property
+-(void)setIsEditing:(BOOL)isEditing{
+    _isEditing = isEditing;
+    if (isEditing) {
+        _buttonBgView.hidden = NO;
+        _contentBgView.frame = (CGRect){-1,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
+        _contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
+        _contentBgView.frame = (CGRect){-103,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
+    }else{
+        _contentBgView.backgroundColor = [UIColor whiteColor];
+        _contentBgView.frame = (CGRect){0,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
+        _buttonBgView.hidden = YES;
     }
 }
 

@@ -27,7 +27,7 @@
 @property (assign,nonatomic) NSInteger timeCount; //用时(秒)
 @property (assign,nonatomic) NSInteger timeLimit; //时限(秒)
 @property (assign,nonatomic) BOOL isEarly;   //是否提前两小时完成挑战
-
+//还少一个再次挑战的次数限制
 - (void) initView;  //赋予所有参数之后调用
 
 - (IBAction)commitButtonClicked:(id)sender;

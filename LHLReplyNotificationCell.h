@@ -14,6 +14,7 @@
 @property (strong,nonatomic) id<LHLReplyNotificationCellDelegate> delegate;
 @property (strong,nonatomic) NSIndexPath *indexPath;
 @property (strong,nonatomic) ReplyNotificationObject *replyObject;
+@property (assign,nonatomic) BOOL isEditing;
 
 - (void) setInfomations:(ReplyNotificationObject *)reply;
 @end
@@ -22,4 +23,5 @@
 @required
 -(void) replyCell:(LHLReplyNotificationCell *)cell replyButtonClicked:(id)sender;
 -(void) replyCell:(LHLReplyNotificationCell *)cell deleteButtonClicked:(id)sender;
+-(void) replyCell:(LHLReplyNotificationCell *)cell setIsEditing:(BOOL)editing;
 @end
