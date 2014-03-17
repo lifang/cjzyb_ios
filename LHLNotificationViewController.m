@@ -46,6 +46,8 @@
     [self.tableView registerNib:nib forCellReuseIdentifier:@"LHLNotificationCell"];
     [self.tableView registerClass:[LHLNotificationHeader class] forHeaderFooterViewReuseIdentifier:@"LHLNotificationHeader"];
     [self.tableView registerClass:[LHLReplyNotificationCell class] forCellReuseIdentifier:@"LHLReplyNotificationCell"];
+    
+    [self initData];
 }
 
 //获取数据
@@ -55,12 +57,7 @@
     self.replyNotificationArray = [NSMutableArray array];
     self.pageOfReplyNotification = 1;
     
-    [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
-        if (![@"NotReachable" isEqualToString:networkStatus]) {
-            [self.getMyNoticeInterface getMyNoticeWithUserID:@"1" andSchoolClassID:@"1" andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification]];
-            [self.getSysNoticeInterface getSysNoticeWithUserID:@"1" andSchoolClassID:@"1" andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification]];
-        }
-    }];
+    [self requestDateWithStudentID:@"1" andClassID:@"1" andPage:@"1"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -140,6 +137,39 @@
     header.delegate = self;
     self.header = header;
     return header;
+}
+
+#pragma mark -- action
+//请求接口
+-(void)requestDateWithStudentID:(NSString *)studentID andClassID:(NSString *)classID andPage:(NSString *)page{
+    [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
+        if (![@"NotReachable" isEqualToString:networkStatus]) {
+            //            [self.getMyNoticeInterface getMyNoticeWithUserID:@"1" andSchoolClassID:@"1" andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification]];
+            //            [self.getSysNoticeInterface getSysNoticeWithUserID:@"1" andSchoolClassID:@"1" andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification]];
+            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
+            NSURL *url = [NSURL URLWithString:str];
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            
+            [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
+                NSArray *notices = [dicData objectForKey:@"sysmessage"];
+                for (NSInteger i = 0; i < notices.count; i ++) {
+                    NSDictionary *noticeDic = notices[i];
+                    NotificationObject *obj = [[NotificationObject alloc] init];
+                    obj.notiID = [noticeDic objectForKey:@"id"];
+                    obj.notiSchoolClassID = [noticeDic objectForKey:@"school_class_id"];
+                    obj.notiStudentID = [noticeDic objectForKey:@"student_id"];
+                    obj.notiContent = [noticeDic objectForKey:@"content"];
+                    obj.notiTime = [noticeDic objectForKey:@"created_at"];
+                    [self.notificationArray addObject:obj];
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                });
+            } withFailure:^(NSError *error) {
+                
+            }];
+        }
+    }];
 }
 
 #pragma mark -- property
