@@ -11,6 +11,10 @@
 @interface LHLNotificationViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet LHLNotificationHeader *topBar;
+@property (strong,nonatomic) UIView *replyInputBgView;//回复消息时,输入框的背景
+@property (strong,nonatomic) UITextView *replyInputTextView;  //回复消息时,输入框
+@property (strong,nonatomic) UIButton *replyInputCancelButton;
+@property (strong,nonatomic) UIButton *replyInputCommitButton;
 
 @property (strong,nonatomic) LHLNotificationCell *tempCell;
 @property (assign,nonatomic) NotificationDisplayCategory displayCategory;//当前页面显示的通知类型
@@ -19,6 +23,7 @@
 @property (strong,nonatomic) NSMutableArray *replyNotificationArray;  //回复通知数组
 @property (assign,nonatomic) NSInteger pageOfReplyNotification; //回复通知页码(分页加载)
 @property (strong,nonatomic) NSIndexPath *deletingIndexPath;  //正在被删除的cell的indexPath(在请求接口的过程中有效)
+@property (strong,nonatomic) NSIndexPath *replyingIndexPath; //正在编辑回复的cell的indexPath
 @property (strong,nonatomic) LHLGetMyNoticeInterface *getMyNoticeInterface;
 @property (strong,nonatomic) LHLGetSysNoticeInterface *getSysNoticeInterface;
 @property (strong,nonatomic) LHLDeleteMyNoticeInterface *deleteMyNoticeInterface;
@@ -60,6 +65,8 @@
     [self refreshHeaderView];
     
     [self initData];
+    
+    [self addNotificationOb];
 }
 
 //获取数据
@@ -75,6 +82,25 @@
     
     [self requestSysNoticeWithStudentID:self.userID andClassID:self.classID andPage:@"1"];
     [self requestMyNoticeWithStudentID:self.userID andClassID:self.classID andPage:@"1"];
+}
+
+- (void)addNotificationOb{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(keyboardWillChangeFrame:)
+//                                                 name:UIKeyboardWillChangeFrameNotification
+//                                               object:nil];
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -315,6 +341,29 @@
     }];
 }
 
+//回复信息
+-(void)replyMessageWithSenderID:(NSString *)senderID andSenderType:(NSString *)senderType andContent:(NSString *)content andClassID:(NSString *)classID andMicropostID:(NSString *)microPostID andReciverID:(NSString *)reciverID andReciverType:(NSString *)reciverType{
+    [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
+        if (![@"NotReachable" isEqualToString:networkStatus]) {
+            //请求系统通知
+            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/reply_message?sender_id=%@&sender_types=%@&content=%@&school_class_id=%@&micropost_id=%@&reciver_id=%@&reciver_types=%@",senderID,senderType,content,classID,microPostID,reciverID,reciverType];
+            NSURL *url = [NSURL URLWithString:str];
+            NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+            [request setHTTPMethod:@"POST"];
+            [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self replyInputCancelButtonClicked:nil];
+                    [Utility errorAlert:@"回复成功!"];
+                });
+            } withFailure:^(NSError *error) {
+                NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
+                [Utility errorAlert:errorMsg];
+            }];
+        }
+    }];
+}
+
+
 //处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
 -(NSString *)handleApiResponseTimeString:(NSString *)str{
     NSArray *array = [str componentsSeparatedByString:@"T"];
@@ -327,6 +376,50 @@
 }
 
 #pragma mark -- property
+-(UIView *)replyInputBgView{
+    if (!_replyInputBgView) {
+        _replyInputBgView = [[UIView alloc] initWithFrame:(CGRect){0,1030,768,250}];
+        _replyInputBgView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
+        [self.view addSubview:_replyInputBgView];
+        if (!_replyInputCancelButton) {
+            _replyInputCancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [_replyInputCancelButton setTitle:@"取  消" forState:UIControlStateNormal];
+            _replyInputCancelButton.backgroundColor = [UIColor blueColor];
+            [_replyInputCancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            _replyInputCancelButton.titleLabel.font = [UIFont systemFontOfSize:24.0];
+            [_replyInputCancelButton addTarget:self action:@selector(replyInputCancelButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            _replyInputCancelButton.layer.cornerRadius = 5.0;
+            _replyInputCancelButton.frame = (CGRect){80,10,200,50};
+            [_replyInputBgView addSubview:_replyInputCancelButton];
+        }
+        if (!_replyInputCommitButton) {
+            _replyInputCommitButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            [_replyInputCommitButton setTitle:@"提  交" forState:UIControlStateNormal];
+            _replyInputCommitButton.backgroundColor = [UIColor blueColor];
+            [_replyInputCommitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            _replyInputCommitButton.titleLabel.font = [UIFont systemFontOfSize:24.0];
+            [_replyInputCommitButton addTarget:self action:@selector(replyInputCommitButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            _replyInputCommitButton.layer.cornerRadius = 5.0;
+            _replyInputCommitButton.frame = (CGRect){500,10,200,50};
+            [_replyInputBgView addSubview:_replyInputCommitButton];
+        }
+    }
+    return _replyInputBgView;
+}
+
+-(UITextView *)replyInputTextView{
+    if (!_replyInputTextView) {
+        _replyInputTextView = [[UITextView alloc] initWithFrame:(CGRect){40,68,688,180}];
+        _replyInputTextView.font = [UIFont systemFontOfSize:25.0];
+        _replyInputTextView.layer.cornerRadius = 6.0;
+        _replyInputTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        _replyInputTextView.layer.borderWidth = 2.0;
+        [self.replyInputBgView addSubview:_replyInputTextView];
+    }
+    return _replyInputTextView;
+}
+
+
 -(MJRefreshHeaderView *)refreshHeaderView{
     if (!_refreshHeaderView) {
         _refreshHeaderView = [MJRefreshHeaderView header];
@@ -377,6 +470,41 @@
     return _deleteMyNoticeInterface;
 }
 
+#pragma mark -- keyBoard相关  ,通知回调等
+-(void)keyboardWillShow:(NSNotification *)noti{
+    NSDictionary *userInfo = noti.userInfo;
+    NSValue *frameValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    NSValue *durationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    CGRect frame = [frameValue CGRectValue];
+    NSTimeInterval duration;
+    [durationValue getValue:&duration];
+    [UIView animateWithDuration:duration animations:^{
+        self.replyInputBgView.center = (CGPoint){self.replyInputBgView.center.x,frame.origin.y - self.replyInputBgView.frame.size.height / 2};
+    }];
+}
+
+-(void)keyboardWillHide:(NSNotification *)noti{
+    NSDictionary *userInfo = noti.userInfo;
+    NSValue *durationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval duration;
+    [durationValue getValue:&duration];
+    [UIView animateWithDuration:duration animations:^{
+        self.replyInputBgView.center = (CGPoint){self.replyInputBgView.center.x,1025 + self.replyInputBgView.frame.size.height / 2};
+    }];
+}
+
+-(void)replyInputCancelButtonClicked:(id)sender{
+    self.replyInputTextView.text = @"";
+    [self.replyInputTextView resignFirstResponder];
+    self.replyingIndexPath = nil;
+}
+
+-(void)replyInputCommitButtonClicked:(id)sender{
+    ReplyNotificationObject *notice = self.replyNotificationArray[self.replyingIndexPath.row];
+    [self replyMessageWithSenderID:self.userID andSenderType:@"1" andContent:@"string" andClassID:self.classID andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
+}
+
+
 #pragma mark -- LHLNotificationCellDelegate
 -(void)cell:(LHLNotificationCell *)cell deleteButtonClicked:(id)sender{
     //请求接口
@@ -400,7 +528,13 @@
 
 #pragma mark -- LHLReplyNotificationCellDelegate
 -(void) replyCell:(LHLReplyNotificationCell *)cell replyButtonClicked:(id)sender{
-    
+    if ([self.replyInputTextView isFirstResponder]) {
+        [self.replyInputTextView resignFirstResponder];
+        self.replyingIndexPath = nil;
+    }else{
+        [self.replyInputTextView becomeFirstResponder];
+        self.replyingIndexPath = cell.indexPath;
+    }
 }
 
 -(void) replyCell:(LHLReplyNotificationCell *)cell setIsEditing:(BOOL)editing{
