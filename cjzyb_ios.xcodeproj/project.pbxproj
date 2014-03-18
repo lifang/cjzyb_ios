@@ -139,6 +139,7 @@
 		182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */ = {isa = PBXBuildFile; fileRef = 187222BA18C87A5700BBE2D1 /* questions_lastest.js */; };
 		182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */; };
 		1833276B18CEB38000638107 /* smallTriangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1833276A18CEB38000638107 /* smallTriangle@2x.png */; };
+		185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */; };
 		1867B53718D006AB0042A95D /* systemMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53618D006AB0042A95D /* systemMessage@2x.png */; };
 		1867B53A18D008C50042A95D /* trash_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53918D008C50042A95D /* trash_icon@2x.png */; };
 		1867B53C18D00D710042A95D /* replyMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53B18D00D710042A95D /* replyMessage@2x.png */; };
@@ -2052,6 +2053,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */,
 				188ED74318CDA6BA00D1210F /* answer-1.js in Resources */,
 				182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */,
 				630DBE0718D15BF4009DA0EB /* homeworkTimer@2x.png in Resources */,

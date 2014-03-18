@@ -34,6 +34,7 @@
 @property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
 @property (strong,nonatomic) NSString *answerStatus;    //文件中记载的完成状态
 @property (assign,nonatomic) BOOL isReDoingChallenge; //是否为重新挑战
+@property (strong,nonatomic) NSMutableArray *reChallengeTimesLeft; //剩余挑战数
 @end
 
 @implementation TenSecChallengeViewController
@@ -87,7 +88,13 @@
         self.historyView.hidden = NO;
         //上方动作条添加"下一个"按钮
     }else{
-        if ([self.answerStatus isEqualToString:@"1"]) { //重新做题
+        if ([self.answerStatus isEqualToString:@"1"]) { //重新做题  ,此时应判断是否有重新做题的剩余次数
+            NSString *timesLeft = [self.reChallengeTimesLeft firstObject];
+            if (timesLeft.integerValue < 1) {
+                return;
+            }else{
+                [self.reChallengeTimesLeft replaceObjectAtIndex:0 withObject:[NSString stringWithFormat:@"%d",timesLeft.integerValue - 1]];
+            }
             self.timeCount = 0;
             self.isReDoingChallenge = YES;
             self.currentNO = 0;
@@ -117,7 +124,7 @@
 }
 
 - (void)makeResult{
-    //准确率,耗时,提交时间  判断精准/迅速/捷足成就
+    //准确率,耗时,提交时间  判断精准/迅速/捷足成就  显示结果界面
     NSInteger numberOfRightAnswers = 0;
     if (self.answerArray.count == self.questionArray.count) {
         for (int i = 0; i < self.answerArray.count; i ++) {
@@ -148,6 +155,8 @@
         }else{
             self.resultView.isEarly = NO;
         }
+        
+        self.resultView.challengeTimesLeft = [self.reChallengeTimesLeft firstObject];
         
         [self.resultView initView];
     }else{
@@ -392,6 +401,21 @@
 }
 
 #pragma mark -- property
+//从文件中读取数组,否则新建一个包含字符串@"3"的数组
+- (NSMutableArray *)reChallengeTimesLeft{
+    if (!_reChallengeTimesLeft) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths firstObject];
+        NSString *filePath = [NSString stringWithFormat:@"%@/challengeTimeLeft.plist",path];
+        _reChallengeTimesLeft = [NSMutableArray arrayWithContentsOfFile:filePath];
+        if (!_reChallengeTimesLeft) {
+            _reChallengeTimesLeft = [NSMutableArray array];
+            [_reChallengeTimesLeft addObject:@"3"];
+        }
+    }
+    return _reChallengeTimesLeft;
+}
+
 - (NSArray *)questionNumberImages{
     if (!_questionNumberImages || _questionNumberImages.count < 1) {
         NSMutableArray *array = [NSMutableArray array];

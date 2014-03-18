@@ -70,7 +70,7 @@
     DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
     tabBarController.childenControllerArray = @[main];
     self.window.rootViewController = tabBarController;
-    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
+    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
     self.window.rootViewController = notificationViewController;
 
 //     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
