@@ -31,6 +31,7 @@
 @property (strong,nonatomic) MJRefreshHeaderView *refreshHeaderView; //下拉刷新
 @property (strong,nonatomic) MJRefreshFooterView *refreshFooterView; //下拉加载
 @property (assign,nonatomic) BOOL isRefreshing; //YES刷新,NO分页加载
+@property (strong,nonatomic) NSMutableDictionary *bufferedImageDic; //头像缓冲
 
 //临时学生数据
 @property (strong,nonatomic) NSString *userID;
@@ -101,6 +102,12 @@
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    if (_bufferedImageDic && _bufferedImageDic.count > 0) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths firstObject];
+        NSString *filePath = [NSString stringWithFormat:@"%@/tempImages.plist",path];
+        [_bufferedImageDic writeToFile:filePath atomically:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -145,15 +152,15 @@
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.displayCategory == NotificationDisplayCategoryDefault) {
         LHLNotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LHLNotificationCell"];
+        cell.delegate = self;
         [cell initCell];
         [cell setNotificationObject:self.notificationArray[indexPath.row]];
-        cell.delegate = self;
         cell.indexPath = indexPath;
         return cell;
     }else{
         LHLReplyNotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LHLReplyNotificationCell"];
-        [cell setInfomations:self.replyNotificationArray[indexPath.row]];
         cell.delegate = self;
+        [cell setInfomations:self.replyNotificationArray[indexPath.row]];
         cell.indexPath = indexPath;
         return cell;
     }
@@ -178,6 +185,19 @@
 //}
 
 #pragma mark -- action
+
+//处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
+-(NSString *)handleApiResponseTimeString:(NSString *)str{
+    NSArray *array = [str componentsSeparatedByString:@"T"];
+    NSString *date = [array firstObject];
+    NSString *time = [array lastObject];
+    if ([time rangeOfString:@"+08:00"].length > 0) {
+        time = [time stringByReplacingCharactersInRange:NSMakeRange(time.length - @"+08:00".length, @"+08:00".length) withString:@""];
+    }
+    return [NSString stringWithFormat:@"%@ %@",date,time];
+}
+
+#pragma mark -- 请求接口(很多地方写死,需修改)
 //请求接口,获取系统通知
 -(void)requestSysNoticeWithStudentID:(NSString *)studentID andClassID:(NSString *)classID andPage:(NSString *)page{
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
@@ -363,19 +383,17 @@
     }];
 }
 
-
-//处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
--(NSString *)handleApiResponseTimeString:(NSString *)str{
-    NSArray *array = [str componentsSeparatedByString:@"T"];
-    NSString *date = [array firstObject];
-    NSString *time = [array lastObject];
-    if ([time rangeOfString:@"+08:00"].length > 0) {
-        time = [time stringByReplacingCharactersInRange:NSMakeRange(time.length - @"+08:00".length, @"+08:00".length) withString:@""];
+#pragma mark -- property
+-(NSMutableDictionary *)bufferedImageDic{
+    if (!_bufferedImageDic) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths firstObject];
+        NSString *filePath = [NSString stringWithFormat:@"%@/tempImages.plist",path];
+        _bufferedImageDic = [NSMutableDictionary dictionaryWithContentsOfFile:filePath] ? :[NSMutableDictionary dictionary];
     }
-    return [NSString stringWithFormat:@"%@ %@",date,time];
+    return _bufferedImageDic;
 }
 
-#pragma mark -- property
 -(UIView *)replyInputBgView{
     if (!_replyInputBgView) {
         _replyInputBgView = [[UIView alloc] initWithFrame:(CGRect){0,1030,768,250}];
@@ -527,6 +545,17 @@
 }
 
 #pragma mark -- LHLReplyNotificationCellDelegate
+-(UIImage *)replyCell:(LHLReplyNotificationCell *)cell bufferedImageForAddress:(NSString *)address{
+    NSData *imgData = [self.bufferedImageDic objectForKey:address];
+    if (imgData == nil) {
+        NSString *urlString = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",address];
+        NSURL *url = [NSURL URLWithString:urlString];
+        imgData = [NSData dataWithContentsOfURL:url];
+        [self.bufferedImageDic setObject:imgData forKey:address];
+    }
+    return [UIImage imageWithData:imgData];
+}
+
 -(void) replyCell:(LHLReplyNotificationCell *)cell replyButtonClicked:(id)sender{
     if ([self.replyInputTextView isFirstResponder]) {
         [self.replyInputTextView resignFirstResponder];

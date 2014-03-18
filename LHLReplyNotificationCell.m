@@ -154,7 +154,7 @@
 -(void)setInfomations:(ReplyNotificationObject *)reply{
     if (reply != nil) {
         self.replyObject = reply;
-        
+        _imgView.image = [self.delegate replyCell:self bufferedImageForAddress:reply.replyerImageAddress];
         _replyerNameLabel.text = reply.replyerName;
         _myNameLabel.text = @"我";
         _textView.text = reply.replyContent;
@@ -172,6 +172,15 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+//图像缓冲
+- (UIImage *)bufferedImageForAddress:(NSString *)address{
+    
+    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://58.240.210.42:3004%@",address]]];
+    NSMutableDictionary *tempImageDic = [NSMutableDictionary dictionary];
+    [tempImageDic setObject:imageData forKey:address];
+    return nil;
 }
 
 #pragma mark -- 按钮响应方法
