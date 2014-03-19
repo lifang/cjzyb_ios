@@ -150,6 +150,7 @@
 		1867B53718D006AB0042A95D /* systemMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53618D006AB0042A95D /* systemMessage@2x.png */; };
 		1867B53A18D008C50042A95D /* trash_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53918D008C50042A95D /* trash_icon@2x.png */; };
 		1867B53C18D00D710042A95D /* replyMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53B18D00D710042A95D /* replyMessage@2x.png */; };
+		186C021E18D9866000D77EEC /* SelectingChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 187222B418C8572E00BBE2D1 /* SelectingChallengeViewController.xib */; };
 		186F216618D6D5BA0089A329 /* MJRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 186F215C18D6D5BA0089A329 /* MJRefresh.bundle */; };
 		186F216718D6D5BA0089A329 /* MJRefreshBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F215F18D6D5BA0089A329 /* MJRefreshBaseView.m */; };
 		186F216818D6D5BA0089A329 /* MJRefreshConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F216118D6D5BA0089A329 /* MJRefreshConst.m */; };
@@ -2078,13 +2079,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				186C021E18D9866000D77EEC /* SelectingChallengeViewController.xib in Resources */,
 				185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */,
 				188ED74318CDA6BA00D1210F /* answer-1.js in Resources */,
 				182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */,
 				630DBE0718D15BF4009DA0EB /* homeworkTimer@2x.png in Resources */,
 				630DBE2318D15CB1009DA0EB /* homwwork_listenWrite@2x.png in Resources */,
-				1848613518C72D29002B6C78 /* 10_06@2x.png in Resources */,
-				1848613718C72D29002B6C78 /* 10_04@2x.png in Resources */,
 				0EAABD8018CF15C900CD2DE7 /* card_hasselected@2x.png in Resources */,
 				18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */,
 				0E9D689818CD4E0D00EACFA3 /* SVPullToRefresh.bundle in Resources */,
@@ -2170,7 +2170,6 @@
 				0E92656918BD92B0003ADEC3 /* ThirdViewController.xib in Resources */,
 				630DBDFA18D15AFB009DA0EB /* arrowBack@2x.png in Resources */,
 				0E92657D18BDACDD003ADEC3 /* third_active@2x.png in Resources */,
-				1848613918C72D29002B6C78 /* 10_02@2x.png in Resources */,
 				0E9D689E18CD670E00EACFA3 /* CardpackageViewController.xib in Resources */,
 				0E92657D18BDACDD003ADEC3 /* third_active@2x.png in Resources */,
 				0E9D68DC18CDC45400EACFA3 /* card_highted@2x.png in Resources */,
@@ -2234,7 +2233,6 @@
 				0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */,
 				0E9C6E9E18D1977E00E807D1 /* SelectedViewController.xib in Resources */,
 				0EAABDBF18D0416E00CD2DE7 /* listen_back@2x.png in Resources */,
-				1848613118C72D29002B6C78 /* 10_10@2x.png in Resources */,
 				0E5D1C8718C9A13C008A13F2 /* logo@2x.png in Resources */,
 				0E9265A418BEEA01003ADEC3 /* send@2x.png in Resources */,
 				0E92657C18BDACDD003ADEC3 /* second@2x.png in Resources */,

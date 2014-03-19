@@ -66,7 +66,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;
+    self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;[DataService sharedService].isHistory=YES;
+    //TODO:判断做题历史 or  做题
+    [DataService sharedService].isHistory = YES;
+    if ([DataService sharedService].isHistory==YES) {
+        self.timeImg.hidden=YES; self.timerLabel.hidden=YES;
+        self.label1.hidden=NO;self.label2.hidden=NO;self.rotioLabel.hidden=NO;self.timeLabel.hidden=NO;
+    }else {
+        self.timeImg.hidden=NO; self.timerLabel.hidden=NO;
+        self.label1.hidden=YES;self.label2.hidden=YES;self.rotioLabel.hidden=YES;self.timeLabel.hidden=YES;
+    }
     [self startTimer];
     self.homeworkType = HomeworkType_quick;
     switch (self.homeworkType) {
@@ -137,7 +146,6 @@
             //十速挑战没有道具栏,contentView应为 {0,75,768,949}
         {
             [self.djView setHidden:YES];
-            [self.checkBgView setHidden:YES];
             self.tenSecViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
             [self.tenSecViewController willMoveToParentViewController:self];
             [self.contentView setFrame:(CGRect){0,75,768,949}];
@@ -146,10 +154,32 @@
             [self.tenSecViewController.topBarView setHidden:YES];
             [self addChildViewController:self.tenSecViewController];
             [self.tenSecViewController didMoveToParentViewController:self];
+            self.tenSecViewController.isViewingHistory = [DataService sharedService].isHistory;
+            [self.tenSecViewController startChallenge];
+            if (![DataService sharedService].isHistory) {
+                [self.checkBgView setHidden:YES];
+            }else{
+                [self.checkHomeworkButton addTarget:self.tenSecViewController action:@selector(showNextQuestion) forControlEvents:UIControlEventTouchUpInside];
+                [self.checkHomeworkButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+                [self.checkHomeworkButton setTitle:@"下一个" forState:UIControlStateNormal];
+                self.checkHomeworkButton.frame = (CGRect){0,0,[self.checkHomeworkButton superview].frame.size};
+                self.checkHomeworkButton.backgroundColor = self.checkBgView.backgroundColor ;
+            }
         }
             break;
         case HomeworkType_select://选择挑战
         {
+            self.selectingChallengeViewController = [[SelectingChallengeViewController alloc] initWithNibName:@"SelectingChallengeViewController" bundle:nil];
+            [self.selectingChallengeViewController willMoveToParentViewController:self];
+            [self.contentView addSubview:self.selectingChallengeViewController.view];
+            [self.selectingChallengeViewController.contentBgView setFrame:(CGRect){0,0,768,874}];
+            [self addChildViewController:self.selectingChallengeViewController];
+            [self.selectingChallengeViewController didMoveToParentViewController:self];
+            [self.checkHomeworkButton addTarget:self.selectingChallengeViewController action:@selector(nextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [self.appearCorrectButton addTarget:self.selectingChallengeViewController action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [self.reduceTimeButton addTarget:self.selectingChallengeViewController action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
+            self.selectingChallengeViewController.isViewingHistory = [DataService sharedService].isHistory;
+            [self.selectingChallengeViewController getStart];
             
         }
             break;
@@ -167,7 +197,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+#pragma mark -- property
+-(void)setSpendSecond:(long long)spendSecond{
+    _spendSecond = spendSecond;
+    self.timerLabel.text = [Utility formateDateStringWithSecond:self.spendSecond];
+}
 
 - (IBAction)quitButtonClicked:(id)sender {
     

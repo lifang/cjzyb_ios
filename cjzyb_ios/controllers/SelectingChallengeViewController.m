@@ -8,12 +8,12 @@
 
 #import "SelectingChallengeViewController.h"
 #import <AVFoundation/AVFoundation.h>
+#import "HomeworkContainerController.h"
 
 @interface SelectingChallengeViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;  //退出按钮
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UIView *topBarView;  //顶栏
-@property (weak, nonatomic) IBOutlet UIView *contentBgView;  //正文背景
 @property (weak, nonatomic) IBOutlet UIView *itemsView;   //道具背景
 
 @property (weak, nonatomic) IBOutlet UIButton *questionPlayButton;  //声音按钮
@@ -30,7 +30,7 @@
 @property (strong,nonatomic) UIButton *propOfShowingAnswer; //显示答案道具
 @property (strong,nonatomic) UIButton *propOfReduceTime; //时间-5道具
 
-@property (assign,nonatomic) BOOL isViewingHistory; //当前行为类型:查看历史/做题
+
 @property (assign,nonatomic) BOOL isReDoingChallenge;  //是否是重新做题,重新挑战
 @property (assign,nonatomic) SelectingType selectingType;  //当前题目类型 填空/看图/听力
 @property (assign,nonatomic) NSTimeInterval timeCount;//计时 (秒)
@@ -111,6 +111,7 @@
         }else{
             self.answerStatus = [dicc objectForKey:@"status"];  //只要解析状态,已答题时间,题号  其余的不解析
             self.timeCount = [[dicc objectForKey:@"use_time"] doubleValue];
+            ((HomeworkContainerController *)[self parentViewController]).spendSecond = self.timeCount;
             self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"questions_item"] integerValue];
             
             NSArray *questions = [dicc objectForKey:@"questions"];
@@ -135,12 +136,17 @@
     }
 }
 
-//开始,根据答题状态决定.   (浏览历史,第一次做题,调用此方法)
+//开始,根据答题状态决定.   
 - (void)getStart{
-    if ([self.answerStatus isEqualToString:@"1"]) {
+    if (self.isViewingHistory) {
         [self viewHistory];
     }else{
-        [self continueChallenge];
+        if ([self.answerStatus isEqualToString:@"1"]) {
+            [self reDoingChallenge];
+        }else{
+            [self continueChallenge];
+        }
+        
     }
 }
 
@@ -156,11 +162,13 @@
     
     self.currentNO = 0;
     self.timeCount = 0;
+    ((HomeworkContainerController *)[self parentViewController]).spendSecond = self.timeCount;
     self.answerArray = [NSMutableArray array];
     
     [self loadNextQuestion];
     
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+    [((HomeworkContainerController *)[self parentViewController]) startTimer];
 }
 
 //查看历史  ---初始化界面,获取数据
@@ -234,10 +242,12 @@
         self.currentNO = self.lastTimeCurrentNO - 1; //先减一 再加载下一题即可
     }
     self.timeCount = self.timeCount > 0 ? self.timeCount : 0;
+    ((HomeworkContainerController *)[self parentViewController]).spendSecond = self.timeCount;
     
     [self loadNextQuestion];
     
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+    [((HomeworkContainerController *)[self parentViewController]) startTimer];
 }
 
 //读取下一题,开始时触发,点击下一个时触发
@@ -262,13 +272,16 @@
 //被中断/中途退出时的方法
 - (void)pauseChallenge{
     [self.timer invalidate];
+    [((HomeworkContainerController *)[self parentViewController]) stopTimer];
 }
 
 - (void)endChallenge{
     if (self.isViewingHistory) {
         //退出本界面
     }else{
+        self.answerStatus = @"1";
         [self.timer invalidate];
+        [((HomeworkContainerController *)[self parentViewController]) stopTimer];
         [self showResultView];
     }
 }
@@ -639,6 +652,7 @@
     }else{
         self.timeCount -= 5.0;
     }
+    ((HomeworkContainerController *)[self parentViewController]).spendSecond = self.timeCount;
 }
 
 //道具1

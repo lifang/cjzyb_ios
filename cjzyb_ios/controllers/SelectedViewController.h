@@ -11,6 +11,9 @@
 #import "UnderLineLabel.h"
 #import "HomeworkContainerController.h"
 #import "BasePostInterface.h"
+/**
+ *  完形填空
+ */
 @interface SelectedViewController : UIViewController<ClozeViewDelegate,TenSecChallengeResultViewDelegate,PostDelegate>
 
 @property (nonatomic, strong) AppDelegate *appDel;
@@ -42,4 +45,16 @@
 - (void)clozeViewReduceTimeButtonClicked;
 //道具
 @property (nonatomic, strong) NSMutableArray *propsArray;
+
+
+
+
+
+///历史
+@property (nonatomic, strong) IBOutlet UIView *historyView;
+@property (nonatomic, strong) IBOutlet UILabel *historyAnswer;
+
+@property (nonatomic, strong) NSMutableArray *history_questionArray;
+@property (nonatomic, strong) NSDictionary *history_questionDic;
+
 @end

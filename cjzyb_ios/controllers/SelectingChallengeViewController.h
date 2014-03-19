@@ -14,6 +14,10 @@
 
 
 @interface SelectingChallengeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,TenSecChallengeResultViewDelegate,SelectingChallengeOptionCellDelegate>
--(void)getStart;        //第一次做题,或浏览历史 ,调用此方法
--(void)reDoingChallenge;   //重新做题,调用此方法
+-(void)getStart;        //调用此方法
+@property (weak, nonatomic) IBOutlet UIView *contentBgView;  //正文背景
+- (IBAction)nextButtonClicked:(id)sender;
+-(void)propOfReduceTimeClicked:(id)sender;
+-(void)propOfShowingAnswerClicked:(id)sender;
+@property (assign,nonatomic) BOOL isViewingHistory; //当前行为类型:查看历史/做题
 @end

@@ -8,6 +8,7 @@
 
 #import "TenSecChallengeViewController.h"
 #import "LHLTestInterface.h"
+#import "HomeworkContainerController.h"
 
 @interface TenSecChallengeViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton; //返回键
@@ -58,12 +59,18 @@
     self.questionArray = [NSMutableArray arrayWithArray:[TenSecChallengeObject parseTenSecQuestionsFromFile]];
     
     //载入answer文件
-    [self parseAnswerJSON];
+    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit"]];
+//    [self parseAnswerJSON];
     
-    [self startChallenge];//到时此方法由外部调用
     
     //获取今日作业截止时间
     [self fetchHomeworkFinishTime];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    HomeworkContainerController *container = (HomeworkContainerController *)[self parentViewController];
+    container.spendSecond = self.timeCount;
+    
 }
 
 - (void)setupViews{  //控件初始设置
@@ -96,13 +103,17 @@
                 [self.reChallengeTimesLeft replaceObjectAtIndex:0 withObject:[NSString stringWithFormat:@"%d",timesLeft.integerValue - 1]];
             }
             self.timeCount = 0;
+            ((HomeworkContainerController *)[self parentViewController]).spendSecond = 0;
             self.isReDoingChallenge = YES;
             self.currentNO = 0;
             self.answerArray = [NSMutableArray array];
         }else{ //继续做题
-            self.currentNO = self.lastTimeCurrentNO - 1;
+            if (self.lastTimeCurrentNO > 1) {
+                self.currentNO = self.lastTimeCurrentNO;
+            }
         }
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+        [((HomeworkContainerController *)[self parentViewController]) startTimer];
     }
     self.isLastQuestion = NO;
     [self showNextQuestion];
@@ -110,11 +121,13 @@
 
 - (void)pauseChallenge{
     [self.timer invalidate];
+    [((HomeworkContainerController *)[self parentViewController]) stopTimer];
 }
 
 - (void)finishChallenge{
     //终止计时
     [self.timer invalidate];
+    [((HomeworkContainerController *)[self parentViewController]) stopTimer];
     //计算成绩
     //保存挑战数据
     //显示结果界面
@@ -172,14 +185,14 @@
 }
 
 - (NSDictionary *)makeAnswerJSON{
-    //按照answer.js的格式制作一个字典
+    //按照answer.js的格式制作一个字典,并保存
     NSMutableDictionary *answerDic = [[NSMutableDictionary alloc] init];
-    [answerDic setObject:(self.currentNO > self.questionArray.count ? @"1" : @"0") forKey:@"status"];//完成情况
+    [answerDic setObject:(self.currentNO >= self.questionArray.count ? @"1" : @"0") forKey:@"status"];//完成情况
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
     [answerDic setObject:nowDate forKey:@"update_time"];
-    [answerDic setObject:@"1" forKey:@"questions_item"];//大题索引  ,在十速挑战中无用,暂用来存答题开始时间
+    [answerDic setObject:@"1" forKey:@"questions_item"];
     [answerDic setObject:[NSString stringWithFormat:@"%d",self.currentNO] forKey:@"branch_item"];  //小题索引,即当前做的题
     
     [answerDic setObject:[NSString stringWithFormat:@"%d",(NSInteger)self.timeCount] forKey:@"use_time"];   //用时
@@ -202,6 +215,8 @@
         [questions addObject:questionDic];
     [answerDic setObject:questions forKey:@"questions"];
     
+    //保存JSON
+    [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"time_limit"];
     return [NSDictionary dictionaryWithDictionary:answerDic];
 }
 
@@ -218,6 +233,9 @@
             answer.answerAnswer = self.upperOptionLabel.text;
             answer.answerRatio = [self.upperOptionLabel.text isEqualToString:self.currentQuestion.tenRightAnswer] ? @"100" : @"0";
             [self.answerArray addObject:answer];
+            if (!self.isReDoingChallenge) {
+                [self makeAnswerJSON];
+            }
         }
         self.upperOptionLabel.backgroundColor = [UIColor greenColor];
         self.upperButton.enabled = NO;
@@ -245,6 +263,9 @@
             answer.answerAnswer = self.lowerOptionLabel.text;
             answer.answerRatio = [self.lowerOptionLabel.text isEqualToString:self.currentQuestion.tenRightAnswer] ? @"100" : @"0";
             [self.answerArray addObject:answer];
+            if (!self.isReDoingChallenge) {
+                [self makeAnswerJSON];
+            }
         }
         self.lowerOptionLabel.backgroundColor = [UIColor greenColor];
         self.upperButton.enabled = NO;
@@ -309,6 +330,28 @@
     }
 }
 
+-(void)parseAnswerDic:(NSMutableDictionary *)dicc{
+    self.answerArray = [NSMutableArray array];
+    
+    self.answerStatus = [dicc objectForKey:@"status"];  //解析状态,已答题时间,题号,答案
+    self.timeCount = [[dicc objectForKey:@"use_time"] doubleValue];
+    self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"branch_item"] integerValue];
+    NSArray *questionsArray = [dicc objectForKey:@"questions"];
+    NSDictionary *bigQuestion = [questionsArray firstObject];
+    if (bigQuestion) {
+        NSArray *branchQuestionsArray = [bigQuestion objectForKey:@"branch_questions"];
+        for (NSInteger i = 0; i < branchQuestionsArray.count; i ++) {
+            NSDictionary *branchQuestionDic = branchQuestionsArray[i];
+            OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
+            answer.answerID = [branchQuestionDic objectForKey:@"id"];
+            answer.answerAnswer = [branchQuestionDic objectForKey:@"answer"];
+            answer.answerRatio = [branchQuestionDic objectForKey:@"ratio"];
+            
+            [self.answerArray addObject:answer];
+        }
+    }
+}
+
 //获取作业完成期限
 -(void)fetchHomeworkFinishTime{
 //    LHLTestInterface *inter = [[LHLTestInterface alloc] init];
@@ -332,7 +375,7 @@
 -(void)showHistoryAnswer{
     if (self.currentNO < self.answerArray.count) {
         OrdinaryAnswerObject *answer = self.answerArray[self.currentNO];
-        self.historyYourChoiceLabel.text = answer.answerAnswer;
+        self.historyYourChoiceLabel.text = [NSString stringWithFormat:@"你的答案:%@",answer.answerAnswer];
     }else{
         [Utility errorAlert:@"历史答案错误!"];
     }
@@ -372,6 +415,8 @@
         
         if (self.currentNO == self.questionArray.count) {
             self.isLastQuestion = YES;
+            [((HomeworkContainerController *)[self parentViewController]).checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+            [((HomeworkContainerController *)[self parentViewController]).checkHomeworkButton addTarget:self action:@selector(resultViewCommitButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         }
         
     }else{
@@ -470,6 +515,7 @@
 - (void)resultViewCommitButtonClicked{
     [self.resultView removeFromSuperview];
     self.resultView = nil;
+    [((HomeworkContainerController *)[self parentViewController]).navigationController popViewControllerAnimated:YES];
 }
 
 - (void)resultViewRestartButtonClicked{
