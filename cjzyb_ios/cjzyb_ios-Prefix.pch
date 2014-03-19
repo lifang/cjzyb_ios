@@ -24,8 +24,15 @@
 #import "SVPullToRefresh.h"
 
 #import "OrdinaryAnswerObject.h"
-
+#import "TenSecChallengeResultView.h"
 #endif
 
 
 #define platform [[[UIDevice currentDevice] systemVersion] floatValue]
+
+
+#define CLOZE       @"cloze"
+#define SORT        @"sort"
+#define LISTEN      @"listening"
+#define READ        @"reading"
+#define SELECT      @"selecting"

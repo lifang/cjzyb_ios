@@ -499,6 +499,93 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 ///@"hello,will: can't.u project me serve?";
 //返回结果 arrA:输入文本的单词数组  /  arrAA:输入文本简化后的单词数组
 //        arrB:原文本单词数组    /   arrBB:原文本简化后的单词数组
++(NSDictionary *)listenCompareWithArray:(NSArray *)arrA andArray:(NSArray *)arrAA WithArray:(NSArray *)arrB andArray:(NSArray *)arrBB {
+    NSMutableArray *temp_arrA = [NSMutableArray arrayWithArray:arrA];//输入文本的单词数组
+    NSMutableArray *temp_arrAA = [NSMutableArray arrayWithArray:arrAA];//输入文本简化后的单词数组
+    NSMutableArray *temp_arrB = [NSMutableArray arrayWithArray:arrB];//原文本单词数组
+    NSMutableArray *temp_arrBB = [NSMutableArray arrayWithArray:arrBB];//原文本简化后的单词数组
+
+    for (int i=0; i<arrA.count; i++) {
+        NSString *orgStringA = [temp_arrA objectAtIndex:i];
+        NSString *orgStringB = [temp_arrB objectAtIndex:i];
+        if ([[orgStringA uppercaseString] isEqualToString:[orgStringB uppercaseString]]) {
+            NSLog(@"完全正确");
+            [[Utility shared].greenArray addObject:[NSString stringWithFormat:@"%d",i]];
+        }//原文完全匹配
+        else {
+            NSString *strAA = [temp_arrAA objectAtIndex:i];
+            NSString *strBB = [temp_arrBB objectAtIndex:i];
+            if ([strAA isEqualToString:strBB]) {
+                int rotateDis = [Utility DistanceBetweenTwoString:orgStringA StrAbegin:0 StrAend:orgStringA.length-1 StrB:orgStringB StrBbegin:0 StrBend:orgStringB.length-1];
+                if (rotateDis == 0) {
+                    NSLog(@"完全正确");
+                    [[Utility shared].greenArray addObject:[NSString stringWithFormat:@"%d",i]];
+                }else if (rotateDis<= (abs(orgStringB.length-orgStringA.length)==0?1:2)) {
+                    NSLog(@"基本正确");
+                    [[Utility shared].yellowArray addObject:[NSString stringWithFormat:@"%d",i]];
+                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:i]];
+                }else {
+                    NSLog(@"黑户");
+                    [[Utility shared].wrongArray addObject:[NSString stringWithFormat:@"%d",i]];
+                }
+            }//简化文完全匹配－－计算原文的相似度
+            else {//简化文不同，原文不同
+                int m=0,n=0;
+                NSArray *arrayA = [Utility handleTheLetter:orgStringA];
+                NSArray *arrayB = [Utility handleTheLetter:orgStringB];
+                for (int k=0; k<arrayA.count; k++) {
+                    NSString *letter = [arrayA objectAtIndex:k];
+                    if ([arrayB containsObject:letter]) {
+                        n++;
+                    }
+                }
+                float y = (float)orgStringB.length/2;
+                if (n-y>=0){//原文部分匹配
+                    NSArray *arrayAA = [Utility handleTheLetter:strAA];
+                    NSArray *arrayBB = [Utility handleTheLetter:strBB];
+                    for (int k=0; k<arrayAA.count; k++) {
+                        NSString *letter = [arrayAA objectAtIndex:k];
+                        if ([arrayBB containsObject:letter]) {
+                            m++;
+                        }
+                    }
+                    float x = (float)strBB.length/2;
+                    if (m-x>0) {//简化部分匹配
+                        NSLog(@"部分匹配");
+                        [[Utility shared].yellowArray addObject:[NSString stringWithFormat:@"%d",i]];
+                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:i]];
+                    }else {
+                        NSLog(@"黑户");
+                        [[Utility shared].wrongArray addObject:[NSString stringWithFormat:@"%d",i]];
+                    }
+                }else {
+                    NSLog(@"黑户");
+                    [[Utility shared].wrongArray addObject:[NSString stringWithFormat:@"%d",i]];
+                }
+ 
+            }
+        }
+    }
+    NSMutableDictionary *mutableDic = [[NSMutableDictionary alloc]init];
+    if ([Utility shared].greenArray.count>0) {
+        [mutableDic setObject:[Utility shared].greenArray forKey:@"green"];
+    }
+    if ([Utility shared].yellowArray.count>0) {
+        [mutableDic setObject:[Utility shared].yellowArray forKey:@"yellow"];
+        [mutableDic setObject:[Utility shared].sureArray forKey:@"sure"];
+    }
+
+    if ([Utility shared].wrongArray.count>0) {
+        [mutableDic setObject:[Utility shared].wrongArray forKey:@"wrong"];
+    }
+
+    [Utility shared].greenArray = nil;
+    [Utility shared].yellowArray = nil;
+    [Utility shared].sureArray = nil;
+    [Utility shared].wrongArray = nil;
+    return mutableDic;
+    
+}
 +(NSDictionary *)compareWithArray:(NSArray *)arrA andArray:(NSArray *)arrAA WithArray:(NSArray *)arrB andArray:(NSArray *)arrBB WithRange:(NSArray *)rangeArray{
     NSMutableArray *temp_arrA = [NSMutableArray arrayWithArray:arrA];//输入文本的单词数组
     NSMutableArray *temp_arrAA = [NSMutableArray arrayWithArray:arrAA];//输入文本简化后的单词数组
@@ -1373,5 +1460,175 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         return mutableDic;
     }
     return nil;
+}
+
+//添加不用备份的属性5.0.1
++ (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
+{
+    
+    if (platform>=5.1) {//5.1的阻止备份
+        
+        NSError *error = nil;
+        BOOL success = [URL setResourceValue: [NSNumber numberWithBool: YES]
+                                      forKey: NSURLIsExcludedFromBackupKey error: &error];
+        if(!success){
+            
+        }
+        return success;
+    }else if (platform>5.0 && platform<5.1){//5.0.1的阻止备份
+        
+        const char* filePath = [[URL path] fileSystemRepresentation];
+        
+        const char* attrName = "com.apple.MobileBackup";
+        u_int8_t attrValue = 1;
+        
+        int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
+        return result == 0;
+    }
+    return YES;
+}
+//TODO:返回题目
++(NSMutableDictionary *)returnAnswerDictionaryWithName:(NSString *)name {
+    NSFileManager *fileManage =[NSFileManager defaultManager];
+    NSArray *paths= NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+    NSString *documentDirectory = [paths objectAtIndex:0];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
+    if ([fileManage fileExistsAtPath:jsPath]) {
+        NSError *error = nil;
+        Class JSONSerialization = [Utility JSONParserClass];
+        NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
+        
+        NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
+        if (![[answerDic objectForKey:name]isKindOfClass:[NSNull class]] && [answerDic objectForKey:name]!=nil) {
+            NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:[answerDic objectForKey:name]];
+            return dic;
+        }else {
+            NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
+            [dic setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"status"];
+            NSString *time = [Utility getNowDateFromatAnDate];
+            [dic setObject:time forKey:@"update_time"];
+            [dic setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"questions_item"];
+            [dic setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"branch_item"];
+            [dic setObject:[NSString stringWithFormat:@"%d",0] forKey:@"use_time"];
+            [dic setObject:[NSMutableArray array] forKey:@"questions"];
+            
+            return dic;
+        }
+    }else {
+        [Utility addSkipBackupAttributeToItemAtURL:[NSURL fileURLWithPath:jsPath]];
+        [fileManage createFileAtPath:jsPath contents:nil attributes:nil];
+        
+        NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
+        [dic setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"status"];
+        NSString *time = [Utility getNowDateFromatAnDate];
+        [dic setObject:time forKey:@"update_time"];
+        [dic setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"questions_item"];
+        [dic setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"branch_item"];
+        [dic setObject:[NSString stringWithFormat:@"%d",0] forKey:@"use_time"];
+        [dic setObject:[NSMutableArray array] forKey:@"questions"];
+        
+        return dic;
+    }
+}
+//TODO:保存题目
++(void)returnAnswerPathWithDictionary:(NSDictionary *)aDic andName:(NSString *)name {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = [paths objectAtIndex:0];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
+
+    NSError *error = nil;
+    Class JSONSerialization = [Utility JSONParserClass];
+    NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
+    NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
+
+    [answerDic setObject:[DataService sharedService].taskObj.taskId forKey:@"pub_id"];
+    [answerDic setObject:aDic forKey:name];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
+    [jsonData writeToFile:jsPath atomically:YES];
+
+}
+//TODO:返回道具
++(NSMutableArray *)returnAnswerProps{
+    NSFileManager *fileManage =[NSFileManager defaultManager];
+    NSArray *paths= NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
+    NSString *documentDirectory = [paths objectAtIndex:0];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
+    if ([fileManage fileExistsAtPath:jsPath]) {
+        NSError *error = nil;
+        Class JSONSerialization = [Utility JSONParserClass];
+        NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
+        
+        NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
+        if (![[answerDic objectForKey:@"props"]isKindOfClass:[NSNull class]] && [answerDic objectForKey:@"props"]!=nil) {
+            NSMutableArray *array = [NSMutableArray arrayWithArray:[answerDic objectForKey:@"props"]];
+            return array;
+        }else {
+            NSMutableArray *array = [[NSMutableArray alloc]init];
+            for (int i=0; i<2; i++) {
+                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",i],@"types",[NSMutableArray array],@"branch_id", nil];
+                [array addObject:dic];
+            }
+            return array;
+        }
+    }else {
+        NSMutableArray *array = [[NSMutableArray alloc]init];
+        for (int i=0; i<2; i++) {
+            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",i],@"types",[NSMutableArray array],@"branch_id", nil];
+            [array addObject:dic];
+        }
+        return array;
+    }
+}
+//TODO:保存道具
++(void)returnAnswerPathWithProps:(NSMutableArray *)array {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = [paths objectAtIndex:0];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
+    
+    NSError *error = nil;
+    Class JSONSerialization = [Utility JSONParserClass];
+    NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
+    NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
+    
+    [answerDic setObject:[DataService sharedService].taskObj.taskId forKey:@"pub_id"];
+    [answerDic setObject:array forKey:@"props"];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
+    [jsonData writeToFile:jsPath atomically:YES];
+}
+//比较时间
++(BOOL)compareTime {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+    NSDate *endDate = [dateFormatter dateFromString:[DataService sharedService].taskObj.end_time];
+    
+    NSDate *nowDate = [NSDate date];
+    
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    unsigned int unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    NSDateComponents *d = [cal components:unitFlags fromDate:nowDate toDate:endDate options:0];
+    int hour =[d hour];
+
+    if (hour>=2) {
+        return YES;
+    }else
+        return NO;
+    
+}
++ (NSString *)isExistenceNetwork {
+    NSString *str = nil;
+	Reachability *r = [Reachability reachabilityWithHostName:@"www.baidu.com"];
+    switch ([r currentReachabilityStatus]) {
+        case NotReachable:
+			str = @"NotReachable";
+            break;
+        case ReachableViaWWAN:
+			str = @"ReachableViaWWAN";
+            break;
+        case ReachableViaWiFi:
+			str = @"ReachableViaWiFi";
+            break;
+    }
+    return str;
 }
 @end

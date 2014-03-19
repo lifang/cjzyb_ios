@@ -68,14 +68,12 @@
 
 #pragma mark - 登录
 -(IBAction)logWithQQ:(id)sender {
-    [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
-        if ([networkStatus isEqualToString:@"NotReachable"]) {
-            [Utility errorAlert:@"暂无网络!"];
-        }else {
-            NSArray* permissions = [NSArray arrayWithObjects:kOPEN_PERMISSION_GET_SIMPLE_USER_INFO,nil];
-            [_tencentOAuth authorize:permissions inSafari:NO];
-        }
-    }];
+    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+        [Utility errorAlert:@"暂无网络!"];
+    }else {
+        NSArray* permissions = [NSArray arrayWithObjects:kOPEN_PERMISSION_GET_SIMPLE_USER_INFO,nil];
+        [_tencentOAuth authorize:permissions inSafari:NO];
+    }
 }
 //登录成功
 - (void)tencentDidLogin {
@@ -193,14 +191,12 @@
     [self.classTxt resignFirstResponder];
     
     if ([self checkForm]) {
-        [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
-            if ([networkStatus isEqualToString:@"NotReachable"]) {
-                [Utility errorAlert:@"暂无网络!"];
-            }else {
-                [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                [self.personInter getPersonInterfaceDelegateWithQQ:_tencentOAuth.openId andNick:self.nickTxt.text andName:self.nameTxt.text andCode:self.classTxt.text];
-            }
-        }];
+        if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+            [Utility errorAlert:@"暂无网络!"];
+        }else {
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            [self.personInter getPersonInterfaceDelegateWithQQ:_tencentOAuth.openId andNick:self.nickTxt.text andName:self.nameTxt.text andCode:self.classTxt.text];
+        }
     }
 }
 

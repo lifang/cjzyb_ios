@@ -11,7 +11,10 @@
 #import "ClozeAnswerViewController.h"
 #define UnderLab_tag 1234567
 
+static int prop_number = -1;
+
 @interface SelectedViewController ()
+@property (nonatomic, strong) TenSecChallengeResultView *resultView;
 @property (nonatomic,strong) WYPopoverController *poprController;
 @end
 
@@ -25,12 +28,28 @@
     }
     return self;
 }
+-(NSMutableArray *)propsArray {
+    if (!_propsArray) {
+        _propsArray = [[NSMutableArray alloc]init];
+    }
+    return _propsArray;
+}
+-(AppDelegate *)appDel {
+    if (!_appDel) {
+        _appDel = [AppDelegate shareIntance];
+    }
+    return _appDel;
+}
+
 -(void)setUI {
+    [self.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
+    [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+    [self.checkHomeworkButton addTarget:self action:@selector(checkAnswer:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.clozeVV.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.clozeVV removeFromSuperview];
     
-    self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 60, 768, 400)];
+    self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 20, 768, 400)];
     self.clozeVV.delegate = self;
     [self.clozeVV setText:[self.questionDic objectForKey:@"content"]];
     self.clozeVV.backgroundColor = [UIColor clearColor];
@@ -38,23 +57,20 @@
     
     CGRect frame = self.clozeVV.frame;
     frame.origin.x = 0;
-    [UIView animateWithDuration:1.0 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         self.clozeVV.frame = frame;
     } completion:^(BOOL finished){
     }];
 }
 
 -(void)getQuestionData {
-    NSDictionary * dic = [Utility initWithJSONFile:@"question"];
-    NSDictionary *sortDic = [dic objectForKey:@"cloze"];
-    self.questionArray = [NSMutableArray arrayWithArray:[sortDic objectForKey:@"questions"]];
+    self.branchScore = 0;
     self.questionDic = [self.questionArray objectAtIndex:self.number];
     NSLog(@"dic = %@",self.questionDic);
-    
     self.answerArray = [NSMutableArray arrayWithArray:[self.questionDic objectForKey:@"branch_questions"]];
-    
     [self setUI];
 }
+
 #pragma mark -
 #pragma mark - ClozeViewDelegate
 -(void)pressedLabel:(UIControl *)control {
@@ -79,14 +95,46 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"完形填空";
     
     //选择答案之后更新界面
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAnswerByClozeView:) name:@"reloadAnswerByClozeView" object:nil];
     
+    NSDictionary * dic = [Utility initWithJSONFile:@"question"];
+    self.clozeDic = [dic objectForKey:@"cloze"];
+    self.questionArray = [NSMutableArray arrayWithArray:[self.clozeDic objectForKey:@"questions"]];
+    self.specified_time = [[self.clozeDic objectForKey:@"specified_time"]intValue];
+}
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    self.homeControl = (HomeworkContainerController *)self.parentViewController;
+    self.homeControl.appearCorrectButton.enabled=NO;
+    self.homeControl.reduceTimeButton.enabled = NO;
+    
+    self.propsArray = [Utility returnAnswerProps];
+    //TODO:初始化答案的字典
+    self.answerDic = [Utility returnAnswerDictionaryWithName:CLOZE];
+    int status = [[self.answerDic objectForKey:@"status"]intValue];
+    if (status == 1) {
+        self.number=0;self.isFirst= NO;
+    }else {
+        self.isFirst= YES;
+        if ([DataService sharedService].number_reduceTime>0) {
+            self.homeControl.reduceTimeButton.enabled = YES;
+        }
+        if ([DataService sharedService].number_correctAnswer>0) {
+            self.homeControl.appearCorrectButton.enabled=YES;
+        }
+        
+        int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
+        self.number = number_question+1;
+        int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
+        self.homeControl.spendSecond = useTime;
+        NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
+        self.homeControl.timerLabel.text = timeStr;
+    }
+    
     [self getQuestionData];
 }
-
 - (void)reloadAnswerByClozeView:(NSNotification *)notification {
     NSString *answerStr = [notification object];
     
@@ -98,28 +146,245 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
--(IBAction)checkAnswer:(id)sender {
-    NSString *str = @"";
+-(void)checkAnswer:(id)sender {
+    self.homeControl.appearCorrectButton.enabled=NO;
+    NSString *str = @"";NSMutableString *anserString = [NSMutableString string];
     for (int i=0; i<self.answerArray.count; i++) {
         UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:i+UnderLab_tag];
+        if (i==self.answerArray.count-1) {
+            [anserString appendFormat:@"%@",label.text];
+        }else {
+            [anserString appendFormat:@"%@;||;",label.text];
+        }
+        
         if (label.text.length==0) {
             str = @"请填写完整!";
+            anserString = [NSMutableString string];
             break;
         }
     }
     if (str.length>0) {
         [Utility errorAlert:str];
     }else {
+        [self.homeControl stopTimer];
         for (int i=0; i<self.answerArray.count; i++) {
             UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:i+UnderLab_tag];
+            
             NSDictionary *dic = [self.answerArray objectAtIndex:i];
             NSString *answer = [dic objectForKey:@"answer"];
             if ([label.text isEqualToString:answer]) {
                 label.textColor = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
+                self.branchScore++;
             }else {
                 label.textColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
             }
         }
+        if (self.number == self.questionArray.count-1) {
+            [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+            [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+            [self.checkHomeworkButton addTarget:self action:@selector(finishQuestion:) forControlEvents:UIControlEventTouchUpInside];
+        }else {
+            [self.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
+            [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+            [self.checkHomeworkButton addTarget:self action:@selector(nextQuestion:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+        
+        //TODO:写入json
+        int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
+        if (number_question >= self.number) {
+            //表示已经做过这道题
+        }else {
+            if (self.number == self.questionArray.count-1) {
+                [self.answerDic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"status"];
+            }
+            NSString *time = [Utility getNowDateFromatAnDate];
+            [self.answerDic setObject:time forKey:@"update_time"];
+            [self.answerDic setObject:[NSString stringWithFormat:@"%d",self.number] forKey:@"questions_item"];
+            [self.answerDic setObject:[NSString stringWithFormat:@"%lld",self.homeControl.spendSecond] forKey:@"use_time"];
+            
+            //一道题目------------------------------------------------------------------
+            //正确率
+            CGFloat ratio = (self.branchScore/((float)self.answerArray.count))*100;
+            // id
+            NSDictionary *a_dic = [self.answerArray objectAtIndex:0];
+            NSString *a_id = [NSString stringWithFormat:@"%@",[a_dic objectForKey:@"id"]];
+            NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.2f",ratio],@"ratio",anserString,@"answer", nil];
+            NSArray *branch_questions = [[NSArray alloc]initWithObjects:answer_dic, nil];
+            
+            NSMutableArray *questions = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
+            
+            NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:[self.questionDic objectForKey:@"id"],@"id",branch_questions,@"branch_questions", nil];
+            [questions addObject:dictionary];
+            [self.answerDic setObject:questions forKey:@"questions"];
+            
+            [Utility returnAnswerPathWithDictionary:self.answerDic andName:CLOZE];
+        }
     }
+}
+
+-(void)nextQuestion:(id)sender {
+    [self.homeControl startTimer];
+    if ([DataService sharedService].number_correctAnswer>0) {
+        self.homeControl.appearCorrectButton.enabled=YES;
+    }
+    self.number ++;
+    [self getQuestionData];
+}
+//结果
+-(void)showResultView {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentDirectory = [paths objectAtIndex:0];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
+    
+    NSError *error = nil;
+    Class JSONSerialization = [Utility JSONParserClass];
+    NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
+    
+    NSMutableDictionary *answerDic = [dataObject objectForKey:CLOZE];
+    NSArray *questionArray = [answerDic objectForKey:@"questions"];
+    
+    CGFloat score_radio=0;int count =0;
+    for (int i=0; i<questionArray.count; i++) {
+        NSDictionary *question_dic = [questionArray objectAtIndex:i];
+        NSArray *branchArray = [question_dic objectForKey:@"branch_questions"];
+        
+        for (int j=0; j<branchArray.count; j++) {
+            count++;
+            NSDictionary *branch_dic = [branchArray objectAtIndex:j];
+            CGFloat radio = [[branch_dic objectForKey:@"ratio"]floatValue];
+            score_radio += radio;
+        }
+    }
+    score_radio = score_radio/count;
+    
+    NSArray *viewArray = [[NSBundle mainBundle] loadNibNamed:@"TenSecChallengeResultView" owner:self options:nil];
+    self.resultView = (TenSecChallengeResultView *)[viewArray objectAtIndex:0];
+    self.resultView.delegate = self;
+    self.resultView.timeCount = self.homeControl.spendSecond;
+    self.resultView.ratio = (NSInteger)score_radio;
+    if (self.isFirst == YES) {
+        self.resultView.resultBgView.hidden=NO;
+        self.resultView.noneArchiveView.hidden=YES;
+        
+        self.resultView.timeLimit = self.specified_time;
+        self.resultView.isEarly = [Utility compareTime];
+    }else {
+        self.resultView.noneArchiveView.hidden=NO;
+        self.resultView.resultBgView.hidden=YES;
+    }
+    
+    [self.resultView initView];
+    
+    [self.view addSubview: self.resultView];
+}
+
+-(void)finishQuestion:(id)sender {
+    self.homeControl.appearCorrectButton.enabled=NO;
+    self.homeControl.reduceTimeButton.enabled=NO;
+    self.checkHomeworkButton.enabled=NO;
+    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+        [Utility errorAlert:@"暂无网络!"];
+    }else {
+        if (self.isFirst==YES) {
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+            self.postInter = [[BasePostInterface alloc]init];
+            self.postInter.delegate = self;
+            [self.postInter postAnswerFile];
+        }else {
+            [self showResultView];
+        }
+    }
+}
+
+#pragma mark
+#pragma mark - PostDelegate
+-(void)getPostInfoDidFinished:(NSDictionary *)result {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            [self showResultView];
+        });
+    });
+}
+-(void)getPostInfoDidFailed:(NSString *)errorMsg {
+    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [Utility errorAlert:errorMsg];
+}
+
+#pragma mark
+#pragma mark - TenSecChallengeResultViewDelegate
+-(void)resultViewCommitButtonClicked {//确认完成
+    [self.resultView removeFromSuperview];
+}
+-(void)resultViewRestartButtonClicked {//再次挑战
+    [self.resultView removeFromSuperview];
+    self.checkHomeworkButton.enabled=YES;
+    self.homeControl.reduceTimeButton.enabled=NO;
+    self.homeControl.appearCorrectButton.enabled=NO;
+    self.number=0;self.isFirst = NO;
+    [self getQuestionData];
+}
+
+#pragma mark
+#pragma mark - 道具
+-(void)showClozeCorrectAnswer {
+    prop_number += 1;[DataService sharedService].number_correctAnswer -= 1;
+    NSArray *branch_questions = [self.questionDic objectForKey:@"branch_questions"];
+    if ((prop_number == (branch_questions.count-1)) || ([DataService sharedService].number_correctAnswer==0)) {
+        self.homeControl.appearCorrectButton.enabled = NO;
+    }
+    //道具写入JSON
+    NSMutableDictionary *branch_propDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray objectAtIndex:0]];
+    NSMutableArray *branch_propArray = [NSMutableArray arrayWithArray:[branch_propDic objectForKey:@"branch_id"]];
+    NSDictionary *branch_dic = [branch_questions objectAtIndex:prop_number];
+    [branch_propArray addObject:[NSNumber numberWithInt:[[branch_dic objectForKey:@"id"] intValue]]];
+    [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
+    [self.propsArray replaceObjectAtIndex:0 withObject:branch_propDic];
+    [Utility returnAnswerPathWithProps:self.propsArray];
+    
+    //显示正确答案
+    UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:prop_number+UnderLab_tag];
+    NSDictionary *dic = [self.answerArray objectAtIndex:prop_number];
+    NSString *answer = [dic objectForKey:@"answer"];
+    label.text = answer;
+    label.textColor = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
+}
+- (void)clozeViewReduceTimeButtonClicked {
+    [DataService sharedService].number_reduceTime -= 1;
+    if ([DataService sharedService].number_reduceTime==0) {
+        self.homeControl.reduceTimeButton.enabled = NO;
+    }
+    
+    if (self.homeControl.spendSecond > 5) {
+        self.homeControl.spendSecond = self.homeControl.spendSecond -5;
+    }else{
+        self.homeControl.spendSecond = 0;
+    }
+    self.homeControl.timerLabel.text = [Utility formateDateStringWithSecond:self.homeControl.spendSecond];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:(CGRect){self.view.frame.size.width/2,120,70,50}];
+    [label setFont:[UIFont systemFontOfSize:50]];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor orangeColor];
+    label.text = @"-5";
+    [self.homeControl.view addSubview:label];
+    [self.homeControl.view setUserInteractionEnabled:NO];
+    label.alpha = 1;
+    [UIView animateWithDuration:1 animations:^{
+        label.alpha = 0;
+    } completion:^(BOOL finished) {
+        [label removeFromSuperview];
+        [self.homeControl.view setUserInteractionEnabled:YES];
+    }];
+    
+    NSMutableDictionary *branch_propDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray objectAtIndex:1]];
+    NSMutableArray *branch_propArray = [NSMutableArray arrayWithArray:[branch_propDic objectForKey:@"branch_id"]];
+    NSArray *branch_questions = [self.questionDic objectForKey:@"branch_questions"];
+    NSDictionary *branch_dic = [branch_questions objectAtIndex:0];
+    [branch_propArray addObject:[NSNumber numberWithInt:[[branch_dic objectForKey:@"id"] intValue]]];
+    [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
+    [self.propsArray replaceObjectAtIndex:1 withObject:branch_propDic];
+    [Utility returnAnswerPathWithProps:self.propsArray];
 }
 @end

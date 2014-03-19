@@ -14,10 +14,13 @@
 
 ///朗读题controller
 @property (nonatomic,strong) ReadingTaskViewController *readingController;
+@property (nonatomic,strong) ListenWriteViewController *listenView;//听写
+@property (nonatomic,strong) SortViewController *sortView;//排序
+@property (nonatomic,strong) SelectedViewController *selectedView;//完形填空
 ///计时器
 @property (nonatomic,strong) NSTimer *timer;
-///减时间
-- (IBAction)reduceTimeButtonClicked:(id)sender;
+/////减时间
+//- (IBAction)reduceTimeButtonClicked:(id)sender;
 ///退出作业
 - (IBAction)quitButtonClicked:(id)sender;
 
@@ -42,8 +45,7 @@
 
 ///开始计时
 -(void)startTimer{
-    self.spendSecond = 0;
-    self.timerLabel.text = @"";
+//    self.timerLabel.text = [NSString stringWithFormat:@"%lld",self.spendSecond];
     if (self.timer) {
         [self.timer invalidate];
         self.timer = nil;
@@ -62,7 +64,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;
     [self startTimer];
+    self.homeworkType = HomeworkType_listeningAndWrite;
     switch (self.homeworkType) {
         case HomeworkType_line:
         {
@@ -87,6 +91,45 @@
             [self addChildViewController:self.readingController];
             [self.readingController didMoveToParentViewController:self];
         }
+        case HomeworkType_listeningAndWrite://听写
+        {
+            self.listenView = [[ListenWriteViewController alloc]initWithNibName:@"ListenWriteViewController" bundle:nil];
+            [self.listenView willMoveToParentViewController:self];
+            self.listenView.view.frame = self.contentView.bounds;
+            [self.appearCorrectButton setHidden:YES];
+            self.listenView.checkHomeworkButton = self.checkHomeworkButton;
+            [self.reduceTimeButton addTarget:self.listenView action:@selector(listenViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+            [self.contentView addSubview:self.listenView.view];
+            [self addChildViewController:self.listenView];
+            [self.listenView didMoveToParentViewController:self];
+        }
+            break;
+        case HomeworkType_fillInBlanks://完形填空
+        {
+            self.selectedView = [[SelectedViewController alloc]initWithNibName:@"SelectedViewController" bundle:nil];
+            [self.selectedView willMoveToParentViewController:self];
+            self.selectedView.view.frame = self.contentView.bounds;
+            [self.appearCorrectButton addTarget:self.selectedView action:@selector(showClozeCorrectAnswer) forControlEvents:UIControlEventTouchUpInside];
+            [self.reduceTimeButton addTarget:self.selectedView action:@selector(clozeViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+            
+            self.selectedView.checkHomeworkButton = self.checkHomeworkButton;
+            [self.contentView addSubview:self.selectedView.view];
+            [self addChildViewController:self.selectedView];
+            [self.selectedView didMoveToParentViewController:self];
+        }
+            break;
+        case HomeworkType_sort://排序
+        {
+            self.sortView = [[SortViewController alloc]initWithNibName:@"SortViewController" bundle:nil];
+            [self.sortView willMoveToParentViewController:self];
+            self.sortView.view.frame = self.contentView.bounds;
+            [self.appearCorrectButton addTarget:self.sortView action:@selector(showSortCorrectAnswer) forControlEvents:UIControlEventTouchUpInside];
+            [self.reduceTimeButton addTarget:self.sortView action:@selector(sortViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+            self.sortView.checkHomeworkButton = self.checkHomeworkButton;
+            [self.contentView addSubview:self.sortView.view];
+            [self addChildViewController:self.sortView];
+            [self.sortView didMoveToParentViewController:self];
+        }
             break;
         default:
             break;
@@ -102,27 +145,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)reduceTimeButtonClicked:(id)sender {
-    if (self.spendSecond > 5) {
-        self.spendSecond = self.spendSecond -5;
-    }else{
-        self.spendSecond = 0;
-    }
-    UILabel *label = [[UILabel alloc] initWithFrame:(CGRect){self.view.frame.size.width/2,120,70,50}];
-    [label setFont:[UIFont systemFontOfSize:50]];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor orangeColor];
-    label.text = @"-5";
-    [self.view addSubview:label];
-    [self.view setUserInteractionEnabled:NO];
-    label.alpha = 1;
-    [UIView animateWithDuration:1 animations:^{
-        label.alpha = 0;
-    } completion:^(BOOL finished) {
-        [label removeFromSuperview];
-        [self.view setUserInteractionEnabled:YES];
-    }];
-}
+
 
 - (IBAction)quitButtonClicked:(id)sender {
     

@@ -24,14 +24,12 @@ static NSInteger tmpPage = 0;
     return self;
 }
 -(void)getCardData {
-    [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
-        if ([networkStatus isEqualToString:@"NotReachable"]) {
-            [Utility errorAlert:@"暂无网络!"];
-        }else {
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            [self.cardInter getCardInterfaceDelegateWithStudentId:@"1" andClassId:@"1" andType:@"4"];
-        }
-    }];
+    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+        [Utility errorAlert:@"暂无网络!"];
+    }else{
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [self.cardInter getCardInterfaceDelegateWithStudentId:@"1" andClassId:@"1" andType:@"4"];
+    }
 }
 
 -(AppDelegate *)appDel {
@@ -444,15 +442,13 @@ static NSInteger tmpPage = 0;
     }
 }
 -(void)pressedDeleteBtn:(UIButton *)btn {
-    [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
-        if ([networkStatus isEqualToString:@"NotReachable"]) {
-            [Utility errorAlert:@"暂无网络!"];
-        }else {
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            CardObject *card = [self.cardArray objectAtIndex:btn.tag];
-            [self.deleteInter getDeleteCardDelegateDelegateWithCardId:card.carId andTag:btn.tag];
-        }
-    }];
+    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+        [Utility errorAlert:@"暂无网络!"];
+    }else {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        CardObject *card = [self.cardArray objectAtIndex:btn.tag];
+        [self.deleteInter getDeleteCardDelegateDelegateWithCardId:card.carId andTag:btn.tag];
+    }
 }
 #pragma mark
 #pragma mark - DeleteCardInterfaceDelegate
