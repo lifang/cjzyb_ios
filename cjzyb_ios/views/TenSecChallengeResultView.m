@@ -25,33 +25,29 @@
     self.resultBgView.backgroundColor = [UIColor colorWithRed:49.0/255.0 green:200.0/255.0 blue:124.0/255.0 alpha:1.0];
     
     self.resultBgView.layer.cornerRadius = 10.0;
-    
+    self.noneArchiveView.layer.cornerRadius = 10.0;
     self.commitButton.layer.cornerRadius = 4.0;
-    
+    self.noneCommitButton.layer.cornerRadius = 4.0;
     self.restartButton.layer.cornerRadius = 4.0;
+    self.noneRestartButton.layer.cornerRadius = 4.0;
+    self.correctPersent.text = [NSString stringWithFormat:@"正确率: %i%%",self.ratio];
+    self.noneCorrectPersent.text = self.correctPersent.text;
+    self.timeLabel.text = [NSString stringWithFormat:@"用时: %@",[Utility formateDateStringWithSecond:self.timeCount]];
+    self.noneTimeLabel.text = self.timeLabel.text;
     
-    self.correctPersent.text = [NSString stringWithFormat:@"正确率: %i%@",self.ratio,@"%"];
-    
-    NSInteger minute = self.timeCount / 60;
-    NSInteger second = self.timeCount % 60;
-    
-    self.timeLabel.text = [NSString stringWithFormat:@"用时: %d'%d",minute,second];
-    
-    if (self.ratio < 100) {
+    if (self.ratio < 100) {//精准成就
         self.accuracyAchievementLabel.text = [NSString stringWithFormat:@"好可惜没有全对哦,不能拿到精准得分哦!"];
     }else{
         self.accuracyAchievementLabel.text = [NSString stringWithFormat:@"所有题目全部正确!<精准>成就加10分!"];
     }
     
-    if (self.timeCount <= self.timeLimit) {
-        //迅速成就
+    if (self.timeCount <= self.timeLimit) {//迅速成就
         self.fastAchievementLabel.text = [NSString stringWithFormat:@"恭喜你的用时在%d秒内,<迅速>成就加10分!",self.timeLimit];
     }else{
         self.fastAchievementLabel.text = [NSString stringWithFormat:@"你的用时超过了%d秒,不能拿到迅速得分哦!",self.timeLimit];
     }
     
-    //捷足成就
-    if (self.isEarly) {
+    if (self.isEarly) {//捷足成就
         self.earlyAchievementLabel.text = [NSString stringWithFormat:@"恭喜你在截止时间提前两小时完成作业,<捷足>成就加10分!"];
     }else{
         self.earlyAchievementLabel.text = [NSString stringWithFormat:@"未能在截止时间提前两小时完成作业,不能拿到捷足得分哦!"];

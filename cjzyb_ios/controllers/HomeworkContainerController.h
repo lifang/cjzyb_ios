@@ -10,6 +10,9 @@
 #import "HomeworkTypeObj.h"
 #import "LiningHomeworkViewController.h"
 #import "ReadingTaskViewController.h"
+#import "ListenWriteViewController.h"//听写
+#import "SortViewController.h"//排序
+#import "SelectedViewController.h"//完形填空
 /** HomeworkContainerController
  *
  * 所有题目类型的container，子类放置是每个题型的controller
@@ -17,6 +20,7 @@
 @interface HomeworkContainerController : UIViewController
 ///作业类型
 @property (assign,nonatomic) HomeworkType homeworkType;
+@property (strong, nonatomic) IBOutlet UIView *djView;
 
 ///退出按钮
 @property (weak, nonatomic) IBOutlet UIButton *quitHomeworkButton;
