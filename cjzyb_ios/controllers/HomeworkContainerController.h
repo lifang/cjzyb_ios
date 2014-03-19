@@ -13,6 +13,8 @@
 #import "ListenWriteViewController.h"//听写
 #import "SortViewController.h"//排序
 #import "SelectedViewController.h"//完形填空
+#import "SelectingChallengeViewController.h"//选择挑战
+#import "TenSecChallengeViewController.h" //十速挑战
 /** HomeworkContainerController
  *
  * 所有题目类型的container，子类放置是每个题型的controller
@@ -26,6 +28,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *quitHomeworkButton;
 ///检查按钮
 @property (weak, nonatomic) IBOutlet UIButton *checkHomeworkButton;
+///检查按钮的背景
+@property (weak, nonatomic) IBOutlet UIView *checkBgView;
 ///计时器label
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 ///显示正确答案button

@@ -73,8 +73,8 @@
 //    tabBarController.childenControllerArray = @[main];
     
     
-//    HomeworkContainerController *homeView = [[HomeworkContainerController alloc]initWithNibName:@"HomeworkContainerController" bundle:nil];
-//    self.window.rootViewController = homeView;
+    HomeworkContainerController *homeView = [[HomeworkContainerController alloc]initWithNibName:@"HomeworkContainerController" bundle:nil];
+    self.window.rootViewController = homeView;
 //    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
 //    self.window.rootViewController = notificationViewController;
 
@@ -82,17 +82,16 @@
 //    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
 //    tabBarController.childenControllerArray = @[main];
 //    self.window.rootViewController = tabBarController;
-//    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
-//    self.window.rootViewController = notificationViewController;
 
 
-     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
-    self.window.rootViewController = navControl;
+//     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
+//     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
+//    self.window.rootViewController = navControl;
     
 
 //    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
-
+//    [self showRootView];
+    
     [self.window makeKeyAndVisible];
     
     [DataService sharedService].first = 0;[DataService sharedService].second = 0;[DataService sharedService].third = 0;[DataService sharedService].fourth = 0;

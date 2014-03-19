@@ -119,6 +119,13 @@
     //保存挑战数据
     //显示结果界面
     [self.view addSubview:self.resultView];
+    if (self.isReDoingChallenge) {
+        self.resultView.resultBgView.hidden = YES;
+        self.resultView.noneArchiveView.hidden = NO;
+    }else{
+        self.resultView.resultBgView.hidden = NO;
+        self.resultView.noneArchiveView.hidden = YES;
+    }
     [self makeResult];
     self.answerStatus = @"1";
 }

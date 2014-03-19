@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TenSecChallengeViewController">
             <connections>
                 <outlet property="cancelButton" destination="l0W-2p-zK0" id="Uru-aF-cRI"/>
+                <outlet property="contentBgView" destination="JmQ-XD-9bw" id="eEF-e8-oax"/>
                 <outlet property="countDownImageView" destination="uOr-nH-iHi" id="dgG-21-b0f"/>
                 <outlet property="historyView" destination="gvO-V7-NgK" id="reC-JB-ZTT"/>
                 <outlet property="historyYourChoiceLabel" destination="2IO-Gk-mx0" id="a6y-oy-9J0"/>
@@ -15,6 +16,7 @@
                 <outlet property="lowerOptionLabel" destination="Af1-t5-VFj" id="yy6-wP-z6l"/>
                 <outlet property="questionLabel" destination="CsT-1o-7dg" id="zxj-52-FZp"/>
                 <outlet property="timeLabel" destination="7Hi-Dh-QiD" id="3WX-20-Dws"/>
+                <outlet property="topBarView" destination="wjo-sy-mMl" id="Tbx-oc-8d1"/>
                 <outlet property="upperButton" destination="BPz-7h-3Tl" id="tqq-rA-WS5"/>
                 <outlet property="upperOptionLabel" destination="b69-AP-bQF" id="irp-ac-seE"/>
                 <outlet property="view" destination="2" id="3"/>

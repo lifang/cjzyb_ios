@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeworkContainerController">
             <connections>
                 <outlet property="appearCorrectButton" destination="gXD-fH-1Hw" id="9my-aB-yFd"/>
+                <outlet property="checkBgView" destination="ffd-jN-boC" id="rQ8-n4-4im"/>
                 <outlet property="checkHomeworkButton" destination="TOZ-l9-jr5" id="5LS-Z0-1Si"/>
                 <outlet property="contentView" destination="Mpv-Zu-cvf" id="yjC-yt-gio"/>
                 <outlet property="djView" destination="Qjf-do-S1z" id="nJb-fB-9Wo"/>
@@ -22,7 +23,7 @@
             <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="HfX-9p-2AP">
+                <view contentMode="scaleToFill" id="HfX-9p-2AP" userLabel="topView">
                     <rect key="frame" x="0.0" y="0.0" width="768" height="75"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -85,7 +86,7 @@
                     </subviews>
                     <color key="backgroundColor" red="0.20784313725490194" green="0.81176470588235294" blue="0.5607843137254902" alpha="1" colorSpace="deviceRGB"/>
                 </view>
-                <view contentMode="scaleToFill" id="Qjf-do-S1z">
+                <view contentMode="scaleToFill" id="Qjf-do-S1z" userLabel="toolView">
                     <rect key="frame" x="0.0" y="75" width="768" height="75"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <subviews>

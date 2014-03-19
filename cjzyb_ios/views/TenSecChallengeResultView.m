@@ -56,12 +56,13 @@
     //剩余挑战次数(十速挑战专用)
     if (self.challengeTimesLeft) {
         [self.restartButton setTitle:[NSString stringWithFormat:@"再次挑战 (%@)",self.challengeTimesLeft] forState:UIControlStateNormal];
+        [self.noneRestartButton setTitle:[NSString stringWithFormat:@"再次挑战 (%@)",self.challengeTimesLeft] forState:UIControlStateNormal];
         if (self.challengeTimesLeft.integerValue < 1) {
-            self.restartButton.backgroundColor = [UIColor lightGrayColor];
-            self.restartButton.enabled = NO;
+            self.noneRestartButton.backgroundColor = [UIColor lightGrayColor];
+            self.noneRestartButton.enabled = NO;
         }else{
-            self.restartButton.backgroundColor = [UIColor whiteColor];
-            self.restartButton.enabled = YES;
+            self.noneRestartButton.backgroundColor = [UIColor whiteColor];
+            self.noneRestartButton.enabled = YES;
         }
     }
 }

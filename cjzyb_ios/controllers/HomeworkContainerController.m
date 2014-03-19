@@ -17,6 +17,8 @@
 @property (nonatomic,strong) ListenWriteViewController *listenView;//听写
 @property (nonatomic,strong) SortViewController *sortView;//排序
 @property (nonatomic,strong) SelectedViewController *selectedView;//完形填空
+@property (nonatomic,strong) TenSecChallengeViewController *tenSecViewController;///十速挑战
+@property (nonatomic,strong) SelectingChallengeViewController *selectingChallengeViewController; ///选择挑战
 ///计时器
 @property (nonatomic,strong) NSTimer *timer;
 /////减时间
@@ -66,7 +68,7 @@
     [super viewDidLoad];
     self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;
     [self startTimer];
-    self.homeworkType = HomeworkType_listeningAndWrite;
+    self.homeworkType = HomeworkType_quick;
     switch (self.homeworkType) {
         case HomeworkType_line:
         {
@@ -129,6 +131,26 @@
             [self.contentView addSubview:self.sortView.view];
             [self addChildViewController:self.sortView];
             [self.sortView didMoveToParentViewController:self];
+        }
+            break;
+        case HomeworkType_quick://十速挑战
+            //十速挑战没有道具栏,contentView应为 {0,75,768,949}
+        {
+            [self.djView setHidden:YES];
+            [self.checkBgView setHidden:YES];
+            self.tenSecViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
+            [self.tenSecViewController willMoveToParentViewController:self];
+            [self.contentView setFrame:(CGRect){0,75,768,949}];
+            [self.contentView addSubview:self.tenSecViewController.view];
+            [self.tenSecViewController.contentBgView setFrame:(CGRect){0,0,768,949}];
+            [self.tenSecViewController.topBarView setHidden:YES];
+            [self addChildViewController:self.tenSecViewController];
+            [self.tenSecViewController didMoveToParentViewController:self];
+        }
+            break;
+        case HomeworkType_select://选择挑战
+        {
+            
         }
             break;
         default:
