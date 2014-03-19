@@ -22,6 +22,8 @@
 
 //初始化设置
 -(void) initView{
+    self.resultBgView.backgroundColor = [UIColor colorWithRed:49.0/255.0 green:200.0/255.0 blue:124.0/255.0 alpha:1.0];
+    
     self.resultBgView.layer.cornerRadius = 10.0;
     
     self.commitButton.layer.cornerRadius = 4.0;
