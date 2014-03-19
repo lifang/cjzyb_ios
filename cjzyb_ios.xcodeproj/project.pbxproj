@@ -141,30 +141,34 @@
 		1818F6A418C561D200DC6207 /* TenSecChallengeResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1818F6A318C561D200DC6207 /* TenSecChallengeResultView.m */; };
 		1818F6A618C561ED00DC6207 /* TenSecChallengeResultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1818F6A518C561ED00DC6207 /* TenSecChallengeResultView.xib */; };
 		181A786618C4206700D288D3 /* TenSecChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786418C4206700D288D3 /* TenSecChallengeViewController.m */; };
-		181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */; };
 		181A786A18C469AB00D288D3 /* TenSecChallengeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786918C469AB00D288D3 /* TenSecChallengeObject.m */; };
 		1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */; };
 		182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */ = {isa = PBXBuildFile; fileRef = 187222BA18C87A5700BBE2D1 /* questions_lastest.js */; };
 		182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */; };
 		1833276B18CEB38000638107 /* smallTriangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1833276A18CEB38000638107 /* smallTriangle@2x.png */; };
-		1848613118C72D29002B6C78 /* 10_10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612718C72D29002B6C78 /* 10_10@2x.png */; };
-		1848613218C72D29002B6C78 /* 10_09@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612818C72D29002B6C78 /* 10_09@2x.png */; };
-		1848613318C72D29002B6C78 /* 10_08@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612918C72D29002B6C78 /* 10_08@2x.png */; };
-		1848613418C72D29002B6C78 /* 10_07@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612A18C72D29002B6C78 /* 10_07@2x.png */; };
-		1848613518C72D29002B6C78 /* 10_06@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612B18C72D29002B6C78 /* 10_06@2x.png */; };
-		1848613618C72D29002B6C78 /* 10_05@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612C18C72D29002B6C78 /* 10_05@2x.png */; };
-		1848613718C72D29002B6C78 /* 10_04@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612D18C72D29002B6C78 /* 10_04@2x.png */; };
-		1848613818C72D29002B6C78 /* 10_03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612E18C72D29002B6C78 /* 10_03@2x.png */; };
-		1848613918C72D29002B6C78 /* 10_02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848612F18C72D29002B6C78 /* 10_02@2x.png */; };
-		1848613A18C72D29002B6C78 /* 10_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1848613018C72D29002B6C78 /* 10_01@2x.png */; };
+		185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */; };
 		1867B53718D006AB0042A95D /* systemMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53618D006AB0042A95D /* systemMessage@2x.png */; };
 		1867B53A18D008C50042A95D /* trash_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53918D008C50042A95D /* trash_icon@2x.png */; };
 		1867B53C18D00D710042A95D /* replyMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53B18D00D710042A95D /* replyMessage@2x.png */; };
+		186F216618D6D5BA0089A329 /* MJRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 186F215C18D6D5BA0089A329 /* MJRefresh.bundle */; };
+		186F216718D6D5BA0089A329 /* MJRefreshBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F215F18D6D5BA0089A329 /* MJRefreshBaseView.m */; };
+		186F216818D6D5BA0089A329 /* MJRefreshConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F216118D6D5BA0089A329 /* MJRefreshConst.m */; };
+		186F216918D6D5BA0089A329 /* MJRefreshFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F216318D6D5BA0089A329 /* MJRefreshFooterView.m */; };
+		186F216A18D6D5BA0089A329 /* MJRefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F216518D6D5BA0089A329 /* MJRefreshHeaderView.m */; };
 		187222B118C8434D00BBE2D1 /* answer-1.js in Sources */ = {isa = PBXBuildFile; fileRef = 187222B018C8434D00BBE2D1 /* answer-1.js */; };
 		187222B518C8572E00BBE2D1 /* SelectingChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187222B318C8572E00BBE2D1 /* SelectingChallengeViewController.m */; };
-		187222B618C8572E00BBE2D1 /* SelectingChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 187222B418C8572E00BBE2D1 /* SelectingChallengeViewController.xib */; };
 		187222B918C86A0300BBE2D1 /* SelectingChallengeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 187222B818C86A0300BBE2D1 /* SelectingChallengeObject.m */; };
 		187222BB18C87A5700BBE2D1 /* questions_lastest.js in Sources */ = {isa = PBXBuildFile; fileRef = 187222BA18C87A5700BBE2D1 /* questions_lastest.js */; };
+		187C4AC618D304AC0006461D /* 10_01@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4ABC18D304AC0006461D /* 10_01@2x.png */; };
+		187C4AC718D304AC0006461D /* 10_02@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4ABD18D304AC0006461D /* 10_02@2x.png */; };
+		187C4AC818D304AC0006461D /* 10_03@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4ABE18D304AC0006461D /* 10_03@2x.png */; };
+		187C4AC918D304AC0006461D /* 10_04@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4ABF18D304AC0006461D /* 10_04@2x.png */; };
+		187C4ACA18D304AC0006461D /* 10_05@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4AC018D304AC0006461D /* 10_05@2x.png */; };
+		187C4ACB18D304AC0006461D /* 10_06@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4AC118D304AC0006461D /* 10_06@2x.png */; };
+		187C4ACC18D304AC0006461D /* 10_07@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4AC218D304AC0006461D /* 10_07@2x.png */; };
+		187C4ACD18D304AC0006461D /* 10_08@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4AC318D304AC0006461D /* 10_08@2x.png */; };
+		187C4ACE18D304AC0006461D /* 10_09@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4AC418D304AC0006461D /* 10_09@2x.png */; };
+		187C4ACF18D304AC0006461D /* 10_10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4AC518D304AC0006461D /* 10_10@2x.png */; };
 		188ED74118CD850700D1210F /* right_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 188ED73F18CD850700D1210F /* right_sound.mp3 */; };
 		188ED74218CD850700D1210F /* wrong_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 188ED74018CD850700D1210F /* wrong_sound.mp3 */; };
 		188ED74318CDA6BA00D1210F /* answer-1.js in Resources */ = {isa = PBXBuildFile; fileRef = 187222B018C8434D00BBE2D1 /* answer-1.js */; };
@@ -176,6 +180,10 @@
 		18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80B918BF030200EC08CE /* smile@2x.png */; };
 		18AA80BD18BF04E800EC08CE /* LHLNotificationHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */; };
 		18AA80C418BF1A3300EC08CE /* LHLReplyNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */; };
+		18B4EB7B18D29A1D00986766 /* LHLGetMyNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB7A18D29A1D00986766 /* LHLGetMyNoticeInterface.m */; };
+		18B4EB7E18D29D9F00986766 /* LHLGetSysNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB7D18D29D9F00986766 /* LHLGetSysNoticeInterface.m */; };
+		18B4EB8118D29DD800986766 /* LHLDeleteSysNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB8018D29DD800986766 /* LHLDeleteSysNoticeInterface.m */; };
+		18B4EB8418D29E0500986766 /* LHLDeleteMyNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB8318D29E0500986766 /* LHLDeleteMyNoticeInterface.m */; };
 		18E01DA518CDB70B0016FA7D /* yourChoice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18E01DA418CDB70B0016FA7D /* yourChoice@2x.png */; };
 		18E01DA718CDC42C0016FA7D /* libiSpeechSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E01DA618CDC42C0016FA7D /* libiSpeechSDK.a */; };
 		630DBDC918D1562D009DA0EB /* DRNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 630DBDC818D1562D009DA0EB /* DRNavigationBar.m */; };
@@ -329,7 +337,6 @@
 		6396580A18C04D4A002F2A90 /* HomeworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396580818C04D4A002F2A90 /* HomeworkViewController.m */; };
 		6396580B18C04D4A002F2A90 /* HomeworkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396580918C04D4A002F2A90 /* HomeworkViewController.xib */; };
 		6396581218C04F68002F2A90 /* HomeworkTypeCollctionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396581118C04F68002F2A90 /* HomeworkTypeCollctionCell.m */; };
-		6396581418C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396581318C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib */; };
 		6396583318C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396583118C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m */; };
 		6396583418C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396583218C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib */; };
 		6396583A18C07B37002F2A90 /* HomeworkTypeObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396583918C07B37002F2A90 /* HomeworkTypeObj.m */; };
@@ -576,19 +583,19 @@
 		182A89D718C977BC00CF4B30 /* OrdinaryAnswerObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdinaryAnswerObject.h; sourceTree = SOURCE_ROOT; };
 		182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdinaryAnswerObject.m; sourceTree = SOURCE_ROOT; };
 		1833276A18CEB38000638107 /* smallTriangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smallTriangle@2x.png"; sourceTree = "<group>"; };
-		1848612718C72D29002B6C78 /* 10_10@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_10@2x.png"; sourceTree = "<group>"; };
-		1848612818C72D29002B6C78 /* 10_09@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_09@2x.png"; sourceTree = "<group>"; };
-		1848612918C72D29002B6C78 /* 10_08@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_08@2x.png"; sourceTree = "<group>"; };
-		1848612A18C72D29002B6C78 /* 10_07@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_07@2x.png"; sourceTree = "<group>"; };
-		1848612B18C72D29002B6C78 /* 10_06@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_06@2x.png"; sourceTree = "<group>"; };
-		1848612C18C72D29002B6C78 /* 10_05@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_05@2x.png"; sourceTree = "<group>"; };
-		1848612D18C72D29002B6C78 /* 10_04@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_04@2x.png"; sourceTree = "<group>"; };
-		1848612E18C72D29002B6C78 /* 10_03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_03@2x.png"; sourceTree = "<group>"; };
-		1848612F18C72D29002B6C78 /* 10_02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_02@2x.png"; sourceTree = "<group>"; };
-		1848613018C72D29002B6C78 /* 10_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_01@2x.png"; sourceTree = "<group>"; };
 		1867B53618D006AB0042A95D /* systemMessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "systemMessage@2x.png"; sourceTree = "<group>"; };
 		1867B53918D008C50042A95D /* trash_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trash_icon@2x.png"; sourceTree = "<group>"; };
 		1867B53B18D00D710042A95D /* replyMessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "replyMessage@2x.png"; sourceTree = "<group>"; };
+		186F215C18D6D5BA0089A329 /* MJRefresh.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MJRefresh.bundle; sourceTree = "<group>"; };
+		186F215D18D6D5BA0089A329 /* MJRefresh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefresh.h; sourceTree = "<group>"; };
+		186F215E18D6D5BA0089A329 /* MJRefreshBaseView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshBaseView.h; sourceTree = "<group>"; };
+		186F215F18D6D5BA0089A329 /* MJRefreshBaseView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshBaseView.m; sourceTree = "<group>"; };
+		186F216018D6D5BA0089A329 /* MJRefreshConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshConst.h; sourceTree = "<group>"; };
+		186F216118D6D5BA0089A329 /* MJRefreshConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshConst.m; sourceTree = "<group>"; };
+		186F216218D6D5BA0089A329 /* MJRefreshFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshFooterView.h; sourceTree = "<group>"; };
+		186F216318D6D5BA0089A329 /* MJRefreshFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshFooterView.m; sourceTree = "<group>"; };
+		186F216418D6D5BA0089A329 /* MJRefreshHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshHeaderView.h; sourceTree = "<group>"; };
+		186F216518D6D5BA0089A329 /* MJRefreshHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshHeaderView.m; sourceTree = "<group>"; };
 		187222B018C8434D00BBE2D1 /* answer-1.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "answer-1.js"; sourceTree = SOURCE_ROOT; };
 		187222B218C8572E00BBE2D1 /* SelectingChallengeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectingChallengeViewController.h; sourceTree = "<group>"; };
 		187222B318C8572E00BBE2D1 /* SelectingChallengeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectingChallengeViewController.m; sourceTree = "<group>"; };
@@ -596,6 +603,16 @@
 		187222B718C86A0300BBE2D1 /* SelectingChallengeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectingChallengeObject.h; sourceTree = SOURCE_ROOT; };
 		187222B818C86A0300BBE2D1 /* SelectingChallengeObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectingChallengeObject.m; sourceTree = SOURCE_ROOT; };
 		187222BA18C87A5700BBE2D1 /* questions_lastest.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = questions_lastest.js; sourceTree = SOURCE_ROOT; };
+		187C4ABC18D304AC0006461D /* 10_01@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_01@2x.png"; sourceTree = "<group>"; };
+		187C4ABD18D304AC0006461D /* 10_02@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_02@2x.png"; sourceTree = "<group>"; };
+		187C4ABE18D304AC0006461D /* 10_03@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_03@2x.png"; sourceTree = "<group>"; };
+		187C4ABF18D304AC0006461D /* 10_04@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_04@2x.png"; sourceTree = "<group>"; };
+		187C4AC018D304AC0006461D /* 10_05@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_05@2x.png"; sourceTree = "<group>"; };
+		187C4AC118D304AC0006461D /* 10_06@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_06@2x.png"; sourceTree = "<group>"; };
+		187C4AC218D304AC0006461D /* 10_07@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_07@2x.png"; sourceTree = "<group>"; };
+		187C4AC318D304AC0006461D /* 10_08@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_08@2x.png"; sourceTree = "<group>"; };
+		187C4AC418D304AC0006461D /* 10_09@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_09@2x.png"; sourceTree = "<group>"; };
+		187C4AC518D304AC0006461D /* 10_10@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_10@2x.png"; sourceTree = "<group>"; };
 		188ED73F18CD850700D1210F /* right_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = right_sound.mp3; sourceTree = "<group>"; };
 		188ED74018CD850700D1210F /* wrong_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wrong_sound.mp3; sourceTree = "<group>"; };
 		189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationViewController.h; sourceTree = SOURCE_ROOT; };
@@ -610,6 +627,14 @@
 		18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationHeader.m; sourceTree = SOURCE_ROOT; };
 		18AA80C218BF1A3300EC08CE /* LHLReplyNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLReplyNotificationCell.h; sourceTree = SOURCE_ROOT; };
 		18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLReplyNotificationCell.m; sourceTree = SOURCE_ROOT; };
+		18B4EB7918D29A1D00986766 /* LHLGetMyNoticeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLGetMyNoticeInterface.h; sourceTree = "<group>"; };
+		18B4EB7A18D29A1D00986766 /* LHLGetMyNoticeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLGetMyNoticeInterface.m; sourceTree = "<group>"; };
+		18B4EB7C18D29D9F00986766 /* LHLGetSysNoticeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLGetSysNoticeInterface.h; sourceTree = "<group>"; };
+		18B4EB7D18D29D9F00986766 /* LHLGetSysNoticeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLGetSysNoticeInterface.m; sourceTree = "<group>"; };
+		18B4EB7F18D29DD800986766 /* LHLDeleteSysNoticeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLDeleteSysNoticeInterface.h; sourceTree = "<group>"; };
+		18B4EB8018D29DD800986766 /* LHLDeleteSysNoticeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLDeleteSysNoticeInterface.m; sourceTree = "<group>"; };
+		18B4EB8218D29E0500986766 /* LHLDeleteMyNoticeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLDeleteMyNoticeInterface.h; sourceTree = "<group>"; };
+		18B4EB8318D29E0500986766 /* LHLDeleteMyNoticeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLDeleteMyNoticeInterface.m; sourceTree = "<group>"; };
 		18E01DA418CDB70B0016FA7D /* yourChoice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yourChoice@2x.png"; sourceTree = "<group>"; };
 		18E01DA618CDC42C0016FA7D /* libiSpeechSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiSpeechSDK.a; sourceTree = "<group>"; };
 		630DBDC718D1562D009DA0EB /* DRNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRNavigationBar.h; sourceTree = "<group>"; };
@@ -1141,6 +1166,14 @@
 				0E9D68C018CD8CDF00EACFA3 /* CardInterface.m */,
 				0EAABD6318CEAC2C00CD2DE7 /* DeleteCardInterface.h */,
 				0EAABD6418CEAC2C00CD2DE7 /* DeleteCardInterface.m */,
+				18B4EB7918D29A1D00986766 /* LHLGetMyNoticeInterface.h */,
+				18B4EB7A18D29A1D00986766 /* LHLGetMyNoticeInterface.m */,
+				18B4EB7C18D29D9F00986766 /* LHLGetSysNoticeInterface.h */,
+				18B4EB7D18D29D9F00986766 /* LHLGetSysNoticeInterface.m */,
+				18B4EB7F18D29DD800986766 /* LHLDeleteSysNoticeInterface.h */,
+				18B4EB8018D29DD800986766 /* LHLDeleteSysNoticeInterface.m */,
+				18B4EB8218D29E0500986766 /* LHLDeleteMyNoticeInterface.h */,
+				18B4EB8318D29E0500986766 /* LHLDeleteMyNoticeInterface.m */,
 				0EAABD8618CF1F6300CD2DE7 /* TagInterface.h */,
 				0EAABD8718CF1F6300CD2DE7 /* TagInterface.m */,
 				0EAABDA618D0062100CD2DE7 /* SelectedTagInterface.h */,
@@ -1163,16 +1196,16 @@
 		1848612618C72D18002B6C78 /* tenSecChallenge */ = {
 			isa = PBXGroup;
 			children = (
-				1848612718C72D29002B6C78 /* 10_10@2x.png */,
-				1848612818C72D29002B6C78 /* 10_09@2x.png */,
-				1848612918C72D29002B6C78 /* 10_08@2x.png */,
-				1848612A18C72D29002B6C78 /* 10_07@2x.png */,
-				1848612B18C72D29002B6C78 /* 10_06@2x.png */,
-				1848612C18C72D29002B6C78 /* 10_05@2x.png */,
-				1848612D18C72D29002B6C78 /* 10_04@2x.png */,
-				1848612E18C72D29002B6C78 /* 10_03@2x.png */,
-				1848612F18C72D29002B6C78 /* 10_02@2x.png */,
-				1848613018C72D29002B6C78 /* 10_01@2x.png */,
+				187C4ABC18D304AC0006461D /* 10_01@2x.png */,
+				187C4ABD18D304AC0006461D /* 10_02@2x.png */,
+				187C4ABE18D304AC0006461D /* 10_03@2x.png */,
+				187C4ABF18D304AC0006461D /* 10_04@2x.png */,
+				187C4AC018D304AC0006461D /* 10_05@2x.png */,
+				187C4AC118D304AC0006461D /* 10_06@2x.png */,
+				187C4AC218D304AC0006461D /* 10_07@2x.png */,
+				187C4AC318D304AC0006461D /* 10_08@2x.png */,
+				187C4AC418D304AC0006461D /* 10_09@2x.png */,
+				187C4AC518D304AC0006461D /* 10_10@2x.png */,
 			);
 			name = tenSecChallenge;
 			sourceTree = "<group>";
@@ -1185,6 +1218,23 @@
 				1867B53618D006AB0042A95D /* systemMessage@2x.png */,
 			);
 			name = notification;
+			sourceTree = "<group>";
+		};
+		186F215B18D6D5BA0089A329 /* MJRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				186F215C18D6D5BA0089A329 /* MJRefresh.bundle */,
+				186F215D18D6D5BA0089A329 /* MJRefresh.h */,
+				186F215E18D6D5BA0089A329 /* MJRefreshBaseView.h */,
+				186F215F18D6D5BA0089A329 /* MJRefreshBaseView.m */,
+				186F216018D6D5BA0089A329 /* MJRefreshConst.h */,
+				186F216118D6D5BA0089A329 /* MJRefreshConst.m */,
+				186F216218D6D5BA0089A329 /* MJRefreshFooterView.h */,
+				186F216318D6D5BA0089A329 /* MJRefreshFooterView.m */,
+				186F216418D6D5BA0089A329 /* MJRefreshHeaderView.h */,
+				186F216518D6D5BA0089A329 /* MJRefreshHeaderView.m */,
+			);
+			path = MJRefresh;
 			sourceTree = "<group>";
 		};
 		18AA80B318BEE42C00EC08CE /* image */ = {
@@ -1450,6 +1500,7 @@
 				0E92655118BD920F003ADEC3 /* TabBarController */,
 				636CF4A818BD84830085C28E /* MBProgressView */,
 				6329554318BC900600F2B78D /* SDWebImage */,
+				186F215B18D6D5BA0089A329 /* MJRefresh */,
 				6329553218BC8D5B00F2B78D /* FMDB */,
 				632954D218BC8AA700F2B78D /* ASIHttprequest */,
 			);
@@ -2027,39 +2078,39 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */,
 				188ED74318CDA6BA00D1210F /* answer-1.js in Resources */,
 				182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */,
-				1848613518C72D29002B6C78 /* 10_06@2x.png in Resources */,
 				630DBE0718D15BF4009DA0EB /* homeworkTimer@2x.png in Resources */,
 				630DBE2318D15CB1009DA0EB /* homwwork_listenWrite@2x.png in Resources */,
 				1848613518C72D29002B6C78 /* 10_06@2x.png in Resources */,
 				1848613718C72D29002B6C78 /* 10_04@2x.png in Resources */,
 				0EAABD8018CF15C900CD2DE7 /* card_hasselected@2x.png in Resources */,
-				1848613718C72D29002B6C78 /* 10_04@2x.png in Resources */,
 				18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */,
 				0E9D689818CD4E0D00EACFA3 /* SVPullToRefresh.bundle in Resources */,
 				63289A2D18C595D300C0083E /* reading_start@2x.png in Resources */,
-				1848613318C72D29002B6C78 /* 10_08@2x.png in Resources */,
+				187C4AC918D304AC0006461D /* 10_04@2x.png in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				630DBDFE18D15AFB009DA0EB /* xunsu_yellow@2x.png in Resources */,
 				6396579118C03766002F2A90 /* LeftTabBarView.xib in Resources */,
+				186F216618D6D5BA0089A329 /* MJRefresh.bundle in Resources */,
 				630DBE0618D15BF4009DA0EB /* homeworkCheck@2x.png in Resources */,
 				630DBE2218D15CB1009DA0EB /* homework_sort@2x.png in Resources */,
 				630DBDEF18D15A95009DA0EB /* progressTrack@2x.png in Resources */,
 				630DBE1818D15CB1009DA0EB /* homework_blank@2x.png in Resources */,
 				189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */,
 				630DBE2018D15CB1009DA0EB /* homework_right@2x.png in Resources */,
+				187C4ACA18D304AC0006461D /* 10_05@2x.png in Resources */,
 				630DBE1718D15CB1009DA0EB /* homework_back@2x.png in Resources */,
 				630DBE0518D15BF4009DA0EB /* homeworkBack@2x.png in Resources */,
 				6396577618C036B1002F2A90 /* UserInfoPopViewController.xib in Resources */,
 				18AA80B818BEFFFD00EC08CE /* bg@2x.png in Resources */,
-				1848613418C72D29002B6C78 /* 10_07@2x.png in Resources */,
-				1848613418C72D29002B6C78 /* 10_07@2x.png in Resources */,
 				1867B53C18D00D710042A95D /* replyMessage@2x.png in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
 				630DBE1E18D15CB1009DA0EB /* homework_quik@2x.png in Resources */,
 				1818F6A618C561ED00DC6207 /* TenSecChallengeResultView.xib in Resources */,
 				630DBDD618D15936009DA0EB /* mainTabBarItem@2x.png in Resources */,
+				187C4ACC18D304AC0006461D /* 10_07@2x.png in Resources */,
 				188ED74118CD850700D1210F /* right_sound.mp3 in Resources */,
 				0EAABD7C18CF136900CD2DE7 /* TagViewController.xib in Resources */,
 				0E9D68BA18CD6C5500EACFA3 /* card_btn@2x.png in Resources */,
@@ -2068,15 +2119,16 @@
 				189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */,
 				630DBDDC18D1596F009DA0EB /* arrow@2x.png in Resources */,
 				630DBE0818D15BF4009DA0EB /* propOfAnswer@2x.png in Resources */,
+				187C4AC718D304AC0006461D /* 10_02@2x.png in Resources */,
 				630DBDFC18D15AFB009DA0EB /* jiezu_yellow@2x.png in Resources */,
 				0E92657A18BDACDD003ADEC3 /* first@2x.png in Resources */,
 				630DBDF318D15A95009DA0EB /* youxiu@2x.png in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
+				187C4ACB18D304AC0006461D /* 10_06@2x.png in Resources */,
 				630DBE1D18D15CB1009DA0EB /* homework_line@2x.png in Resources */,
 				0E93C9B018D834630094AD7B /* ios-playing@2x.png in Resources */,
 				6396578318C0374C002F2A90 /* StudentTableViewCell.xib in Resources */,
 				0E92659D18BDE51F003ADEC3 /* commentBtn@2x.png in Resources */,
-				6396581418C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib in Resources */,
 				63B81C5018CF05F900004745 /* HomeworkContainerController.xib in Resources */,
 				630DBDD818D15936009DA0EB /* tabBarItemBack@2x.png in Resources */,
 				0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */,
@@ -2085,7 +2137,6 @@
 				630DBDD918D15936009DA0EB /* userGroupItem@2x.png in Resources */,
 				0E92657918BDACDD003ADEC3 /* first_active@2x.png in Resources */,
 				630DBDDD18D1596F009DA0EB /* navigationBarLeftItem@2x.png in Resources */,
-				1848613618C72D29002B6C78 /* 10_05@2x.png in Resources */,
 				0E92657E18BDACDD003ADEC3 /* third@2x.png in Resources */,
 				0E92655018BD9016003ADEC3 /* MainViewController.xib in Resources */,
 				0E92657A18BDACDD003ADEC3 /* first@2x.png in Resources */,
@@ -2095,7 +2146,6 @@
 				0E5D1C7218C96B45008A13F2 /* fourth@2x.png in Resources */,
 				0E5D1C7B18C99F3A008A13F2 /* LogInViewController.xib in Resources */,
 				0E92659D18BDE51F003ADEC3 /* commentBtn@2x.png in Resources */,
-				6396581418C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib in Resources */,
 				0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */,
 				0E5D1C8918C9A18F008A13F2 /* QQLogIn@2x.png in Resources */,
 				0E9265A018BDE51F003ADEC3 /* focusBtn@2x.png in Resources */,
@@ -2106,7 +2156,6 @@
 				0E9265A018BDE51F003ADEC3 /* focusBtn@2x.png in Resources */,
 				63B8D27418C860B6004141E9 /* CarnetResultViewController.xib in Resources */,
 				0E92657918BDACDD003ADEC3 /* first_active@2x.png in Resources */,
-				1848613618C72D29002B6C78 /* 10_05@2x.png in Resources */,
 				0E92657E18BDACDD003ADEC3 /* third@2x.png in Resources */,
 				0E5D1C6818C85FD5008A13F2 /* FourthViewController.xib in Resources */,
 				0E92655018BD9016003ADEC3 /* MainViewController.xib in Resources */,
@@ -2127,8 +2176,8 @@
 				0E9D68DC18CDC45400EACFA3 /* card_highted@2x.png in Resources */,
 				0E9D68A518CD680700EACFA3 /* card_deleteBtn@2x.png in Resources */,
 				0E9D688918C9A96C00EACFA3 /* detail_logIn@2x.png in Resources */,
-				1848613918C72D29002B6C78 /* 10_02@2x.png in Resources */,
 				1867B53A18D008C50042A95D /* trash_icon@2x.png in Resources */,
+				187C4ACF18D304AC0006461D /* 10_10@2x.png in Resources */,
 				6396577818C036B1002F2A90 /* ClassGroupViewController.xib in Resources */,
 				630DBE2118D15CB1009DA0EB /* homework_select@2x.png in Resources */,
 				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
@@ -2150,6 +2199,7 @@
 				630DBDD718D15936009DA0EB /* notificationTabBarItem@2x.png in Resources */,
 				0E92656418BD92A0003ADEC3 /* SecondViewController.xib in Resources */,
 				0E92657B18BDACDD003ADEC3 /* second_active@2x.png in Resources */,
+				187C4ACD18D304AC0006461D /* 10_08@2x.png in Resources */,
 				630DBE1A18D15CB1009DA0EB /* homework_finishedFalg@2x.png in Resources */,
 				0EAABD7F18CF15C900CD2DE7 /* card_noselected@2x.png in Resources */,
 				0E92657B18BDACDD003ADEC3 /* second_active@2x.png in Resources */,
@@ -2158,7 +2208,6 @@
 				0E9C6E9918D1496000E807D1 /* SortViewController.xib in Resources */,
 				6396578518C0374C002F2A90 /* StudentSummaryCell.xib in Resources */,
 				63289A2C18C595D300C0083E /* listening_stop@2x.png in Resources */,
-				1848613118C72D29002B6C78 /* 10_10@2x.png in Resources */,
 				630DBDCD18D15653009DA0EB /* DRNavigationBar.xib in Resources */,
 				630DBE0918D15BF4009DA0EB /* propOfTime@2x.png in Resources */,
 				0E9265A418BEEA01003ADEC3 /* send@2x.png in Resources */,
@@ -2167,24 +2216,21 @@
 				6396577A18C036B1002F2A90 /* StudentListViewController.xib in Resources */,
 				630DBDEE18D15A95009DA0EB /* progressBack@2x.png in Resources */,
 				630DBDD418D15936009DA0EB /* carBarItem@2x.png in Resources */,
-				187222B618C8572E00BBE2D1 /* SelectingChallengeViewController.xib in Resources */,
 				63DB91CA18CD7FB100157D74 /* LiningHomeworkViewController.xib in Resources */,
 				0E92659E18BDE51F003ADEC3 /* deleteBtn@2x.png in Resources */,
+				187C4AC618D304AC0006461D /* 10_01@2x.png in Resources */,
 				630DBE1F18D15CB1009DA0EB /* homework_reading@2x.png in Resources */,
 				0E93C9B118D834630094AD7B /* ios-stop@2x.png in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				630DBDE918D15A95009DA0EB /* addClass@2x.png in Resources */,
-				1848613818C72D29002B6C78 /* 10_03@2x.png in Resources */,
 				630DBDED18D15A95009DA0EB /* point@2x.png in Resources */,
 				630DBE1B18D15CB1009DA0EB /* homework_history@2x.png in Resources */,
 				636CF4B518BD8F3B0085C28E /* TestViewController.xib in Resources */,
-				1848613A18C72D29002B6C78 /* 10_01@2x.png in Resources */,
 				630DBDFF18D15AFB009DA0EB /* youxiu_yellow@2x.png in Resources */,
 				630DBDEC18D15A95009DA0EB /* line@2x.png in Resources */,
 				0E92659F18BDE51F003ADEC3 /* focusBtn_active@2x.png in Resources */,
 				63289A3018C5B11E00C0083E /* question.geojson in Resources */,
-				181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */,
-				1848613218C72D29002B6C78 /* 10_09@2x.png in Resources */,
+				187C4AC818D304AC0006461D /* 10_03@2x.png in Resources */,
 				0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */,
 				0E9C6E9E18D1977E00E807D1 /* SelectedViewController.xib in Resources */,
 				0EAABDBF18D0416E00CD2DE7 /* listen_back@2x.png in Resources */,
@@ -2198,21 +2244,17 @@
 				0E9D68A618CD680700EACFA3 /* card_voiceBtn@2x.png in Resources */,
 				0E9D68A718CD680700EACFA3 /* txtBtn@2x.png in Resources */,
 				0E92659E18BDE51F003ADEC3 /* deleteBtn@2x.png in Resources */,
-				187222B618C8572E00BBE2D1 /* SelectingChallengeViewController.xib in Resources */,
 				0E92659E18BDE51F003ADEC3 /* deleteBtn@2x.png in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
-				1848613818C72D29002B6C78 /* 10_03@2x.png in Resources */,
 				636CF4B518BD8F3B0085C28E /* TestViewController.xib in Resources */,
 				0E9D68CA18CD972600EACFA3 /* multipy_unicode.dat in Resources */,
-				1848613A18C72D29002B6C78 /* 10_01@2x.png in Resources */,
 				0E92659F18BDE51F003ADEC3 /* focusBtn_active@2x.png in Resources */,
 				0E5D1C8518C9A0FE008A13F2 /* logIn@2x.png in Resources */,
 				0E92ECE018D2B03600B6806C /* ClozeAnswerViewController.xib in Resources */,
 				0EAABD8218CF17B400CD2DE7 /* card_tg@2x.png in Resources */,
 				63289A3018C5B11E00C0083E /* question.geojson in Resources */,
-				181A786718C4206700D288D3 /* TenSecChallengeViewController.xib in Resources */,
+				187C4ACE18D304AC0006461D /* 10_09@2x.png in Resources */,
 				0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */,
-				1848613218C72D29002B6C78 /* 10_09@2x.png in Resources */,
 				0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */,
 				63289A2B18C595D300C0083E /* listening_start@2x.png in Resources */,
 				6396580B18C04D4A002F2A90 /* HomeworkViewController.xib in Resources */,
@@ -2253,6 +2295,7 @@
 				6329553F18BC8D7C00F2B78D /* FMResultSet.m in Sources */,
 				0E93C9BA18D93DE30094AD7B /* CardFullInterface.m in Sources */,
 				0E9D68D918CDC28700EACFA3 /* MyPageControl.m in Sources */,
+				18B4EB8118D29DD800986766 /* LHLDeleteSysNoticeInterface.m in Sources */,
 				0E9D68C718CD966400EACFA3 /* Array.mm in Sources */,
 				0EEF4C1518C5622F0058606A /* FirstViewController.m in Sources */,
 				6329551E18BC8AA700F2B78D /* ASICloudFilesObjectRequest.m in Sources */,
@@ -2313,7 +2356,9 @@
 				6396583A18C07B37002F2A90 /* HomeworkTypeObj.m in Sources */,
 				6341536118C1C90300DE4480 /* NSMutableArray+convenience.m in Sources */,
 				0E5D1C6718C85FD5008A13F2 /* FourthViewController.m in Sources */,
+				18B4EB7E18D29D9F00986766 /* LHLGetSysNoticeInterface.m in Sources */,
 				0E9D68A118CD671F00EACFA3 /* CardObject.m in Sources */,
+				186F216718D6D5BA0089A329 /* MJRefreshBaseView.m in Sources */,
 				0EEF4C2818C5BAFD0058606A /* DeleteMessage.m in Sources */,
 				6329556618BC900600F2B78D /* SDWebImageDownloader.m in Sources */,
 				6396581218C04F68002F2A90 /* HomeworkTypeCollctionCell.m in Sources */,
@@ -2341,6 +2386,7 @@
 				189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */,
 				6329556718BC900600F2B78D /* SDWebImageDownloaderOperation.m in Sources */,
 				6329551418BC8AA700F2B78D /* ASIFormDataRequest.m in Sources */,
+				186F216918D6D5BA0089A329 /* MJRefreshFooterView.m in Sources */,
 				187222B118C8434D00BBE2D1 /* answer-1.js in Sources */,
 				6396579218C03766002F2A90 /* LeftTabBarItem.m in Sources */,
 				0EAABDA818D0062100CD2DE7 /* SelectedTagInterface.m in Sources */,
@@ -2367,6 +2413,7 @@
 				0E5D1C6B18C87EBD008A13F2 /* MyMessageInterface.m in Sources */,
 				6396576818C03664002F2A90 /* WYStoryboardPopoverSegue.m in Sources */,
 				6396577418C036B1002F2A90 /* DRLeftTabBarViewController.m in Sources */,
+				186F216818D6D5BA0089A329 /* MJRefreshConst.m in Sources */,
 				0E9D68C818CD966400EACFA3 /* SearchCore.mm in Sources */,
 				63DD5C7518C9C2740034512D /* SpellMatchObj.m in Sources */,
 				6341536418C1C90300DE4480 /* VRGCalendarView.m in Sources */,
@@ -2385,6 +2432,7 @@
 				0E92ECDF18D2B03600B6806C /* ClozeAnswerViewController.m in Sources */,
 				6329556A18BC900600F2B78D /* UIButton+WebCache.m in Sources */,
 				0E9265BF18C028A9003ADEC3 /* ComtomTxt.m in Sources */,
+				18B4EB7B18D29A1D00986766 /* LHLGetMyNoticeInterface.m in Sources */,
 				6329551518BC8AA700F2B78D /* ASIHTTPRequest.m in Sources */,
 				630DBEBD18D1B0F3009DA0EB /* ModelTypeViewController.m in Sources */,
 				6329551B18BC8AA700F2B78D /* ASICloudFilesContainerRequest.m in Sources */,
@@ -2394,6 +2442,7 @@
 				6396579718C0377A002F2A90 /* DRProgressView.m in Sources */,
 				0E92656318BD92A0003ADEC3 /* SecondViewController.m in Sources */,
 				630DBDC918D1562D009DA0EB /* DRNavigationBar.m in Sources */,
+				186F216A18D6D5BA0089A329 /* MJRefreshHeaderView.m in Sources */,
 				0EEF4C1118C562110058606A /* FirstCell.m in Sources */,
 				6329551318BC8AA700F2B78D /* ASIDownloadCache.m in Sources */,
 				6341536218C1C90300DE4480 /* UIColor+expanded.m in Sources */,
@@ -2401,6 +2450,7 @@
 				6329549E18BC875800F2B78D /* main.m in Sources */,
 				6341536818C1C96C00DE4480 /* CalendarViewController.m in Sources */,
 				6329554018BC8D7C00F2B78D /* FMDatabaseQueue.m in Sources */,
+				18B4EB8418D29E0500986766 /* LHLDeleteMyNoticeInterface.m in Sources */,
 				0EEF4BDA18C561570058606A /* CardSecondView.m in Sources */,
 				0E9D689318C9C00B00EACFA3 /* PersonInfoInterface.m in Sources */,
 				1802DC3818C065320016F110 /* NotificationObject.m in Sources */,

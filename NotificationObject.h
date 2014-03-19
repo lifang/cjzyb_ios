@@ -9,9 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface NotificationObject : NSObject
-@property (strong,nonatomic) NSString *notiSchoolClassId;
-@property (strong,nonatomic) NSString *notiStudentId;
-@property (strong,nonatomic) NSString *notiContent;
-@property (strong,nonatomic) NSString *notiStatus;
-@property (strong,nonatomic) NSString *notiTime;
+@property (strong,nonatomic) NSString *notiID;
+@property (strong,nonatomic) NSString *notiSchoolClassID;  //班级id
+@property (strong,nonatomic) NSString *notiStudentID;      //学生id
+@property (strong,nonatomic) NSString *notiContent;         //内容
+@property (strong,nonatomic) NSString *notiTime;        //通知时间
+@property (assign,nonatomic) BOOL isEditing;  //正在编辑状态
 @end

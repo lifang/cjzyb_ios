@@ -145,7 +145,10 @@
     }
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:message delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
     [[Utility defaultUtility] setAlert:alert];
-    [alert show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [alert show];
+    });
+    
 }
 //+ (NSString *)isExistenceNetwork {
 //    NSString *str = nil;

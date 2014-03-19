@@ -67,6 +67,7 @@
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
+
 //    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
 //    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
 //    tabBarController.childenControllerArray = @[main];
@@ -76,6 +77,14 @@
 //    self.window.rootViewController = homeView;
 //    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
 //    self.window.rootViewController = notificationViewController;
+
+//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+//    tabBarController.childenControllerArray = @[main];
+//    self.window.rootViewController = tabBarController;
+//    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
+//    self.window.rootViewController = notificationViewController;
+
 
      CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
      UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];

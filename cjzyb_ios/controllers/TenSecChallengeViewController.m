@@ -20,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *lowerButton;
 @property (weak, nonatomic) IBOutlet UIView *historyView;
 @property (weak, nonatomic) IBOutlet UILabel *historyYourChoiceLabel;
+
+
 @property (assign,nonatomic) double timeCount; //计时时间(单位为秒)
 @property (strong,nonatomic) NSTimer *timer;
 @property (assign,nonatomic) NSInteger currentNO;//当前正在做的题目序号,如超过问题数量代表答题完毕
@@ -32,6 +34,7 @@
 @property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
 @property (strong,nonatomic) NSString *answerStatus;    //文件中记载的完成状态
 @property (assign,nonatomic) BOOL isReDoingChallenge; //是否为重新挑战
+@property (strong,nonatomic) NSMutableArray *reChallengeTimesLeft; //剩余挑战数
 @end
 
 @implementation TenSecChallengeViewController
@@ -85,7 +88,13 @@
         self.historyView.hidden = NO;
         //上方动作条添加"下一个"按钮
     }else{
-        if ([self.answerStatus isEqualToString:@"1"]) { //重新做题
+        if ([self.answerStatus isEqualToString:@"1"]) { //重新做题  ,此时应判断是否有重新做题的剩余次数
+            NSString *timesLeft = [self.reChallengeTimesLeft firstObject];
+            if (timesLeft.integerValue < 1) {
+                return;
+            }else{
+                [self.reChallengeTimesLeft replaceObjectAtIndex:0 withObject:[NSString stringWithFormat:@"%d",timesLeft.integerValue - 1]];
+            }
             self.timeCount = 0;
             self.isReDoingChallenge = YES;
             self.currentNO = 0;
@@ -115,7 +124,7 @@
 }
 
 - (void)makeResult{
-    //准确率,耗时,提交时间  判断精准/迅速/捷足成就
+    //准确率,耗时,提交时间  判断精准/迅速/捷足成就  显示结果界面
     NSInteger numberOfRightAnswers = 0;
     if (self.answerArray.count == self.questionArray.count) {
         for (int i = 0; i < self.answerArray.count; i ++) {
@@ -125,29 +134,31 @@
             }
         }
         NSInteger percentOfRightAnswers = numberOfRightAnswers * 10; //正确率
-        self.resultView.correctPersent.text = [NSString stringWithFormat:@"正确率: %i%@",percentOfRightAnswers,@"%"];
-        self.resultView.timeLabel.text = [NSString stringWithFormat:@"用时: %@",self.timeLabel.text];
+        self.resultView.ratio = percentOfRightAnswers;
         
-        if (percentOfRightAnswers < 100) {
-            self.resultView.accuracyAchievementLabel.text = [NSString stringWithFormat:@"好可惜没有全对哦,不能拿到精准得分哦!"];
-        }else{
-            self.resultView.accuracyAchievementLabel.text = [NSString stringWithFormat:@"所有题目全部正确!<精准>成就加10分!"];
-        }
+        self.resultView.timeCount = self.timeCount;
         
         TenSecChallengeObject *question = [self.questionArray firstObject];
-        if (self.timeCount <= [question.tenTimeLimit floatValue]) {
-            //迅速成就
-            self.resultView.fastAchievementLabel.text = [NSString stringWithFormat:@"恭喜你的用时在%@秒内,<迅速>成就加10分!",question.tenTimeLimit];
+        
+        self.resultView.timeLimit = question.tenTimeLimit.integerValue;
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSDate *homeworkFinishTime = [formatter dateFromString:self.homeworkFinishTime];
+        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSUInteger unitFlag = NSSecondCalendarUnit;
+        NSDateComponents *comps = [gregorian components:unitFlag fromDate:[NSDate date] toDate:homeworkFinishTime options:0];
+        NSInteger seconds = [comps second];
+        
+        if (seconds >= 7200) {
+            self.resultView.isEarly = YES;
         }else{
-            self.resultView.fastAchievementLabel.text = [NSString stringWithFormat:@"你的用时超过了%@秒,不能拿到迅速得分哦!",question.tenTimeLimit];
+            self.resultView.isEarly = NO;
         }
         
-        //捷足成就
-        if ([self compareNowWithTime:self.homeworkFinishTime]) {
-            self.resultView.earlyAchievementLabel.text = [NSString stringWithFormat:@"恭喜你在截止时间提前两小时完成作业,<捷足>成就加10分!"];
-        }else{
-            self.resultView.earlyAchievementLabel.text = [NSString stringWithFormat:@"未能在截止时间提前两小时完成作业,不能拿到捷足得分哦!"];
-        }
+        self.resultView.challengeTimesLeft = [self.reChallengeTimesLeft firstObject];
+        
+        [self.resultView initView];
     }else{
         [Utility errorAlert:@"题目与答案不匹配!"];
     }
@@ -390,6 +401,21 @@
 }
 
 #pragma mark -- property
+//从文件中读取数组,否则新建一个包含字符串@"3"的数组
+- (NSMutableArray *)reChallengeTimesLeft{
+    if (!_reChallengeTimesLeft) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths firstObject];
+        NSString *filePath = [NSString stringWithFormat:@"%@/challengeTimeLeft.plist",path];
+        _reChallengeTimesLeft = [NSMutableArray arrayWithContentsOfFile:filePath];
+        if (!_reChallengeTimesLeft) {
+            _reChallengeTimesLeft = [NSMutableArray array];
+            [_reChallengeTimesLeft addObject:@"3"];
+        }
+    }
+    return _reChallengeTimesLeft;
+}
+
 - (NSArray *)questionNumberImages{
     if (!_questionNumberImages || _questionNumberImages.count < 1) {
         NSMutableArray *array = [NSMutableArray array];
@@ -429,7 +455,6 @@
     if (!_resultView) {
         _resultView = [[[NSBundle mainBundle]loadNibNamed:@"TenSecChallengeResultView" owner:self options:nil] lastObject];
         _resultView.delegate = self;
-        [_resultView initView];
     }
     return _resultView;
 }

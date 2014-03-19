@@ -286,29 +286,52 @@
             }
         }
         NSInteger percentOfRightAnswers = ((CGFloat)numberOfRightAnswers) / self.answerArray.count * 100.0; //正确率
-        self.resultView.correctPersent.text = [NSString stringWithFormat:@"正确率: %i%@",percentOfRightAnswers,@"%"];
-        self.resultView.timeLabel.text = [NSString stringWithFormat:@"用时: %@",self.timeLabel.text];
+        self.resultView.ratio = percentOfRightAnswers;
         
-        if (percentOfRightAnswers < 100) {
-            self.resultView.accuracyAchievementLabel.text = [NSString stringWithFormat:@"好可惜没有全对哦,不能拿到精准得分哦!"];
-        }else{
-            self.resultView.accuracyAchievementLabel.text = [NSString stringWithFormat:@"所有题目全部正确!<精准>成就加10分!"];
-        }
+        self.resultView.timeCount = self.timeCount;
         
         SelectingChallengeObject *question = [self.questionArray firstObject];
-        if (self.timeCount <= [question.seTimeLimit floatValue]) {
-            //迅速成就
-            self.resultView.fastAchievementLabel.text = [NSString stringWithFormat:@"恭喜你的用时在%@秒内,<迅速>成就加10分!",question.seTimeLimit];
+        
+        self.resultView.timeLimit = question.seTimeLimit.integerValue;
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSDate *homeworkFinishTime = [formatter dateFromString:self.homeworkFinishTime];
+        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSUInteger unitFlag = NSSecondCalendarUnit;
+        NSDateComponents *comps = [gregorian components:unitFlag fromDate:[NSDate date] toDate:homeworkFinishTime options:0];
+        NSInteger seconds = [comps second];
+        
+        if (seconds >= 7200) {
+            self.resultView.isEarly = YES;
         }else{
-            self.resultView.fastAchievementLabel.text = [NSString stringWithFormat:@"你的用时超过了%@秒,不能拿到迅速得分哦!",question.seTimeLimit];
+            self.resultView.isEarly = NO;
         }
         
-        //捷足成就
-        if ([self compareNowWithTime:self.homeworkFinishTime]) {
-            self.resultView.earlyAchievementLabel.text = [NSString stringWithFormat:@"恭喜你在截止时间提前两小时完成作业,<捷足>成就加10分!"];
-        }else{
-            self.resultView.earlyAchievementLabel.text = [NSString stringWithFormat:@"未能在截止时间提前两小时完成作业,不能拿到捷足得分哦!"];
-        }
+        [self.resultView initView];
+//        self.resultView.correctPersent.text = [NSString stringWithFormat:@"正确率: %i%@",percentOfRightAnswers,@"%"];
+//        self.resultView.timeLabel.text = [NSString stringWithFormat:@"用时: %@",self.timeLabel.text];
+//        
+//        if (percentOfRightAnswers < 100) {
+//            self.resultView.accuracyAchievementLabel.text = [NSString stringWithFormat:@"好可惜没有全对哦,不能拿到精准得分哦!"];
+//        }else{
+//            self.resultView.accuracyAchievementLabel.text = [NSString stringWithFormat:@"所有题目全部正确!<精准>成就加10分!"];
+//        }
+//        
+//        SelectingChallengeObject *question = [self.questionArray firstObject];
+//        if (self.timeCount <= [question.seTimeLimit floatValue]) {
+//            //迅速成就
+//            self.resultView.fastAchievementLabel.text = [NSString stringWithFormat:@"恭喜你的用时在%@秒内,<迅速>成就加10分!",question.seTimeLimit];
+//        }else{
+//            self.resultView.fastAchievementLabel.text = [NSString stringWithFormat:@"你的用时超过了%@秒,不能拿到迅速得分哦!",question.seTimeLimit];
+//        }
+//        
+//        //捷足成就
+//        if ([self compareNowWithTime:self.homeworkFinishTime]) {
+//            self.resultView.earlyAchievementLabel.text = [NSString stringWithFormat:@"恭喜你在截止时间提前两小时完成作业,<捷足>成就加10分!"];
+//        }else{
+//            self.resultView.earlyAchievementLabel.text = [NSString stringWithFormat:@"未能在截止时间提前两小时完成作业,不能拿到捷足得分哦!"];
+//        }
     }else{
         [Utility errorAlert:@"题目与答案不匹配!"];
     }
@@ -359,7 +382,6 @@
     if (!_resultView) {
         _resultView = [[[NSBundle mainBundle]loadNibNamed:@"TenSecChallengeResultView" owner:self options:nil] lastObject];
         _resultView.delegate = self;
-        [_resultView initView];
     }
     return _resultView;
 }
