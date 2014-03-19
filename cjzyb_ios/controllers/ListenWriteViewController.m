@@ -45,6 +45,14 @@
     [txt.layer setCornerRadius:8];
     return txt;
 }
+-(UILabel *)returnHistoryLabel {
+    UILabel *label = [[UILabel alloc]init];
+    label.font = [UIFont systemFontOfSize:33];
+    label.backgroundColor = [UIColor clearColor];
+    label.numberOfLines = 0;
+    label.lineBreakMode = NSLineBreakByCharWrapping;
+    return label;
+}
 -(void)setUI {
     [self.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
     [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
@@ -77,6 +85,7 @@
         [self.wordsContainerView setFrame:CGRectMake(108, 53, 640, frame.origin.y+Textfield_Height+Textfield_Space_Height)];
     } completion:^(BOOL finished){
         if (finished) {
+            
             [UIView animateWithDuration:0.25 animations:^{
                 NSArray *subViews = [self.wordsContainerView subviews];
                 for (UIView *vv in subViews) {
@@ -93,13 +102,99 @@
         }
     }];
 }
+
+-(void)setHistoryUI {
+    if (self.branchNumber==self.history_branchQuestionArray.count-1 && self.number==self.history_questionArray.count-1) {
+        [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+        [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+        [self.checkHomeworkButton addTarget:self action:@selector(finishHistoryQuestion:) forControlEvents:UIControlEventTouchUpInside];
+    }else {
+        [self.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
+        [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+        [self.checkHomeworkButton addTarget:self action:@selector(nextHistoryQuestion:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    [self.wordsContainerView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.wordsContainerView removeFromSuperview];
+    self.wordsContainerView = [[UIView alloc]init];
+    self.wordsContainerView.backgroundColor = [UIColor clearColor];
+    
+    CGRect frame = CGRectMake(0, 0, 600, 0);
+    NSString *content = [self.branchQuestionDic objectForKey:@"content"];
+    self.orgArray = [Utility handleTheString:content];
+    self.metaphoneArray = [Utility metaphoneArray:self.orgArray];
+    
+    CGSize textSize=[content sizeWithFont:[UIFont systemFontOfSize:33] constrainedToSize:CGSizeMake(586, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    frame.size.height = textSize.height+10;
+    UILabel *label = [self returnHistoryLabel];
+    label.frame = frame;
+    label.text = content;
+    [self.wordsContainerView addSubview:label];
+    
+    self.wordsContainerView.frame = CGRectMake(768, 53, 640, 600);
+    [self.view addSubview:self.wordsContainerView];
+    
+    [Utility shared].isOrg = NO;
+    [Utility shared].sureArray = [[NSMutableArray alloc]init];
+    [Utility shared].greenArray = [[NSMutableArray alloc]init];
+    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
+    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
+    
+    NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
+    NSArray *array = [txt componentsSeparatedByString:@";||;"];
+    NSString *originString =[array componentsJoinedByString:@" "];
+    NSArray *array1 = [Utility handleTheString:originString];
+    NSArray *array2 = [Utility metaphoneArray:array1];
+    self.resultDic = [Utility listenCompareWithArray:array1 andArray:array2 WithArray:self.orgArray andArray:self.metaphoneArray];
+    if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
+        NSArray *sureArray = [self.resultDic objectForKey:@"sure"];
+        NSMutableString *remindString = [NSMutableString string];
+        for (int i=0; i<sureArray.count; i++) {
+            if (i==sureArray.count-1) {
+                [remindString appendFormat:@"%@ ",[sureArray objectAtIndex:i]];
+            }else {
+                [remindString appendFormat:@"%@, ",[sureArray objectAtIndex:i]];
+            }
+        }
+        self.remindLab.text = remindString;
+    }
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.wordsContainerView setFrame:CGRectMake(108, 53, 640, frame.origin.y+frame.size.height)];
+    } completion:^(BOOL finished){
+    }];
+}
+-(void)nextHistoryQuestion:(id)sender {
+    if (self.branchNumber == self.history_branchQuestionArray.count-1) {
+        self.number++;self.branchNumber = 0;
+    }else {
+        self.branchNumber++;
+    }
+    [self getQuestionData];
+}
+-(void)finishHistoryQuestion:(id)sender {
+    
+}
 -(void)getQuestionData {
     self.branchScore = 0;
     self.questionDic = [self.questionArray objectAtIndex:self.number];
     self.branchQuestionArray = [self.questionDic objectForKey:@"branch_questions"];
     self.branchQuestionDic = [self.branchQuestionArray objectAtIndex:self.branchNumber];
     
-    [self setUI];
+    if ([DataService sharedService].isHistory==YES) {
+        self.history_questionDic = [self.history_questionArray objectAtIndex:self.number];
+        self.history_branchQuestionArray = [self.history_questionDic objectForKey:@"branch_questions"];
+        self.history_branchQuestionDic = [self.history_branchQuestionArray objectAtIndex:self.branchNumber];
+        
+        self.homeControl.rotioLabel.text = [NSString stringWithFormat:@"%d%%",[[self.history_branchQuestionDic objectForKey:@"ratio"] integerValue]];
+        NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
+        NSArray *array = [txt componentsSeparatedByString:@";||;"];
+        self.historyAnswer.text = [NSString stringWithFormat:@"你的作答: %@",[array componentsJoinedByString:@" "]];
+        
+        [self setHistoryUI];
+    }else {
+        [self setUI];
+    }
 }
 - (void)viewDidLoad
 {
@@ -141,41 +236,51 @@
     [super viewDidAppear:animated];
     self.homeControl = (HomeworkContainerController *)self.parentViewController;
     self.homeControl.reduceTimeButton.enabled = NO;
-    self.propsArray = [Utility returnAnswerProps];
+    self.number=0;self.branchNumber=0;self.isFirst = NO;
     //TODO:初始化答案的字典
     self.answerDic = [Utility returnAnswerDictionaryWithName:LISTEN];
-    int status = [[self.answerDic objectForKey:@"status"]intValue];
-    if (status == 1) {
-        self.number=0;self.branchNumber=0;self.isFirst = NO;
+    self.historyView.hidden=YES;
+    if ([DataService sharedService].isHistory==YES) {
+        self.remindLabel.text = @"以下为上面需要多写的词。";
+        self.history_questionArray = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
+        self.historyView.hidden=NO;
+        self.homeControl.timeLabel.text = [NSString stringWithFormat:@"%@",[Utility formateDateStringWithSecond:[[self.answerDic objectForKey:@"use_time"]integerValue]]];
+        [self getQuestionData];
     }else {
-        self.isFirst = YES;
-        if ([DataService sharedService].number_reduceTime>0) {
-            self.homeControl.reduceTimeButton.enabled = YES;
-        }
-        
-        int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
-        int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
-        
-        if (number_question>=0) {
-            NSDictionary *dic = [self.questionArray objectAtIndex:number_question];
-            NSArray *array = [dic objectForKey:@"branch_questions"];
-            if (number_branch_question == array.count-1) {
-                self.number = +1;self.branchNumber = 0;
-            }else {
-                self.number = number_question;self.branchNumber = number_branch_question+1;
+        self.propsArray = [Utility returnAnswerProps];
+        self.remindLabel.text = @"以下为上面可能错的词哦！试着将它们填入相应的位置。";
+        int status = [[self.answerDic objectForKey:@"status"]intValue];
+        if (status == 1) {
+            //题目已经完成
+        }else {
+            self.isFirst = YES;
+            if ([DataService sharedService].number_reduceTime>0) {
+                self.homeControl.reduceTimeButton.enabled = YES;
             }
             
-            int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
-            self.homeControl.spendSecond = useTime;
-            NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
-            self.homeControl.timerLabel.text = timeStr;
-        }else {
-            self.number=0;self.branchNumber=0;
+            int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
+            int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
+            
+            if (number_question>=0) {
+                NSDictionary *dic = [self.questionArray objectAtIndex:number_question];
+                NSArray *array = [dic objectForKey:@"branch_questions"];
+                if (number_branch_question == array.count-1) {
+                    self.number = +1;self.branchNumber = 0;
+                }else {
+                    self.number = number_question;self.branchNumber = number_branch_question+1;
+                }
+                
+                int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
+                self.homeControl.spendSecond = useTime;
+                NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
+                self.homeControl.timerLabel.text = timeStr;
+            }else {
+                self.number=0;self.branchNumber=0;
+            }
         }
+        
+        [self listenMusicViewUI];
     }
-
-    [self listenMusicViewUI];
-    ////////////////////////////////////////////////////////////////////////
 }
 -(AppDelegate *)appDel {
     if (!_appDel) {
@@ -362,7 +467,7 @@ static int numberOfMusic =0;
         }
     }
 }
-
+#pragma mark - 做题
 //检查
 -(void)checkAnswer:(id)sender {
     self.branchScore = 0;

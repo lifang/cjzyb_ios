@@ -12,6 +12,9 @@
 #import "BasePostInterface.h"
 #import <AVFoundation/AVFoundation.h> 
 
+/**
+ *  听写
+ */
 @interface ListenWriteViewController : UIViewController<UITextFieldDelegate,TenSecChallengeResultViewDelegate,PostDelegate,AVAudioPlayerDelegate>
 
 @property (nonatomic, strong) IBOutlet UIView *listenMusicView;
@@ -19,8 +22,8 @@
 
 @property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) BasePostInterface *postInter;
-@property (nonatomic, strong) UIView *wordsContainerView;
 
+@property (nonatomic, strong) UIView *wordsContainerView;
 @property (nonatomic, assign) NSInteger number;//记录第几题--大题
 @property (nonatomic, strong) NSMutableArray *questionArray;
 @property (nonatomic, strong) NSDictionary *questionDic;
@@ -31,10 +34,9 @@
 
 @property (nonatomic, strong) NSArray *orgArray;
 @property (nonatomic, strong) NSArray *metaphoneArray;
-
-@property (strong, nonatomic) IBOutlet UILabel *remindLab;
 @property (nonatomic, strong) NSMutableArray *tmpArray;
 @property (nonatomic, strong) NSDictionary *resultDic;
+
 @property (nonatomic, assign) BOOL isFirst;
 
 @property (nonatomic, assign) int specified_time;//规定时间
@@ -51,4 +53,19 @@
 -(void)listenViewReduceTimeButtonClicked;
 //道具
 @property (nonatomic, strong) NSMutableArray *propsArray;
+
+
+//提醒－－－
+@property (nonatomic, strong) IBOutlet UIView *remindView;
+@property (nonatomic, strong) IBOutlet UILabel *remindLabel;
+@property (strong, nonatomic) IBOutlet UILabel *remindLab;
+
+///历史
+@property (nonatomic, strong) IBOutlet UIView *historyView;
+@property (nonatomic, strong) IBOutlet UILabel *historyAnswer;
+
+@property (nonatomic, strong) NSMutableArray *history_questionArray;
+@property (nonatomic, strong) NSDictionary *history_questionDic;
+@property (nonatomic, strong) NSMutableArray *history_branchQuestionArray;
+@property (nonatomic, strong) NSDictionary *history_branchQuestionDic;
 @end

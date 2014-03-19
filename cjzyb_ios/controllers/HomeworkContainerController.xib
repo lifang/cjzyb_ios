@@ -11,8 +11,13 @@
                 <outlet property="checkHomeworkButton" destination="TOZ-l9-jr5" id="5LS-Z0-1Si"/>
                 <outlet property="contentView" destination="Mpv-Zu-cvf" id="yjC-yt-gio"/>
                 <outlet property="djView" destination="Qjf-do-S1z" id="nJb-fB-9Wo"/>
+                <outlet property="label1" destination="2y7-Cm-tTr" id="IMr-BQ-sAy"/>
+                <outlet property="label2" destination="901-kj-ecX" id="k4I-y3-oOY"/>
                 <outlet property="quitHomeworkButton" destination="iyg-oP-n5x" id="3EK-BX-2pu"/>
                 <outlet property="reduceTimeButton" destination="kBq-b5-iiz" id="i6K-Ov-mKN"/>
+                <outlet property="rotioLabel" destination="788-P2-hMq" id="dyh-oe-E5e"/>
+                <outlet property="timeImg" destination="tNi-aO-NeT" id="hy7-Qr-tjf"/>
+                <outlet property="timeLabel" destination="dwW-in-rr0" id="WFY-ST-rSA"/>
                 <outlet property="timerLabel" destination="40m-wo-64j" id="UJM-hH-6mO"/>
                 <outlet property="view" destination="2" id="3"/>
             </connections>
@@ -82,6 +87,34 @@
                             </subviews>
                             <color key="backgroundColor" red="0.15294117647058825" green="0.18823529411764706" blue="0.22352941176470587" alpha="1" colorSpace="deviceRGB"/>
                         </view>
+                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正确率:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2y7-Cm-tTr">
+                            <rect key="frame" x="179" y="27" width="75" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="用时:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="901-kj-ecX">
+                            <rect key="frame" x="374" y="27" width="53" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100%" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="788-P2-hMq">
+                            <rect key="frame" x="262" y="13" width="104" height="42"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8'33''" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dwW-in-rr0">
+                            <rect key="frame" x="435" y="13" width="104" height="42"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" red="0.20784313725490194" green="0.81176470588235294" blue="0.5607843137254902" alpha="1" colorSpace="deviceRGB"/>
                 </view>

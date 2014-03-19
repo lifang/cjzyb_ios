@@ -156,8 +156,145 @@
     self.branchQuestionArray = [self.questionDic objectForKey:@"branch_questions"];
     self.branchQuestionDic = [self.branchQuestionArray objectAtIndex:self.branchNumber];
     
-    [self setUI];
+    if ([DataService sharedService].isHistory==YES) {
+        self.history_questionDic = [self.history_questionArray objectAtIndex:self.number];
+        self.history_branchQuestionArray = [self.history_questionDic objectForKey:@"branch_questions"];
+        self.history_branchQuestionDic = [self.history_branchQuestionArray objectAtIndex:self.branchNumber];
+        
+        self.homeControl.rotioLabel.text = [NSString stringWithFormat:@"%d%%",[[self.history_branchQuestionDic objectForKey:@"ratio"] integerValue]];
+        NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
+        NSArray *array = [txt componentsSeparatedByString:@";||;"];
+        self.historyAnswer.text = [NSString stringWithFormat:@"你的排序: %@",[array componentsJoinedByString:@" "]];
+        
+        [self setHistoryUI];
+    }else {
+        [self setUI];
+    }
 }
+-(void)setHistoryUI {
+    if (self.branchNumber==self.history_branchQuestionArray.count-1 && self.number==self.history_questionArray.count-1) {
+        [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+        [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+        [self.checkHomeworkButton addTarget:self action:@selector(finishHistoryQuestion:) forControlEvents:UIControlEventTouchUpInside];
+    }else {
+        [self.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
+        [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+        [self.checkHomeworkButton addTarget:self action:@selector(nextHistoryQuestion:) forControlEvents:UIControlEventTouchUpInside];
+    }
+
+    [self.wordsContainerView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.wordsContainerView removeFromSuperview];
+    self.wordsContainerView = [[UIView alloc]init];
+    self.wordsContainerView.backgroundColor = [UIColor clearColor];
+    
+    CGRect frame = CGRectMake(0, 0, Textfield_Width*1.5, Textfield_Height*1.2);
+    NSString *content = [self.branchQuestionDic objectForKey:@"content"];
+    self.orgArray = [Utility handleTheString:content];
+    NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.orgArray];
+    NSInteger count = tmpArray.count;
+    int num1 = self.orgArray.count/3;//除以3的整数
+    int num2 = self.orgArray.count%3;//除以3的余数
+    //TODO:上半部分
+    for (int i=0; i<num1; i++) {
+        for (int k=0; k<3; k++) {
+            UIButton *btn3 = [self returnButton];
+            btn3.tag = 3*i+CP_Answer_Button_Tag_Offset+k;
+            frame.origin.x = Textfield_Space_Width+(Textfield_Width+Textfield_Space_Width)*k;
+            frame.origin.y = Textfield_Space_Height+(Textfield_Height+Textfield_Space_Height)*i;
+            btn3.frame = frame;
+            [btn3 setTitleColor:[UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1] forState:UIControlStateNormal];
+            [btn3 setTitle:[tmpArray objectAtIndex:3*i+k] forState:UIControlStateNormal];
+            [self.wordsContainerView addSubview:btn3];
+        }
+    }
+    frame.origin.y += Textfield_Height+Textfield_Space_Height;
+    for (int i=0; i<num2; i++) {
+        UIButton *btn3 = [self returnButton];
+        btn3.tag = 3*num1+CP_Answer_Button_Tag_Offset+i;
+        CGFloat space = (768-Textfield_Width*num2)/(num2+1);
+        frame.origin.x = space + (Textfield_Width+space)*i;
+        btn3.frame = frame;
+        [btn3 setTitleColor:[UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1] forState:UIControlStateNormal];
+        [btn3 setTitle:[tmpArray objectAtIndex:3*num1+i] forState:UIControlStateNormal];
+        [self.wordsContainerView addSubview:btn3];
+    }
+    
+    //TODO:下半部分
+    frame.origin.x = 0;
+    CGFloat height = frame.origin.y + Textfield_Height+Textfield_Space_Height*5;
+    for (int i=0; i<num1; i++) {
+        for (int k=0; k<3; k++) {
+            UIButton *btn3 = [self returnButton];
+            btn3.tag = 3*i+CP_Word_Button_Tag_Offset+k;
+            frame.origin.x = Textfield_Space_Width+(Textfield_Width+Textfield_Space_Width)*k;
+            frame.origin.y = height+(Textfield_Height+Textfield_Space_Height)*i;
+            btn3.frame = frame;
+            btn3.backgroundColor = [UIColor colorWithRed:39/255.0 green:48/255.0 blue:57/255.0 alpha:1];
+            int index = arc4random() % count;
+            [btn3 setTitle:[tmpArray objectAtIndex:index] forState:UIControlStateNormal];
+            [tmpArray removeObjectAtIndex:index];
+            count--;
+
+            [self.wordsContainerView addSubview:btn3];
+        }
+    }
+    frame.origin.y += Textfield_Height+Textfield_Space_Height;
+    for (int i=0; i<num2; i++) {
+        UIButton *btn3 = [self returnButton];
+        btn3.tag = 3*num1+CP_Word_Button_Tag_Offset+i;
+        
+        CGFloat space = (768-Textfield_Width*num2)/(num2+1);
+        frame.origin.x = space + (Textfield_Width+space)*i;
+        btn3.frame = frame;
+        btn3.backgroundColor = [UIColor colorWithRed:39/255.0 green:48/255.0 blue:57/255.0 alpha:1];
+        int index = arc4random() % count;
+        [btn3 setTitle:[tmpArray objectAtIndex:index] forState:UIControlStateNormal];
+        [tmpArray removeObjectAtIndex:index];
+        count--;
+
+        [self.wordsContainerView addSubview:btn3];
+    }
+    
+    self.preBtn.frame = CGRectMake(122, frame.origin.y+Textfield_Height+Textfield_Space_Height*5, 200, 80);
+    self.restartBtn.frame = CGRectMake(445, frame.origin.y+Textfield_Height+Textfield_Space_Height*5, 200, 80);
+    
+    [self.wordsContainerView setFrame:CGRectMake(-768, 130, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
+    [self.view addSubview:self.wordsContainerView];
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.wordsContainerView setFrame:CGRectMake(0, 130, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
+    } completion:^(BOOL finished){
+        if (finished) {
+            [UIView animateWithDuration:0.25 animations:^{
+                NSArray *subViews = [self.wordsContainerView subviews];
+                for (UIView *vv in subViews) {
+                    if ([vv isKindOfClass:[UIButton class]]) {
+                        UIButton *btn = (UIButton *)vv;
+                        CGRect frame = btn.frame;
+                        frame.size.width = Textfield_Width;
+                        frame.size.height = Textfield_Height;
+                        btn.frame = frame;
+                    }
+                }
+            } completion:^(BOOL finished){
+            }];
+        }
+    }];
+}
+
+-(void)nextHistoryQuestion:(id)sender {
+    if (self.branchNumber == self.history_branchQuestionArray.count-1) {
+        self.number++;self.branchNumber = 0;
+    }else {
+        self.branchNumber++;
+    }
+    [self getQuestionData];
+}
+-(void)finishHistoryQuestion:(id)sender {
+    
+}
+
+
 
 - (void)viewDidLoad
 {
@@ -172,38 +309,48 @@
     self.homeControl = (HomeworkContainerController *)self.parentViewController;
     self.homeControl.appearCorrectButton.enabled=NO;
     self.homeControl.reduceTimeButton.enabled = NO;
+    self.number=0;self.branchNumber=0;self.isFirst= NO;
     //TODO:初始化答案的字典
     self.answerDic = [Utility returnAnswerDictionaryWithName:SORT];
     
-    self.propsArray = [Utility returnAnswerProps];
-    int status = [[self.answerDic objectForKey:@"status"]intValue];
-    if (status == 1) {
-        self.number=0;self.branchNumber=0;self.isFirst= NO;
+    self.historyView.hidden=YES;
+    self.preBtn.hidden=YES;self.restartBtn.hidden=YES;
+    if ([DataService sharedService].isHistory==YES) {
+        self.historyView.hidden=NO;
+        self.history_questionArray = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
+        self.homeControl.timeLabel.text = [NSString stringWithFormat:@"%@",[Utility formateDateStringWithSecond:[[self.answerDic objectForKey:@"use_time"]integerValue]]];
     }else {
-        self.isFirst= YES;
-        if ([DataService sharedService].number_reduceTime>0) {
-            self.homeControl.reduceTimeButton.enabled = YES;
-        }
-        if ([DataService sharedService].number_correctAnswer>0) {
-            self.homeControl.appearCorrectButton.enabled=YES;
-        }
-        
-        int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
-        int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
-        
-        if (number_question>=0) {
-            NSDictionary *dic = [self.questionArray objectAtIndex:number_question];
-            NSArray *array = [dic objectForKey:@"branch_questions"];
-            if (number_branch_question == array.count-1) {
-                self.number = +1;self.branchNumber = 0;
-            }else {
-                self.number = number_question;self.branchNumber = number_branch_question+1;
+        self.preBtn.hidden=NO;self.restartBtn.hidden=NO;
+        self.propsArray = [Utility returnAnswerProps];
+        int status = [[self.answerDic objectForKey:@"status"]intValue];
+        if (status == 1) {
+            
+        }else {
+            self.isFirst= YES;
+            if ([DataService sharedService].number_reduceTime>0) {
+                self.homeControl.reduceTimeButton.enabled = YES;
+            }
+            if ([DataService sharedService].number_correctAnswer>0) {
+                self.homeControl.appearCorrectButton.enabled=YES;
             }
             
-            int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
-            self.homeControl.spendSecond = useTime;
-            NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
-            self.homeControl.timerLabel.text = timeStr;
+            int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
+            int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
+            
+            if (number_question>=0) {
+                NSDictionary *dic = [self.questionArray objectAtIndex:number_question];
+                NSArray *array = [dic objectForKey:@"branch_questions"];
+                if (number_branch_question == array.count-1) {
+                    self.number = +1;self.branchNumber = 0;
+                }else {
+                    self.number = number_question;self.branchNumber = number_branch_question+1;
+                }
+                
+                int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
+                self.homeControl.spendSecond = useTime;
+                NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
+                self.homeControl.timerLabel.text = timeStr;
+            }
         }
     }
     
@@ -276,7 +423,6 @@
         [self.preBtn setBackgroundImage:[UIImage imageNamed:@"send"] forState:UIControlStateNormal];
         self.preBtn.enabled = YES;
     }else {
-        
         self.preBtn.backgroundColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
         [self.preBtn setBackgroundImage:nil forState:UIControlStateNormal];
         self.preBtn.enabled = NO;
@@ -404,6 +550,14 @@
 //检查
 -(void)checkAnswer:(id)sender {
     self.homeControl.appearCorrectButton.enabled=NO;
+
+    for (UIView *vv in [self.wordsContainerView subviews]) {
+        if ([vv isKindOfClass:[UIButton class]]) {
+            UIButton *btn = (UIButton *)vv;
+            btn.enabled = NO;
+        }
+    }
+    
     NSString *str = @"";NSMutableString *anserString = [NSMutableString string];
     
     for (int i=0; i<self.orgArray.count; i++) {

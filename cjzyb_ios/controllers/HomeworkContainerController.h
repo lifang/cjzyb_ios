@@ -42,4 +42,15 @@
 
 ///停止计时
 -(void)stopTimer;
+
+
+@property (strong, nonatomic) IBOutlet UIImageView *timeImg;
+
+
+
+/**
+ *  历史
+ */
+@property (nonatomic, strong) IBOutlet UILabel *label1,*label2;
+@property (nonatomic, strong) IBOutlet UILabel *rotioLabel,*timeLabel;
 @end

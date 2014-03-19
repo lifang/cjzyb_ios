@@ -1544,7 +1544,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
     NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
 
-    [answerDic setObject:[DataService sharedService].taskObj.taskId forKey:@"pub_id"];
+//    [answerDic setObject:[DataService sharedService].taskObj.taskId forKey:@"pub_id"];
     [answerDic setObject:aDic forKey:name];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
     [jsonData writeToFile:jsPath atomically:YES];
@@ -1593,7 +1593,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
     NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
     
-    [answerDic setObject:[DataService sharedService].taskObj.taskId forKey:@"pub_id"];
+//    [answerDic setObject:[DataService sharedService].taskObj.taskId forKey:@"pub_id"];
     [answerDic setObject:array forKey:@"props"];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
     [jsonData writeToFile:jsPath atomically:YES];

@@ -64,9 +64,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;
+    self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;[DataService sharedService].isHistory=YES;
+    //TODO:判断做题历史 or  做题
+    if ([DataService sharedService].isHistory==YES) {
+        self.timeImg.hidden=YES; self.timerLabel.hidden=YES;
+        self.label1.hidden=NO;self.label2.hidden=NO;self.rotioLabel.hidden=NO;self.timeLabel.hidden=NO;
+    }else {
+        self.timeImg.hidden=NO; self.timerLabel.hidden=NO;
+        self.label1.hidden=YES;self.label2.hidden=YES;self.rotioLabel.hidden=YES;self.timeLabel.hidden=YES;
+    }
     [self startTimer];
-    self.homeworkType = HomeworkType_listeningAndWrite;
+    self.homeworkType = HomeworkType_fillInBlanks;
     switch (self.homeworkType) {
         case HomeworkType_line:
         {
