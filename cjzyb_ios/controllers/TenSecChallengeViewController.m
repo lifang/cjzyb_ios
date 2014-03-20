@@ -10,6 +10,8 @@
 #import "LHLTestInterface.h"
 #import "HomeworkContainerController.h"
 
+#define parentVC ((HomeworkContainerController *)[self parentViewController])
+
 @interface TenSecChallengeViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton; //返回键
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;     //顶部时间
@@ -35,7 +37,7 @@
 @property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
 @property (strong,nonatomic) NSString *answerStatus;    //文件中记载的完成状态
 @property (assign,nonatomic) BOOL isReDoingChallenge; //是否为重新挑战
-@property (strong,nonatomic) NSMutableArray *reChallengeTimesLeft; //剩余挑战数
+@property (strong,nonatomic) NSMutableDictionary *reChallengeTimesLeft; //剩余挑战数
 @end
 
 @implementation TenSecChallengeViewController
@@ -62,9 +64,6 @@
     [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit"]];
 //    [self parseAnswerJSON];
     
-    
-    //获取今日作业截止时间
-    [self fetchHomeworkFinishTime];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -93,17 +92,35 @@
     if (self.isViewingHistory) {  //浏览历史
         self.currentNO = 0;
         self.historyView.hidden = NO;
-        //上方动作条添加"下一个"按钮
+        NSInteger ratio = 0;
+        for (int i = 0; i < self.answerArray.count; i ++) {
+            OrdinaryAnswerObject *answer = self.answerArray[i];
+            if ([answer.answerRatio isEqualToString:@"100"]) {
+                ratio += 10;
+            }
+        }
+        parentVC.rotioLabel.text = [NSString stringWithFormat:@"%d%@",ratio,@"%"];
+        NSInteger second = self.timeCount;
+        NSInteger minite = second / 60;
+        second = second % 60;
+        parentVC.timeLabel.text = [NSString stringWithFormat:@"%d'%d\"",minite,second];
     }else{
         if ([self.answerStatus isEqualToString:@"1"]) { //重新做题  ,此时应判断是否有重新做题的剩余次数
-            NSString *timesLeft = [self.reChallengeTimesLeft firstObject];
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+            NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
+            NSString *timesLeft = [self.reChallengeTimesLeft objectForKey:nowDate];
             if (timesLeft.integerValue < 1) {
                 return;
             }else{
-                [self.reChallengeTimesLeft replaceObjectAtIndex:0 withObject:[NSString stringWithFormat:@"%d",timesLeft.integerValue - 1]];
+                [self.reChallengeTimesLeft setObject:[NSString stringWithFormat:@"%d",timesLeft.integerValue - 1] forKey:nowDate];
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+                NSString *path = [paths firstObject];
+                path = [path stringByAppendingPathComponent:@"challengeTimeLeft.plist"];
+                [self.reChallengeTimesLeft writeToFile:path atomically:YES];
             }
             self.timeCount = 0;
-            ((HomeworkContainerController *)[self parentViewController]).spendSecond = 0;
+            parentVC.spendSecond = 0;
             self.isReDoingChallenge = YES;
             self.currentNO = 0;
             self.answerArray = [NSMutableArray array];
@@ -113,7 +130,7 @@
             }
         }
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
-        [((HomeworkContainerController *)[self parentViewController]) startTimer];
+        [parentVC startTimer];
     }
     self.isLastQuestion = NO;
     [self showNextQuestion];
@@ -121,13 +138,13 @@
 
 - (void)pauseChallenge{
     [self.timer invalidate];
-    [((HomeworkContainerController *)[self parentViewController]) stopTimer];
+    [parentVC stopTimer];
 }
 
 - (void)finishChallenge{
     //终止计时
     [self.timer invalidate];
-    [((HomeworkContainerController *)[self parentViewController]) stopTimer];
+    [parentVC stopTimer];
     //计算成绩
     //保存挑战数据
     //显示结果界面
@@ -162,21 +179,24 @@
         
         self.resultView.timeLimit = question.tenTimeLimit.integerValue;
         
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        NSDate *homeworkFinishTime = [formatter dateFromString:self.homeworkFinishTime];
-        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        NSUInteger unitFlag = NSSecondCalendarUnit;
-        NSDateComponents *comps = [gregorian components:unitFlag fromDate:[NSDate date] toDate:homeworkFinishTime options:0];
-        NSInteger seconds = [comps second];
+//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+//        NSDate *homeworkFinishTime = [formatter dateFromString:self.homeworkFinishTime];
+//        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+//        NSUInteger unitFlag = NSSecondCalendarUnit;
+//        NSDateComponents *comps = [gregorian components:unitFlag fromDate:[NSDate date] toDate:homeworkFinishTime options:0];
+//        NSInteger seconds = [comps second];
         
-        if (seconds >= 7200) {
+        if ([Utility compareTime]) {
             self.resultView.isEarly = YES;
         }else{
             self.resultView.isEarly = NO;
         }
         
-        self.resultView.challengeTimesLeft = [self.reChallengeTimesLeft firstObject];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
+        self.resultView.challengeTimesLeft = [self.reChallengeTimesLeft objectForKey:nowDate];
         
         [self.resultView initView];
     }else{
@@ -352,14 +372,6 @@
     }
 }
 
-//获取作业完成期限
--(void)fetchHomeworkFinishTime{
-//    LHLTestInterface *inter = [[LHLTestInterface alloc] init];
-//    inter.delegate = self;
-//    
-//    [inter getLHLTestDelegateWithClassId:@"1" andUserId:@"8"];
-}
-
 //显示当前题目的正确答案,使用道具/浏览历史时调用
 -(void)showRightAnswer{
     if([_currentQuestion.tenRightAnswer isEqualToString:self.upperOptionLabel.text]){
@@ -415,8 +427,8 @@
         
         if (self.currentNO == self.questionArray.count) {
             self.isLastQuestion = YES;
-            [((HomeworkContainerController *)[self parentViewController]).checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
-            [((HomeworkContainerController *)[self parentViewController]).checkHomeworkButton addTarget:self action:@selector(resultViewCommitButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+            [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+            [parentVC.checkHomeworkButton addTarget:self action:@selector(resultViewCommitButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         }
         
     }else{
@@ -453,16 +465,20 @@
 }
 
 #pragma mark -- property
-//从文件中读取数组,否则新建一个包含字符串@"3"的数组
-- (NSMutableArray *)reChallengeTimesLeft{
+//从文件中读取字典,否则新建一个包含字符串@"3"的值
+- (NSMutableDictionary *)reChallengeTimesLeft{
     if (!_reChallengeTimesLeft) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
         NSString *path = [paths firstObject];
         NSString *filePath = [NSString stringWithFormat:@"%@/challengeTimeLeft.plist",path];
-        _reChallengeTimesLeft = [NSMutableArray arrayWithContentsOfFile:filePath];
-        if (!_reChallengeTimesLeft) {
-            _reChallengeTimesLeft = [NSMutableArray array];
-            [_reChallengeTimesLeft addObject:@"3"];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
+        _reChallengeTimesLeft = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+        //如果无文件,或文件中无今日记录,则新建dic
+        if (!_reChallengeTimesLeft || [_reChallengeTimesLeft objectForKey:nowDate] == nil) {
+            _reChallengeTimesLeft = [NSMutableDictionary dictionary];
+            [_reChallengeTimesLeft setObject:@"3" forKey:nowDate];
         }
     }
     return _reChallengeTimesLeft;
@@ -515,7 +531,7 @@
 - (void)resultViewCommitButtonClicked{
     [self.resultView removeFromSuperview];
     self.resultView = nil;
-    [((HomeworkContainerController *)[self parentViewController]).navigationController popViewControllerAnimated:YES];
+    [parentVC.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)resultViewRestartButtonClicked{
@@ -524,20 +540,7 @@
     self.resultView = nil;
 }
 
-#pragma mark LHLTestInterfaceDelegate
--(void) getLHLInfoDidFinished:(NSDictionary *)result{
-    id tasks = [result objectForKey:@"Tasks"];
-    if ([tasks isKindOfClass:[NSDictionary class]]) {
-        NSString *endTime = [(NSDictionary *)tasks objectForKey:@"end_time"];
-        if (endTime != nil && endTime.length > 0) {
-            self.homeworkFinishTime = endTime;
-        }
-    }
-}
 
--(void) getLHLInfoDidFailed:(NSString *)errorMsg{
-    [Utility errorAlert:errorMsg];
-}
 
 - (void)didReceiveMemoryWarning
 {

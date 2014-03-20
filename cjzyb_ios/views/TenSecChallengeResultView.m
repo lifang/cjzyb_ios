@@ -60,9 +60,13 @@
         if (self.challengeTimesLeft.integerValue < 1) {
             self.noneRestartButton.backgroundColor = [UIColor lightGrayColor];
             self.noneRestartButton.enabled = NO;
+            self.restartButton.backgroundColor = [UIColor lightGrayColor];
+            self.restartButton.enabled = NO;
         }else{
             self.noneRestartButton.backgroundColor = [UIColor whiteColor];
             self.noneRestartButton.enabled = YES;
+            self.restartButton.backgroundColor = [UIColor whiteColor];
+            self.restartButton.enabled = YES;
         }
     }
 }

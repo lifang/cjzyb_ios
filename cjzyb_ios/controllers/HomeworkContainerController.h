@@ -56,5 +56,5 @@
  *  历史
  */
 @property (nonatomic, strong) IBOutlet UILabel *label1,*label2;
-@property (nonatomic, strong) IBOutlet UILabel *rotioLabel,*timeLabel;
+@property (nonatomic, strong) IBOutlet UILabel *rotioLabel,*timeLabel; //浏览历史时显示的正确率和用时
 @end

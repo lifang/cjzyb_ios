@@ -7,14 +7,13 @@
 //
 
 #import "SelectingChallengeViewController.h"
-#import <AVFoundation/AVFoundation.h>
 #import "HomeworkContainerController.h"
+
+#define parentVC ((HomeworkContainerController *)[self parentViewController])
 
 @interface SelectingChallengeViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;  //退出按钮
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
-@property (weak, nonatomic) IBOutlet UIView *topBarView;  //顶栏
-@property (weak, nonatomic) IBOutlet UIView *itemsView;   //道具背景
 
 @property (weak, nonatomic) IBOutlet UIButton *questionPlayButton;  //声音按钮
 - (IBAction)questionPlayButtonClicked:(id)sender;
@@ -38,12 +37,13 @@
 @property (strong,nonatomic) NSTimer *timer;
 @property (assign,nonatomic) NSInteger currentNO;//当前正在做的题目序号,如超过问题数量代表答题完毕
 @property (strong,nonatomic) SelectingChallengeObject *currentQuestion; //当前问题
+@property (strong,nonatomic) NSData *currentAudioData; //如果当前为听力题,则读取入此data
 @property (assign,nonatomic) BOOL isLastQuestion; //是否最后一题
 
 @property (strong,nonatomic) NSArray *questionArray;  //问题
 @property (strong,nonatomic) NSMutableArray *answerArray;   //选择的答案
-@property (strong,nonatomic) NSString *homeworkFinishTime; //今日作业提交时间期限
-@property (strong,nonatomic) NSDictionary *answerJSONDic; //从文件中读取的answerJSON字典
+@property (strong,nonatomic) NSMutableArray *propsArray;//道具
+//@property (strong,nonatomic) NSDictionary *answerJSONDic; //从文件中读取的answerJSON字典
 @property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
 @property (strong,nonatomic) NSString *answerStatus;    //文件中记载的完成状态
 
@@ -71,12 +71,16 @@
     if (!self.questionArray) {
         [Utility errorAlert:@"无法读取问题资料!"];
     }
-    [self parseAnswer];
-    [self getStart];
+    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"selecting"]];
+    self.propsArray = [Utility returnAnswerProps];
     
     [self.optionTable registerClass:[SelectingChallengeOptionCell class] forCellReuseIdentifier:@"cell"];
     self.isReDoingChallenge = NO;
     
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [self getStart];
 }
 
 #pragma mark -- 选择挑战的生命周期
@@ -89,54 +93,80 @@
 */
 
 //解析answerJSON并保存dic,获取有用信息
-- (void)parseAnswer{
-    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-    //把path拼成真实文件路径
+//- (void)parseAnswer{
+//    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+//    //把path拼成真实文件路径
+//    
+//    path = [[NSBundle mainBundle] pathForResource:@"answer-1" ofType:@"js"]; //测试
+//    
+//    NSData *data = [NSData dataWithContentsOfFile:path];
+//    if (!data) {
+//        [Utility errorAlert:@"获取answer文件失败!"];
+//    }else{
+//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+//        if (!dic) {
+//            [Utility errorAlert:@"文件格式错误!"];
+//            return;
+//        }
+//        self.answerJSONDic = dic;
+//        NSDictionary *dicc = [dic objectForKey:@"selecting"];
+//        if (!dicc) { //判断是否已有选择挑战数据
+//            [Utility errorAlert:@"尚没有选择挑战内容"];
+//        }else{
+//            self.answerStatus = [dicc objectForKey:@"status"];  //只要解析状态,已答题时间,题号  其余的不解析
+//            self.timeCount = [[dicc objectForKey:@"use_time"] doubleValue];
+//            parentVC.spendSecond = self.timeCount;
+//            self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"questions_item"] integerValue];
+//            
+//            NSArray *questions = [dicc objectForKey:@"questions"];
+//            if ([questions firstObject]) {
+//                [self.answerArray removeAllObjects];  //此处清空answerArray,注意
+//                for (NSInteger i = 0; i < questions.count; i ++) {
+//                    NSDictionary *questionDic = [questions objectAtIndex:i];
+//                    if ([questionDic objectForKey:@"branch_questions"]) {
+//                        NSArray *branches = [questionDic objectForKey:@"branch_questions"];
+//                        for (int k = 0; k < branches.count; k ++) {
+//                            NSDictionary *branch = branches[k];
+//                            OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
+//                            answer.answerID = [branch objectForKey:@"id"];
+//                            answer.answerAnswer = [branch objectForKey:@"answer"];
+//                            answer.answerRatio = [branch objectForKey:@"ratio"];
+//                            [self.answerArray addObject:answer];
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+
+-(void)parseAnswerDic:(NSMutableDictionary *)dicc{
+    self.answerStatus = [dicc objectForKey:@"status"];  //只要解析状态,已答题时间,题号  其余的不解析
+    self.timeCount = [[dicc objectForKey:@"use_time"] doubleValue];
+    parentVC.spendSecond = self.timeCount;
+    self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"questions_item"] integerValue];
     
-    path = [[NSBundle mainBundle] pathForResource:@"answer-1" ofType:@"js"]; //测试
-    
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    if (!data) {
-        [Utility errorAlert:@"获取answer文件失败!"];
-    }else{
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-        if (!dic) {
-            [Utility errorAlert:@"文件格式错误!"];
-            return;
-        }
-        self.answerJSONDic = dic;
-        NSDictionary *dicc = [dic objectForKey:@"selecting"];
-        if (!dicc) { //判断是否已有选择挑战数据
-            [Utility errorAlert:@"尚没有选择挑战内容"];
-        }else{
-            self.answerStatus = [dicc objectForKey:@"status"];  //只要解析状态,已答题时间,题号  其余的不解析
-            self.timeCount = [[dicc objectForKey:@"use_time"] doubleValue];
-            ((HomeworkContainerController *)[self parentViewController]).spendSecond = self.timeCount;
-            self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"questions_item"] integerValue];
-            
-            NSArray *questions = [dicc objectForKey:@"questions"];
-            if ([questions firstObject]) {
-                [self.answerArray removeAllObjects];  //此处清空answerArray,注意
-                for (NSInteger i = 0; i < questions.count; i ++) {
-                    NSDictionary *questionDic = [questions objectAtIndex:i];
-                    if ([questionDic objectForKey:@"branch_questions"]) {
-                        NSArray *branches = [questionDic objectForKey:@"branch_questions"];
-                        for (int k = 0; k < branches.count; k ++) {
-                            NSDictionary *branch = branches[k];
-                            OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
-                            answer.answerID = [branch objectForKey:@"id"];
-                            answer.answerAnswer = [branch objectForKey:@"answer"];
-                            answer.answerRatio = [branch objectForKey:@"ratio"];
-                            [self.answerArray addObject:answer];
-                        }
-                    }
+    NSArray *questions = [dicc objectForKey:@"questions"];
+    if ([questions firstObject]) {
+        [self.answerArray removeAllObjects];  //此处清空answerArray,注意
+        for (NSInteger i = 0; i < questions.count; i ++) {
+            NSDictionary *questionDic = [questions objectAtIndex:i];
+            if ([questionDic objectForKey:@"branch_questions"]) {
+                NSArray *branches = [questionDic objectForKey:@"branch_questions"];
+                for (int k = 0; k < branches.count; k ++) {
+                    NSDictionary *branch = branches[k];
+                    OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
+                    answer.answerID = [branch objectForKey:@"id"];
+                    answer.answerAnswer = [branch objectForKey:@"answer"];
+                    answer.answerRatio = [branch objectForKey:@"ratio"];
+                    [self.answerArray addObject:answer];
                 }
             }
         }
     }
 }
 
-//开始,根据答题状态决定.   
+//开始,根据答题状态决定.
 - (void)getStart{
     if (self.isViewingHistory) {
         [self viewHistory];
@@ -153,22 +183,25 @@
 // (重新做题不计成绩,调用此方法)
 - (void)reDoingChallenge{
     self.isViewingHistory = NO;
+    self.isReDoingChallenge = YES;
     //改变按钮样式,及顶栏目样式
     self.propOfReduceTime.enabled = YES;
     self.propOfShowingAnswer.enabled = YES;
     [self.nextButton setImage:[UIImage imageNamed:@"选择_07.png"] forState:UIControlStateNormal];
-    self.nextButton.titleLabel.text = @"检查";
+    [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
+    parentVC.appearCorrectButton.enabled = NO;
+    parentVC.reduceTimeButton.enabled = NO;
     self.historyView.hidden = YES;
     
     self.currentNO = 0;
     self.timeCount = 0;
-    ((HomeworkContainerController *)[self parentViewController]).spendSecond = self.timeCount;
+    parentVC.spendSecond = self.timeCount;
     self.answerArray = [NSMutableArray array];
     
     [self loadNextQuestion];
     
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
-    [((HomeworkContainerController *)[self parentViewController]) startTimer];
+    [parentVC startTimer];
 }
 
 //查看历史  ---初始化界面,获取数据
@@ -185,13 +218,13 @@
             }
         }
         self.totalRatio = 100 * numberOfRightAnswers / self.answerArray.count;
+        parentVC.rotioLabel.text = [NSString stringWithFormat:@"%d%@",self.totalRatio,@"%"];
     }else{
         [Utility errorAlert:@"历史答案与题目不符!"];
         return;
     }
+    parentVC.timeLabel.text = [NSString stringWithFormat:@"%@\"",self.timeCountString];
     
-    [self.propOfReduceTime setBackgroundColor:[UIColor lightGrayColor]];
-    [self.propOfShowingAnswer setBackgroundColor:[UIColor lightGrayColor]];
     ////改变按钮样式,顶栏等,添加正确率+时间label
     UIView *bgView = [[UIView alloc] init];
     [bgView setBackgroundColor:self.topBarView.backgroundColor];
@@ -217,10 +250,10 @@
     ratioAndTimeLabel_.center = ratioAndTimeLabel.center;
     [bgView addSubview:ratioAndTimeLabel_];
     
-    self.propOfReduceTime.enabled = NO;
-    self.propOfShowingAnswer.enabled = NO;
+    parentVC.appearCorrectButton.enabled = NO;
+    parentVC.reduceTimeButton.enabled = NO;
     [self.nextButton setImage:nil forState:UIControlStateNormal];
-    self.nextButton.titleLabel.text = @"下一个";
+    [parentVC.checkHomeworkButton setTitle:@"下一个" forState:UIControlStateNormal];
     self.historyView.backgroundColor = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:191.0/255.0 alpha:1.0];
     self.historyView.hidden = NO;
     
@@ -232,36 +265,50 @@
 - (void)continueChallenge{
     self.isViewingHistory = NO;
     //改变按钮样式,及顶栏目样式
-    self.propOfReduceTime.enabled = YES;
-    self.propOfShowingAnswer.enabled = YES;
+    parentVC.appearCorrectButton.enabled = YES;
+    parentVC.reduceTimeButton.enabled = YES;
     [self.nextButton setImage:[UIImage imageNamed:@"选择_07.png"] forState:UIControlStateNormal];
-    self.nextButton.titleLabel.text = @"检查";
+    [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
     self.historyView.hidden = YES;
     
     if (self.lastTimeCurrentNO > 0) {
-        self.currentNO = self.lastTimeCurrentNO - 1; //先减一 再加载下一题即可
+        self.currentNO = self.lastTimeCurrentNO;
     }
     self.timeCount = self.timeCount > 0 ? self.timeCount : 0;
-    ((HomeworkContainerController *)[self parentViewController]).spendSecond = self.timeCount;
+    parentVC.spendSecond = self.timeCount;
     
     [self loadNextQuestion];
     
     self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
-    [((HomeworkContainerController *)[self parentViewController]) startTimer];
+    [parentVC startTimer];
 }
 
 //读取下一题,开始时触发,点击下一个时触发
 - (void)loadNextQuestion{
     if (self.currentNO < self.questionArray.count) {
         self.currentNO ++;
-        if (self.currentNO == self.questionArray.count) {
+        if (self.currentNO == self.questionArray.count) {//最后一题
             self.isLastQuestion = YES;
+            [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
         }
         self.currentQuestion = self.questionArray[self.currentNO - 1];
+        self.currentSelectedOptions = [NSMutableArray array]; //清除选择数组
         self.selectingType = self.currentQuestion.seType;
+        if (self.currentQuestion.seType == SelectingTypeListening) {
+            _currentAudioData = nil;
+            [self currentAudioData];//先缓冲
+        }
         [self createQuestionView];
         if (self.isViewingHistory) {
             [self refreshHistoryView];
+        }else if (!self.isReDoingChallenge){
+            //刷新道具按钮
+            if([DataService sharedService].number_correctAnswer > 0){
+                parentVC.appearCorrectButton.enabled = YES;
+            }
+            if ([DataService sharedService].number_reduceTime > 0) {
+                parentVC.reduceTimeButton.enabled = YES;
+            }
         }
     }else{
         self.currentNO = self.questionArray.count + 1; //标志最后一题已经完成
@@ -272,7 +319,7 @@
 //被中断/中途退出时的方法
 - (void)pauseChallenge{
     [self.timer invalidate];
-    [((HomeworkContainerController *)[self parentViewController]) stopTimer];
+    [parentVC stopTimer];
 }
 
 - (void)endChallenge{
@@ -281,7 +328,7 @@
     }else{
         self.answerStatus = @"1";
         [self.timer invalidate];
-        [((HomeworkContainerController *)[self parentViewController]) stopTimer];
+        [parentVC stopTimer];
         [self showResultView];
     }
 }
@@ -307,44 +354,21 @@
         
         self.resultView.timeLimit = question.seTimeLimit.integerValue;
         
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-        NSDate *homeworkFinishTime = [formatter dateFromString:self.homeworkFinishTime];
-        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        NSUInteger unitFlag = NSSecondCalendarUnit;
-        NSDateComponents *comps = [gregorian components:unitFlag fromDate:[NSDate date] toDate:homeworkFinishTime options:0];
-        NSInteger seconds = [comps second];
-        
-        if (seconds >= 7200) {
+        if ([Utility compareTime]) {
             self.resultView.isEarly = YES;
         }else{
             self.resultView.isEarly = NO;
         }
         
         [self.resultView initView];
-//        self.resultView.correctPersent.text = [NSString stringWithFormat:@"正确率: %i%@",percentOfRightAnswers,@"%"];
-//        self.resultView.timeLabel.text = [NSString stringWithFormat:@"用时: %@",self.timeLabel.text];
-//        
-//        if (percentOfRightAnswers < 100) {
-//            self.resultView.accuracyAchievementLabel.text = [NSString stringWithFormat:@"好可惜没有全对哦,不能拿到精准得分哦!"];
-//        }else{
-//            self.resultView.accuracyAchievementLabel.text = [NSString stringWithFormat:@"所有题目全部正确!<精准>成就加10分!"];
-//        }
-//        
-//        SelectingChallengeObject *question = [self.questionArray firstObject];
-//        if (self.timeCount <= [question.seTimeLimit floatValue]) {
-//            //迅速成就
-//            self.resultView.fastAchievementLabel.text = [NSString stringWithFormat:@"恭喜你的用时在%@秒内,<迅速>成就加10分!",question.seTimeLimit];
-//        }else{
-//            self.resultView.fastAchievementLabel.text = [NSString stringWithFormat:@"你的用时超过了%@秒,不能拿到迅速得分哦!",question.seTimeLimit];
-//        }
-//        
-//        //捷足成就
-//        if ([self compareNowWithTime:self.homeworkFinishTime]) {
-//            self.resultView.earlyAchievementLabel.text = [NSString stringWithFormat:@"恭喜你在截止时间提前两小时完成作业,<捷足>成就加10分!"];
-//        }else{
-//            self.resultView.earlyAchievementLabel.text = [NSString stringWithFormat:@"未能在截止时间提前两小时完成作业,不能拿到捷足得分哦!"];
-//        }
+        
+        if (self.isReDoingChallenge) {
+            self.resultView.noneArchiveView.hidden = NO;
+            self.resultView.resultBgView.hidden = YES;
+        }else{
+            self.resultView.noneArchiveView.hidden = YES;
+            self.resultView.resultBgView.hidden = NO;
+        }
     }else{
         [Utility errorAlert:@"题目与答案不匹配!"];
     }
@@ -354,7 +378,7 @@
     //按照answer.js的格式制作一个字典.  可能在未完成时调用
     NSMutableDictionary *answerDic = [[NSMutableDictionary alloc] init];
     
-    [answerDic setObject:(self.currentNO > self.questionArray.count ? @"1" : @"0") forKey:@"status"];//完成情况
+    [answerDic setObject:(self.isLastQuestion ? @"1" : @"0") forKey:@"status"];//完成情况
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
@@ -368,7 +392,7 @@
     [answerDic setObject:[NSString stringWithFormat:@"%d",(NSInteger)self.timeCount] forKey:@"use_time"];   //用时
     
     NSMutableArray *questions = [NSMutableArray array];
-    for (NSInteger i = 0; i < self.questionArray.count; i ++) {
+    for (NSInteger i = 0; i < self.answerArray.count; i ++) {
         NSMutableDictionary *questionDic = [[NSMutableDictionary alloc] init];
         SelectingChallengeObject *anyQuestion = [self.questionArray objectAtIndex:i];
         [questionDic setObject:anyQuestion.seBigID forKey:@"id"];  //大题号
@@ -387,10 +411,19 @@
     
     [answerDic setObject:questions forKey:@"questions"];
     
+    [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"selecting"];
+    
     return [NSDictionary dictionaryWithDictionary:answerDic];
 }
 
 #pragma mark property
+- (NSData *)currentAudioData{
+    if (!_currentAudioData) {
+        _currentAudioData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.currentQuestion.seContentAttachment]];
+    }
+    return _currentAudioData;
+}
+
 - (TenSecChallengeResultView *)resultView{
     if (!_resultView) {
         _resultView = [[[NSBundle mainBundle]loadNibNamed:@"TenSecChallengeResultView" owner:self options:nil] lastObject];
@@ -499,7 +532,8 @@
                 self.optionTable.frame = (CGRect){38,317,650,400};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
-                NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.comdosoft.com/images/ad.jpg"]];
+//                NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.comdosoft.com/images/ad.jpg"]];
+                NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.currentQuestion.seContentAttachment]];
                 [self.questionImageWebView loadRequest:request];
             
             }
@@ -537,6 +571,8 @@
         for(NSString *rightAnswer in self.currentQuestion.seRightAnswers){
             if ([rightAnswer isEqualToString:option]) {
                 //选中该option
+                SelectingChallengeOptionCell *cell = (SelectingChallengeOptionCell *)[self.optionTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+                cell.optionSelected = YES;
                 break;
             }
         }
@@ -547,7 +583,7 @@
 #pragma mark 被调方法
 //被timer触发
 -(void) timerFired:(NSTimer *)timer{
-    self.timeCount += 0.1;
+    self.timeCount = parentVC.spendSecond;
     [self refreshClock];
 }
 
@@ -624,17 +660,24 @@
     BOOL answerRatio = [self judgeAnswer:selectedOptions];
     answer.answerRatio = answerRatio ? @"100" : @"0";
     [self.answerArray addObject:answer];
-        
+    
+    [self makeAnswerJSON];
+    
+    //播放声音
     if (answerRatio) {
-        AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"right_sound" ofType:@"mp3"]] error:nil];
-        if([player prepareToPlay]){
-            [player play];
+        [AppDelegate shareIntance].avPlayer = nil;
+        [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"right_sound" ofType:@"mp3"]] error:nil];
+        [AppDelegate shareIntance].avPlayer.volume = 1;
+        if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
+            [[AppDelegate shareIntance].avPlayer play];
         }
         
     }else{
-        AVAudioPlayer *player = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"wrong_sound" ofType:@"mp3"]] error:nil];
-        if([player prepareToPlay]){
-            [player play];
+        [AppDelegate shareIntance].avPlayer = nil;
+        [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"right_sound" ofType:@"mp3"]] error:nil];
+        [AppDelegate shareIntance].avPlayer.volume = 1;
+        if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
+            [[AppDelegate shareIntance].avPlayer play];
         }
     }
 }
@@ -642,7 +685,15 @@
 #pragma mark 界面交互
 
 - (IBAction)questionPlayButtonClicked:(id)sender {
-    
+    [AppDelegate shareIntance].avPlayer = nil;
+    NSError *error;
+    [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:self.currentAudioData error:&error];
+    [AppDelegate shareIntance].avPlayer.delegate = self;
+    [AppDelegate shareIntance].avPlayer.volume = 1;
+    if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
+        [[AppDelegate shareIntance].avPlayer play];
+        self.questionPlayButton.enabled = NO;
+    }
 }
 
 //道具2
@@ -652,7 +703,18 @@
     }else{
         self.timeCount -= 5.0;
     }
-    ((HomeworkContainerController *)[self parentViewController]).spendSecond = self.timeCount;
+    parentVC.spendSecond = self.timeCount;
+    if ((-- [DataService sharedService].number_reduceTime) < 1) {
+        parentVC.reduceTimeButton.enabled = NO;
+    }
+    
+    //存储道具记录JSON
+    NSMutableDictionary *timePropDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray lastObject]];
+    NSMutableArray *branchOfPropArray = [NSMutableArray arrayWithArray:[timePropDic objectForKey:@"branch_id"]];
+    [branchOfPropArray addObject:[NSNumber numberWithInteger:self.currentQuestion.seID.integerValue]];
+    [timePropDic setObject:branchOfPropArray forKey:@"branch_id"];
+    [self.propsArray replaceObjectAtIndex:1 withObject:timePropDic];
+    [Utility returnAnswerPathWithProps:self.propsArray];
 }
 
 //道具1
@@ -667,10 +729,27 @@
             }
         }
     }
+    [DataService sharedService].number_correctAnswer --;
+    parentVC.appearCorrectButton.enabled = NO;
+    
+    //存储道具记录JSON
+    NSMutableDictionary *rightAnswerPropDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray firstObject]];
+    NSMutableArray *branchOfPropArray = [NSMutableArray arrayWithArray:[rightAnswerPropDic objectForKey:@"branch_id"]];
+    [branchOfPropArray addObject:[NSNumber numberWithInteger:self.currentQuestion.seID.integerValue]];
+    [rightAnswerPropDic setObject:branchOfPropArray forKey:@"branch_id"];
+    [self.propsArray replaceObjectAtIndex:0 withObject:rightAnswerPropDic];
+    [Utility returnAnswerPathWithProps:self.propsArray];
 }
 
 - (IBAction)nextButtonClicked:(id)sender {
+    ///防止乱点
+    if (self.currentNO > self.questionArray.count) {
+        return;
+    }
     if (!self.isViewingHistory) {
+        if (self.currentSelectedOptions.count < 1) {
+            return;
+        }
         [self addAnswer];
     }
     [self loadNextQuestion];
@@ -700,6 +779,15 @@
     }
     
     cell.optionSelected = NO;
+    if (self.isViewingHistory) {
+        cell.optionButton.enabled = NO;
+        for(NSString *rightAnswer in self.currentQuestion.seRightAnswers){
+            if ([rightAnswer isEqualToString:cell.optionString]) {
+                cell.optionSelected = YES;
+                break;
+            }
+        }
+    }
     
     return cell;
 }
@@ -731,6 +819,13 @@
 -(void)resultViewRestartButtonClicked{
     [self.resultView removeFromSuperview];
     [self reDoingChallenge];
+}
+
+#pragma mark AVAudioPlayerDelegate
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
+    if (flag) {
+        self.questionPlayButton.enabled = YES;
+    }
 }
 
 -(void)didReceiveMemoryWarning

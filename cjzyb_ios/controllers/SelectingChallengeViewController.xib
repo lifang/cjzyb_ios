@@ -117,7 +117,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <state key="normal" image="homwwork_listenWrite.png">
+                            <state key="normal" image="listening_start.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -142,7 +142,7 @@
                     <color key="backgroundColor" red="0.89710003396739135" green="0.89710003396739135" blue="0.89710003396739135" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hKQ-mL-mRc" userLabel="viewHistoryView">
-                    <rect key="frame" x="0.0" y="869" width="768" height="155"/>
+                    <rect key="frame" x="0.0" y="719" width="768" height="155"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="yourChoice.png" translatesAutoresizingMaskIntoConstraints="NO" id="WgT-3e-uwf">
@@ -165,7 +165,7 @@
         </view>
     </objects>
     <resources>
-        <image name="homwwork_listenWrite.png" width="189" height="189"/>
+        <image name="listening_start.png" width="63" height="63"/>
         <image name="yourChoice.png" width="60" height="60"/>
     </resources>
 </document>

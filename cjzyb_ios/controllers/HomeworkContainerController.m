@@ -68,7 +68,7 @@
     [super viewDidLoad];
     self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;[DataService sharedService].isHistory=YES;
     //TODO:判断做题历史 or  做题
-    [DataService sharedService].isHistory = YES;
+    [DataService sharedService].isHistory = NO;
     if ([DataService sharedService].isHistory==YES) {
         self.timeImg.hidden=YES; self.timerLabel.hidden=YES;
         self.label1.hidden=NO;self.label2.hidden=NO;self.rotioLabel.hidden=NO;self.timeLabel.hidden=NO;
@@ -77,7 +77,7 @@
         self.label1.hidden=YES;self.label2.hidden=YES;self.rotioLabel.hidden=YES;self.timeLabel.hidden=YES;
     }
     [self startTimer];
-    self.homeworkType = HomeworkType_quick;
+    self.homeworkType = HomeworkType_select;
     switch (self.homeworkType) {
         case HomeworkType_line:
         {
@@ -178,9 +178,9 @@
             [self.checkHomeworkButton addTarget:self.selectingChallengeViewController action:@selector(nextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.appearCorrectButton addTarget:self.selectingChallengeViewController action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.selectingChallengeViewController action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
+            self.selectingChallengeViewController.topBarView.hidden = YES;
+            self.selectingChallengeViewController.itemsView.hidden = YES;
             self.selectingChallengeViewController.isViewingHistory = [DataService sharedService].isHistory;
-            [self.selectingChallengeViewController getStart];
-            
         }
             break;
         default:

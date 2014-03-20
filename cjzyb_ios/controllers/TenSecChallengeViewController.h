@@ -11,10 +11,9 @@
 #import <UIKit/UIKit.h>
 #import "TenSecChallengeObject.h"
 #import "TenSecChallengeResultView.h"
-#import "LHLTestInterface.h"
 #import "OrdinaryAnswerObject.h"
 
-@interface TenSecChallengeViewController : UIViewController<TenSecChallengeResultViewDelegate,LHLTestInterfaceDelegate>
+@interface TenSecChallengeViewController : UIViewController<TenSecChallengeResultViewDelegate>
 @property (nonatomic,strong) NSMutableArray *questionArray;  //十个问题
 @property (nonatomic,strong) TenSecChallengeResultView *resultView; //结果view
 @property (nonatomic,assign) BOOL isViewingHistory; //是否浏览历史
