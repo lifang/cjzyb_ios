@@ -1465,6 +1465,35 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     return nil;
 }
 
+//TODO:请求当天题目
++ (NSString *)getTodayNewestQuestionPackage{
+    __block NSString *returnMsg;
+    NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_newer_task?student_id=%@&school_class_id=%@",[DataService sharedService].user.studentId,[DataService sharedService].theClass.classId];
+    NSURL *url = [NSURL URLWithString:str];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
+        NSArray *taskArray = [dicData objectForKey:@"tasks"];
+        if (taskArray.count < 1) {
+            returnMsg = @"暂未发布今日作业!";
+            return;
+        }
+        NSDictionary *packageDic = [taskArray firstObject];
+        NSString *packageID = [packageDic objectForKey:@"id"];
+        NSString *packageName = [packageDic objectForKey:@"name"];
+        NSString *packageStartTime = [packageDic objectForKey:@"start_time"];
+        NSString *packageEndTime = [packageDic objectForKey:@"end_time"];
+        NSString *packageURL = [packageDic objectForKey:@"question_packages_url"];
+        NSArray *packageQuestionTypes = [packageDic objectForKey:@"question_types"];
+        for (NSInteger i = 0; i < packageQuestionTypes.count; i ++) {
+            NSNumber *typeNumber = [packageQuestionTypes objectAtIndex:i];
+            NSInteger typeInteger = [typeNumber integerValue];
+        }
+    } withFailure:^(NSError *error) {
+        returnMsg = [error.userInfo objectForKey:@"msg"];
+    }];
+    return returnMsg;
+}
+
 //添加不用备份的属性5.0.1
 + (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
 {
