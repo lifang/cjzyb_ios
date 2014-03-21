@@ -14,7 +14,6 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <AVFoundation/AVFoundation.h> 
 #import "SelectingChallengeViewController.h"
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

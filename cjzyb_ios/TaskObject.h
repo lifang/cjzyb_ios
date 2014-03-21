@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSMutableArray *question_types;
 @property (nonatomic, strong) NSMutableArray *finish_types;
 @property (nonatomic, strong) NSString *question_packages_url;// 包的下载路径
-
+@property (nonatomic, strong) NSString *answer_packages_url;// 包的下载路径
 
 +(TaskObject *)taskFromDictionary:(NSDictionary *)aDic;
 @end

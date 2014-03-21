@@ -11,11 +11,10 @@
 #import "ClozeAnswerViewController.h"
 #define UnderLab_tag 1234567
 
-static int prop_number = -1;
-
 @interface SelectedViewController ()
 @property (nonatomic, strong) TenSecChallengeResultView *resultView;
-@property (nonatomic,strong) WYPopoverController *poprController;
+@property (nonatomic, strong) WYPopoverController *poprController;
+@property (nonatomic, assign) int prop_number;
 @end
 
 @implementation SelectedViewController
@@ -114,16 +113,17 @@ static int prop_number = -1;
     if ([DataService sharedService].isHistory==YES) {
         self.history_questionDic = [self.history_questionArray objectAtIndex:self.number];
         NSArray *history_branchQuestionArray = [self.history_questionDic objectForKey:@"branch_questions"];
-        NSDictionary *history_branchQuestionDic = [history_branchQuestionArray objectAtIndex:0];
-        
-        self.homeControl.rotioLabel.text = [NSString stringWithFormat:@"%d%%",[[history_branchQuestionDic objectForKey:@"ratio"] integerValue]];
-        NSString *txt = [history_branchQuestionDic objectForKey:@"answer"];
-        NSArray *array = [txt componentsSeparatedByString:@";||;"];
-        NSMutableString *remindString = [NSMutableString string];
-        for (int i=0; i<array.count; i++) {
-            [remindString appendFormat:@"%d.%@  ",i+1,[array objectAtIndex:i]];
+        int rotio = 0;
+        NSMutableString *answerStr = [NSMutableString string];
+        for (int i=0; i<history_branchQuestionArray.count; i++) {
+            NSDictionary *history_branchQuestionDic = [history_branchQuestionArray objectAtIndex:i];
+            rotio += [[history_branchQuestionDic objectForKey:@"ratio"]integerValue];
+            [answerStr appendFormat:@"%d.%@  ",(i+1),[history_branchQuestionDic objectForKey:@"answer"]];
         }
-        self.historyAnswer.text = [NSString stringWithFormat:@"你的选择: %@",remindString];
+        
+        
+        self.homeControl.rotioLabel.text = [NSString stringWithFormat:@"%d%%", rotio/history_branchQuestionArray.count];
+        self.historyAnswer.text = [NSString stringWithFormat:@"你的选择: %@",answerStr];
         
         [self setHistoryUI];
     }else {
@@ -170,16 +170,20 @@ static int prop_number = -1;
     self.homeControl.appearCorrectButton.enabled=NO;
     self.homeControl.reduceTimeButton.enabled = NO;
     self.number=0;self.isFirst= NO;
-    
+    self.prop_number=-1;
     //TODO:初始化答案的字典
     self.answerDic = [Utility returnAnswerDictionaryWithName:CLOZE];
     self.historyView.hidden=YES;
-    
+    int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
     if ([DataService sharedService].isHistory==YES) {
-        self.historyView.hidden=NO;
-        self.history_questionArray = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
-        self.homeControl.timeLabel.text = [NSString stringWithFormat:@"%@",[Utility formateDateStringWithSecond:[[self.answerDic objectForKey:@"use_time"]integerValue]]];
-        
+        if (number_question<0) {
+            [Utility errorAlert:@"暂无历史记录!"];
+        }else {
+            self.historyView.hidden=NO;
+            self.history_questionArray = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
+            self.homeControl.timeLabel.text = [NSString stringWithFormat:@"%@",[Utility formateDateStringWithSecond:[[self.answerDic objectForKey:@"use_time"]integerValue]]];
+            [self getQuestionData];
+        }
     }else {
         self.propsArray = [Utility returnAnswerProps];
         int status = [[self.answerDic objectForKey:@"status"]intValue];
@@ -194,15 +198,15 @@ static int prop_number = -1;
                 self.homeControl.appearCorrectButton.enabled=YES;
             }
             
-            int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
             self.number = number_question+1;
             int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
             self.homeControl.spendSecond = useTime;
             NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
             self.homeControl.timerLabel.text = timeStr;
         }
+        [self getQuestionData];
     }
-    [self getQuestionData];
+    
 }
 - (void)reloadAnswerByClozeView:(NSNotification *)notification {
     NSString *answerStr = [notification object];
@@ -217,18 +221,11 @@ static int prop_number = -1;
 }
 -(void)checkAnswer:(id)sender {
     self.homeControl.appearCorrectButton.enabled=NO;
-    NSString *str = @"";NSMutableString *anserString = [NSMutableString string];
+    NSString *str = @"";
     for (int i=0; i<self.answerArray.count; i++) {
         UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:i+UnderLab_tag];
-        if (i==self.answerArray.count-1) {
-            [anserString appendFormat:@"%@",label.text];
-        }else {
-            [anserString appendFormat:@"%@;||;",label.text];
-        }
-        
         if (label.text.length==0) {
             str = @"请填写完整!";
-            anserString = [NSMutableString string];
             break;
         }
     }
@@ -249,6 +246,7 @@ static int prop_number = -1;
             }
         }
         if (self.number == self.questionArray.count-1) {
+            self.homeControl.reduceTimeButton.enabled=NO;
             [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
             [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
             [self.checkHomeworkButton addTarget:self action:@selector(finishQuestion:) forControlEvents:UIControlEventTouchUpInside];
@@ -257,7 +255,6 @@ static int prop_number = -1;
             [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
             [self.checkHomeworkButton addTarget:self action:@selector(nextQuestion:) forControlEvents:UIControlEventTouchUpInside];
         }
-        
         
         //TODO:写入json
         int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
@@ -274,12 +271,25 @@ static int prop_number = -1;
             
             //一道题目------------------------------------------------------------------
             //正确率
-            CGFloat ratio = (self.branchScore/((float)self.answerArray.count))*100;
-            // id
-            NSDictionary *a_dic = [self.answerArray objectAtIndex:0];
-            NSString *a_id = [NSString stringWithFormat:@"%@",[a_dic objectForKey:@"id"]];
-            NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.2f",ratio],@"ratio",anserString,@"answer", nil];
-            NSArray *branch_questions = [[NSArray alloc]initWithObjects:answer_dic, nil];
+            CGFloat ratio = 0;
+            NSMutableArray *branch_questions = [[NSMutableArray alloc]init];
+            for (int i=0; i<self.answerArray.count; i++) {
+                UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:i+UnderLab_tag];
+                
+                NSDictionary *a_dic = [self.answerArray objectAtIndex:i];
+                NSString *answer = [a_dic objectForKey:@"answer"];
+                if ([label.text isEqualToString:answer]) {
+                    label.textColor = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
+                    ratio=100;
+                }else {
+                    ratio=0;
+                    label.textColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
+                }
+                
+                NSString *a_id = [NSString stringWithFormat:@"%@",[a_dic objectForKey:@"id"]];
+                NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.2f",ratio],@"ratio",answer,@"answer", nil];
+                [branch_questions addObject:answer_dic];
+            }
             
             NSMutableArray *questions = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
             
@@ -293,7 +303,7 @@ static int prop_number = -1;
 }
 
 -(void)nextQuestion:(id)sender {
-    [self.homeControl startTimer];
+    [self.homeControl startTimer];self.prop_number=-1;
     if ([DataService sharedService].number_correctAnswer>0) {
         self.homeControl.appearCorrectButton.enabled=YES;
     }
@@ -398,23 +408,27 @@ static int prop_number = -1;
 #pragma mark
 #pragma mark - 道具
 -(void)showClozeCorrectAnswer {
-    prop_number += 1;[DataService sharedService].number_correctAnswer -= 1;
+    self.prop_number += 1;[DataService sharedService].number_correctAnswer -= 1;
+    if ([DataService sharedService].number_correctAnswer==0) {
+        self.homeControl.appearCorrectButton.enabled = NO;
+    }
+    
     NSArray *branch_questions = [self.questionDic objectForKey:@"branch_questions"];
-    if ((prop_number == (branch_questions.count-1)) || ([DataService sharedService].number_correctAnswer==0)) {
+    if ((self.prop_number == (branch_questions.count-1)) || ([DataService sharedService].number_correctAnswer==0)) {
         self.homeControl.appearCorrectButton.enabled = NO;
     }
     //道具写入JSON
     NSMutableDictionary *branch_propDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray objectAtIndex:0]];
     NSMutableArray *branch_propArray = [NSMutableArray arrayWithArray:[branch_propDic objectForKey:@"branch_id"]];
-    NSDictionary *branch_dic = [branch_questions objectAtIndex:prop_number];
+    NSDictionary *branch_dic = [branch_questions objectAtIndex:self.prop_number];
     [branch_propArray addObject:[NSNumber numberWithInt:[[branch_dic objectForKey:@"id"] intValue]]];
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:0 withObject:branch_propDic];
     [Utility returnAnswerPathWithProps:self.propsArray];
     
     //显示正确答案
-    UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:prop_number+UnderLab_tag];
-    NSDictionary *dic = [self.answerArray objectAtIndex:prop_number];
+    UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:self.prop_number+UnderLab_tag];
+    NSDictionary *dic = [self.answerArray objectAtIndex:self.prop_number];
     NSString *answer = [dic objectForKey:@"answer"];
     label.text = answer;
     label.textColor = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];

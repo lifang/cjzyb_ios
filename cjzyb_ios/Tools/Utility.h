@@ -85,4 +85,5 @@
 +(NSMutableArray *)returnAnswerProps;
 +(void)returnAnswerPathWithProps:(NSMutableArray *)array;
 + (NSString *)isExistenceNetwork;
+
 @end

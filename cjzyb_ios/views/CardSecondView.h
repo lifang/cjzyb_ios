@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "CustomLabel.h"
 
 @protocol CardSecondViewDelegate <NSObject>
 -(void)pressedVoiceBtn:(UIButton *)btn;
@@ -20,8 +20,7 @@
 
 @property (nonatomic, strong) IBOutlet UILabel *titleLab;//原句
 
-@property (nonatomic, strong) IBOutlet UILabel *rtLab;
-
+@property (nonatomic, strong) IBOutlet CustomLabel *rtLab;
 @property (nonatomic, strong) IBOutlet UIButton *voiceBtn,*deleteBtn;
-
+@property (nonatomic, strong) IBOutlet UIImageView *imgView;
 @end

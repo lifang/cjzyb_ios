@@ -142,22 +142,25 @@
     
     NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
     NSArray *array = [txt componentsSeparatedByString:@";||;"];
-    NSString *originString =[array componentsJoinedByString:@" "];
+    NSString *originString =[array objectAtIndex:0];
     NSArray *array1 = [Utility handleTheString:originString];
     NSArray *array2 = [Utility metaphoneArray:array1];
     self.resultDic = [Utility listenCompareWithArray:array1 andArray:array2 WithArray:self.orgArray andArray:self.metaphoneArray];
+    NSMutableString *remindString = [NSMutableString string];
     if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
         NSArray *sureArray = [self.resultDic objectForKey:@"sure"];
-        NSMutableString *remindString = [NSMutableString string];
         for (int i=0; i<sureArray.count; i++) {
-            if (i==sureArray.count-1) {
-                [remindString appendFormat:@"%@ ",[sureArray objectAtIndex:i]];
-            }else {
-                [remindString appendFormat:@"%@, ",[sureArray objectAtIndex:i]];
-            }
+            [remindString appendFormat:@"%@  ",[sureArray objectAtIndex:i]];
         }
-        self.remindLab.text = remindString;
     }
+    if (![[self.resultDic objectForKey:@"wrong"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"wrong"]!=nil) {
+        NSMutableArray *yellow_array = [self.resultDic objectForKey:@"wrong"];
+        for (int i=0; i<yellow_array.count; i++) {
+            int index = [[yellow_array objectAtIndex:i]intValue];
+            [remindString appendFormat:@"%@  ",[self.orgArray objectAtIndex:index]];
+        }
+    }
+    self.remindLab.text = remindString;
     
     [UIView animateWithDuration:0.5 animations:^{
         [self.wordsContainerView setFrame:CGRectMake(108, 53, 640, frame.origin.y+frame.size.height)];
@@ -189,7 +192,7 @@
         self.homeControl.rotioLabel.text = [NSString stringWithFormat:@"%d%%",[[self.history_branchQuestionDic objectForKey:@"ratio"] integerValue]];
         NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
         NSArray *array = [txt componentsSeparatedByString:@";||;"];
-        self.historyAnswer.text = [NSString stringWithFormat:@"你的作答: %@",[array componentsJoinedByString:@" "]];
+        self.historyAnswer.text = [NSString stringWithFormat:@"你的作答: %@",[array objectAtIndex:0]];
         
         [self setHistoryUI];
     }else {
@@ -240,12 +243,18 @@
     //TODO:初始化答案的字典
     self.answerDic = [Utility returnAnswerDictionaryWithName:LISTEN];
     self.historyView.hidden=YES;
+    int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
     if ([DataService sharedService].isHistory==YES) {
-        self.remindLabel.text = @"以下为上面需要多写的词。";
-        self.history_questionArray = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
-        self.historyView.hidden=NO;
-        self.homeControl.timeLabel.text = [NSString stringWithFormat:@"%@",[Utility formateDateStringWithSecond:[[self.answerDic objectForKey:@"use_time"]integerValue]]];
-        [self getQuestionData];
+        if (number_question<0) {
+            [Utility errorAlert:@"暂无历史记录!"];
+        }else {
+            self.remindLabel.text = @"以下为上面需要多写的词。";
+            self.history_questionArray = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
+            self.historyView.hidden=NO;
+            self.homeControl.timeLabel.text = [NSString stringWithFormat:@"%@",[Utility formateDateStringWithSecond:[[self.answerDic objectForKey:@"use_time"]integerValue]]];
+            [self getQuestionData];
+        }
+        
     }else {
         self.propsArray = [Utility returnAnswerProps];
         self.remindLabel.text = @"以下为上面可能错的词哦！试着将它们填入相应的位置。";
@@ -258,7 +267,7 @@
                 self.homeControl.reduceTimeButton.enabled = YES;
             }
             
-            int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
+            
             int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
             
             if (number_question>=0) {
@@ -471,15 +480,13 @@ static int numberOfMusic =0;
 //检查
 -(void)checkAnswer:(id)sender {
     self.branchScore = 0;
-    NSString *str = @"";NSMutableString *anserString = [NSMutableString string];
+    NSString *str = @"";
+    NSMutableString *anserString = [NSMutableString string];
+    NSMutableString *wrong_anserString = [NSMutableString string];
     for (int i=0; i<self.orgArray.count; i++) {
         UITextField *txtField = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
         [txtField resignFirstResponder];
-        if (i==self.orgArray.count-1) {
-            [anserString appendFormat:@"%@",txtField.text];
-        }else {
-            [anserString appendFormat:@"%@;||;",txtField.text];
-        }
+        [anserString appendFormat:@"%@ ",txtField.text];
         if (txtField.text.length<=0) {
             str = @"请填写完整!";
             anserString = [NSMutableString string];
@@ -493,7 +500,7 @@ static int numberOfMusic =0;
         [self.homeControl stopTimer];
         
         [Utility shared].isOrg = NO;
-        NSArray *array = [anserString componentsSeparatedByString:@";||;"];
+        NSArray *array = [anserString componentsSeparatedByString:@" "];
         self.tmpArray = [NSMutableArray arrayWithArray:array];
         NSString *originString = [self.tmpArray componentsJoinedByString:@" "];
         NSArray *array1 = [Utility handleTheString:originString];
@@ -505,14 +512,32 @@ static int numberOfMusic =0;
         [Utility shared].wrongArray = [[NSMutableArray alloc]init];
         
         self.resultDic = [Utility listenCompareWithArray:array1 andArray:array2 WithArray:self.orgArray andArray:self.metaphoneArray];
-        
         [self resetUI];
         
+        if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
+            NSMutableArray *yellow_array = [self.resultDic objectForKey:@"yellow"];
+            for (int i=0; i<yellow_array.count; i++) {
+                int index = [[yellow_array objectAtIndex:i]intValue];
+                [wrong_anserString appendFormat:@"%@;||;",[self.orgArray objectAtIndex:index]];
+            }
+        }
+
+        if (![[self.resultDic objectForKey:@"wrong"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"wrong"]!=nil) {
+            NSMutableArray *yellow_array = [self.resultDic objectForKey:@"wrong"];
+            for (int i=0; i<yellow_array.count; i++) {
+                int index = [[yellow_array objectAtIndex:i]intValue];
+                if (i==yellow_array.count-1) {
+                    [wrong_anserString appendFormat:@"%@",[self.orgArray objectAtIndex:index]];
+                }else {
+                    [wrong_anserString appendFormat:@"%@;||;",[self.orgArray objectAtIndex:index]];
+                }
+            }
+        }
         
         self.scoreRadio = (self.branchScore/((float)self.orgArray.count))*100;
-        NSLog(@"radio = %.2f",self.scoreRadio);
         if (self.scoreRadio-80>=0) {//超过8成的真确率
             if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
+                self.homeControl.reduceTimeButton.enabled=NO;
                 [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
                 [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
                 [self.checkHomeworkButton addTarget:self action:@selector(finishQuestion:) forControlEvents:UIControlEventTouchUpInside];
@@ -522,6 +547,7 @@ static int numberOfMusic =0;
                 [self.checkHomeworkButton addTarget:self action:@selector(nextQuestion:) forControlEvents:UIControlEventTouchUpInside];
             }
         }
+        NSString *answer = [NSString stringWithFormat:@"%@;||;%@",anserString,wrong_anserString];
         //TODO:写入json
         int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
         int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
@@ -531,10 +557,10 @@ static int numberOfMusic =0;
             if (number_branch_question>=self.branchNumber) {
                 //表示已经做过这道题
             }else {
-                [self writeToAnswerJsonWithString:anserString];
+                [self writeToAnswerJsonWithString:answer];
             }
         }else {
-            [self writeToAnswerJsonWithString:anserString];
+            [self writeToAnswerJsonWithString:answer];
         }
     }
 }

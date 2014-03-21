@@ -9,12 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "LiningItemButton.h"
 #import "LineSubjectObj.h"
-@class HomeworkContainerController;
+
+#import "HomeworkContainerController.h"
+#import "BasePostInterface.h"
+
 /** LiningHomeworkViewController
  *
  * 连线任务
  */
 @interface LiningHomeworkViewController : UIViewController
+@property (nonatomic, strong) AppDelegate *appDel;
+@property (nonatomic, strong) BasePostInterface *postInter;
+
 ///存放连线题的数组LineSubjectObj
 @property (strong,nonatomic) NSArray *liningSubjectArray;
 ///当前正在做的小题

@@ -30,7 +30,7 @@
 
 #define platform [[[UIDevice currentDevice] systemVersion] floatValue]
 
-
+#define LINING      @"lining"
 #define CLOZE       @"cloze"
 #define SORT        @"sort"
 #define LISTEN      @"listening"

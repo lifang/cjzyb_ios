@@ -17,6 +17,7 @@
 @property (nonatomic,strong) ListenWriteViewController *listenView;//听写
 @property (nonatomic,strong) SortViewController *sortView;//排序
 @property (nonatomic,strong) SelectedViewController *selectedView;//完形填空
+@property (nonatomic, strong) LininggViewController *liningView;
 ///计时器
 @property (nonatomic,strong) NSTimer *timer;
 /////减时间
@@ -64,7 +65,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;[DataService sharedService].isHistory=YES;
+    self.spendSecond = 0;[DataService sharedService].number_reduceTime=3;[DataService sharedService].isHistory=NO;[DataService sharedService].number_correctAnswer=3;
     //TODO:判断做题历史 or  做题
     if ([DataService sharedService].isHistory==YES) {
         self.timeImg.hidden=YES; self.timerLabel.hidden=YES;
@@ -74,18 +75,19 @@
         self.label1.hidden=YES;self.label2.hidden=YES;self.rotioLabel.hidden=YES;self.timeLabel.hidden=YES;
     }
     [self startTimer];
-    self.homeworkType = HomeworkType_fillInBlanks;
+    self.homeworkType = HomeworkType_listeningAndWrite;
     switch (self.homeworkType) {
-        case HomeworkType_line:
+        case HomeworkType_line://连线
         {
-            self.liningHomeworkController = [[LiningHomeworkViewController alloc] initWithNibName:@"LiningHomeworkViewController" bundle:nil];
-            [self.liningHomeworkController willMoveToParentViewController:self];
-            self.liningHomeworkController.view.frame = self.contentView.bounds;
-            [self.appearCorrectButton addTarget:self.liningHomeworkController action:@selector(tipCorrectAnswer) forControlEvents:UIControlEventTouchUpInside];
-            [self.checkHomeworkButton addTarget:self.liningHomeworkController action:@selector(reloadNextLineSubject) forControlEvents:UIControlEventTouchUpInside];
-            [self.contentView addSubview:self.liningHomeworkController.view];
-            [self addChildViewController:self.liningHomeworkController];
-            [self.liningHomeworkController didMoveToParentViewController:self];
+            self.liningView = [[LininggViewController alloc]initWithNibName:@"LininggViewController" bundle:nil];
+            [self.liningView willMoveToParentViewController:self];
+            self.liningView.view.frame = self.contentView.bounds;
+            [self.appearCorrectButton addTarget:self.liningView action:@selector(showLiningCorrectAnswer) forControlEvents:UIControlEventTouchUpInside];
+            [self.reduceTimeButton addTarget:self.liningView action:@selector(liningViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+            self.liningView.checkHomeworkButton = self.checkHomeworkButton;
+            [self.contentView addSubview:self.liningView.view];
+            [self addChildViewController:self.liningView];
+            [self.liningView didMoveToParentViewController:self];
         }
             break;
         case HomeworkType_reading:

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E2B517918DC138A0056859D /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5D1C7418C99F19008A13F2 /* TencentOpenAPI.framework */; };
 		0E5D1C6318C84BA8008A13F2 /* QuestionInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5D1C6218C84BA8008A13F2 /* QuestionInterface.m */; };
 		0E5D1C6718C85FD5008A13F2 /* FourthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5D1C6518C85FD5008A13F2 /* FourthViewController.m */; };
 		0E5D1C6818C85FD5008A13F2 /* FourthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D1C6618C85FD5008A13F2 /* FourthViewController.xib */; };
@@ -58,6 +59,9 @@
 		0E93C9B618D842480094AD7B /* alertEffect.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0E93C9B418D842480094AD7B /* alertEffect.wav */; };
 		0E93C9B718D842480094AD7B /* btnEffect.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0E93C9B518D842480094AD7B /* btnEffect.wav */; };
 		0E93C9BA18D93DE30094AD7B /* CardFullInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9B918D93DE30094AD7B /* CardFullInterface.m */; };
+		0E93C9BE18D9927E0094AD7B /* LininggViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9BC18D9927E0094AD7B /* LininggViewController.m */; };
+		0E93C9BF18D9927E0094AD7B /* LininggViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E93C9BD18D9927E0094AD7B /* LininggViewController.xib */; };
+		0E93C9D618DAE7C30094AD7B /* CustomLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9D518DAE7C30094AD7B /* CustomLabel.m */; };
 		0E9C6E9818D1496000E807D1 /* SortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C6E9618D1496000E807D1 /* SortViewController.m */; };
 		0E9C6E9918D1496000E807D1 /* SortViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9C6E9718D1496000E807D1 /* SortViewController.xib */; };
 		0E9C6E9D18D1977E00E807D1 /* SelectedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C6E9B18D1977E00E807D1 /* SelectedViewController.m */; };
@@ -441,6 +445,11 @@
 		0E93C9B518D842480094AD7B /* btnEffect.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = btnEffect.wav; sourceTree = "<group>"; };
 		0E93C9B818D93DE30094AD7B /* CardFullInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardFullInterface.h; sourceTree = "<group>"; };
 		0E93C9B918D93DE30094AD7B /* CardFullInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardFullInterface.m; sourceTree = "<group>"; };
+		0E93C9BB18D9927E0094AD7B /* LininggViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LininggViewController.h; sourceTree = "<group>"; };
+		0E93C9BC18D9927E0094AD7B /* LininggViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LininggViewController.m; sourceTree = "<group>"; };
+		0E93C9BD18D9927E0094AD7B /* LininggViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LininggViewController.xib; sourceTree = "<group>"; };
+		0E93C9D418DAE7C30094AD7B /* CustomLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLabel.h; sourceTree = "<group>"; };
+		0E93C9D518DAE7C30094AD7B /* CustomLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLabel.m; sourceTree = "<group>"; };
 		0E9C6E9518D1496000E807D1 /* SortViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortViewController.h; sourceTree = "<group>"; };
 		0E9C6E9618D1496000E807D1 /* SortViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortViewController.m; sourceTree = "<group>"; };
 		0E9C6E9718D1496000E807D1 /* SortViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortViewController.xib; sourceTree = "<group>"; };
@@ -952,6 +961,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E2B517918DC138A0056859D /* TencentOpenAPI.framework in Frameworks */,
 				632954AB18BC875800F2B78D /* XCTest.framework in Frameworks */,
 				632954AD18BC875800F2B78D /* UIKit.framework in Frameworks */,
 				632954AC18BC875800F2B78D /* Foundation.framework in Frameworks */,
@@ -1105,6 +1115,8 @@
 				0EEF4BD318C561570058606A /* CardSecondView.h */,
 				0EEF4BD418C561570058606A /* CardSecondView.m */,
 				0EEF4BD518C561570058606A /* CardSecondView.xib */,
+				0E93C9D418DAE7C30094AD7B /* CustomLabel.h */,
+				0E93C9D518DAE7C30094AD7B /* CustomLabel.m */,
 			);
 			name = "卡包";
 			sourceTree = "<group>";
@@ -1459,6 +1471,9 @@
 				0E92ECDC18D2B03600B6806C /* ClozeAnswerViewController.h */,
 				0E92ECDD18D2B03600B6806C /* ClozeAnswerViewController.m */,
 				0E92ECDE18D2B03600B6806C /* ClozeAnswerViewController.xib */,
+				0E93C9BB18D9927E0094AD7B /* LininggViewController.h */,
+				0E93C9BC18D9927E0094AD7B /* LininggViewController.m */,
+				0E93C9BD18D9927E0094AD7B /* LininggViewController.xib */,
 			);
 			path = controllers;
 			sourceTree = "<group>";
@@ -2083,8 +2098,6 @@
 				182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */,
 				630DBE0718D15BF4009DA0EB /* homeworkTimer@2x.png in Resources */,
 				630DBE2318D15CB1009DA0EB /* homwwork_listenWrite@2x.png in Resources */,
-				1848613518C72D29002B6C78 /* 10_06@2x.png in Resources */,
-				1848613718C72D29002B6C78 /* 10_04@2x.png in Resources */,
 				0EAABD8018CF15C900CD2DE7 /* card_hasselected@2x.png in Resources */,
 				18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */,
 				0E9D689818CD4E0D00EACFA3 /* SVPullToRefresh.bundle in Resources */,
@@ -2113,6 +2126,7 @@
 				187C4ACC18D304AC0006461D /* 10_07@2x.png in Resources */,
 				188ED74118CD850700D1210F /* right_sound.mp3 in Resources */,
 				0EAABD7C18CF136900CD2DE7 /* TagViewController.xib in Resources */,
+				0E93C9BF18D9927E0094AD7B /* LininggViewController.xib in Resources */,
 				0E9D68BA18CD6C5500EACFA3 /* card_btn@2x.png in Resources */,
 				0EEF4BD918C561570058606A /* CardFirstView.xib in Resources */,
 				630DBDF118D15A95009DA0EB /* userGroup@2x.png in Resources */,
@@ -2170,7 +2184,6 @@
 				0E92656918BD92B0003ADEC3 /* ThirdViewController.xib in Resources */,
 				630DBDFA18D15AFB009DA0EB /* arrowBack@2x.png in Resources */,
 				0E92657D18BDACDD003ADEC3 /* third_active@2x.png in Resources */,
-				1848613918C72D29002B6C78 /* 10_02@2x.png in Resources */,
 				0E9D689E18CD670E00EACFA3 /* CardpackageViewController.xib in Resources */,
 				0E92657D18BDACDD003ADEC3 /* third_active@2x.png in Resources */,
 				0E9D68DC18CDC45400EACFA3 /* card_highted@2x.png in Resources */,
@@ -2234,7 +2247,6 @@
 				0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */,
 				0E9C6E9E18D1977E00E807D1 /* SelectedViewController.xib in Resources */,
 				0EAABDBF18D0416E00CD2DE7 /* listen_back@2x.png in Resources */,
-				1848613118C72D29002B6C78 /* 10_10@2x.png in Resources */,
 				0E5D1C8718C9A13C008A13F2 /* logo@2x.png in Resources */,
 				0E9265A418BEEA01003ADEC3 /* send@2x.png in Resources */,
 				0E92657C18BDACDD003ADEC3 /* second@2x.png in Resources */,
@@ -2414,6 +2426,7 @@
 				6396576818C03664002F2A90 /* WYStoryboardPopoverSegue.m in Sources */,
 				6396577418C036B1002F2A90 /* DRLeftTabBarViewController.m in Sources */,
 				186F216818D6D5BA0089A329 /* MJRefreshConst.m in Sources */,
+				0E93C9BE18D9927E0094AD7B /* LininggViewController.m in Sources */,
 				0E9D68C818CD966400EACFA3 /* SearchCore.mm in Sources */,
 				63DD5C7518C9C2740034512D /* SpellMatchObj.m in Sources */,
 				6341536418C1C90300DE4480 /* VRGCalendarView.m in Sources */,
@@ -2461,6 +2474,7 @@
 				1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */,
 				0EAABD8518CF1B5500CD2DE7 /* CMRManager.mm in Sources */,
 				6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */,
+				0E93C9D618DAE7C30094AD7B /* CustomLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2648,6 +2662,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					/Users/comdosoft/Desktop/cjzyb/cjzyb_ios/cjzyb_ios,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cjzyb_ios/cjzyb_ios-Prefix.pch";
@@ -2671,6 +2686,7 @@
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					/Users/comdosoft/Desktop/cjzyb/cjzyb_ios/cjzyb_ios,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cjzyb_ios/cjzyb_ios-Prefix.pch";
