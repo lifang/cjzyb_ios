@@ -310,10 +310,26 @@
                 parentVC.reduceTimeButton.enabled = YES;
             }
         }
+        //动画效果,第一题不需要
+        if (self.currentNO > 1) {
+            [self showNextQuestionWithAnimation];
+        }
     }else{
         self.currentNO = self.questionArray.count + 1; //标志最后一题已经完成
         [self endChallenge];
     }
+}
+
+//动画切换效果
+- (void) showNextQuestionWithAnimation{
+    CATransition *animation = [CATransition animation];
+    [animation setType:kCATransitionPush];
+    [animation setSubtype:kCATransitionFromRight];
+    [animation setDuration:0.5];
+    [animation setRemovedOnCompletion:YES];
+    [animation setDelegate:self];
+    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [self.view.layer addAnimation:animation forKey:@"PushLeft"];
 }
 
 //被中断/中途退出时的方法
@@ -744,6 +760,7 @@
 - (IBAction)nextButtonClicked:(id)sender {
     ///防止乱点
     if (self.currentNO > self.questionArray.count) {
+        [Utility errorAlert:@"请先答本题"];
         return;
     }
     if (!self.isViewingHistory) {

@@ -66,9 +66,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;[DataService sharedService].isHistory=YES;
+    self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;[DataService sharedService].isHistory=NO;
     //TODO:判断做题历史 or  做题
-    [DataService sharedService].isHistory = NO;
     if ([DataService sharedService].isHistory==YES) {
         self.timeImg.hidden=YES; self.timerLabel.hidden=YES;
         self.label1.hidden=NO;self.label2.hidden=NO;self.rotioLabel.hidden=NO;self.timeLabel.hidden=NO;

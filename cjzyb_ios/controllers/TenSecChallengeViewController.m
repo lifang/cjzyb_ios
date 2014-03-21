@@ -439,6 +439,18 @@
     }
 }
 
+//题目切换动画效果
+//- (void) showNextQuestionWithAnimation{
+//    CATransition *animation = [CATransition animation];
+//    [animation setType:kCATransitionPush];
+//    [animation setSubtype:kCATransitionFromRight];
+//    [animation setDuration:0.5];
+//    [animation setRemovedOnCompletion:YES];
+//    [animation setDelegate:self];
+//    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+//    [self.view.layer addAnimation:animation forKey:@"PushLeft"];
+//}
+
 //调整某个label的字体,使其适合长度
 - (void)handleLabelFont:(UILabel *)label{
     UIFont *font = label.font;
