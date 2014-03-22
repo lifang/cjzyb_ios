@@ -334,6 +334,7 @@
 		63B8D27418C860B6004141E9 /* CarnetResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63B8D27218C860B6004141E9 /* CarnetResultViewController.xib */; };
 		63B8D28118C87FA0004141E9 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B8D28018C87FA0004141E9 /* Base64.m */; };
 		63B8D28418C87FAF004141E9 /* GoogleTTSAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B8D28318C87FAF004141E9 /* GoogleTTSAPI.m */; };
+		63CBCC1B18D2FA90006F7C3D /* UserObjDaoInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CBCC1A18D2FA90006F7C3D /* UserObjDaoInterface.m */; };
 		63DB91BC18CD64B800157D74 /* LineDualSentenceObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB91BB18CD64B800157D74 /* LineDualSentenceObj.m */; };
 		63DB91BF18CD65D800157D74 /* LineSubjectObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB91BE18CD65D800157D74 /* LineSubjectObj.m */; };
 		63DB91C918CD7FB100157D74 /* LiningHomeworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB91C718CD7FB100157D74 /* LiningHomeworkViewController.m */; };
@@ -848,6 +849,8 @@
 		63B8D28018C87FA0004141E9 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		63B8D28218C87FAF004141E9 /* GoogleTTSAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleTTSAPI.h; sourceTree = "<group>"; };
 		63B8D28318C87FAF004141E9 /* GoogleTTSAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleTTSAPI.m; sourceTree = "<group>"; };
+		63CBCC1918D2FA90006F7C3D /* UserObjDaoInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserObjDaoInterface.h; sourceTree = "<group>"; };
+		63CBCC1A18D2FA90006F7C3D /* UserObjDaoInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserObjDaoInterface.m; sourceTree = "<group>"; };
 		63DB91BA18CD64B800157D74 /* LineDualSentenceObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineDualSentenceObj.h; sourceTree = SOURCE_ROOT; };
 		63DB91BB18CD64B800157D74 /* LineDualSentenceObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineDualSentenceObj.m; sourceTree = SOURCE_ROOT; };
 		63DB91BD18CD65D800157D74 /* LineSubjectObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineSubjectObj.h; sourceTree = SOURCE_ROOT; };
@@ -1883,6 +1886,8 @@
 			children = (
 				63DB925B18CDE4C600157D74 /* DownloadClassmatesInfo.h */,
 				63DB925C18CDE4C600157D74 /* DownloadClassmatesInfo.m */,
+				63CBCC1918D2FA90006F7C3D /* UserObjDaoInterface.h */,
+				63CBCC1A18D2FA90006F7C3D /* UserObjDaoInterface.m */,
 			);
 			name = classes;
 			sourceTree = "<group>";
@@ -2008,7 +2013,6 @@
 				630DBE0718D15BF4009DA0EB /* homeworkTimer@2x.png in Resources */,
 				630DBE2318D15CB1009DA0EB /* homwwork_listenWrite@2x.png in Resources */,
 				1848613518C72D29002B6C78 /* 10_06@2x.png in Resources */,
-				182A89DD18C9972B00CF4B30 /* propOfTime@2x.png in Resources */,
 				1848613718C72D29002B6C78 /* 10_04@2x.png in Resources */,
 				0EAABD8018CF15C900CD2DE7 /* card_hasselected@2x.png in Resources */,
 				1848613718C72D29002B6C78 /* 10_04@2x.png in Resources */,
@@ -2097,10 +2101,6 @@
 				630DBDFA18D15AFB009DA0EB /* arrowBack@2x.png in Resources */,
 				0E92657D18BDACDD003ADEC3 /* third_active@2x.png in Resources */,
 				1848613918C72D29002B6C78 /* 10_02@2x.png in Resources */,
-				0EAABD7218CF052300CD2DE7 /* tag_back@2x.png in Resources */,
-				639657F518C038BB002F2A90 /* xunsu@2x.png in Resources */,
-				6396580618C038E2002F2A90 /* youxiu_yellow@2x.png in Resources */,
-				639657E118C038A6002F2A90 /* tabBarItemBack2@2x.png in Resources */,
 				0E9D689E18CD670E00EACFA3 /* CardpackageViewController.xib in Resources */,
 				0E92657D18BDACDD003ADEC3 /* third_active@2x.png in Resources */,
 				0E9D68DC18CDC45400EACFA3 /* card_highted@2x.png in Resources */,
@@ -2165,7 +2165,6 @@
 				0E9C6E9E18D1977E00E807D1 /* SelectedViewController.xib in Resources */,
 				0EAABDBF18D0416E00CD2DE7 /* listen_back@2x.png in Resources */,
 				1848613118C72D29002B6C78 /* 10_10@2x.png in Resources */,
-				6396582D18C0578D002F2A90 /* homework_select@2x.png in Resources */,
 				0E5D1C8718C9A13C008A13F2 /* logo@2x.png in Resources */,
 				0E9265A418BEEA01003ADEC3 /* send@2x.png in Resources */,
 				0E92657C18BDACDD003ADEC3 /* second@2x.png in Resources */,
@@ -2273,6 +2272,7 @@
 				63B8D28118C87FA0004141E9 /* Base64.m in Sources */,
 				63DB921518CDA39C00157D74 /* LineObj.m in Sources */,
 				0EEF4C1C18C562900058606A /* ReplyMessageObject.m in Sources */,
+				63CBCC1B18D2FA90006F7C3D /* UserObjDaoInterface.m in Sources */,
 				0EEF4BCF18C561300058606A /* DataService.m in Sources */,
 				182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */,
 				0E9C6E9818D1496000E807D1 /* SortViewController.m in Sources */,

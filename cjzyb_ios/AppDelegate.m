@@ -34,6 +34,13 @@
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
+-(void)showHomework{
+    HomeworkContainerController *container = [[HomeworkContainerController alloc] initWithNibName:@"HomeworkContainerController" bundle:nil];
+    self.window.rootViewController = container;
+    container.homeworkType = HomeworkType_line;
+    [self.window makeKeyAndVisible];
+}
+
 - (void)showRootView {
     NSFileManager *fileManage = [NSFileManager defaultManager];
     NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -66,6 +73,9 @@
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
+    
+//    [self showHomework];
+//    return YES;
     MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
     tabBarController.childenControllerArray = @[main];

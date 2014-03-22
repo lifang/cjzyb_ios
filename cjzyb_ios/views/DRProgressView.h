@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "UserObject.h"
 @interface DRProgressView : UIView
 @property (assign,nonatomic) float progress;
 -(void)setProgressValue:(float)progress withLevelName:(NSString*)levelName;
+-(void)updateContentWithScore:(int)score;
 @end

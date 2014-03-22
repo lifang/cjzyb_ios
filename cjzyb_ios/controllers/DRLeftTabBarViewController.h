@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LeftTabBarView.h"
 #import "StudentListViewController.h"
+#import "DRNavigationBar.h"
 /** DRLeftTabBarViewController
  *
  * 左侧边栏的tabbarcontroller
@@ -16,6 +17,7 @@
  */
 @interface DRLeftTabBarViewController : UIViewController<LeftTabBarViewDelegate,StudentListViewControllerDelegate>
 @property (assign,nonatomic) BOOL isHiddleLeftTabBar;
+@property (nonatomic,strong) DRNavigationBar *drNavigationBar;
 
 /** childenControllerArray
  *

@@ -27,8 +27,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.classArray addObject:@"夏洛克三班"];
-    [self.classArray addObject:@"好基友五班级"];
+//    [self.classArray addObject:@"夏洛克三班"];
+//    [self.classArray addObject:@"好基友五班级"];
     self.tableView.separatorColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"line.png"]];
     self.addClassButton = [[UIButton alloc] initWithFrame:(CGRect){0,0,200,70}];
     [self.addClassButton addTarget:self action:@selector(addMoreClasses) forControlEvents:UIControlEventTouchUpInside];

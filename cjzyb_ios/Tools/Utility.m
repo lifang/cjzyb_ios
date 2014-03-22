@@ -23,6 +23,11 @@
     return defaultUti;
 }
 
+///分数转化成等级,满100升一级
++(NSString*)formateLevelWithScore:(float)score{
+    return [NSString stringWithFormat:@"L%d",(int)score/100];
+}
+
 ///异步请求网络数据
 +(void)requestDataWithRequest:(NSURLRequest*)request withSuccess:(void (^)(NSDictionary *dicData))success withFailure:(void (^)(NSError *error))failure{
     if (!request) {
@@ -59,8 +64,8 @@
             return ;
         }
         
-        
-        if (![dicData objectForKey:@"status"] || [[dicData objectForKey:@"status"] isEqualToString:@"error"]) {
+        NSString *status = [Utility filterValue:[dicData objectForKey:@"status"]];
+        if (!status || [status isEqualToString:@"error"] || [status isEqualToString:@"0"]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (failure) {
                     failure([NSError errorWithDomain:@"" code:2006 userInfo:@{@"msg": [dicData objectForKey:@"notice"]?:@"获取数据失败"}]);
@@ -74,6 +79,60 @@
         }
     });
 }
+
+
+///异步请求网络数据
++(void)requestDataWithASIRequest:(ASIHTTPRequest*)request withSuccess:(void (^)(NSDictionary *dicData))success withFailure:(void (^)(NSError *error))failure{
+    if (!request) {
+        if (failure) {
+            failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"请求参数不能为空"}]);
+        }
+        return;
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [request startSynchronous];
+        NSError *error = request.error;
+        NSData *data = request.responseData;
+        DLog(@"%@,%@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding],error);
+        if (error) {
+            [Utility requestFailure:error tipMessageBlock:^(NSString *tipMsg) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (failure) {
+                        failure([NSError errorWithDomain:@"" code:2002 userInfo:@{@"msg": tipMsg}]);
+                    }
+                });
+            }];
+            
+            return ;
+        }
+        
+        NSError *jsonError = nil;
+        NSDictionary *dicData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
+        if (!dicData || dicData.count <= 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure([NSError errorWithDomain:@"" code:2002 userInfo:@{@"msg": @"获取空数据"}]);
+                }
+            });
+            return ;
+        }
+        
+        
+        NSString *status = [Utility filterValue:[dicData objectForKey:@"status"]];
+        if (!status || [status isEqualToString:@"error"] || [status isEqualToString:@"0"]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure([NSError errorWithDomain:@"" code:2006 userInfo:@{@"msg": [dicData objectForKey:@"notice"]?:@"获取数据失败"}]);
+                }
+            });
+            return;
+        }
+        if (success) {
+            success(dicData);
+        }
+    });
+}
+
 
 +(NSString *)filterValue:(NSString*)filterValue{
     NSString *value = [NSString stringWithFormat:@"%@",filterValue];
