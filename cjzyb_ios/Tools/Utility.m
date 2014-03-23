@@ -1493,12 +1493,16 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 }
 
 //下载question.js ,用户选择"下载"之后调用
-+ (void)downloadQuestionJSON{
++ (NSDictionary *)downloadQuestionJSON{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths firstObject];
     path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"questionJSON_%@.js",[DataService sharedService].taskObj.taskId]];
     NSData *questionData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.question_packages_url]];
-    [questionData writeToFile:path atomically:YES];
+    [questionData writeToFile:path atomically:YES]; //保存文件,并返回JSON 字典
+    
+    NSError *error;
+    NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingAllowFragments error:&error];
+    return jsonDic;
 }
 
 //添加不用备份的属性5.0.1

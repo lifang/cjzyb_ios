@@ -29,7 +29,7 @@
 @property (strong,nonatomic) UIButton *propOfShowingAnswer; //显示答案道具
 @property (strong,nonatomic) UIButton *propOfReduceTime; //时间-5道具
 
-
+@property (assign,nonatomic) BOOL checked; //本小题是否已经按过"检查"按钮
 @property (assign,nonatomic) BOOL isReDoingChallenge;  //是否是重新做题,重新挑战
 @property (assign,nonatomic) SelectingType selectingType;  //当前题目类型 填空/看图/听力
 @property (assign,nonatomic) NSTimeInterval timeCount;//计时 (秒)
@@ -291,14 +291,17 @@
             self.isLastQuestion = YES;
             [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
         }
+        self.checked = NO;
         self.currentQuestion = self.questionArray[self.currentNO - 1];
         self.currentSelectedOptions = [NSMutableArray array]; //清除选择数组
         self.selectingType = self.currentQuestion.seType;
         if (self.currentQuestion.seType == SelectingTypeListening) {
             _currentAudioData = nil;
-            [self currentAudioData];//先缓冲
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self currentAudioData];//先缓冲
+            });
         }
-        [self createQuestionView];
+        [self createQuestionView];//更新本题内容
         if (self.isViewingHistory) {
             [self refreshHistoryView];
         }else if (!self.isReDoingChallenge){
@@ -433,6 +436,22 @@
 }
 
 #pragma mark property
+//在改变checked属性时,改变按钮的文字
+- (void)setChecked:(BOOL)checked{
+    _checked = checked;
+    if (!self.isViewingHistory) {
+        if (!checked) {
+            [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
+        }else{
+            if (self.isLastQuestion) {
+                [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+            }else{
+                [parentVC.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
+            }
+        }
+    }
+}
+
 - (NSData *)currentAudioData{
     if (!_currentAudioData) {
         _currentAudioData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.currentQuestion.seContentAttachment]];
@@ -631,7 +650,8 @@
     }
     
     //判断多选
-    for (NSString *option in selectedOptions) {
+    for (NSString *optionIndex in selectedOptions) {
+        NSString *option = self.currentQuestion.seOptionsArray[optionIndex.integerValue];
         BOOL tooMuch = YES;
         for(NSString *answer in self.currentQuestion.seRightAnswers){
             if ([answer isEqualToString:option]) {
@@ -647,7 +667,8 @@
     //判断漏选
     for (NSString *answer in self.currentQuestion.seRightAnswers) {
         BOOL notEnough = YES;
-        for(NSString *option in selectedOptions){
+        for(NSString *optionIndex in selectedOptions){
+            NSString *option = self.currentQuestion.seOptionsArray[optionIndex.integerValue];
             if ([answer isEqualToString:option]) {
                 notEnough = NO;
                 break;
@@ -661,22 +682,24 @@
 }
 
 //点击"检查"后,把当前答案存放入答案数组中,播放音效
--(void)addAnswer{
+-(void)checkChoice{
     OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
     answer.answerID = self.currentQuestion.seID;
     NSMutableArray *selectedOptions = [NSMutableArray array];
     for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
         for (NSString *str in self.currentSelectedOptions) {
             if (str.integerValue == i) {
-                [selectedOptions addObject:self.currentQuestion.seOptionsArray[i]];
+//                [selectedOptions addObject:self.currentQuestion.seOptionsArray[i]];
+                [selectedOptions addObject:[NSString stringWithFormat:@"%c",'A' + i]];
             }
         }
     }
     answer.answerAnswer = [selectedOptions componentsJoinedByString:@";||;"];
-    BOOL answerRatio = [self judgeAnswer:selectedOptions];
+    BOOL answerRatio = [self judgeAnswer:self.currentSelectedOptions];
     answer.answerRatio = answerRatio ? @"100" : @"0";
     [self.answerArray addObject:answer];
     
+    [self showCheckResult];
     [self makeAnswerJSON];
     
     //播放声音
@@ -687,13 +710,38 @@
         if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
             [[AppDelegate shareIntance].avPlayer play];
         }
-        
     }else{
         [AppDelegate shareIntance].avPlayer = nil;
         [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"right_sound" ofType:@"mp3"]] error:nil];
         [AppDelegate shareIntance].avPlayer.volume = 1;
         if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
             [[AppDelegate shareIntance].avPlayer play];
+        }
+    }
+    
+    self.checked = YES;
+}
+
+- (void)showCheckResult{
+    for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
+        NSString *option = self.currentQuestion.seOptionsArray[i];
+        BOOL optionIsRightAnswer = NO;
+        for(NSString *rightAnswer in self.currentQuestion.seRightAnswers){
+            if ([option isEqualToString:rightAnswer]) {
+                //标注正确答案
+                optionIsRightAnswer = YES;
+                SelectingChallengeOptionCell *cell = (SelectingChallengeOptionCell *)[self.optionTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+                cell.optionBackgroundView.backgroundColor = [UIColor greenColor];
+            }
+        }
+        if (!optionIsRightAnswer) {
+            //错误答案是否是被选中的
+            for(NSString *selectedOptionIndex in self.currentSelectedOptions){
+                if (i == selectedOptionIndex.integerValue) {
+                    SelectingChallengeOptionCell *cell = (SelectingChallengeOptionCell *)[self.optionTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+                    cell.optionBackgroundView.backgroundColor = [UIColor redColor];
+                }
+            }
         }
     }
 }
@@ -760,16 +808,23 @@
 - (IBAction)nextButtonClicked:(id)sender {
     ///防止乱点
     if (self.currentNO > self.questionArray.count) {
-        [Utility errorAlert:@"请先答本题"];
         return;
     }
     if (!self.isViewingHistory) {
         if (self.currentSelectedOptions.count < 1) {
+            [Utility errorAlert:@"请先答本题"];
             return;
         }
-        [self addAnswer];
+        if (!self.checked) {
+            //先检查
+            [self checkChoice];
+        }else{
+            [self loadNextQuestion];
+        }
+    }else{
+        [self loadNextQuestion];
     }
-    [self loadNextQuestion];
+    
 }
 
 #pragma mark TableViewDataSource
@@ -787,6 +842,7 @@
     cell.optionString = self.currentQuestion.seOptionsArray[indexPath.row];
     cell.delegate = self;
     cell.maxLabelWidth = 0;
+    cell.optionBackgroundView.backgroundColor = [UIColor whiteColor];
     for (int i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
         NSString *option = self.currentQuestion.seOptionsArray[i];
         CGFloat width = [Utility getTextSizeWithString:option withFont:[UIFont systemFontOfSize:40.0]].width;
@@ -815,7 +871,10 @@
 -(void)selectingCell:(SelectingChallengeOptionCell *)cell clickedForSelecting:(BOOL)selected{
     cell.optionSelected = selected;
     if (selected) {
-        [self.currentSelectedOptions addObject:[NSString stringWithFormat:@"%d",cell.indexPath.row]];
+        NSString *index = [NSString stringWithFormat:@"%d",cell.indexPath.row];
+        if (![self.currentSelectedOptions containsObject:index]) {
+            [self.currentSelectedOptions addObject:index];
+        }
     }else{
         NSInteger index = 0;
         for (NSInteger i = 0; i < self.currentSelectedOptions.count; i++) {
