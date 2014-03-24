@@ -10,6 +10,7 @@
 @protocol SelectingChallengeOptionCellDelegate;
 
 @interface SelectingChallengeOptionCell : UITableViewCell
+@property (strong,nonatomic) UIView *optionBackgroundView;  //背景
 @property (strong,nonatomic) NSString *optionString;
 @property (strong,nonatomic) NSIndexPath *indexPath;
 @property (assign,nonatomic) BOOL optionSelected;

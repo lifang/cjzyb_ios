@@ -1554,20 +1554,114 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         TaskObj *taskObj = [TaskObj taskFromDictionary:packageDic];
         [DataService sharedService].taskObj = taskObj;
         returnMsg = @"读取成功";
+        
     } withFailure:^(NSError *error) {
         returnMsg = [error.userInfo objectForKey:@"msg"];
     }];
     return returnMsg;
 }
 
-//下载question.js ,用户选择"下载"之后调用
-+ (void)downloadQuestionJSON{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths firstObject];
-    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"questionJSON_%@.js",[DataService sharedService].taskObj.taskID]];
-    NSData *questionData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.taskFileDownloadURL]];
-    [questionData writeToFile:path atomically:YES];
+//下载questionJSON.js ,用户选择"下载"之后调用
++ (NSDictionary *)downloadQuestionJSON{
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
+    if (![manager fileExistsAtPath:path]) {
+        NSError *error;
+        [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
+    }
+    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"questionJSON.js"]];
+    NSError *error;
+    NSData *questionData;
+    if ([manager fileExistsAtPath:path]) {
+        questionData = [NSData dataWithContentsOfFile:path];
+    }else{
+        questionData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.taskFileDownloadURL]];
+        [questionData writeToFile:path atomically:YES]; //保存文件,并返回JSON 字典
+    }
+    NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingAllowFragments error:&error];
+    return jsonDic;
 }
+
+//下载当天的answerJSON.js
++ (NSDictionary *)downloadAnswerJSON{
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
+    if (![manager fileExistsAtPath:path]) {
+        NSError *error;
+        [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
+    }
+    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"answerJSON.js"]];
+    NSError *error;
+    NSData *answerData;
+    if ([manager fileExistsAtPath:path]) {
+        answerData = [NSData dataWithContentsOfFile:path];
+        NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:answerData options:NSJSONReadingAllowFragments error:&error];
+        NSMutableArray *localFinishedChallenges = [NSMutableArray array];
+        {
+            NSDictionary *dic = [jsonDic objectForKey:@"listening"];
+            NSString *status = [dic objectForKey:@"status"];
+            if ([status isEqualToString:@"1"]) {
+                [localFinishedChallenges addObject:@"0"];
+            }
+        }
+        {
+            NSDictionary *dic = [jsonDic objectForKey:@"reading"];
+            NSString *status = [dic objectForKey:@"status"];
+            if ([status isEqualToString:@"1"]) {
+                [localFinishedChallenges addObject:@"1"];
+            }
+        }
+        {
+            NSDictionary *dic = [jsonDic objectForKey:@"time_limit"];
+            NSString *status = [dic objectForKey:@"status"];
+            if ([status isEqualToString:@"1"]) {
+                [localFinishedChallenges addObject:@"2"];
+            }
+        }
+        {
+            NSDictionary *dic = [jsonDic objectForKey:@"selecting"];
+            NSString *status = [dic objectForKey:@"status"];
+            if ([status isEqualToString:@"1"]) {
+                [localFinishedChallenges addObject:@"3"];
+            }
+        }
+        {
+            NSDictionary *dic = [jsonDic objectForKey:@"lining"];
+            NSString *status = [dic objectForKey:@"status"];
+            if ([status isEqualToString:@"1"]) {
+                [localFinishedChallenges addObject:@"4"];
+            }
+        }
+        {
+            NSDictionary *dic = [jsonDic objectForKey:@"cloze"];
+            NSString *status = [dic objectForKey:@"status"];
+            if ([status isEqualToString:@"1"]) {
+                [localFinishedChallenges addObject:@"5"];
+            }
+        }
+        {
+            NSDictionary *dic = [jsonDic objectForKey:@"sort"];
+            NSString *status = [dic objectForKey:@"status"];
+            if ([status isEqualToString:@"1"]) {
+                [localFinishedChallenges addObject:@"6"];
+            }
+        }
+        for(NSNumber *number in [DataService sharedService].taskObj.finish_types){
+            //如果服务器上有本地未完成的答案
+            if(![localFinishedChallenges containsObject:[NSString stringWithFormat:@"%d",number.integerValue]]){
+                answerData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.taskAnswerFileDownloadURL]];
+                [answerData writeToFile:path atomically:YES]; //保存文件,并返回JSON 字典
+                break;
+            };
+        }
+    }else{
+        answerData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.taskAnswerFileDownloadURL]];
+        [answerData writeToFile:path atomically:YES]; //保存文件,并返回JSON 字典
+    }
+    NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:answerData options:NSJSONReadingAllowFragments error:&error];
+    return jsonDic;
+}
+
 
 //添加不用备份的属性5.0.1
 + (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL

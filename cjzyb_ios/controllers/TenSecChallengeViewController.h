@@ -19,7 +19,6 @@
 @property (nonatomic,assign) BOOL isViewingHistory; //是否浏览历史
 
 @property (weak, nonatomic) IBOutlet UIView *contentBgView;
-@property (weak, nonatomic) IBOutlet UIView *topBarView;
 -(void)startChallenge;//外部调用.  如需浏览历史,先设置isViewingHistory属性为YES
 -(void)showNextQuestion;
 @end

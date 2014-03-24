@@ -154,7 +154,6 @@
             [self.contentView setFrame:(CGRect){0,75,768,949}];
             [self.contentView addSubview:self.tenSecViewController.view];
             [self.tenSecViewController.contentBgView setFrame:(CGRect){0,0,768,949}];
-            [self.tenSecViewController.topBarView setHidden:YES];
             [self addChildViewController:self.tenSecViewController];
             [self.tenSecViewController didMoveToParentViewController:self];
             self.tenSecViewController.isViewingHistory = [DataService sharedService].isHistory;
@@ -181,8 +180,8 @@
             [self.checkHomeworkButton addTarget:self.selectingChallengeViewController action:@selector(nextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.appearCorrectButton addTarget:self.selectingChallengeViewController action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.selectingChallengeViewController action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
-            self.selectingChallengeViewController.topBarView.hidden = YES;
-            self.selectingChallengeViewController.itemsView.hidden = YES;
+//            self.selectingChallengeViewController.topBarView.hidden = YES;
+//            self.selectingChallengeViewController.itemsView.hidden = YES;
             self.selectingChallengeViewController.isViewingHistory = [DataService sharedService].isHistory;
         }
             break;
