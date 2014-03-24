@@ -1492,7 +1492,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             return;
         }
         NSDictionary *packageDic = [taskArray firstObject];
-        TaskObject *taskObj = [TaskObject taskFromDictionary:packageDic];
+        TaskObj *taskObj = [TaskObj taskFromDictionary:packageDic];
         [DataService sharedService].taskObj = taskObj;
         returnMsg = @"读取成功";
     } withFailure:^(NSError *error) {
@@ -1505,8 +1505,8 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 + (void)downloadQuestionJSON{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths firstObject];
-    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"questionJSON_%@.js",[DataService sharedService].taskObj.taskId]];
-    NSData *questionData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.question_packages_url]];
+    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"questionJSON_%@.js",[DataService sharedService].taskObj.taskID]];
+    NSData *questionData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.taskFileDownloadURL]];
     [questionData writeToFile:path atomically:YES];
 }
 
@@ -1669,7 +1669,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
-    NSDate *endDate = [dateFormatter dateFromString:[DataService sharedService].taskObj.end_time];
+    NSDate *endDate = [dateFormatter dateFromString:[DataService sharedService].taskObj.taskEndDate];
     
     NSDate *nowDate = [NSDate date];
     

@@ -54,7 +54,6 @@
 		0E9265BF18C028A9003ADEC3 /* ComtomTxt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9265BE18C028A9003ADEC3 /* ComtomTxt.m */; };
 		0E92ECDF18D2B03600B6806C /* ClozeAnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92ECDD18D2B03600B6806C /* ClozeAnswerViewController.m */; };
 		0E92ECE018D2B03600B6806C /* ClozeAnswerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92ECDE18D2B03600B6806C /* ClozeAnswerViewController.xib */; };
-		0E93C99A18D7E9910094AD7B /* TaskObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C99918D7E9910094AD7B /* TaskObject.m */; };
 		0E93C9AA18D80EB20094AD7B /* BasePostInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9A918D80EB20094AD7B /* BasePostInterface.m */; };
 		0E93C9B018D834630094AD7B /* ios-playing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E93C9AE18D834630094AD7B /* ios-playing@2x.png */; };
 		0E93C9B118D834630094AD7B /* ios-stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E93C9AF18D834630094AD7B /* ios-stop@2x.png */; };
@@ -438,8 +437,6 @@
 		0E92ECDC18D2B03600B6806C /* ClozeAnswerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClozeAnswerViewController.h; sourceTree = "<group>"; };
 		0E92ECDD18D2B03600B6806C /* ClozeAnswerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClozeAnswerViewController.m; sourceTree = "<group>"; };
 		0E92ECDE18D2B03600B6806C /* ClozeAnswerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClozeAnswerViewController.xib; sourceTree = "<group>"; };
-		0E93C99818D7E9910094AD7B /* TaskObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskObject.h; sourceTree = "<group>"; };
-		0E93C99918D7E9910094AD7B /* TaskObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskObject.m; sourceTree = "<group>"; };
 		0E93C9A818D80EB20094AD7B /* BasePostInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasePostInterface.h; sourceTree = "<group>"; };
 		0E93C9A918D80EB20094AD7B /* BasePostInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasePostInterface.m; sourceTree = "<group>"; };
 		0E93C9AE18D834630094AD7B /* ios-playing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-playing@2x.png"; sourceTree = "<group>"; };
@@ -1355,8 +1352,6 @@
 				0E93C9B518D842480094AD7B /* btnEffect.wav */,
 				0EAABDB418D034B800CD2DE7 /* answer.json */,
 				0EAABDB218D034AD00CD2DE7 /* question.json */,
-				0E93C99818D7E9910094AD7B /* TaskObject.h */,
-				0E93C99918D7E9910094AD7B /* TaskObject.m */,
 				0EAABDB618D0364800CD2DE7 /* modelmodel */,
 				0EEF4BDD18C561700058606A /* Interface */,
 				0E92657218BDACCE003ADEC3 /* images */,
@@ -1487,6 +1482,8 @@
 		632954C218BC879B00F2B78D /* model */ = {
 			isa = PBXGroup;
 			children = (
+				6341533218C17BEC00DE4480 /* TaskObj.h */,
+				6341533318C17BEC00DE4480 /* TaskObj.m */,
 				63DB91B618CD60D100157D74 /* lining */,
 				63289A3118C5B1FA00C0083E /* reading */,
 				6396583518C06EBD002F2A90 /* homework */,
@@ -1905,8 +1902,6 @@
 			children = (
 				6396583818C07B37002F2A90 /* HomeworkTypeObj.h */,
 				6396583918C07B37002F2A90 /* HomeworkTypeObj.m */,
-				6341533218C17BEC00DE4480 /* TaskObj.h */,
-				6341533318C17BEC00DE4480 /* TaskObj.m */,
 				187222B718C86A0300BBE2D1 /* SelectingChallengeObject.h */,
 				187222B818C86A0300BBE2D1 /* SelectingChallengeObject.m */,
 				182A89D718C977BC00CF4B30 /* OrdinaryAnswerObject.h */,
@@ -2406,7 +2401,6 @@
 				6396576718C03664002F2A90 /* WYPopoverController.m in Sources */,
 				63DB921218CD9D7300157D74 /* LiningDrawLinesView.m in Sources */,
 				0E5D1C6318C84BA8008A13F2 /* QuestionInterface.m in Sources */,
-				0E93C99A18D7E9910094AD7B /* TaskObject.m in Sources */,
 				636CF4B418BD8F3B0085C28E /* TestViewController.m in Sources */,
 				63289A3D18C5B74600C0083E /* ParseQuestionJsonFileTool.m in Sources */,
 				0EEF4BF718C5618B0058606A /* NSString+URLEncoding.m in Sources */,

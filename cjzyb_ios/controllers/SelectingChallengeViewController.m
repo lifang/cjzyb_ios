@@ -71,8 +71,8 @@
     if (!self.questionArray) {
         [Utility errorAlert:@"无法读取问题资料!"];
     }
-    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"selecting" andDate:[DataService sharedService].taskObj.start_time]];
-    self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.start_time];
+    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"selecting" andDate:[DataService sharedService].taskObj.taskStartDate]];
+    self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.taskStartDate];
     
     [self.optionTable registerClass:[SelectingChallengeOptionCell class] forCellReuseIdentifier:@"cell"];
     self.isReDoingChallenge = NO;
@@ -425,7 +425,7 @@
     
     [answerDic setObject:questions forKey:@"questions"];
     
-    [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"selecting" andDate:[DataService sharedService].taskObj.start_time];
+    [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"selecting" andDate:[DataService sharedService].taskObj.taskStartDate];
     
     return [NSDictionary dictionaryWithDictionary:answerDic];
 }
@@ -728,7 +728,7 @@
     [branchOfPropArray addObject:[NSNumber numberWithInteger:self.currentQuestion.seID.integerValue]];
     [timePropDic setObject:branchOfPropArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:1 withObject:timePropDic];
-    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.start_time];
+    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 
 //道具1
@@ -752,7 +752,7 @@
     [branchOfPropArray addObject:[NSNumber numberWithInteger:self.currentQuestion.seID.integerValue]];
     [rightAnswerPropDic setObject:branchOfPropArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:0 withObject:rightAnswerPropDic];
-    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.start_time];
+    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 
 - (IBAction)nextButtonClicked:(id)sender {

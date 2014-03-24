@@ -61,7 +61,7 @@
     self.questionArray = [NSMutableArray arrayWithArray:[TenSecChallengeObject parseTenSecQuestionsFromFile]];
     
     //载入answer文件
-    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit" andDate:[DataService sharedService].taskObj.start_time]];
+    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit" andDate:[DataService sharedService].taskObj.taskStartDate]];
 //    [self parseAnswerJSON];
     
     self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
@@ -239,7 +239,7 @@
     [answerDic setObject:questions forKey:@"questions"];
     
     //保存JSON
-    [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"time_limit" andDate:[DataService sharedService].taskObj.start_time];
+    [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"time_limit" andDate:[DataService sharedService].taskObj.taskStartDate];
     return [NSDictionary dictionaryWithDictionary:answerDic];
 }
 

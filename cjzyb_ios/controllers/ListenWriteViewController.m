@@ -206,7 +206,7 @@
     [super viewDidLoad];
     [self roundView:self.listenBtn];
     
-    NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.start_time];
+    NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSDictionary *listebDic = [dic objectForKey:@"listening"];
     self.questionArray = [NSMutableArray arrayWithArray:[listebDic objectForKey:@"questions"]];
     self.specified_time = [[listebDic objectForKey:@"specified_time"]intValue];
@@ -243,7 +243,7 @@
     self.homeControl.reduceTimeButton.enabled = NO;
     self.number=0;self.branchNumber=0;self.isFirst = NO;
     //TODO:初始化答案的字典
-    self.answerDic = [Utility returnAnswerDictionaryWithName:LISTEN andDate:[DataService sharedService].taskObj.start_time];
+    self.answerDic = [Utility returnAnswerDictionaryWithName:LISTEN andDate:[DataService sharedService].taskObj.taskStartDate];
     self.historyView.hidden=YES;
     int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
     if ([DataService sharedService].isHistory==YES) {
@@ -258,7 +258,7 @@
         }
         
     }else {
-        self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.start_time];
+        self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.taskStartDate];
         self.remindLabel.text = @"以下为上面可能错的词哦！试着将它们填入相应的位置。";
         int status = [[self.answerDic objectForKey:@"status"]intValue];
         if (status == 1) {
@@ -614,7 +614,7 @@ static int numberOfMusic =0;
     
     [self.answerDic setObject:questions forKey:@"questions"];
     
-    [Utility returnAnswerPathWithDictionary:self.answerDic andName:LISTEN andDate:[DataService sharedService].taskObj.start_time];
+    [Utility returnAnswerPathWithDictionary:self.answerDic andName:LISTEN andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 -(void)nextQuestion:(id)sender {
     
@@ -755,6 +755,6 @@ static int numberOfMusic =0;
     [branch_propArray addObject:[NSNumber numberWithInt:[[self.branchQuestionDic objectForKey:@"id"] intValue]]];
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:1 withObject:branch_propDic];
-    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.start_time];
+    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 @end

@@ -295,7 +295,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.start_time];
+    NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSDictionary *sortDic = [dic objectForKey:@"sort"];
     self.questionArray = [NSMutableArray arrayWithArray:[sortDic objectForKey:@"questions"]];
     self.specified_time = [[sortDic objectForKey:@"specified_time"]intValue];
@@ -307,7 +307,7 @@
     self.homeControl.reduceTimeButton.enabled = NO;
     self.number=0;self.branchNumber=0;self.isFirst= NO;
     //TODO:初始化答案的字典
-    self.answerDic = [Utility returnAnswerDictionaryWithName:SORT andDate:[DataService sharedService].taskObj.start_time];
+    self.answerDic = [Utility returnAnswerDictionaryWithName:SORT andDate:[DataService sharedService].taskObj.taskStartDate];
     
     self.historyView.hidden=YES;
     self.preBtn.hidden=YES;self.restartBtn.hidden=YES;
@@ -324,7 +324,7 @@
         }
     }else {
         self.preBtn.hidden=NO;self.restartBtn.hidden=NO;
-        self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.start_time];
+        self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.taskStartDate];
         int status = [[self.answerDic objectForKey:@"status"]intValue];
         if (status == 1) {
             
@@ -664,7 +664,7 @@
     
     [self.answerDic setObject:questions forKey:@"questions"];
     
-    [Utility returnAnswerPathWithDictionary:self.answerDic andName:SORT andDate:[DataService sharedService].taskObj.start_time];
+    [Utility returnAnswerPathWithDictionary:self.answerDic andName:SORT andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 -(void)nextQuestion:(id)sender {
     [self.homeControl startTimer];
@@ -791,7 +791,7 @@
     [branch_propArray addObject:[NSNumber numberWithInt:[[self.branchQuestionDic objectForKey:@"id"] intValue]]];
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:0 withObject:branch_propDic];
-    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.start_time];
+    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
     
     self.branchScore = self.orgArray.count;
     for (int i=0; i<self.orgArray.count; i++) {
@@ -874,6 +874,6 @@
     [branch_propArray addObject:[NSNumber numberWithInt:[[self.branchQuestionDic objectForKey:@"id"] intValue]]];
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:1 withObject:branch_propDic];
-    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.start_time];
+    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 @end

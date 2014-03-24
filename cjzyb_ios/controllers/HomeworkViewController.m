@@ -61,7 +61,7 @@
     }else{
         path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }
-    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.start_time];
+    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     
     NSString *nameString = [NSString stringWithFormat:@"%@-%@.mp3",name,[dic objectForKey:@"id"]];
     NSString *savePath=[documentDirectory stringByAppendingPathComponent:nameString];
@@ -83,7 +83,7 @@
 }
 
 -(void)downLoadService {
-    NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.start_time];
+    NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSArray *array = [NSArray arrayWithObjects:LISTEN,READ,SELECT, nil];
     
     for (int i=0; i<array.count; i++) {
