@@ -61,9 +61,11 @@
     }else{
         path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }
+    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.start_time];
+    
     NSString *nameString = [NSString stringWithFormat:@"%@-%@.mp3",name,[dic objectForKey:@"id"]];
-    NSString *savePath=[path stringByAppendingPathComponent:nameString];
-    NSString *temp = [path stringByAppendingPathComponent:@"temp"];
+    NSString *savePath=[documentDirectory stringByAppendingPathComponent:nameString];
+    NSString *temp = [documentDirectory stringByAppendingPathComponent:@"temp"];
     NSString *tempPath = [temp stringByAppendingPathComponent:nameString];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (![fileManager fileExistsAtPath:temp]) {
@@ -81,7 +83,7 @@
 }
 
 -(void)downLoadService {
-    NSDictionary * dic = [Utility initWithJSONFile:@"question"];
+    NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.start_time];
     NSArray *array = [NSArray arrayWithObjects:LISTEN,READ,SELECT, nil];
     
     for (int i=0; i<array.count; i++) {
@@ -107,15 +109,17 @@
                 for (int j=0; j<branch_questions.count; j++) {
                     NSDictionary *q_dic = [branch_questions objectAtIndex:j];
                     NSString *content = [q_dic objectForKey:@"content"];
-                    NSString *str = @".wav";
-                    NSRange range = [content rangeOfString:str];
+                    NSRange range = [content rangeOfString:@"</file>"];
                     if (range.location != NSNotFound) {
-                        NSMutableString *mutableStr = [NSMutableString stringWithFormat:@"%@",content];
-                        NSString *tempStr1=[mutableStr stringByReplacingOccurrencesOfString:@"</file>" withString:@""];
-                        mutableStr = [NSMutableString stringWithFormat:@"%@",tempStr1];
-                        NSString *tempStr2=[mutableStr stringByReplacingOccurrencesOfString:@"<file>" withString:@""];
-                        NSDictionary *theDic = [NSDictionary dictionaryWithObjectsAndKeys:[q_dic objectForKey:@"id"],@"id",tempStr2,@"resource_url", nil];
-                        [self addDownloadTaskWithDictionary:theDic andName:SELECT];
+                        NSArray *array = [content componentsSeparatedByString:@"</file>"];
+                        NSString *title_sub  =[array objectAtIndex:0];
+                        NSString *title=[title_sub stringByReplacingOccurrencesOfString:@"<file>" withString:@""];
+                        NSRange range2 = [title rangeOfString:@".jpg"];
+                        if (range2.location != NSNotFound) {//图片
+                        }else {//语音
+                            NSDictionary *theDic = [NSDictionary dictionaryWithObjectsAndKeys:[q_dic objectForKey:@"id"],@"id",title,@"resource_url", nil];
+                            [self addDownloadTaskWithDictionary:theDic andName:SELECT];
+                        }
                     }
                 }
             }

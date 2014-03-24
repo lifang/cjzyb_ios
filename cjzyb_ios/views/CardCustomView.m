@@ -44,12 +44,9 @@
     }
     return self;
 }
--(CGSize)getSizeWithString:(NSString *)str{
+-(CGSize)getSizeWithString:(NSString *)str withWidth:(int)width{
     UIFont *aFont = [UIFont systemFontOfSize:22];
-    CGSize size = [str sizeWithFont:aFont constrainedToSize:CGSizeMake(292, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-    if (size.height-100>0) {
-        size.height = 100;
-    }
+    CGSize size = [str sizeWithFont:aFont constrainedToSize:CGSizeMake(width, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     return size;
 }
 
@@ -103,7 +100,7 @@
     int type = 3;
 //    self.aCard.your_answer = @"a";
 //    self.aCard.answer = @"this;||;an;||;apple";
-    self.aCard.content = @"This is ______ apple!";
+    self.aCard.content = @"<file>http://116.255.202.123/companies/5/weixin_avatar/2890223880.jpg</file>选出图片中的单词选出图片中的单词";
 //    self.aCard.full_text = @"[[tag]] is [[tag]] what are you dong [[tag]]";
     
     self.aCard.your_answer = @"A";
@@ -144,17 +141,10 @@
         [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:self.aCard.content.length];
         [self.cardSecond.rtLab setLine];
     }else if (type==3) {//选择
-//        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",self.path]];
-//        [self.imgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"UserHeaderImageBox"]];
-        self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
         
-        self.cardSecond.label_title = [[UILabel alloc]init];
-        self.cardSecond.label_title.numberOfLines = 0;
-        self.cardSecond.label_title.font = [UIFont systemFontOfSize:22];
-        CGSize size = [self getSizeWithString:self.aCard.content];
-        self.cardSecond.label_title.frame = CGRectMake(20, 50, 292, size.height);
-        self.cardSecond.label_title.text = self.aCard.content;
-        [self.cardSecond addSubview:self.cardSecond.label_title];
+        self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
+        NSArray *answerArray = [self.aCard.answer componentsSeparatedByString:@";||;"];
+        self.cardFirst.rightLetterLab.text = [answerArray componentsJoinedByString:@"  "];
         
         self.cardSecond.cardSecondTable = [[UITableView alloc]initWithFrame:CGRectMake(20, self.cardSecond.label_title.frame.origin.y+self.cardSecond.label_title.frame.size.height, 292, 212)];
         self.cardSecond.cardSecondTable.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -163,9 +153,6 @@
         self.cardSecond.cardSecondTable.delegate = self.cardSecond;
         self.cardSecond.cardSecondTable.dataSource = self.cardSecond;
         [self.cardSecond addSubview:self.cardSecond.cardSecondTable];
-        
-        NSArray *answerArray = [self.aCard.answer componentsSeparatedByString:@";||;"];
-        self.cardFirst.rightLetterLab.text = [answerArray componentsJoinedByString:@"  "];
         
         NSArray *LetterArray = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F", nil];
         NSMutableArray *indexArray = [[NSMutableArray alloc]init];
@@ -180,6 +167,45 @@
         self.cardSecond.cardSecondArray = [self.aCard.options componentsSeparatedByString:@";||;"];
         [self.cardSecond.cardSecondTable reloadData];
         [self.cardSecond.rtLab removeFromSuperview];
+        
+        NSRange range = [self.aCard.content rangeOfString:@"</file>"];
+        if (range.location != NSNotFound) {
+            self.cardSecond.titleLab.hidden = YES;
+            NSArray *array = [self.aCard.content componentsSeparatedByString:@"</file>"];
+            NSString *title_sub  =[array objectAtIndex:0];
+            NSString *title=[title_sub stringByReplacingOccurrencesOfString:@"<file>" withString:@""];
+            
+            NSRange range2 = [title rangeOfString:@".jpg"];
+            if (range2.location != NSNotFound) {//图片
+                self.cardSecond.imgView = [self returnImageView];
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",title]];
+                [self.cardSecond.imgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"UserHeaderImageBox"]];
+                [self.cardSecond addSubview:self.cardSecond.imgView];
+                
+                if (array.count>1) {
+                    self.cardSecond.label_title = [self returnLabel];
+                    CGSize size = [self getSizeWithString:[array objectAtIndex:1] withWidth:212];
+                    self.cardSecond.label_title.frame = CGRectMake(90, 50, 212, size.height);
+                    self.cardSecond.label_title.text = [array objectAtIndex:1];
+                    [self.cardSecond addSubview:self.cardSecond.label_title];
+                }
+                self.cardSecond.cardSecondTable.frame = CGRectMake(20, 110, 292, 212);
+                
+            }else {//语音
+                self.cardSecond.cardSecondTable.frame = CGRectMake(20, 50, 292, 212);
+            }
+            
+        }else {
+            self.cardSecond.titleLab.hidden = NO;
+            self.cardSecond.label_title = [self returnLabel];
+            CGSize size = [self getSizeWithString:self.aCard.content withWidth:292];
+            self.cardSecond.label_title.frame = CGRectMake(20, 50, 292, size.height);
+            self.cardSecond.label_title.text = self.aCard.content;
+            [self.cardSecond addSubview:self.cardSecond.label_title];
+            
+            self.cardSecond.cardSecondTable.frame = CGRectMake(20, self.cardSecond.label_title.frame.origin.y+self.cardSecond.label_title.frame.size.height, 292, 212);
+        }
+        
     }else if (type==4) {//连线
         self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
         self.cardFirst.rightLetterLab.text = self.aCard.answer;
@@ -234,7 +260,19 @@
     }
 
 }
-
+-(UIImageView *)returnImageView {
+    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 40, 70, 70)];
+    imgView.backgroundColor = [UIColor clearColor];
+    return imgView;
+}
+-(UILabel *)returnLabel {
+    UILabel *label = [[UILabel alloc]init];
+    label.numberOfLines = 0;
+    label.font = [UIFont systemFontOfSize:22];
+    label.backgroundColor = [UIColor clearColor];
+    
+    return label;
+}
 -(void)setViewtag:(NSInteger)viewtag {
     _viewtag = viewtag;
     

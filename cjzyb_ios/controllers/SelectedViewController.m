@@ -159,7 +159,7 @@
     //选择答案之后更新界面
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAnswerByClozeView:) name:@"reloadAnswerByClozeView" object:nil];
     
-    NSDictionary * dic = [Utility initWithJSONFile:@"question"];
+    NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.start_time];
     self.clozeDic = [dic objectForKey:@"cloze"];
     self.questionArray = [NSMutableArray arrayWithArray:[self.clozeDic objectForKey:@"questions"]];
     self.specified_time = [[self.clozeDic objectForKey:@"specified_time"]intValue];
@@ -172,7 +172,7 @@
     self.number=0;self.isFirst= NO;
     self.prop_number=-1;
     //TODO:初始化答案的字典
-    self.answerDic = [Utility returnAnswerDictionaryWithName:CLOZE];
+    self.answerDic = [Utility returnAnswerDictionaryWithName:CLOZE andDate:[DataService sharedService].taskObj.start_time];
     self.historyView.hidden=YES;
     int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
     if ([DataService sharedService].isHistory==YES) {
@@ -185,7 +185,7 @@
             [self getQuestionData];
         }
     }else {
-        self.propsArray = [Utility returnAnswerProps];
+        self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.start_time];
         int status = [[self.answerDic objectForKey:@"status"]intValue];
         if (status == 1) {
             
@@ -303,7 +303,7 @@
             [questions addObject:dictionary];
             [self.answerDic setObject:questions forKey:@"questions"];
             
-            [Utility returnAnswerPathWithDictionary:self.answerDic andName:CLOZE];
+            [Utility returnAnswerPathWithDictionary:self.answerDic andName:CLOZE andDate:[DataService sharedService].taskObj.start_time];
         }
     }
 }
@@ -430,7 +430,7 @@
     [branch_propArray addObject:[NSNumber numberWithInt:[[branch_dic objectForKey:@"id"] intValue]]];
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:0 withObject:branch_propDic];
-    [Utility returnAnswerPathWithProps:self.propsArray];
+    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.start_time];
     
     //显示正确答案
     UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:self.prop_number+UnderLab_tag];
@@ -474,6 +474,6 @@
     [branch_propArray addObject:[NSNumber numberWithInt:[[branch_dic objectForKey:@"id"] intValue]]];
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:1 withObject:branch_propDic];
-    [Utility returnAnswerPathWithProps:self.propsArray];
+    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.start_time];
 }
 @end

@@ -19,7 +19,7 @@
 #import "CardpackageViewController.h"//卡包
 
 #import "ReadingTaskViewController.h"
-#import "LiningHomeworkViewController.h"
+
 #import "HomeworkContainerController.h"//做题
 
 #import "ListenWriteViewController.h"//听写
@@ -111,7 +111,7 @@
 
 //
      CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
+//     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
     self.window.rootViewController = cardView;
     
 

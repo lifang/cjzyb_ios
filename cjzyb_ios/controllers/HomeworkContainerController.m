@@ -11,16 +11,12 @@
 #import "HomeworkContainerController.h"
 
 @interface HomeworkContainerController ()
-///连线题controller
-@property (nonatomic,strong) LiningHomeworkViewController *liningHomeworkController;
-
 ///朗读题controller
 @property (nonatomic,strong) ReadingTaskViewController *readingController;
 @property (nonatomic,strong) ListenWriteViewController *listenView;//听写
 @property (nonatomic,strong) SortViewController *sortView;//排序
 @property (nonatomic,strong) SelectedViewController *selectedView;//完形填空
-
-@property (nonatomic, strong) LininggViewController *liningView;
+@property (nonatomic, strong) LininggViewController *liningView;//连线
 @property (nonatomic,strong) TenSecChallengeViewController *tenSecViewController;///十速挑战
 @property (nonatomic,strong) SelectingChallengeViewController *selectingChallengeViewController; ///选择挑战
 

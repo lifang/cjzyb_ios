@@ -23,7 +23,8 @@
 
 @property (nonatomic, strong) IBOutlet CustomLabel *rtLab;
 @property (nonatomic, strong) IBOutlet UIButton *voiceBtn,*deleteBtn;
-@property (nonatomic, strong) IBOutlet UIImageView *imgView;
+
+@property (nonatomic, strong) UIImageView *imgView;
 
 @property (nonatomic, strong) UILabel *label_title;
 @property (nonatomic, strong) UITableView *cardSecondTable;

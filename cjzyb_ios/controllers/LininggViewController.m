@@ -274,7 +274,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSDictionary * dic = [Utility initWithJSONFile:@"question"];
+    NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.start_time];
     NSDictionary *sortDic = [dic objectForKey:@"lining"];
     self.questionArray = [NSMutableArray arrayWithArray:[sortDic objectForKey:@"questions"]];
     self.specified_time = [[sortDic objectForKey:@"specified_time"]intValue];
@@ -286,7 +286,7 @@
     self.homeControl.reduceTimeButton.enabled = NO;
     self.number=0;self.branchNumber=0;self.isFirst= NO;self.prop_number=-1;
     //TODO:初始化答案的字典
-    self.answerDic = [Utility returnAnswerDictionaryWithName:LINING];
+    self.answerDic = [Utility returnAnswerDictionaryWithName:LINING andDate:[DataService sharedService].taskObj.start_time];
     int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
     self.historyView.hidden=YES;
     if ([DataService sharedService].isHistory==YES) {
@@ -299,7 +299,7 @@
             [self getQuestionData];
         }
     }else {
-        self.propsArray = [Utility returnAnswerProps];
+        self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.start_time];
         int status = [[self.answerDic objectForKey:@"status"]intValue];
         if (status == 1) {
             
@@ -454,7 +454,7 @@
     
     [self.answerDic setObject:questions forKey:@"questions"];
     
-    [Utility returnAnswerPathWithDictionary:self.answerDic andName:LINING];
+    [Utility returnAnswerPathWithDictionary:self.answerDic andName:LINING andDate:[DataService sharedService].taskObj.start_time];
 }
 
 
@@ -778,7 +778,7 @@
     [branch_propArray addObject:[NSNumber numberWithInt:[[self.branchQuestionDic objectForKey:@"id"] intValue]]];
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:0 withObject:branch_propDic];
-    [Utility returnAnswerPathWithProps:self.propsArray];
+    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.start_time];
     
     if (self.cancelTmpLeftArray.count>0) {
         int tmpTag = [[self.cancelTmpLeftArray firstObject]integerValue];
@@ -928,7 +928,7 @@
     [branch_propArray addObject:[NSNumber numberWithInt:[[self.branchQuestionDic objectForKey:@"id"] intValue]]];
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:1 withObject:branch_propDic];
-    [Utility returnAnswerPathWithProps:self.propsArray];
+    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.start_time];
 }
 
 #pragma mark

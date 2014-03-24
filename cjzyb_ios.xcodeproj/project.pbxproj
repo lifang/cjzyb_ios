@@ -357,8 +357,6 @@
 		63B8D28418C87FAF004141E9 /* GoogleTTSAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B8D28318C87FAF004141E9 /* GoogleTTSAPI.m */; };
 		63DB91BC18CD64B800157D74 /* LineDualSentenceObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB91BB18CD64B800157D74 /* LineDualSentenceObj.m */; };
 		63DB91BF18CD65D800157D74 /* LineSubjectObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB91BE18CD65D800157D74 /* LineSubjectObj.m */; };
-		63DB91C918CD7FB100157D74 /* LiningHomeworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB91C718CD7FB100157D74 /* LiningHomeworkViewController.m */; };
-		63DB91CA18CD7FB100157D74 /* LiningHomeworkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63DB91C818CD7FB100157D74 /* LiningHomeworkViewController.xib */; };
 		63DB921218CD9D7300157D74 /* LiningDrawLinesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB921118CD9D7300157D74 /* LiningDrawLinesView.m */; };
 		63DB921518CDA39C00157D74 /* LineObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB921418CDA39C00157D74 /* LineObj.m */; };
 		63DB921818CDABFB00157D74 /* LiningItemButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB921718CDABFB00157D74 /* LiningItemButton.m */; };
@@ -907,9 +905,6 @@
 		63DB91BB18CD64B800157D74 /* LineDualSentenceObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineDualSentenceObj.m; sourceTree = SOURCE_ROOT; };
 		63DB91BD18CD65D800157D74 /* LineSubjectObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineSubjectObj.h; sourceTree = SOURCE_ROOT; };
 		63DB91BE18CD65D800157D74 /* LineSubjectObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineSubjectObj.m; sourceTree = SOURCE_ROOT; };
-		63DB91C618CD7FB100157D74 /* LiningHomeworkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiningHomeworkViewController.h; sourceTree = "<group>"; };
-		63DB91C718CD7FB100157D74 /* LiningHomeworkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiningHomeworkViewController.m; sourceTree = "<group>"; };
-		63DB91C818CD7FB100157D74 /* LiningHomeworkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LiningHomeworkViewController.xib; sourceTree = "<group>"; };
 		63DB921018CD9D7300157D74 /* LiningDrawLinesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiningDrawLinesView.h; sourceTree = "<group>"; };
 		63DB921118CD9D7300157D74 /* LiningDrawLinesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiningDrawLinesView.m; sourceTree = "<group>"; };
 		63DB921318CDA39C00157D74 /* LineObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineObj.h; sourceTree = SOURCE_ROOT; };
@@ -1457,9 +1452,6 @@
 				187222B218C8572E00BBE2D1 /* SelectingChallengeViewController.h */,
 				187222B318C8572E00BBE2D1 /* SelectingChallengeViewController.m */,
 				187222B418C8572E00BBE2D1 /* SelectingChallengeViewController.xib */,
-				63DB91C618CD7FB100157D74 /* LiningHomeworkViewController.h */,
-				63DB91C718CD7FB100157D74 /* LiningHomeworkViewController.m */,
-				63DB91C818CD7FB100157D74 /* LiningHomeworkViewController.xib */,
 				63B81C4C18CF05F900004745 /* HomeworkContainerController.h */,
 				63B81C4D18CF05F900004745 /* HomeworkContainerController.m */,
 				63B81C4E18CF05F900004745 /* HomeworkContainerController.xib */,
@@ -2239,7 +2231,6 @@
 				6396577A18C036B1002F2A90 /* StudentListViewController.xib in Resources */,
 				630DBDEE18D15A95009DA0EB /* progressBack@2x.png in Resources */,
 				630DBDD418D15936009DA0EB /* carBarItem@2x.png in Resources */,
-				63DB91CA18CD7FB100157D74 /* LiningHomeworkViewController.xib in Resources */,
 				0E92659E18BDE51F003ADEC3 /* deleteBtn@2x.png in Resources */,
 				187C4AC618D304AC0006461D /* 10_01@2x.png in Resources */,
 				630DBE1F18D15CB1009DA0EB /* homework_reading@2x.png in Resources */,
@@ -2480,7 +2471,6 @@
 				63DB921818CDABFB00157D74 /* LiningItemButton.m in Sources */,
 				63B81C4F18CF05F900004745 /* HomeworkContainerController.m in Sources */,
 				6329554118BC8D7C00F2B78D /* FMDatabaseAdditions.m in Sources */,
-				63DB91C918CD7FB100157D74 /* LiningHomeworkViewController.m in Sources */,
 				1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */,
 				0EAABD8518CF1B5500CD2DE7 /* CMRManager.mm in Sources */,
 				6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */,

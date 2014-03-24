@@ -47,16 +47,11 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AjN-Zi-W4y">
-                    <rect key="frame" x="62" y="179" width="127" height="97"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="deleteBtn" destination="Vq5-yj-YhY" id="T2M-04-6C8"/>
-                <outlet property="imgView" destination="AjN-Zi-W4y" id="jex-oc-hhU"/>
                 <outlet property="rtLab" destination="Xd4-bd-qem" id="ReA-WA-f9i"/>
                 <outlet property="titleLab" destination="tOc-kL-OdG" id="rzu-4L-yri"/>
                 <outlet property="voiceBtn" destination="HLu-Gb-Lsj" id="QYG-os-2Nn"/>
