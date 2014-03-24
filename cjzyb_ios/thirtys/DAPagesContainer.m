@@ -295,6 +295,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     self.selectedIndex = scrollView.contentOffset.x / CGRectGetWidth(self.scrollView.frame);
+//    NSLog(@"%d",self.selectedIndex);
     self.scrollView.userInteractionEnabled = YES;
 }
 
@@ -307,6 +308,7 @@
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
+    
     self.scrollView.userInteractionEnabled = YES;
 }
 

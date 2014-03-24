@@ -76,7 +76,10 @@
 #pragma mark --
 
 #pragma mark property
-
+-(void)setTaskObj:(TaskObj *)taskObj{
+    _taskObj = taskObj;
+    [self.collectionView reloadData];
+}
 
 #pragma mark --
 

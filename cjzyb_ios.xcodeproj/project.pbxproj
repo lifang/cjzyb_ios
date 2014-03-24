@@ -30,6 +30,8 @@
 		0E5D1C8918C9A18F008A13F2 /* QQLogIn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D1C8818C9A18F008A13F2 /* QQLogIn@2x.png */; };
 		0E660F1D18E0249E0074454C /* PostImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E660F1C18E0249E0074454C /* PostImage.m */; };
 		0E660F2118E027910074454C /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E660F2018E027910074454C /* VPImageCropperViewController.m */; };
+		0E660F2518E02FC30074454C /* ImageSelectedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E660F2318E02FC30074454C /* ImageSelectedViewController.m */; };
+		0E660F2618E02FC30074454C /* ImageSelectedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E660F2418E02FC30074454C /* ImageSelectedViewController.xib */; };
 		0E92654F18BD9016003ADEC3 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92654D18BD9016003ADEC3 /* MainViewController.m */; };
 		0E92655018BD9016003ADEC3 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92654E18BD9016003ADEC3 /* MainViewController.xib */; };
 		0E92655818BD9228003ADEC3 /* DAPagesContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92655318BD9228003ADEC3 /* DAPagesContainer.m */; };
@@ -356,6 +358,9 @@
 		63B8D27418C860B6004141E9 /* CarnetResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63B8D27218C860B6004141E9 /* CarnetResultViewController.xib */; };
 		63B8D28118C87FA0004141E9 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B8D28018C87FA0004141E9 /* Base64.m */; };
 		63B8D28418C87FAF004141E9 /* GoogleTTSAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B8D28318C87FAF004141E9 /* GoogleTTSAPI.m */; };
+		63CBCC1B18D2FA90006F7C3D /* UserObjDaoInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CBCC1A18D2FA90006F7C3D /* UserObjDaoInterface.m */; };
+		63CDBDCD18DDA53A000DFA91 /* HomeworkDaoInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CDBDCC18DDA53A000DFA91 /* HomeworkDaoInterface.m */; };
+		63D8723E18DFFF57006D94E5 /* ParseAnswerJsonFileTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 63D8723D18DFFF57006D94E5 /* ParseAnswerJsonFileTool.m */; };
 		63DB91BC18CD64B800157D74 /* LineDualSentenceObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB91BB18CD64B800157D74 /* LineDualSentenceObj.m */; };
 		63DB91BF18CD65D800157D74 /* LineSubjectObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB91BE18CD65D800157D74 /* LineSubjectObj.m */; };
 		63DB921218CD9D7300157D74 /* LiningDrawLinesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 63DB921118CD9D7300157D74 /* LiningDrawLinesView.m */; };
@@ -409,6 +414,9 @@
 		0E660F1C18E0249E0074454C /* PostImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostImage.m; sourceTree = "<group>"; };
 		0E660F1F18E027910074454C /* VPImageCropperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPImageCropperViewController.h; sourceTree = "<group>"; };
 		0E660F2018E027910074454C /* VPImageCropperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPImageCropperViewController.m; sourceTree = "<group>"; };
+		0E660F2218E02FC30074454C /* ImageSelectedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSelectedViewController.h; sourceTree = "<group>"; };
+		0E660F2318E02FC30074454C /* ImageSelectedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSelectedViewController.m; sourceTree = "<group>"; };
+		0E660F2418E02FC30074454C /* ImageSelectedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageSelectedViewController.xib; sourceTree = "<group>"; };
 		0E92654C18BD9016003ADEC3 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = SOURCE_ROOT; };
 		0E92654D18BD9016003ADEC3 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = SOURCE_ROOT; };
 		0E92654E18BD9016003ADEC3 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -904,6 +912,12 @@
 		63B8D28018C87FA0004141E9 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		63B8D28218C87FAF004141E9 /* GoogleTTSAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleTTSAPI.h; sourceTree = "<group>"; };
 		63B8D28318C87FAF004141E9 /* GoogleTTSAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleTTSAPI.m; sourceTree = "<group>"; };
+		63CBCC1918D2FA90006F7C3D /* UserObjDaoInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserObjDaoInterface.h; sourceTree = "<group>"; };
+		63CBCC1A18D2FA90006F7C3D /* UserObjDaoInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserObjDaoInterface.m; sourceTree = "<group>"; };
+		63CDBDCB18DDA53A000DFA91 /* HomeworkDaoInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkDaoInterface.h; sourceTree = "<group>"; };
+		63CDBDCC18DDA53A000DFA91 /* HomeworkDaoInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkDaoInterface.m; sourceTree = "<group>"; };
+		63D8723C18DFFF57006D94E5 /* ParseAnswerJsonFileTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParseAnswerJsonFileTool.h; sourceTree = "<group>"; };
+		63D8723D18DFFF57006D94E5 /* ParseAnswerJsonFileTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParseAnswerJsonFileTool.m; sourceTree = "<group>"; };
 		63DB91BA18CD64B800157D74 /* LineDualSentenceObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineDualSentenceObj.h; sourceTree = SOURCE_ROOT; };
 		63DB91BB18CD64B800157D74 /* LineDualSentenceObj.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LineDualSentenceObj.m; sourceTree = SOURCE_ROOT; };
 		63DB91BD18CD65D800157D74 /* LineSubjectObj.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LineSubjectObj.h; sourceTree = SOURCE_ROOT; };
@@ -1155,6 +1169,7 @@
 		0EEF4BDD18C561700058606A /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				63CDBDCA18DDA516000DFA91 /* homeworkType */,
 				63DB925A18CDE46A00157D74 /* classes */,
 				0EEF4BDE18C561700058606A /* BaseInterface.h */,
 				0EEF4BDF18C561700058606A /* BaseInterface.m */,
@@ -1432,6 +1447,9 @@
 				0EAABDAE18D02E3300CD2DE7 /* 登录 */,
 				6396576918C036B1002F2A90 /* DRLeftTabBarViewController.h */,
 				6396576A18C036B1002F2A90 /* DRLeftTabBarViewController.m */,
+				0E660F2218E02FC30074454C /* ImageSelectedViewController.h */,
+				0E660F2318E02FC30074454C /* ImageSelectedViewController.m */,
+				0E660F2418E02FC30074454C /* ImageSelectedViewController.xib */,
 				6396576B18C036B1002F2A90 /* UserInfoPopViewController.h */,
 				6396576C18C036B1002F2A90 /* UserInfoPopViewController.m */,
 				6396576D18C036B1002F2A90 /* UserInfoPopViewController.xib */,
@@ -1587,6 +1605,8 @@
 				632954C718BC892D00F2B78D /* Const.h */,
 				63289A3B18C5B74600C0083E /* ParseQuestionJsonFileTool.h */,
 				63289A3C18C5B74600C0083E /* ParseQuestionJsonFileTool.m */,
+				63D8723C18DFFF57006D94E5 /* ParseAnswerJsonFileTool.h */,
+				63D8723D18DFFF57006D94E5 /* ParseAnswerJsonFileTool.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -1957,6 +1977,15 @@
 			path = Base64;
 			sourceTree = "<group>";
 		};
+		63CDBDCA18DDA516000DFA91 /* homeworkType */ = {
+			isa = PBXGroup;
+			children = (
+				63CDBDCB18DDA53A000DFA91 /* HomeworkDaoInterface.h */,
+				63CDBDCC18DDA53A000DFA91 /* HomeworkDaoInterface.m */,
+			);
+			name = homeworkType;
+			sourceTree = "<group>";
+		};
 		63DB91B618CD60D100157D74 /* lining */ = {
 			isa = PBXGroup;
 			children = (
@@ -1986,6 +2015,8 @@
 			children = (
 				63DB925B18CDE4C600157D74 /* DownloadClassmatesInfo.h */,
 				63DB925C18CDE4C600157D74 /* DownloadClassmatesInfo.m */,
+				63CBCC1918D2FA90006F7C3D /* UserObjDaoInterface.h */,
+				63CBCC1A18D2FA90006F7C3D /* UserObjDaoInterface.m */,
 			);
 			name = classes;
 			sourceTree = "<group>";
@@ -2274,6 +2305,7 @@
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				636CF4B518BD8F3B0085C28E /* TestViewController.xib in Resources */,
 				0E9D68CA18CD972600EACFA3 /* multipy_unicode.dat in Resources */,
+				0E660F2618E02FC30074454C /* ImageSelectedViewController.xib in Resources */,
 				0E92659F18BDE51F003ADEC3 /* focusBtn_active@2x.png in Resources */,
 				0E5D1C8518C9A0FE008A13F2 /* logIn@2x.png in Resources */,
 				0E92ECE018D2B03600B6806C /* ClozeAnswerViewController.xib in Resources */,
@@ -2366,6 +2398,8 @@
 				63B8D28118C87FA0004141E9 /* Base64.m in Sources */,
 				63DB921518CDA39C00157D74 /* LineObj.m in Sources */,
 				0EEF4C1C18C562900058606A /* ReplyMessageObject.m in Sources */,
+				63D8723E18DFFF57006D94E5 /* ParseAnswerJsonFileTool.m in Sources */,
+				63CBCC1B18D2FA90006F7C3D /* UserObjDaoInterface.m in Sources */,
 				0EEF4BCF18C561300058606A /* DataService.m in Sources */,
 				182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */,
 				0E9C6E9818D1496000E807D1 /* SortViewController.m in Sources */,
@@ -2374,6 +2408,7 @@
 				63B8D27318C860B6004141E9 /* CarnetResultViewController.m in Sources */,
 				6329551918BC8AA700F2B78D /* ASICloudFilesCDNRequest.m in Sources */,
 				6341533418C17BEC00DE4480 /* TaskObj.m in Sources */,
+				0E660F2518E02FC30074454C /* ImageSelectedViewController.m in Sources */,
 				0E92656818BD92B0003ADEC3 /* ThirdViewController.m in Sources */,
 				6329556218BC900600F2B78D /* NSData+ImageContentType.m in Sources */,
 				6329556B18BC900600F2B78D /* UIImage+GIF.m in Sources */,
@@ -2434,6 +2469,7 @@
 				6329551F18BC8AA700F2B78D /* ASICloudFilesRequest.m in Sources */,
 				0E9D689918CD4E0D00EACFA3 /* SVPullToRefresh.m in Sources */,
 				0EEF4C2518C571AD0058606A /* FocusInterface.m in Sources */,
+				63CDBDCD18DDA53A000DFA91 /* HomeworkDaoInterface.m in Sources */,
 				0E92655818BD9228003ADEC3 /* DAPagesContainer.m in Sources */,
 				6329551618BC8AA700F2B78D /* ASIInputStream.m in Sources */,
 				0E5D1C6B18C87EBD008A13F2 /* MyMessageInterface.m in Sources */,

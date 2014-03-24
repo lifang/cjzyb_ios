@@ -7,14 +7,15 @@
 //
 
 #import "DRLeftTabBarViewController.h"
-#import "DRNavigationBar.h"
 #import "UserInfoPopViewController.h"
+#import "ImageSelectedViewController.h"
 
 #define ORIGINAL_MAX_WIDTH 640.0f
 
+#import "UserObjDaoInterface.h"
+
 @interface DRLeftTabBarViewController ()
 @property (nonatomic,strong) LeftTabBarView *leftTabBar;
-@property (nonatomic,strong) DRNavigationBar *drNavigationBar;
 @property (nonatomic,strong) UserInfoPopViewController *userInfoPopViewController;
 @property (nonatomic,strong) WYPopoverController *poprController;
 @property (nonatomic,strong) StudentListViewController *studentListViewController;
@@ -30,7 +31,10 @@
     }
     return self;
 }
-
+- (void) roundView: (UIView *) view{
+    [view.layer setCornerRadius: (view.frame.size.height/2)];
+    [view.layer setMasksToBounds:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -46,10 +50,11 @@
     //设置导航栏
     self.drNavigationBar = [[[NSBundle mainBundle]  loadNibNamed:@"DRNavigationBar" owner:self options:nil] firstObject];
     [self.drNavigationBar.rightButtonItem addTarget:self action:@selector(navigationRightItemClicked) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.drNavigationBar.imageButton addTarget:self action:@selector(selectedImage) forControlEvents:UIControlEventTouchUpInside];
+    [self roundView:self.drNavigationBar.userHeaderImage];
+    [self.drNavigationBar.imageButton addTarget:self action:@selector(selectedImage:) forControlEvents:UIControlEventTouchUpInside];
     [self.drNavigationBar.leftButtonItem addTarget:self action:@selector(navigationLeftItemClicked) forControlEvents:UIControlEventTouchUpInside];
     self.drNavigationBar.frame = (CGRect){0,0,768,67};
+    self.drNavigationBar.userNameLabel.text = [[[DataService sharedService] user] nickName];
     [self.view addSubview:self.drNavigationBar];
     //设置子controller
     self.currentViewController = [self.childenControllerArray firstObject];
@@ -63,9 +68,52 @@
     //加载学生列表界面
     self.studentListViewController = [[StudentListViewController alloc] initWithNibName:@"StudentListViewController" bundle:nil];
     self.studentListViewController.delegate = self;
+    
+    //相册
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showImageWithAlbum:) name:@"showImageWithAlbum" object:nil];
+    //拍照
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showImageWithCamera:) name:@"showImageWithCamera" object:nil];
 }
 
-
+-(void)showImageWithAlbum:(NSNotification *)object {
+    [self.poprController dismissPopoverAnimated:YES];
+    
+    // 从相册中选取
+    if ([self isPhotoLibraryAvailable]) {
+        UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+        controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
+        [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
+        controller.mediaTypes = mediaTypes;
+        controller.delegate = self;
+        [self presentViewController:controller
+                           animated:YES
+                         completion:^(void){
+                             NSLog(@"Picker View Controller is presented");
+                         }];
+    }
+    
+}
+-(void)showImageWithCamera:(NSNotification *)object {
+    [self.poprController dismissPopoverAnimated:YES];
+    // 拍照
+    if ([self isCameraAvailable] && [self doesCameraSupportTakingPhotos]) {
+        UIImagePickerController *controller = [[UIImagePickerController alloc] init];
+        controller.sourceType = UIImagePickerControllerSourceTypeCamera;
+        if ([self isFrontCameraAvailable]) {
+            controller.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+        }
+        NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
+        [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
+        controller.mediaTypes = mediaTypes;
+        controller.delegate = self;
+        [self presentViewController:controller
+                           animated:YES
+                         completion:^(void){
+                             NSLog(@"Picker View Controller is presented");
+                         }];
+    }
+}
 #pragma mark 子controller之间切换
 -(void)addOneController:(UIViewController*)childController{
     if (!childController) {
@@ -113,8 +161,12 @@
 }
 ///导航栏右边item点击事件
 -(void)navigationRightItemClicked{
+    
+
+//    return;
+    /////////////////////////////////////////
     [self.drNavigationBar.rightButtonItem setUserInteractionEnabled:NO];
-     self.poprController= [[WYPopoverController alloc] initWithContentViewController:self.userInfoPopViewController];
+    self.poprController= [[WYPopoverController alloc] initWithContentViewController:self.userInfoPopViewController];
     self.poprController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
     self.poprController.theme.fillTopColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
     self.poprController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
@@ -125,15 +177,26 @@
     [self.poprController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES completion:^{
         [self.drNavigationBar.rightButtonItem setUserInteractionEnabled:YES];
     }];
+    self.userInfoPopViewController.drleftTabBarController = self;
+    [self.userInfoPopViewController updateViewContents];
 }
 
--(void)selectedImage {
-    UIActionSheet *choiceSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:@"取消"
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:@"拍照", @"从相册中选取", nil];
-    [choiceSheet showInView:self.view];
+-(void)selectedImage:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    
+    ImageSelectedViewController *imageView = [[ImageSelectedViewController alloc]initWithNibName:@"ImageSelectedViewController" bundle:nil];
+    self.poprController= [[WYPopoverController alloc] initWithContentViewController:imageView];
+    self.poprController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.fillTopColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.glossShadowColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    
+    UIBarButtonItem *barItem = [[UIBarButtonItem alloc]initWithCustomView:btn];
+    __block UIBarButtonItem *barItemm = barItem;
+    self.poprController.popoverContentSize = (CGSize){164,86};
+    [self.poprController presentPopoverFromBarButtonItem:barItem permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES completion:^{
+        barItemm=nil;
+    }];
 }
 #pragma mark --
 ///隐藏学生列表
@@ -173,8 +236,6 @@
 #pragma mark LeftTabBarViewDelegate 左边栏代理
 -(void)leftTabBar:(LeftTabBarView *)tabBarView selectedItem:(LeftTabBarItemType)itemType{
     NSLog(@"%d",itemType);
-
-    
     if (itemType == LeftTabBarItemType_userGroup ) {
         if (tabBarView.userGroupTabBarItem.isSelected) {
             [self appearStudentListViewController:self.studentListViewController];
@@ -254,45 +315,21 @@
 //    [super touchesBegan:touches withEvent:event];
 //    self.isHiddleLeftTabBar = YES;
 //}
-#pragma mark UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        // 拍照
-        if ([self isCameraAvailable] && [self doesCameraSupportTakingPhotos]) {
-            UIImagePickerController *controller = [[UIImagePickerController alloc] init];
-            controller.sourceType = UIImagePickerControllerSourceTypeCamera;
-            if ([self isFrontCameraAvailable]) {
-                controller.cameraDevice = UIImagePickerControllerCameraDeviceFront;
-            }
-            NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
-            [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
-            controller.mediaTypes = mediaTypes;
-            controller.delegate = self;
-            [self presentViewController:controller
-                               animated:YES
-                             completion:^(void){
-                                 NSLog(@"Picker View Controller is presented");
-                             }];
-        }
+#pragma mark VPImageCropperDelegate
+- (void)imageCropper:(VPImageCropperViewController *)cropperViewController didFinished:(UIImage *)editedImage {
+    self.drNavigationBar.userHeaderImage.image = editedImage;
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{
         
-    } else if (buttonIndex == 1) {
-        // 从相册中选取
-        if ([self isPhotoLibraryAvailable]) {
-            UIImagePickerController *controller = [[UIImagePickerController alloc] init];
-            controller.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            NSMutableArray *mediaTypes = [[NSMutableArray alloc] init];
-            [mediaTypes addObject:(__bridge NSString *)kUTTypeImage];
-            controller.mediaTypes = mediaTypes;
-            controller.delegate = self;
-            [self presentViewController:controller
-                               animated:YES
-                             completion:^(void){
-                                 NSLog(@"Picker View Controller is presented");
-                             }];
-        }
-    }
+        UserObjDaoInterface
+        
+        
+    }];
 }
 
+- (void)imageCropperDidCancel:(VPImageCropperViewController *)cropperViewController {
+    [cropperViewController dismissViewControllerAnimated:YES completion:^{
+    }];
+}
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
     [picker dismissViewControllerAnimated:YES completion:^() {
@@ -310,14 +347,6 @@
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:^(){
     }];
-}
-
-#pragma mark - UINavigationControllerDelegate
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-}
-
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
-    
 }
 
 #pragma mark camera utility

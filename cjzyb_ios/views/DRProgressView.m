@@ -23,6 +23,11 @@
     return self;
 }
 
+-(void)updateContentWithScore:(int)score{
+    int value = score%100;
+    [self setProgressValue:value/100.0 withLevelName:[NSString stringWithFormat:@"L%d",score/100]];
+}
+
 -(void)setProgressValue:(float)progress withLevelName:(NSString*)levelName{
     self.progress = progress;
     self.levelLabel.text = levelName;
@@ -42,7 +47,7 @@
 #pragma mark property
 -(void)setProgress:(float)progress{
     _progress = progress;
-    self.trackImageView.frame = (CGRect){0,0,CGRectGetWidth(self.frame)*progress,CGRectGetHeight(self.trackImageView.frame)};
+    self.trackImageView.frame = (CGRect){CGRectGetMinX(self.backImageView.frame),0,CGRectGetWidth(self.frame)*progress,CGRectGetHeight(self.trackImageView.frame)};
 }
 #pragma mark --
 @end

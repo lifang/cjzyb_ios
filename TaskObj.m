@@ -20,7 +20,7 @@
     [task setTaskFileDownloadURL:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"question_packages_url"]]];
     [task setTaskHomeworkTypeArray:[NSArray arrayWithArray:[aDic objectForKey:@"question_types"]]];
     [task setFinish_types:[NSMutableArray arrayWithArray:[aDic objectForKey:@"finish_types"]]];
-    [task setAnswer_packages_url:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"answer_url"]]];
+    [task setTaskAnswerFileDownloadURL:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"answer_url"]]];
     
     return task;
 }
