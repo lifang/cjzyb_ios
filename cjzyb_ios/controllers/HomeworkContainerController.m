@@ -66,7 +66,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;[DataService sharedService].isHistory=NO;
+    self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;[DataService sharedService].isHistory=YES;
     //TODO:判断做题历史 or  做题
     if ([DataService sharedService].isHistory==YES) {
         self.timeImg.hidden=YES; self.timerLabel.hidden=YES;
@@ -150,7 +150,6 @@
             [self.contentView setFrame:(CGRect){0,75,768,949}];
             [self.contentView addSubview:self.tenSecViewController.view];
             [self.tenSecViewController.contentBgView setFrame:(CGRect){0,0,768,949}];
-            [self.tenSecViewController.topBarView setHidden:YES];
             [self addChildViewController:self.tenSecViewController];
             [self.tenSecViewController didMoveToParentViewController:self];
             self.tenSecViewController.isViewingHistory = [DataService sharedService].isHistory;
@@ -177,8 +176,8 @@
             [self.checkHomeworkButton addTarget:self.selectingChallengeViewController action:@selector(nextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.appearCorrectButton addTarget:self.selectingChallengeViewController action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.selectingChallengeViewController action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
-            self.selectingChallengeViewController.topBarView.hidden = YES;
-            self.selectingChallengeViewController.itemsView.hidden = YES;
+//            self.selectingChallengeViewController.topBarView.hidden = YES;
+//            self.selectingChallengeViewController.itemsView.hidden = YES;
             self.selectingChallengeViewController.isViewingHistory = [DataService sharedService].isHistory;
         }
             break;

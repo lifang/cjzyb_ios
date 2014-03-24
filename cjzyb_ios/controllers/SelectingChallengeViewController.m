@@ -12,8 +12,8 @@
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
 
 @interface SelectingChallengeViewController ()
-@property (weak, nonatomic) IBOutlet UIButton *cancelButton;  //退出按钮
-@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+//@property (weak, nonatomic) IBOutlet UIButton *cancelButton;  //退出按钮
+//@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *questionPlayButton;  //声音按钮
 - (IBAction)questionPlayButtonClicked:(id)sender;
@@ -21,8 +21,8 @@
 @property (weak, nonatomic) IBOutlet UITextView *questionTextView;          //问题题面
 @property (weak, nonatomic) IBOutlet UITableView *optionTable;  //选项table
 //@property (weak, nonatomic) IBOutlet UIButton *nextButton;  //下一个/检查 按钮
-- (IBAction)nextButtonClicked:(id)sender;
-@property (weak, nonatomic) IBOutlet UILabel *currentNOLabel;  //当前题号  2/5
+//- (IBAction)nextButtonClicked:(id)sender;
+@property (strong, nonatomic) UILabel *currentNOLabel;  //当前题号  2/5
 @property (weak, nonatomic) IBOutlet UIView *historyView;    //浏览历史时下方的view
 @property (weak, nonatomic) IBOutlet UILabel *historyYourChoiceLabel;  //显示"你的选择:"
 @property (strong,nonatomic) TenSecChallengeResultView *resultView; //结果界面
@@ -184,6 +184,7 @@
 - (void)reDoingChallenge{
     self.isViewingHistory = NO;
     self.isReDoingChallenge = YES;
+    self.currentNOLabel.hidden = YES;
     //改变按钮样式,及顶栏目样式
     self.propOfReduceTime.enabled = YES;
     self.propOfShowingAnswer.enabled = YES;
@@ -208,6 +209,7 @@
 - (void)viewHistory{
     self.isViewingHistory = YES;
     self.currentNO = 0;
+    self.currentNOLabel.hidden = NO;
     //计算正确率
     if (self.answerArray.count > 0 && self.answerArray.count == self.questionArray.count) {
         CGFloat numberOfRightAnswers = 0;
@@ -225,36 +227,36 @@
     }
     parentVC.timeLabel.text = [NSString stringWithFormat:@"%@\"",self.timeCountString];
     
-    ////改变按钮样式,顶栏等,添加正确率+时间label
-    UIView *bgView = [[UIView alloc] init];
-    [bgView setBackgroundColor:self.topBarView.backgroundColor];
-    [bgView setFrame:(CGRect){0,0,self.topBarView.frame.size.width / 2,self.topBarView.frame.size.height}];
-    bgView.center = self.topBarView.center ;
-    [self.topBarView addSubview:bgView];
-    UILabel *ratioAndTimeLabel = [[UILabel alloc] init];
-    NSString *ratioAndTimeString = [NSString stringWithFormat:@"         %d%@          %@",self.totalRatio,@"%",self.timeCountString];
-    ratioAndTimeLabel.text = ratioAndTimeString;
-    ratioAndTimeLabel.font = [UIFont systemFontOfSize:30.0];
-    ratioAndTimeLabel.textColor = [UIColor whiteColor];
-    ratioAndTimeLabel.backgroundColor = [UIColor clearColor];
-    ratioAndTimeLabel.frame = (CGRect){0,0,350,75};
-    ratioAndTimeLabel.center = (CGPoint){bgView.frame.size.width / 2,bgView.frame.size.height / 2};
-    [bgView addSubview:ratioAndTimeLabel];
-    
-    UILabel *ratioAndTimeLabel_ = [[UILabel alloc] init];
-    ratioAndTimeLabel_.text = @"正确率:                用时:";
-    ratioAndTimeLabel_.font = [UIFont systemFontOfSize:20.0];
-    ratioAndTimeLabel_.textColor = [UIColor whiteColor];
-    ratioAndTimeLabel_.backgroundColor = [UIColor clearColor];
-    ratioAndTimeLabel_.frame = (CGRect){0,0,350,75};
-    ratioAndTimeLabel_.center = ratioAndTimeLabel.center;
-    [bgView addSubview:ratioAndTimeLabel_];
+//    ////改变按钮样式,顶栏等,添加正确率+时间label
+//    UIView *bgView = [[UIView alloc] init];
+//    [bgView setBackgroundColor:self.topBarView.backgroundColor];
+//    [bgView setFrame:(CGRect){0,0,self.topBarView.frame.size.width / 2,self.topBarView.frame.size.height}];
+//    bgView.center = self.topBarView.center ;
+//    [self.topBarView addSubview:bgView];
+//    UILabel *ratioAndTimeLabel = [[UILabel alloc] init];
+//    NSString *ratioAndTimeString = [NSString stringWithFormat:@"         %d%@          %@",self.totalRatio,@"%",self.timeCountString];
+//    ratioAndTimeLabel.text = ratioAndTimeString;
+//    ratioAndTimeLabel.font = [UIFont systemFontOfSize:30.0];
+//    ratioAndTimeLabel.textColor = [UIColor whiteColor];
+//    ratioAndTimeLabel.backgroundColor = [UIColor clearColor];
+//    ratioAndTimeLabel.frame = (CGRect){0,0,350,75};
+//    ratioAndTimeLabel.center = (CGPoint){bgView.frame.size.width / 2,bgView.frame.size.height / 2};
+//    [bgView addSubview:ratioAndTimeLabel];
+//    
+//    UILabel *ratioAndTimeLabel_ = [[UILabel alloc] init];
+//    ratioAndTimeLabel_.text = @"正确率:                用时:";
+//    ratioAndTimeLabel_.font = [UIFont systemFontOfSize:20.0];
+//    ratioAndTimeLabel_.textColor = [UIColor whiteColor];
+//    ratioAndTimeLabel_.backgroundColor = [UIColor clearColor];
+//    ratioAndTimeLabel_.frame = (CGRect){0,0,350,75};
+//    ratioAndTimeLabel_.center = ratioAndTimeLabel.center;
+//    [bgView addSubview:ratioAndTimeLabel_];
     
     parentVC.appearCorrectButton.enabled = NO;
     parentVC.reduceTimeButton.enabled = NO;
 //    [self.nextButton setImage:nil forState:UIControlStateNormal];
     [parentVC.checkHomeworkButton setTitle:@"下一个" forState:UIControlStateNormal];
-    self.historyView.backgroundColor = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:191.0/255.0 alpha:1.0];
+    self.historyView.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
     self.historyView.hidden = NO;
     
     [self loadNextQuestion];
@@ -264,6 +266,7 @@
 //继续做题   --初始化界面
 - (void)continueChallenge{
     self.isViewingHistory = NO;
+    self.currentNOLabel.hidden = YES;
     //改变按钮样式,及顶栏目样式
     parentVC.appearCorrectButton.enabled = YES;
     parentVC.reduceTimeButton.enabled = YES;
@@ -436,6 +439,17 @@
 }
 
 #pragma mark property
+- (UILabel *)currentNOLabel{
+    if (!_currentNOLabel) {
+        _currentNOLabel = [[UILabel alloc] initWithFrame:(CGRect){660,20,100,30}];
+        _currentNOLabel.font = [UIFont systemFontOfSize:26.0];
+        _currentNOLabel.textAlignment = NSTextAlignmentLeft;
+        _currentNOLabel.textColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+        [parentVC.djView addSubview:_currentNOLabel];
+    }
+    return _currentNOLabel;
+}
+
 //在改变checked属性时,改变按钮的文字
 - (void)setChecked:(BOOL)checked{
     _checked = checked;
@@ -481,29 +495,29 @@
     return _answerArray;
 }
 
--(UIButton *)propOfReduceTime{
-    if (!_propOfReduceTime) {
-        _propOfReduceTime = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_propOfReduceTime setImage:[UIImage imageNamed:@"propOfTime.png"] forState:UIControlStateNormal];
-        [_propOfReduceTime addTarget:self action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
-        _propOfReduceTime.frame = (CGRect){146,10,50.5,50.5};
-        [self.itemsView addSubview:_propOfReduceTime];
-    }
-    return _propOfReduceTime;
-}
+//-(UIButton *)propOfReduceTime{
+//    if (!_propOfReduceTime) {
+//        _propOfReduceTime = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_propOfReduceTime setImage:[UIImage imageNamed:@"propOfTime.png"] forState:UIControlStateNormal];
+//        [_propOfReduceTime addTarget:self action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        _propOfReduceTime.frame = (CGRect){146,10,50.5,50.5};
+//        [self.itemsView addSubview:_propOfReduceTime];
+//    }
+//    return _propOfReduceTime;
+//}
 
 
 
--(UIButton *)propOfShowingAnswer{
-    if (!_propOfShowingAnswer) {
-        _propOfShowingAnswer = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_propOfShowingAnswer setImage:[UIImage imageNamed:@"propOfAnswer.png"] forState:UIControlStateNormal];
-        [_propOfShowingAnswer addTarget:self action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
-        _propOfShowingAnswer.frame = (CGRect){90,10,50.5,50.5};
-        [self.itemsView addSubview:_propOfShowingAnswer];
-    }
-    return _propOfShowingAnswer;
-}
+//-(UIButton *)propOfShowingAnswer{
+//    if (!_propOfShowingAnswer) {
+//        _propOfShowingAnswer = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_propOfShowingAnswer setImage:[UIImage imageNamed:@"propOfAnswer.png"] forState:UIControlStateNormal];
+//        [_propOfShowingAnswer addTarget:self action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        _propOfShowingAnswer.frame = (CGRect){90,10,50.5,50.5};
+//        [self.itemsView addSubview:_propOfShowingAnswer];
+//    }
+//    return _propOfShowingAnswer;
+//}
 
 -(NSString *)timeCountString{
     NSString *str;
@@ -590,19 +604,14 @@
 //加载本题的历史回答情况
 -(void)refreshHistoryView{
     //1,下方显示
-    //2,选中选项
     NSMutableString *yourChoiceString = [NSMutableString stringWithFormat:@"你的选择:"];
     OrdinaryAnswerObject *currentAnswer = self.answerArray[self.currentNO - 1];
     NSArray *myAnswers = [currentAnswer.answerAnswer componentsSeparatedByString:@";||;"];
+    [yourChoiceString appendString:[myAnswers componentsJoinedByString:@""]];
+    
+    //2,选中选项
     for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
         NSString *option = self.currentQuestion.seOptionsArray[i];
-        for (NSString *answer in myAnswers) {
-            if ([answer isEqualToString:option]) {
-                [yourChoiceString appendFormat:@"%c",'A' + i];
-                break;
-            }
-        }
-        
         for(NSString *rightAnswer in self.currentQuestion.seRightAnswers){
             if ([rightAnswer isEqualToString:option]) {
                 //选中该option

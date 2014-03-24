@@ -13,8 +13,6 @@
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
 
 @interface TenSecChallengeViewController ()
-@property (weak, nonatomic) IBOutlet UIButton *cancelButton; //返回键
-@property (weak, nonatomic) IBOutlet UILabel *timeLabel;     //顶部时间
 @property (weak, nonatomic) IBOutlet UILabel *upperOptionLabel;  //上选项
 @property (weak, nonatomic) IBOutlet UILabel *questionLabel;  //问题
 @property (weak, nonatomic) IBOutlet UILabel *lowerOptionLabel;  //下选项
@@ -25,8 +23,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *historyYourChoiceLabel;
 
 
-@property (assign,nonatomic) double timeCount; //计时时间(单位为秒)
-@property (strong,nonatomic) NSTimer *timer;
 @property (assign,nonatomic) NSInteger currentNO;//当前正在做的题目序号,如超过问题数量代表答题完毕
 @property (strong,nonatomic) TenSecChallengeObject *currentQuestion; //当前题目
 @property (assign,nonatomic) BOOL isLastQuestion; //是否最后一题
@@ -62,22 +58,14 @@
     
     //载入answer文件
     [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit"]];
-//    [self parseAnswerJSON];
-    
-    self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
-    self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
     
 }
 
 - (void)viewDidAppear:(BOOL)animated{
-    HomeworkContainerController *container = (HomeworkContainerController *)[self parentViewController];
-    container.spendSecond = self.timeCount;
     
 }
 
 - (void)setupViews{  //控件初始设置
-    [self.cancelButton addTarget:self action:@selector(cancelButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
     self.upperOptionLabel.layer.cornerRadius = 8.0;
     
     [self.upperButton addTarget:self action:@selector(upperClicked:) forControlEvents:UIControlEventTouchDown];
@@ -87,6 +75,10 @@
     [self.lowerButton addTarget:self action:@selector(lowerClicked:) forControlEvents:UIControlEventTouchDown];
     
     self.historyView.hidden = YES;
+    
+    self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+    
+    self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
 }
 
 #pragma mark -- 挑战的生命周期
@@ -95,6 +87,7 @@
     if (self.isViewingHistory) {  //浏览历史
         self.currentNO = 0;
         self.historyView.hidden = NO;
+        self.historyView.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
         NSInteger ratio = 0;
         for (int i = 0; i < self.answerArray.count; i ++) {
             OrdinaryAnswerObject *answer = self.answerArray[i];
@@ -103,7 +96,7 @@
             }
         }
         parentVC.rotioLabel.text = [NSString stringWithFormat:@"%d%@",ratio,@"%"];
-        NSInteger second = self.timeCount;
+        NSInteger second = (NSInteger)parentVC.spendSecond;
         NSInteger minite = second / 60;
         second = second % 60;
         parentVC.timeLabel.text = [NSString stringWithFormat:@"%d'%d\"",minite,second];
@@ -114,6 +107,10 @@
             NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
             NSString *timesLeft = [self.reChallengeTimesLeft objectForKey:nowDate];
             if (timesLeft.integerValue < 1) {
+                [Utility errorAlert:@"今日挑战次数已经用完"];
+                self.upperButton.enabled = NO;
+                self.lowerButton.enabled = NO;
+                [parentVC stopTimer];
                 return;
             }else{
                 [self.reChallengeTimesLeft setObject:[NSString stringWithFormat:@"%d",timesLeft.integerValue - 1] forKey:nowDate];
@@ -122,7 +119,6 @@
                 path = [path stringByAppendingPathComponent:@"challengeTimeLeft.plist"];
                 [self.reChallengeTimesLeft writeToFile:path atomically:YES];
             }
-            self.timeCount = 0;
             parentVC.spendSecond = 0;
             self.isReDoingChallenge = YES;
             self.currentNO = 0;
@@ -132,7 +128,6 @@
                 self.currentNO = self.lastTimeCurrentNO;
             }
         }
-        self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
         [parentVC startTimer];
     }
     self.isLastQuestion = NO;
@@ -140,13 +135,11 @@
 }
 
 - (void)pauseChallenge{
-    [self.timer invalidate];
     [parentVC stopTimer];
 }
 
 - (void)finishChallenge{
     //终止计时
-    [self.timer invalidate];
     [parentVC stopTimer];
     //计算成绩
     //保存挑战数据
@@ -176,7 +169,7 @@
         NSInteger percentOfRightAnswers = numberOfRightAnswers * 10; //正确率
         self.resultView.ratio = percentOfRightAnswers;
         
-        self.resultView.timeCount = self.timeCount;
+        self.resultView.timeCount = parentVC.spendSecond;
         
         TenSecChallengeObject *question = [self.questionArray firstObject];
         
@@ -218,7 +211,7 @@
     [answerDic setObject:@"1" forKey:@"questions_item"];
     [answerDic setObject:[NSString stringWithFormat:@"%d",self.currentNO] forKey:@"branch_item"];  //小题索引,即当前做的题
     
-    [answerDic setObject:[NSString stringWithFormat:@"%d",(NSInteger)self.timeCount] forKey:@"use_time"];   //用时
+    [answerDic setObject:[NSString stringWithFormat:@"%d",(NSInteger)parentVC.spendSecond] forKey:@"use_time"];   //用时
         NSMutableArray *questions = [NSMutableArray array];
         NSMutableDictionary *questionDic = [[NSMutableDictionary alloc] init];
         TenSecChallengeObject *anyQuestion = [self.questionArray firstObject];
@@ -333,7 +326,7 @@
             
         }else{
             self.answerStatus = [dicc objectForKey:@"status"];  //解析状态,已答题时间,题号,答案
-            self.timeCount = [[dicc objectForKey:@"use_time"] doubleValue];
+            parentVC.spendSecond = [[dicc objectForKey:@"use_time"] longLongValue];
             self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"branch_item"] integerValue];
             NSArray *questionsArray = [dicc objectForKey:@"questions"];
             NSDictionary *bigQuestion = [questionsArray firstObject];
@@ -357,7 +350,7 @@
     self.answerArray = [NSMutableArray array];
     
     self.answerStatus = [dicc objectForKey:@"status"];  //解析状态,已答题时间,题号,答案
-    self.timeCount = [[dicc objectForKey:@"use_time"] doubleValue];
+    parentVC.spendSecond = [[dicc objectForKey:@"use_time"] longLongValue];
     self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"branch_item"] integerValue];
     NSArray *questionsArray = [dicc objectForKey:@"questions"];
     NSDictionary *bigQuestion = [questionsArray firstObject];
@@ -409,12 +402,6 @@
     return NO;
 }
 
-//选择了一个答案
-- (void) didMadeAChoice:(NSString *)answer{
-    //1,保存本次选择的结果
-    //2,跳转到下一题
-}
-
 //每调用一次,读取下一道题目
 - (void) showNextQuestion{
     if (self.questionArray.count > 0) {
@@ -439,18 +426,6 @@
     }
 }
 
-//题目切换动画效果
-//- (void) showNextQuestionWithAnimation{
-//    CATransition *animation = [CATransition animation];
-//    [animation setType:kCATransitionPush];
-//    [animation setSubtype:kCATransitionFromRight];
-//    [animation setDuration:0.5];
-//    [animation setRemovedOnCompletion:YES];
-//    [animation setDelegate:self];
-//    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-//    [self.view.layer addAnimation:animation forKey:@"PushLeft"];
-//}
-
 //调整某个label的字体,使其适合长度
 - (void)handleLabelFont:(UILabel *)label{
     UIFont *font = label.font;
@@ -464,19 +439,6 @@
             label.font = [UIFont systemFontOfSize:fontSize];
         }
     }
-}
-
-//被计时器触发
--(void) timerFired:(NSTimer *)timer{
-    self.timeCount += 0.1;
-    [self refreshClock];
-}
-
--(void)refreshClock{//跳秒
-    NSInteger second = self.timeCount;
-    NSInteger minite = second / 60;
-    second = second % 60;
-    self.timeLabel.text = [NSString stringWithFormat:@"%i'%i",(minite > 0 ? minite : 0),second];
 }
 
 #pragma mark -- property

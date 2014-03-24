@@ -18,8 +18,6 @@
 -(void)getStart;        //调用此方法
 @property (weak, nonatomic) IBOutlet UIView *contentBgView;  //正文背景
 - (IBAction)nextButtonClicked:(id)sender;
-@property (weak, nonatomic) IBOutlet UIView *topBarView;  //顶栏
-@property (weak, nonatomic) IBOutlet UIView *itemsView;   //道具背景
 -(void)propOfReduceTimeClicked:(id)sender;
 -(void)propOfShowingAnswerClicked:(id)sender;
 @property (assign,nonatomic) BOOL isViewingHistory; //当前行为类型:查看历史/做题
