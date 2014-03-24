@@ -1486,6 +1486,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         TaskObject *taskObj = [TaskObject taskFromDictionary:packageDic];
         [DataService sharedService].taskObj = taskObj;
         returnMsg = @"读取成功";
+        
     } withFailure:^(NSError *error) {
         returnMsg = [error.userInfo objectForKey:@"msg"];
     }];
@@ -1494,13 +1495,21 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 //下载question.js ,用户选择"下载"之后调用
 + (NSDictionary *)downloadQuestionJSON{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths firstObject];
-    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"questionJSON_%@.js",[DataService sharedService].taskObj.taskId]];
-    NSData *questionData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.question_packages_url]];
-    [questionData writeToFile:path atomically:YES]; //保存文件,并返回JSON 字典
-    
+    NSFileManager *manager = [NSFileManager defaultManager];
+    NSString *path = [DataService sharedService].taskObj.taskSandboxFolder;
+    if (![manager fileExistsAtPath:path]) {
+        NSError *error;
+        [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
+    }
+    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"questionJSON.js"]];
     NSError *error;
+    NSData *questionData;
+    if ([manager fileExistsAtPath:path]) {
+        questionData = [NSData dataWithContentsOfFile:path];
+    }else{
+        questionData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.question_packages_url]];
+        [questionData writeToFile:path atomically:YES]; //保存文件,并返回JSON 字典
+    }
     NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingAllowFragments error:&error];
     return jsonDic;
 }

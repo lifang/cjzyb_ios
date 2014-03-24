@@ -20,6 +20,10 @@
     [task setQuestion_packages_url:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"question_packages_url"]]];
     [task setQuestion_types:[NSMutableArray arrayWithArray:[aDic objectForKey:@"question_types"]]];
     [task setFinish_types:[NSMutableArray arrayWithArray:[aDic objectForKey:@"finish_types"]]];
+    
+    NSString *date = [[[NSString stringWithFormat:@"%@",[aDic objectForKey:@"start_time"]] componentsSeparatedByString:@"T"] firstObject];
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    [task setTaskSandboxFolder:[path stringByAppendingPathComponent:date]];
 
     return task;
 }

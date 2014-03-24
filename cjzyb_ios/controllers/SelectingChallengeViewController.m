@@ -20,7 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIWebView *questionImageWebView;   //图片
 @property (weak, nonatomic) IBOutlet UITextView *questionTextView;          //问题题面
 @property (weak, nonatomic) IBOutlet UITableView *optionTable;  //选项table
-@property (weak, nonatomic) IBOutlet UIButton *nextButton;  //下一个/检查 按钮
+//@property (weak, nonatomic) IBOutlet UIButton *nextButton;  //下一个/检查 按钮
 - (IBAction)nextButtonClicked:(id)sender;
 @property (weak, nonatomic) IBOutlet UILabel *currentNOLabel;  //当前题号  2/5
 @property (weak, nonatomic) IBOutlet UIView *historyView;    //浏览历史时下方的view
@@ -187,7 +187,7 @@
     //改变按钮样式,及顶栏目样式
     self.propOfReduceTime.enabled = YES;
     self.propOfShowingAnswer.enabled = YES;
-    [self.nextButton setImage:[UIImage imageNamed:@"选择_07.png"] forState:UIControlStateNormal];
+//    [self.nextButton setImage:[UIImage imageNamed:@"选择_07.png"] forState:UIControlStateNormal];
     [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
     parentVC.appearCorrectButton.enabled = NO;
     parentVC.reduceTimeButton.enabled = NO;
@@ -252,7 +252,7 @@
     
     parentVC.appearCorrectButton.enabled = NO;
     parentVC.reduceTimeButton.enabled = NO;
-    [self.nextButton setImage:nil forState:UIControlStateNormal];
+//    [self.nextButton setImage:nil forState:UIControlStateNormal];
     [parentVC.checkHomeworkButton setTitle:@"下一个" forState:UIControlStateNormal];
     self.historyView.backgroundColor = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:191.0/255.0 alpha:1.0];
     self.historyView.hidden = NO;
@@ -267,7 +267,7 @@
     //改变按钮样式,及顶栏目样式
     parentVC.appearCorrectButton.enabled = YES;
     parentVC.reduceTimeButton.enabled = YES;
-    [self.nextButton setImage:[UIImage imageNamed:@"选择_07.png"] forState:UIControlStateNormal];
+//    [self.nextButton setImage:[UIImage imageNamed:@"选择_07.png"] forState:UIControlStateNormal];
     [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
     self.historyView.hidden = YES;
     
@@ -619,28 +619,28 @@
 //被timer触发
 -(void) timerFired:(NSTimer *)timer{
     self.timeCount = parentVC.spendSecond;
-    [self refreshClock];
+//    [self refreshClock];
 }
 
--(void)refreshClock{//跳秒
-    NSInteger second = self.timeCount;
-    NSInteger minite = second / 60;
-    second = second % 60;
-    self.timeLabel.text = [NSString stringWithFormat:@"%i'%i",(minite > 0 ? minite : 0),second];
-}
+//-(void)refreshClock{//跳秒
+//    NSInteger second = self.timeCount;
+//    NSInteger minite = second / 60;
+//    second = second % 60;
+//    self.timeLabel.text = [NSString stringWithFormat:@"%i'%i",(minite > 0 ? minite : 0),second];
+//}
 
-//比对当前时间是否早于给定时间
--(BOOL)compareNowWithTime:(NSString *) time{
-    //获取当前时间
-    NSDate *now = [NSDate date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSDate *timeDate = [dateFormatter dateFromString:time];
-    if (now == [now earlierDate:timeDate]) {
-        return YES;
-    }
-    return NO;
-}
+////比对当前时间是否早于给定时间
+//-(BOOL)compareNowWithTime:(NSString *) time{
+//    //获取当前时间
+//    NSDate *now = [NSDate date];
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+//    NSDate *timeDate = [dateFormatter dateFromString:time];
+//    if (now == [now earlierDate:timeDate]) {
+//        return YES;
+//    }
+//    return NO;
+//}
 
 //根据已选择的选项,检查当前答案是否正确
 -(BOOL)judgeAnswer:(NSMutableArray *)selectedOptions{
@@ -689,7 +689,6 @@
     for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
         for (NSString *str in self.currentSelectedOptions) {
             if (str.integerValue == i) {
-//                [selectedOptions addObject:self.currentQuestion.seOptionsArray[i]];
                 [selectedOptions addObject:[NSString stringWithFormat:@"%c",'A' + i]];
             }
         }
@@ -805,7 +804,7 @@
     [Utility returnAnswerPathWithProps:self.propsArray];
 }
 
-- (IBAction)nextButtonClicked:(id)sender {
+- (void)nextButtonClicked:(id)sender {
     ///防止乱点
     if (self.currentNO > self.questionArray.count) {
         return;
