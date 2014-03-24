@@ -7,7 +7,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TenSecChallengeViewController">
             <connections>
-                <outlet property="cancelButton" destination="l0W-2p-zK0" id="Uru-aF-cRI"/>
                 <outlet property="contentBgView" destination="JmQ-XD-9bw" id="eEF-e8-oax"/>
                 <outlet property="countDownImageView" destination="uOr-nH-iHi" id="dgG-21-b0f"/>
                 <outlet property="historyView" destination="gvO-V7-NgK" id="reC-JB-ZTT"/>
@@ -15,8 +14,6 @@
                 <outlet property="lowerButton" destination="o5t-xu-BIe" id="7uf-ge-dtu"/>
                 <outlet property="lowerOptionLabel" destination="Af1-t5-VFj" id="yy6-wP-z6l"/>
                 <outlet property="questionLabel" destination="CsT-1o-7dg" id="zxj-52-FZp"/>
-                <outlet property="timeLabel" destination="7Hi-Dh-QiD" id="3WX-20-Dws"/>
-                <outlet property="topBarView" destination="wjo-sy-mMl" id="Tbx-oc-8d1"/>
                 <outlet property="upperButton" destination="BPz-7h-3Tl" id="tqq-rA-WS5"/>
                 <outlet property="upperOptionLabel" destination="b69-AP-bQF" id="irp-ac-seE"/>
                 <outlet property="view" destination="2" id="3"/>
@@ -31,52 +28,6 @@
                     <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <view contentMode="scaleToFill" id="wjo-sy-mMl" userLabel="topBarView">
-                            <rect key="frame" x="0.0" y="0.0" width="768" height="75"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homeworkBack.png" id="JTA-tc-63v">
-                                    <rect key="frame" x="30" y="18" width="35" height="37"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="退出" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="J8k-AV-R9W">
-                                    <rect key="frame" x="70" y="27" width="86" height="20"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="l0W-2p-zK0" userLabel="cancelButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="140" height="75"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="37"/>
-                                    <state key="normal">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                </button>
-                                <view contentMode="scaleToFill" id="P3L-JM-qF3" userLabel="timeBgView">
-                                    <rect key="frame" x="284" y="0.0" width="200" height="75"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homeworkTimer.png" id="Rt8-Ev-xMx" userLabel="clockImg">
-                                            <rect key="frame" x="42" y="19" width="35" height="37"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0'0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7Hi-Dh-QiD" userLabel="timeLabel">
-                                            <rect key="frame" x="91" y="23" width="90" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                            </subviews>
-                            <color key="backgroundColor" red="0.15548489376176278" green="0.79139429209183676" blue="0.48679585989072299" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
                         <view contentMode="scaleToFill" id="JmQ-XD-9bw" userLabel="bgView">
                             <rect key="frame" x="0.0" y="75" width="768" height="949"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -141,7 +92,7 @@
                                     <rect key="frame" x="108" y="60" width="374" height="36"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
@@ -155,8 +106,6 @@
         </view>
     </objects>
     <resources>
-        <image name="homeworkBack.png" width="35" height="37"/>
-        <image name="homeworkTimer.png" width="35" height="37"/>
         <image name="yourChoice.png" width="60" height="60"/>
     </resources>
 </document>

@@ -11,7 +11,6 @@
 
 #import "SelectingChallengeOptionCell.h"
 @interface SelectingChallengeOptionCell()
-@property (strong,nonatomic) UIView *optionBackgroundView;  //背景
 @property (strong,nonatomic) UILabel *abcdLabel;
 @property (strong,nonatomic) UILabel *optionLabel;
 @end

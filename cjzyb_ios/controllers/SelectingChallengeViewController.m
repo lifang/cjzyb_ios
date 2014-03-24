@@ -12,24 +12,24 @@
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
 
 @interface SelectingChallengeViewController ()
-@property (weak, nonatomic) IBOutlet UIButton *cancelButton;  //退出按钮
-@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+//@property (weak, nonatomic) IBOutlet UIButton *cancelButton;  //退出按钮
+//@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *questionPlayButton;  //声音按钮
 - (IBAction)questionPlayButtonClicked:(id)sender;
 @property (weak, nonatomic) IBOutlet UIWebView *questionImageWebView;   //图片
 @property (weak, nonatomic) IBOutlet UITextView *questionTextView;          //问题题面
 @property (weak, nonatomic) IBOutlet UITableView *optionTable;  //选项table
-@property (weak, nonatomic) IBOutlet UIButton *nextButton;  //下一个/检查 按钮
-- (IBAction)nextButtonClicked:(id)sender;
-@property (weak, nonatomic) IBOutlet UILabel *currentNOLabel;  //当前题号  2/5
+//@property (weak, nonatomic) IBOutlet UIButton *nextButton;  //下一个/检查 按钮
+//- (IBAction)nextButtonClicked:(id)sender;
+@property (strong, nonatomic) UILabel *currentNOLabel;  //当前题号  2/5
 @property (weak, nonatomic) IBOutlet UIView *historyView;    //浏览历史时下方的view
 @property (weak, nonatomic) IBOutlet UILabel *historyYourChoiceLabel;  //显示"你的选择:"
 @property (strong,nonatomic) TenSecChallengeResultView *resultView; //结果界面
 @property (strong,nonatomic) UIButton *propOfShowingAnswer; //显示答案道具
 @property (strong,nonatomic) UIButton *propOfReduceTime; //时间-5道具
 
-
+@property (assign,nonatomic) BOOL checked; //本小题是否已经按过"检查"按钮
 @property (assign,nonatomic) BOOL isReDoingChallenge;  //是否是重新做题,重新挑战
 @property (assign,nonatomic) SelectingType selectingType;  //当前题目类型 填空/看图/听力
 @property (assign,nonatomic) NSTimeInterval timeCount;//计时 (秒)
@@ -184,10 +184,11 @@
 - (void)reDoingChallenge{
     self.isViewingHistory = NO;
     self.isReDoingChallenge = YES;
+    self.currentNOLabel.hidden = YES;
     //改变按钮样式,及顶栏目样式
     self.propOfReduceTime.enabled = YES;
     self.propOfShowingAnswer.enabled = YES;
-    [self.nextButton setImage:[UIImage imageNamed:@"选择_07.png"] forState:UIControlStateNormal];
+//    [self.nextButton setImage:[UIImage imageNamed:@"选择_07.png"] forState:UIControlStateNormal];
     [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
     parentVC.appearCorrectButton.enabled = NO;
     parentVC.reduceTimeButton.enabled = NO;
@@ -208,6 +209,7 @@
 - (void)viewHistory{
     self.isViewingHistory = YES;
     self.currentNO = 0;
+    self.currentNOLabel.hidden = NO;
     //计算正确率
     if (self.answerArray.count > 0 && self.answerArray.count == self.questionArray.count) {
         CGFloat numberOfRightAnswers = 0;
@@ -225,36 +227,36 @@
     }
     parentVC.timeLabel.text = [NSString stringWithFormat:@"%@\"",self.timeCountString];
     
-    ////改变按钮样式,顶栏等,添加正确率+时间label
-    UIView *bgView = [[UIView alloc] init];
-    [bgView setBackgroundColor:self.topBarView.backgroundColor];
-    [bgView setFrame:(CGRect){0,0,self.topBarView.frame.size.width / 2,self.topBarView.frame.size.height}];
-    bgView.center = self.topBarView.center ;
-    [self.topBarView addSubview:bgView];
-    UILabel *ratioAndTimeLabel = [[UILabel alloc] init];
-    NSString *ratioAndTimeString = [NSString stringWithFormat:@"         %d%@          %@",self.totalRatio,@"%",self.timeCountString];
-    ratioAndTimeLabel.text = ratioAndTimeString;
-    ratioAndTimeLabel.font = [UIFont systemFontOfSize:30.0];
-    ratioAndTimeLabel.textColor = [UIColor whiteColor];
-    ratioAndTimeLabel.backgroundColor = [UIColor clearColor];
-    ratioAndTimeLabel.frame = (CGRect){0,0,350,75};
-    ratioAndTimeLabel.center = (CGPoint){bgView.frame.size.width / 2,bgView.frame.size.height / 2};
-    [bgView addSubview:ratioAndTimeLabel];
-    
-    UILabel *ratioAndTimeLabel_ = [[UILabel alloc] init];
-    ratioAndTimeLabel_.text = @"正确率:                用时:";
-    ratioAndTimeLabel_.font = [UIFont systemFontOfSize:20.0];
-    ratioAndTimeLabel_.textColor = [UIColor whiteColor];
-    ratioAndTimeLabel_.backgroundColor = [UIColor clearColor];
-    ratioAndTimeLabel_.frame = (CGRect){0,0,350,75};
-    ratioAndTimeLabel_.center = ratioAndTimeLabel.center;
-    [bgView addSubview:ratioAndTimeLabel_];
+//    ////改变按钮样式,顶栏等,添加正确率+时间label
+//    UIView *bgView = [[UIView alloc] init];
+//    [bgView setBackgroundColor:self.topBarView.backgroundColor];
+//    [bgView setFrame:(CGRect){0,0,self.topBarView.frame.size.width / 2,self.topBarView.frame.size.height}];
+//    bgView.center = self.topBarView.center ;
+//    [self.topBarView addSubview:bgView];
+//    UILabel *ratioAndTimeLabel = [[UILabel alloc] init];
+//    NSString *ratioAndTimeString = [NSString stringWithFormat:@"         %d%@          %@",self.totalRatio,@"%",self.timeCountString];
+//    ratioAndTimeLabel.text = ratioAndTimeString;
+//    ratioAndTimeLabel.font = [UIFont systemFontOfSize:30.0];
+//    ratioAndTimeLabel.textColor = [UIColor whiteColor];
+//    ratioAndTimeLabel.backgroundColor = [UIColor clearColor];
+//    ratioAndTimeLabel.frame = (CGRect){0,0,350,75};
+//    ratioAndTimeLabel.center = (CGPoint){bgView.frame.size.width / 2,bgView.frame.size.height / 2};
+//    [bgView addSubview:ratioAndTimeLabel];
+//    
+//    UILabel *ratioAndTimeLabel_ = [[UILabel alloc] init];
+//    ratioAndTimeLabel_.text = @"正确率:                用时:";
+//    ratioAndTimeLabel_.font = [UIFont systemFontOfSize:20.0];
+//    ratioAndTimeLabel_.textColor = [UIColor whiteColor];
+//    ratioAndTimeLabel_.backgroundColor = [UIColor clearColor];
+//    ratioAndTimeLabel_.frame = (CGRect){0,0,350,75};
+//    ratioAndTimeLabel_.center = ratioAndTimeLabel.center;
+//    [bgView addSubview:ratioAndTimeLabel_];
     
     parentVC.appearCorrectButton.enabled = NO;
     parentVC.reduceTimeButton.enabled = NO;
-    [self.nextButton setImage:nil forState:UIControlStateNormal];
+//    [self.nextButton setImage:nil forState:UIControlStateNormal];
     [parentVC.checkHomeworkButton setTitle:@"下一个" forState:UIControlStateNormal];
-    self.historyView.backgroundColor = [UIColor colorWithRed:192.0/255.0 green:192.0/255.0 blue:191.0/255.0 alpha:1.0];
+    self.historyView.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
     self.historyView.hidden = NO;
     
     [self loadNextQuestion];
@@ -264,10 +266,11 @@
 //继续做题   --初始化界面
 - (void)continueChallenge{
     self.isViewingHistory = NO;
+    self.currentNOLabel.hidden = YES;
     //改变按钮样式,及顶栏目样式
     parentVC.appearCorrectButton.enabled = YES;
     parentVC.reduceTimeButton.enabled = YES;
-    [self.nextButton setImage:[UIImage imageNamed:@"选择_07.png"] forState:UIControlStateNormal];
+//    [self.nextButton setImage:[UIImage imageNamed:@"选择_07.png"] forState:UIControlStateNormal];
     [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
     self.historyView.hidden = YES;
     
@@ -291,14 +294,17 @@
             self.isLastQuestion = YES;
             [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
         }
+        self.checked = NO;
         self.currentQuestion = self.questionArray[self.currentNO - 1];
         self.currentSelectedOptions = [NSMutableArray array]; //清除选择数组
         self.selectingType = self.currentQuestion.seType;
         if (self.currentQuestion.seType == SelectingTypeListening) {
             _currentAudioData = nil;
-            [self currentAudioData];//先缓冲
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self currentAudioData];//先缓冲
+            });
         }
-        [self createQuestionView];
+        [self createQuestionView];//更新本题内容
         if (self.isViewingHistory) {
             [self refreshHistoryView];
         }else if (!self.isReDoingChallenge){
@@ -431,6 +437,33 @@
 }
 
 #pragma mark property
+- (UILabel *)currentNOLabel{
+    if (!_currentNOLabel) {
+        _currentNOLabel = [[UILabel alloc] initWithFrame:(CGRect){660,20,100,30}];
+        _currentNOLabel.font = [UIFont systemFontOfSize:26.0];
+        _currentNOLabel.textAlignment = NSTextAlignmentLeft;
+        _currentNOLabel.textColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+        [parentVC.djView addSubview:_currentNOLabel];
+    }
+    return _currentNOLabel;
+}
+
+//在改变checked属性时,改变按钮的文字
+- (void)setChecked:(BOOL)checked{
+    _checked = checked;
+    if (!self.isViewingHistory) {
+        if (!checked) {
+            [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
+        }else{
+            if (self.isLastQuestion) {
+                [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+            }else{
+                [parentVC.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
+            }
+        }
+    }
+}
+
 - (NSData *)currentAudioData{
     if (!_currentAudioData) {
         _currentAudioData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.currentQuestion.seContentAttachment]];
@@ -460,29 +493,29 @@
     return _answerArray;
 }
 
--(UIButton *)propOfReduceTime{
-    if (!_propOfReduceTime) {
-        _propOfReduceTime = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_propOfReduceTime setImage:[UIImage imageNamed:@"propOfTime.png"] forState:UIControlStateNormal];
-        [_propOfReduceTime addTarget:self action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
-        _propOfReduceTime.frame = (CGRect){146,10,50.5,50.5};
-        [self.itemsView addSubview:_propOfReduceTime];
-    }
-    return _propOfReduceTime;
-}
+//-(UIButton *)propOfReduceTime{
+//    if (!_propOfReduceTime) {
+//        _propOfReduceTime = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_propOfReduceTime setImage:[UIImage imageNamed:@"propOfTime.png"] forState:UIControlStateNormal];
+//        [_propOfReduceTime addTarget:self action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        _propOfReduceTime.frame = (CGRect){146,10,50.5,50.5};
+//        [self.itemsView addSubview:_propOfReduceTime];
+//    }
+//    return _propOfReduceTime;
+//}
 
 
 
--(UIButton *)propOfShowingAnswer{
-    if (!_propOfShowingAnswer) {
-        _propOfShowingAnswer = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_propOfShowingAnswer setImage:[UIImage imageNamed:@"propOfAnswer.png"] forState:UIControlStateNormal];
-        [_propOfShowingAnswer addTarget:self action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
-        _propOfShowingAnswer.frame = (CGRect){90,10,50.5,50.5};
-        [self.itemsView addSubview:_propOfShowingAnswer];
-    }
-    return _propOfShowingAnswer;
-}
+//-(UIButton *)propOfShowingAnswer{
+//    if (!_propOfShowingAnswer) {
+//        _propOfShowingAnswer = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_propOfShowingAnswer setImage:[UIImage imageNamed:@"propOfAnswer.png"] forState:UIControlStateNormal];
+//        [_propOfShowingAnswer addTarget:self action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        _propOfShowingAnswer.frame = (CGRect){90,10,50.5,50.5};
+//        [self.itemsView addSubview:_propOfShowingAnswer];
+//    }
+//    return _propOfShowingAnswer;
+//}
 
 -(NSString *)timeCountString{
     NSString *str;
@@ -569,19 +602,14 @@
 //加载本题的历史回答情况
 -(void)refreshHistoryView{
     //1,下方显示
-    //2,选中选项
     NSMutableString *yourChoiceString = [NSMutableString stringWithFormat:@"你的选择:"];
     OrdinaryAnswerObject *currentAnswer = self.answerArray[self.currentNO - 1];
     NSArray *myAnswers = [currentAnswer.answerAnswer componentsSeparatedByString:@";||;"];
+    [yourChoiceString appendString:[myAnswers componentsJoinedByString:@""]];
+    
+    //2,选中选项
     for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
         NSString *option = self.currentQuestion.seOptionsArray[i];
-        for (NSString *answer in myAnswers) {
-            if ([answer isEqualToString:option]) {
-                [yourChoiceString appendFormat:@"%c",'A' + i];
-                break;
-            }
-        }
-        
         for(NSString *rightAnswer in self.currentQuestion.seRightAnswers){
             if ([rightAnswer isEqualToString:option]) {
                 //选中该option
@@ -598,28 +626,28 @@
 //被timer触发
 -(void) timerFired:(NSTimer *)timer{
     self.timeCount = parentVC.spendSecond;
-    [self refreshClock];
+//    [self refreshClock];
 }
 
--(void)refreshClock{//跳秒
-    NSInteger second = self.timeCount;
-    NSInteger minite = second / 60;
-    second = second % 60;
-    self.timeLabel.text = [NSString stringWithFormat:@"%i'%i",(minite > 0 ? minite : 0),second];
-}
+//-(void)refreshClock{//跳秒
+//    NSInteger second = self.timeCount;
+//    NSInteger minite = second / 60;
+//    second = second % 60;
+//    self.timeLabel.text = [NSString stringWithFormat:@"%i'%i",(minite > 0 ? minite : 0),second];
+//}
 
-//比对当前时间是否早于给定时间
--(BOOL)compareNowWithTime:(NSString *) time{
-    //获取当前时间
-    NSDate *now = [NSDate date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSDate *timeDate = [dateFormatter dateFromString:time];
-    if (now == [now earlierDate:timeDate]) {
-        return YES;
-    }
-    return NO;
-}
+////比对当前时间是否早于给定时间
+//-(BOOL)compareNowWithTime:(NSString *) time{
+//    //获取当前时间
+//    NSDate *now = [NSDate date];
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+//    NSDate *timeDate = [dateFormatter dateFromString:time];
+//    if (now == [now earlierDate:timeDate]) {
+//        return YES;
+//    }
+//    return NO;
+//}
 
 //根据已选择的选项,检查当前答案是否正确
 -(BOOL)judgeAnswer:(NSMutableArray *)selectedOptions{
@@ -629,7 +657,8 @@
     }
     
     //判断多选
-    for (NSString *option in selectedOptions) {
+    for (NSString *optionIndex in selectedOptions) {
+        NSString *option = self.currentQuestion.seOptionsArray[optionIndex.integerValue];
         BOOL tooMuch = YES;
         for(NSString *answer in self.currentQuestion.seRightAnswers){
             if ([answer isEqualToString:option]) {
@@ -645,7 +674,8 @@
     //判断漏选
     for (NSString *answer in self.currentQuestion.seRightAnswers) {
         BOOL notEnough = YES;
-        for(NSString *option in selectedOptions){
+        for(NSString *optionIndex in selectedOptions){
+            NSString *option = self.currentQuestion.seOptionsArray[optionIndex.integerValue];
             if ([answer isEqualToString:option]) {
                 notEnough = NO;
                 break;
@@ -659,22 +689,23 @@
 }
 
 //点击"检查"后,把当前答案存放入答案数组中,播放音效
--(void)addAnswer{
+-(void)checkChoice{
     OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
     answer.answerID = self.currentQuestion.seID;
     NSMutableArray *selectedOptions = [NSMutableArray array];
     for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
         for (NSString *str in self.currentSelectedOptions) {
             if (str.integerValue == i) {
-                [selectedOptions addObject:self.currentQuestion.seOptionsArray[i]];
+                [selectedOptions addObject:[NSString stringWithFormat:@"%c",'A' + i]];
             }
         }
     }
     answer.answerAnswer = [selectedOptions componentsJoinedByString:@";||;"];
-    BOOL answerRatio = [self judgeAnswer:selectedOptions];
+    BOOL answerRatio = [self judgeAnswer:self.currentSelectedOptions];
     answer.answerRatio = answerRatio ? @"100" : @"0";
     [self.answerArray addObject:answer];
     
+    [self showCheckResult];
     [self makeAnswerJSON];
     
     //播放声音
@@ -685,13 +716,38 @@
         if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
             [[AppDelegate shareIntance].avPlayer play];
         }
-        
     }else{
         [AppDelegate shareIntance].avPlayer = nil;
         [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"right_sound" ofType:@"mp3"]] error:nil];
         [AppDelegate shareIntance].avPlayer.volume = 1;
         if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
             [[AppDelegate shareIntance].avPlayer play];
+        }
+    }
+    
+    self.checked = YES;
+}
+
+- (void)showCheckResult{
+    for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
+        NSString *option = self.currentQuestion.seOptionsArray[i];
+        BOOL optionIsRightAnswer = NO;
+        for(NSString *rightAnswer in self.currentQuestion.seRightAnswers){
+            if ([option isEqualToString:rightAnswer]) {
+                //标注正确答案
+                optionIsRightAnswer = YES;
+                SelectingChallengeOptionCell *cell = (SelectingChallengeOptionCell *)[self.optionTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+                cell.optionBackgroundView.backgroundColor = [UIColor greenColor];
+            }
+        }
+        if (!optionIsRightAnswer) {
+            //错误答案是否是被选中的
+            for(NSString *selectedOptionIndex in self.currentSelectedOptions){
+                if (i == selectedOptionIndex.integerValue) {
+                    SelectingChallengeOptionCell *cell = (SelectingChallengeOptionCell *)[self.optionTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+                    cell.optionBackgroundView.backgroundColor = [UIColor redColor];
+                }
+            }
         }
     }
 }
@@ -755,19 +811,26 @@
     [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 
-- (IBAction)nextButtonClicked:(id)sender {
+- (void)nextButtonClicked:(id)sender {
     ///防止乱点
     if (self.currentNO > self.questionArray.count) {
-        [Utility errorAlert:@"请先答本题"];
         return;
     }
     if (!self.isViewingHistory) {
         if (self.currentSelectedOptions.count < 1) {
+            [Utility errorAlert:@"请先答本题"];
             return;
         }
-        [self addAnswer];
+        if (!self.checked) {
+            //先检查
+            [self checkChoice];
+        }else{
+            [self loadNextQuestion];
+        }
+    }else{
+        [self loadNextQuestion];
     }
-    [self loadNextQuestion];
+    
 }
 
 #pragma mark TableViewDataSource
@@ -785,6 +848,7 @@
     cell.optionString = self.currentQuestion.seOptionsArray[indexPath.row];
     cell.delegate = self;
     cell.maxLabelWidth = 0;
+    cell.optionBackgroundView.backgroundColor = [UIColor whiteColor];
     for (int i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
         NSString *option = self.currentQuestion.seOptionsArray[i];
         CGFloat width = [Utility getTextSizeWithString:option withFont:[UIFont systemFontOfSize:40.0]].width;
@@ -813,7 +877,10 @@
 -(void)selectingCell:(SelectingChallengeOptionCell *)cell clickedForSelecting:(BOOL)selected{
     cell.optionSelected = selected;
     if (selected) {
-        [self.currentSelectedOptions addObject:[NSString stringWithFormat:@"%d",cell.indexPath.row]];
+        NSString *index = [NSString stringWithFormat:@"%d",cell.indexPath.row];
+        if (![self.currentSelectedOptions containsObject:index]) {
+            [self.currentSelectedOptions addObject:index];
+        }
     }else{
         NSInteger index = 0;
         for (NSInteger i = 0; i < self.currentSelectedOptions.count; i++) {
