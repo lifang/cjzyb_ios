@@ -117,9 +117,24 @@
     [request setPostValue:userId forKey:@"student_id"];
     [request setPostValue:identifyCode forKey:@"verification_code"];
     [Utility requestDataWithASIRequest:request withSuccess:^(NSDictionary *dicData) {
+        NSDictionary *userDic = [dicData objectForKey:@"student"];
+        NSDictionary *gradeDic = [dicData objectForKey:@"class"];
+        UserObject *user = [[UserObject alloc] init];
+        user.userId = [Utility filterValue:[userDic objectForKey:@"id"]];
+//        user.userId = [Utility filterValue:[userDic objectForKey:@"user_id"]];//user_id代表
+        user.name = [Utility filterValue:[userDic objectForKey:@"name"]];
+        user.nickName = [Utility filterValue:[userDic objectForKey:@"nickname"]];
+        user.headUrl = [Utility filterValue:[userDic objectForKey:@"avatar_url"]];
+        
+        ClassObject *grade = [[ClassObject alloc] init];
+        grade.classId = [Utility filterValue:[gradeDic objectForKey:@"id"]];
+        grade.name = [Utility filterValue:[gradeDic objectForKey:@"name"]];
+        grade.tName = [Utility filterValue:[gradeDic objectForKey:@"tearcher_name"]];
+        grade.tId = [Utility filterValue:[gradeDic objectForKey:@"tearcher_id"]];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
                 DLog(@"%@",dicData);
+                success(user,grade);
             }
         });
     } withFailure:failure];
@@ -150,6 +165,44 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
                 success(classArr);
+            }
+        });
+    } withFailure:failure];
+}
+
+///切换班级
++(void)exchangeGradeWithUserId:(NSString*)userId withGradeId:(NSString*)gradeId withSuccess:(void(^)(UserObject *userObj,ClassObject *gradeObj))success withFailure:(void(^)(NSError *error))failure{
+    if (!userId || !gradeId ) {
+        if (failure) {
+            failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"请求参数不能为空"}]);
+        }
+        return;
+    }
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/students/get_class_info?student_id=%@&school_class_id=%@",kHOST,userId,gradeId];
+    DLog(@"修改同学信息url:%@",urlString);
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    
+    [request setTimeOutSeconds:60];
+    [request setRequestMethod:@"GET"];
+    [Utility requestDataWithASIRequest:request withSuccess:^(NSDictionary *dicData) {
+        NSDictionary *userDic = [dicData objectForKey:@"student"];
+        NSDictionary *gradeDic = [dicData objectForKey:@"class"];
+        UserObject *user = [[UserObject alloc] init];
+        user.userId = [Utility filterValue:[userDic objectForKey:@"id"]];
+        //        user.userId = [Utility filterValue:[userDic objectForKey:@"user_id"]];//user_id代表
+        user.name = [Utility filterValue:[userDic objectForKey:@"name"]];
+        user.nickName = [Utility filterValue:[userDic objectForKey:@"nickname"]];
+        user.headUrl = [Utility filterValue:[userDic objectForKey:@"avatar_url"]];
+        
+        ClassObject *grade = [[ClassObject alloc] init];
+        grade.classId = [Utility filterValue:[gradeDic objectForKey:@"id"]];
+        grade.name = [Utility filterValue:[gradeDic objectForKey:@"name"]];
+        grade.tName = [Utility filterValue:[gradeDic objectForKey:@"tearcher_name"]];
+        grade.tId = [Utility filterValue:[gradeDic objectForKey:@"tearcher_id"]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (success) {
+                DLog(@"%@",dicData);
+                success(user,grade);
             }
         });
     } withFailure:failure];

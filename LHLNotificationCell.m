@@ -54,6 +54,7 @@
         self.textView.text = noti.notiContent;
         self.textView.frame = (CGRect){self.textView.frame.origin,self.textView.frame.size.width,self.textView.contentSize.height + 20};
         self.timeLabel.text = noti.notiTime;
+        self.isEditing = noti.isEditing;
     }
 }
 
@@ -75,6 +76,10 @@
 
 
 - (IBAction)coverButtonClicked:(id)sender {
+    _isEditing = !_isEditing;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(cell:setIsEditing:)]) {
+        [self.delegate cell:self setIsEditing:_isEditing];
+    }
     if (self.contentBgView.frame.origin.x < -1) {
         self.contentBgView.backgroundColor = [UIColor whiteColor];
         [UIView animateWithDuration:0.25 animations:^{
@@ -89,6 +94,18 @@
         } completion:^(BOOL finished) {
             
         }];
+    }
+}
+
+#pragma mark property
+-(void) setIsEditing:(BOOL)isEditing{
+    _isEditing = isEditing;
+    if (isEditing) {
+        self.contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
+        self.contentBgView.frame = (CGRect){-103,0,self.bounds.size};
+    }else{
+        self.contentBgView.backgroundColor = [UIColor whiteColor];
+        self.contentBgView.frame = self.bounds;
     }
 }
 @end

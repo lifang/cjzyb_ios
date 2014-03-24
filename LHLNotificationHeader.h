@@ -14,9 +14,11 @@ typedef enum{
 
 @protocol LHLNotificationHeaderDelegate;
 
-@interface LHLNotificationHeader : UITableViewHeaderFooterView
+@interface LHLNotificationHeader : UIView
 
 @property (nonatomic,strong) id<LHLNotificationHeaderDelegate> delegate;
+
+-(void)initHeader;  //初始化
 
 @end
 

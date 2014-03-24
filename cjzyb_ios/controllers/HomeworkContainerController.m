@@ -14,10 +14,15 @@
 
 ///朗读题controller
 @property (nonatomic,strong) ReadingTaskViewController *readingController;
+@property (nonatomic,strong) ListenWriteViewController *listenView;//听写
+@property (nonatomic,strong) SortViewController *sortView;//排序
+@property (nonatomic,strong) SelectedViewController *selectedView;//完形填空
+@property (nonatomic,strong) TenSecChallengeViewController *tenSecViewController;///十速挑战
+@property (nonatomic,strong) SelectingChallengeViewController *selectingChallengeViewController; ///选择挑战
 ///计时器
 @property (nonatomic,strong) NSTimer *timer;
-///减时间
-- (IBAction)reduceTimeButtonClicked:(id)sender;
+/////减时间
+//- (IBAction)reduceTimeButtonClicked:(id)sender;
 ///退出作业
 - (IBAction)quitButtonClicked:(id)sender;
 
@@ -42,8 +47,7 @@
 
 ///开始计时
 -(void)startTimer{
-    self.spendSecond = 0;
-    self.timerLabel.text = @"";
+//    self.timerLabel.text = [NSString stringWithFormat:@"%lld",self.spendSecond];
     if (self.timer) {
         [self.timer invalidate];
         self.timer = nil;
@@ -62,7 +66,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.spendSecond = 0;[DataService sharedService].number_reduceTime=2;[DataService sharedService].isHistory=NO;
+    //TODO:判断做题历史 or  做题
+    if ([DataService sharedService].isHistory==YES) {
+        self.timeImg.hidden=YES; self.timerLabel.hidden=YES;
+        self.label1.hidden=NO;self.label2.hidden=NO;self.rotioLabel.hidden=NO;self.timeLabel.hidden=NO;
+    }else {
+        self.timeImg.hidden=NO; self.timerLabel.hidden=NO;
+        self.label1.hidden=YES;self.label2.hidden=YES;self.rotioLabel.hidden=YES;self.timeLabel.hidden=YES;
+    }
     [self startTimer];
+    self.homeworkType = HomeworkType_fillInBlanks;
     switch (self.homeworkType) {
         case HomeworkType_line:
         {
@@ -87,6 +101,86 @@
             [self addChildViewController:self.readingController];
             [self.readingController didMoveToParentViewController:self];
         }
+        case HomeworkType_listeningAndWrite://听写
+        {
+            self.listenView = [[ListenWriteViewController alloc]initWithNibName:@"ListenWriteViewController" bundle:nil];
+            [self.listenView willMoveToParentViewController:self];
+            self.listenView.view.frame = self.contentView.bounds;
+            [self.appearCorrectButton setHidden:YES];
+            self.listenView.checkHomeworkButton = self.checkHomeworkButton;
+            [self.reduceTimeButton addTarget:self.listenView action:@selector(listenViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+            [self.contentView addSubview:self.listenView.view];
+            [self addChildViewController:self.listenView];
+            [self.listenView didMoveToParentViewController:self];
+        }
+            break;
+        case HomeworkType_fillInBlanks://完形填空
+        {
+            self.selectedView = [[SelectedViewController alloc]initWithNibName:@"SelectedViewController" bundle:nil];
+            [self.selectedView willMoveToParentViewController:self];
+            self.selectedView.view.frame = self.contentView.bounds;
+            [self.appearCorrectButton addTarget:self.selectedView action:@selector(showClozeCorrectAnswer) forControlEvents:UIControlEventTouchUpInside];
+            [self.reduceTimeButton addTarget:self.selectedView action:@selector(clozeViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+            
+            self.selectedView.checkHomeworkButton = self.checkHomeworkButton;
+            [self.contentView addSubview:self.selectedView.view];
+            [self addChildViewController:self.selectedView];
+            [self.selectedView didMoveToParentViewController:self];
+        }
+            break;
+        case HomeworkType_sort://排序
+        {
+            self.sortView = [[SortViewController alloc]initWithNibName:@"SortViewController" bundle:nil];
+            [self.sortView willMoveToParentViewController:self];
+            self.sortView.view.frame = self.contentView.bounds;
+            [self.appearCorrectButton addTarget:self.sortView action:@selector(showSortCorrectAnswer) forControlEvents:UIControlEventTouchUpInside];
+            [self.reduceTimeButton addTarget:self.sortView action:@selector(sortViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+            self.sortView.checkHomeworkButton = self.checkHomeworkButton;
+            [self.contentView addSubview:self.sortView.view];
+            [self addChildViewController:self.sortView];
+            [self.sortView didMoveToParentViewController:self];
+        }
+            break;
+        case HomeworkType_quick://十速挑战
+            //十速挑战没有道具栏,contentView应为 {0,75,768,949}
+        {
+            [self.djView setHidden:YES];
+            self.tenSecViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
+            [self.tenSecViewController willMoveToParentViewController:self];
+            [self.contentView setFrame:(CGRect){0,75,768,949}];
+            [self.contentView addSubview:self.tenSecViewController.view];
+            [self.tenSecViewController.contentBgView setFrame:(CGRect){0,0,768,949}];
+            [self.tenSecViewController.topBarView setHidden:YES];
+            [self addChildViewController:self.tenSecViewController];
+            [self.tenSecViewController didMoveToParentViewController:self];
+            self.tenSecViewController.isViewingHistory = [DataService sharedService].isHistory;
+            [self.tenSecViewController startChallenge];
+            if (![DataService sharedService].isHistory) {
+                [self.checkBgView setHidden:YES];
+            }else{
+                [self.checkHomeworkButton addTarget:self.tenSecViewController action:@selector(showNextQuestion) forControlEvents:UIControlEventTouchUpInside];
+                [self.checkHomeworkButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+                [self.checkHomeworkButton setTitle:@"下一个" forState:UIControlStateNormal];
+                self.checkHomeworkButton.frame = (CGRect){0,0,[self.checkHomeworkButton superview].frame.size};
+                self.checkHomeworkButton.backgroundColor = self.checkBgView.backgroundColor ;
+            }
+        }
+            break;
+        case HomeworkType_select://选择挑战
+        {
+            self.selectingChallengeViewController = [[SelectingChallengeViewController alloc] initWithNibName:@"SelectingChallengeViewController" bundle:nil];
+            [self.selectingChallengeViewController willMoveToParentViewController:self];
+            [self.contentView addSubview:self.selectingChallengeViewController.view];
+            [self.selectingChallengeViewController.contentBgView setFrame:(CGRect){0,0,768,874}];
+            [self addChildViewController:self.selectingChallengeViewController];
+            [self.selectingChallengeViewController didMoveToParentViewController:self];
+            [self.checkHomeworkButton addTarget:self.selectingChallengeViewController action:@selector(nextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [self.appearCorrectButton addTarget:self.selectingChallengeViewController action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [self.reduceTimeButton addTarget:self.selectingChallengeViewController action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
+            self.selectingChallengeViewController.topBarView.hidden = YES;
+            self.selectingChallengeViewController.itemsView.hidden = YES;
+            self.selectingChallengeViewController.isViewingHistory = [DataService sharedService].isHistory;
+        }
             break;
         default:
             break;
@@ -102,26 +196,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)reduceTimeButtonClicked:(id)sender {
-    if (self.spendSecond > 5) {
-        self.spendSecond = self.spendSecond -5;
-    }else{
-        self.spendSecond = 0;
-    }
-    UILabel *label = [[UILabel alloc] initWithFrame:(CGRect){self.view.frame.size.width/2,120,70,50}];
-    [label setFont:[UIFont systemFontOfSize:50]];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor orangeColor];
-    label.text = @"-5";
-    [self.view addSubview:label];
-    [self.view setUserInteractionEnabled:NO];
-    label.alpha = 1;
-    [UIView animateWithDuration:1 animations:^{
-        label.alpha = 0;
-    } completion:^(BOOL finished) {
-        [label removeFromSuperview];
-        [self.view setUserInteractionEnabled:YES];
-    }];
+#pragma mark -- property
+-(void)setSpendSecond:(long long)spendSecond{
+    _spendSecond = spendSecond;
+    self.timerLabel.text = [Utility formateDateStringWithSecond:self.spendSecond];
 }
 
 - (IBAction)quitButtonClicked:(id)sender {

@@ -9,13 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "ClozeView.h"
 #import "UnderLineLabel.h"
-
-@interface SelectedViewController : UIViewController<ClozeViewDelegate>
+#import "HomeworkContainerController.h"
+#import "BasePostInterface.h"
+/**
+ *  完形填空
+ */
+@interface SelectedViewController : UIViewController<ClozeViewDelegate,TenSecChallengeResultViewDelegate,PostDelegate>
 
 @property (nonatomic, strong) AppDelegate *appDel;
-
+@property (nonatomic, strong) BasePostInterface *postInter;
 @property (nonatomic, strong) ClozeView *clozeVV;
 
+@property (nonatomic, strong) NSDictionary *clozeDic;//整个题目－－－－代表完形填空
 @property (nonatomic, assign) NSInteger number;//记录第几题--大题
 @property (nonatomic, strong) NSMutableArray *questionArray;
 @property (nonatomic, strong) NSDictionary *questionDic;
@@ -26,4 +31,30 @@
 @property (nonatomic, strong) NSArray *orgArray;
 
 @property (nonatomic, assign) NSInteger tmpTag;
+
+@property (nonatomic, assign) int specified_time;//规定时间
+
+@property (strong, nonatomic) UIButton *checkHomeworkButton;
+@property (nonatomic, assign) NSInteger branchScore;
+@property (nonatomic, assign) BOOL isFirst;
+@property (nonatomic, strong) HomeworkContainerController *homeControl;
+@property (nonatomic, strong) NSMutableDictionary *answerDic;
+
+
+-(void)showClozeCorrectAnswer;
+- (void)clozeViewReduceTimeButtonClicked;
+//道具
+@property (nonatomic, strong) NSMutableArray *propsArray;
+
+
+
+
+
+///历史
+@property (nonatomic, strong) IBOutlet UIView *historyView;
+@property (nonatomic, strong) IBOutlet UILabel *historyAnswer;
+
+@property (nonatomic, strong) NSMutableArray *history_questionArray;
+@property (nonatomic, strong) NSDictionary *history_questionDic;
+
 @end

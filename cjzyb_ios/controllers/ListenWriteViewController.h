@@ -7,15 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ASIHTTPRequest.h"
+#import "HomeworkContainerController.h"
+#import "TenSecChallengeResultView.h"
+#import "BasePostInterface.h"
+#import <AVFoundation/AVFoundation.h> 
 
-@interface ListenWriteViewController : UIViewController<UITextFieldDelegate>
+/**
+ *  听写
+ */
+@interface ListenWriteViewController : UIViewController<UITextFieldDelegate,TenSecChallengeResultViewDelegate,PostDelegate,AVAudioPlayerDelegate>
+
+@property (nonatomic, strong) IBOutlet UIView *listenMusicView;
+@property (nonatomic, strong) IBOutlet UIButton *listenBtn;
 
 @property (nonatomic, strong) AppDelegate *appDel;
-@property (nonatomic, strong) ASIHTTPRequest *asiHttpRequest;
+@property (nonatomic, strong) BasePostInterface *postInter;
 
 @property (nonatomic, strong) UIView *wordsContainerView;
-
 @property (nonatomic, assign) NSInteger number;//记录第几题--大题
 @property (nonatomic, strong) NSMutableArray *questionArray;
 @property (nonatomic, strong) NSDictionary *questionDic;
@@ -26,10 +34,38 @@
 
 @property (nonatomic, strong) NSArray *orgArray;
 @property (nonatomic, strong) NSArray *metaphoneArray;
-
-@property (strong, nonatomic) IBOutlet UILabel *remindLab;
 @property (nonatomic, strong) NSMutableArray *tmpArray;
 @property (nonatomic, strong) NSDictionary *resultDic;
 
-@property (nonatomic, assign) CGFloat score;
+@property (nonatomic, assign) BOOL isFirst;
+
+@property (nonatomic, assign) int specified_time;//规定时间
+@property (nonatomic, assign) CGFloat branchScore;
+@property (nonatomic, assign) CGFloat scoreRadio;//正确率
+
+@property (nonatomic, strong) HomeworkContainerController *homeControl;
+@property (strong, nonatomic) UIButton *checkHomeworkButton;
+@property (nonatomic, strong) NSMutableDictionary *answerDic;
+
+
+@property (nonatomic, strong) NSMutableArray *urlArray;//存放预听界面播放的url
+
+-(void)listenViewReduceTimeButtonClicked;
+//道具
+@property (nonatomic, strong) NSMutableArray *propsArray;
+
+
+//提醒－－－
+@property (nonatomic, strong) IBOutlet UIView *remindView;
+@property (nonatomic, strong) IBOutlet UILabel *remindLabel;
+@property (strong, nonatomic) IBOutlet UILabel *remindLab;
+
+///历史
+@property (nonatomic, strong) IBOutlet UIView *historyView;
+@property (nonatomic, strong) IBOutlet UILabel *historyAnswer;
+
+@property (nonatomic, strong) NSMutableArray *history_questionArray;
+@property (nonatomic, strong) NSDictionary *history_questionDic;
+@property (nonatomic, strong) NSMutableArray *history_branchQuestionArray;
+@property (nonatomic, strong) NSDictionary *history_branchQuestionDic;
 @end

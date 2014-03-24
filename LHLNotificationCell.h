@@ -23,6 +23,7 @@
 
 @property (strong,nonatomic) id<LHLNotificationCellDelegate> delegate;
 @property (strong,nonatomic) NSIndexPath *indexPath;
+@property (assign,nonatomic) BOOL isEditing;//正在编辑
 @property (strong,nonatomic) UIView *sideView;//右侧view with 按钮
 
 
@@ -35,6 +36,7 @@
 
 @required
 -(void)cell:(LHLNotificationCell *)cell deleteButtonClicked:(id)sender;
+-(void)cell:(LHLNotificationCell *)cell setIsEditing:(BOOL)editing;
 @optional
 -(void)refreshHeightForCell:(LHLNotificationCell *)cell;
 @end

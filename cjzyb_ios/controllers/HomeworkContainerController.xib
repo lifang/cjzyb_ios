@@ -8,20 +8,27 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeworkContainerController">
             <connections>
                 <outlet property="appearCorrectButton" destination="gXD-fH-1Hw" id="9my-aB-yFd"/>
+                <outlet property="checkBgView" destination="ffd-jN-boC" id="rQ8-n4-4im"/>
                 <outlet property="checkHomeworkButton" destination="TOZ-l9-jr5" id="5LS-Z0-1Si"/>
                 <outlet property="contentView" destination="Mpv-Zu-cvf" id="yjC-yt-gio"/>
+                <outlet property="djView" destination="Qjf-do-S1z" id="nJb-fB-9Wo"/>
+                <outlet property="label1" destination="2y7-Cm-tTr" id="IMr-BQ-sAy"/>
+                <outlet property="label2" destination="901-kj-ecX" id="k4I-y3-oOY"/>
                 <outlet property="quitHomeworkButton" destination="iyg-oP-n5x" id="3EK-BX-2pu"/>
                 <outlet property="reduceTimeButton" destination="kBq-b5-iiz" id="i6K-Ov-mKN"/>
+                <outlet property="rotioLabel" destination="788-P2-hMq" id="dyh-oe-E5e"/>
+                <outlet property="timeImg" destination="tNi-aO-NeT" id="hy7-Qr-tjf"/>
+                <outlet property="timeLabel" destination="dwW-in-rr0" id="WFY-ST-rSA"/>
                 <outlet property="timerLabel" destination="40m-wo-64j" id="UJM-hH-6mO"/>
                 <outlet property="view" destination="2" id="3"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="2">
-            <rect key="frame" x="0.0" y="0.0" width="768" height="1004"/>
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="HfX-9p-2AP">
+                <view contentMode="scaleToFill" id="HfX-9p-2AP" userLabel="topView">
                     <rect key="frame" x="0.0" y="0.0" width="768" height="75"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -41,7 +48,7 @@
                             <color key="textColor" red="0.89019614458084106" green="0.90588241815567017" blue="0.89803928136825562" alpha="1" colorSpace="deviceRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="19 12'25''" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="40m-wo-64j" userLabel="timerLabel - 19 12'25''">
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0''" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="40m-wo-64j" userLabel="timerLabel - 19 12'25''">
                             <rect key="frame" x="374" y="9" width="181" height="57"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -65,33 +72,54 @@
                             <rect key="frame" x="630" y="0.0" width="138" height="75"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="检查" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wvg-RT-RfT">
-                                    <rect key="frame" x="22" y="18" width="57" height="40"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homeworkCheck.png" id="gOo-kP-YjS">
-                                    <rect key="frame" x="77" y="20" width="35" height="35"/>
+                                    <rect key="frame" x="90" y="20" width="35" height="35"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 </imageView>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="TOZ-l9-jr5" userLabel="checkedButton">
-                                    <rect key="frame" x="0.0" y="0.0" width="138" height="75"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="TOZ-l9-jr5" userLabel="checkedButton">
+                                    <rect key="frame" x="0.0" y="0.0" width="90" height="75"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                    <fontDescription key="fontDescription" name="STHeitiSC-Medium" family="Heiti SC" pointSize="26"/>
                                     <state key="normal">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
                             </subviews>
-                            <color key="backgroundColor" red="0.13725490870000001" green="0.1647058874" blue="0.1960784495" alpha="1" colorSpace="deviceRGB"/>
+                            <color key="backgroundColor" red="0.15294117647058825" green="0.18823529411764706" blue="0.22352941176470587" alpha="1" colorSpace="deviceRGB"/>
                         </view>
+                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正确率:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2y7-Cm-tTr">
+                            <rect key="frame" x="179" y="27" width="75" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="用时:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="901-kj-ecX">
+                            <rect key="frame" x="374" y="27" width="53" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100%" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="788-P2-hMq">
+                            <rect key="frame" x="262" y="13" width="104" height="42"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="8'33''" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dwW-in-rr0">
+                            <rect key="frame" x="435" y="13" width="104" height="42"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="35"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
-                    <color key="backgroundColor" red="0.18039216101169586" green="0.78431379795074463" blue="0.51764708757400513" alpha="1" colorSpace="deviceRGB"/>
+                    <color key="backgroundColor" red="0.20784313725490194" green="0.81176470588235294" blue="0.5607843137254902" alpha="1" colorSpace="deviceRGB"/>
                 </view>
-                <view contentMode="scaleToFill" id="Qjf-do-S1z">
+                <view contentMode="scaleToFill" id="Qjf-do-S1z" userLabel="toolView">
                     <rect key="frame" x="0.0" y="75" width="768" height="75"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -112,22 +140,25 @@
                             <state key="normal" image="propOfTime.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <connections>
-                                <action selector="reduceTimeButtonClicked:" destination="-1" eventType="touchUpInside" id="4S9-yY-gXw"/>
-                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.86274516582489014" green="0.85490202903747559" blue="0.85490202903747559" alpha="1" colorSpace="deviceRGB"/>
                 </view>
                 <view contentMode="scaleToFill" id="Mpv-Zu-cvf" userLabel="contentView">
-                    <rect key="frame" x="0.0" y="151" width="768" height="853"/>
+                    <rect key="frame" x="0.0" y="150" width="768" height="874"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.86274509799999999" green="0.86274509799999999" blue="0.86274509799999999" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+            <color key="backgroundColor" red="0.86274509799999999" green="0.86274509799999999" blue="0.86274509799999999" alpha="1" colorSpace="calibratedRGB"/>
         </view>
+        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="检查" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wvg-RT-RfT">
+            <rect key="frame" x="0.0" y="0.0" width="57" height="40"/>
+            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <nil key="highlightedColor"/>
+        </label>
     </objects>
     <resources>
         <image name="homeworkBack.png" width="35" height="37"/>

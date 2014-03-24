@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface SortViewController : UIViewController
+#import "HomeworkContainerController.h"
+#import "BasePostInterface.h"
+/**
+ *  排序
+ */
+@interface SortViewController : UIViewController<TenSecChallengeResultViewDelegate,PostDelegate>
 
 @property (nonatomic, strong) AppDelegate *appDel;
-
+@property (nonatomic, strong) BasePostInterface *postInter;
 @property (nonatomic, strong) UIView *wordsContainerView;
 @property (nonatomic, assign) NSInteger number;//记录第几题--大题
 @property (nonatomic, strong) NSMutableArray *questionArray;
@@ -30,4 +34,29 @@
 
 @property (nonatomic, strong) UIButton *preBtn;
 @property (nonatomic, strong) UIButton *restartBtn;
+
+@property (nonatomic, assign) int specified_time;//规定时间
+
+@property (nonatomic, strong) HomeworkContainerController *homeControl;
+@property (strong, nonatomic) UIButton *checkHomeworkButton;
+@property (nonatomic, strong) NSMutableDictionary *answerDic;
+
+@property (nonatomic, assign) BOOL isFirst;
+@property (nonatomic, assign) NSInteger branchScore;
+
+-(void)showSortCorrectAnswer;
+- (void)sortViewReduceTimeButtonClicked;
+//道具
+@property (nonatomic, strong) NSMutableArray *propsArray;
+
+
+
+///历史
+@property (nonatomic, strong) IBOutlet UIView *historyView;
+@property (nonatomic, strong) IBOutlet UILabel *historyAnswer;
+
+@property (nonatomic, strong) NSMutableArray *history_questionArray;
+@property (nonatomic, strong) NSDictionary *history_questionDic;
+@property (nonatomic, strong) NSMutableArray *history_branchQuestionArray;
+@property (nonatomic, strong) NSDictionary *history_branchQuestionDic;
 @end

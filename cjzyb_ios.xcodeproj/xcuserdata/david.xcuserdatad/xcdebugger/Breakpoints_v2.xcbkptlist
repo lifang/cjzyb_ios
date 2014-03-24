@@ -147,13 +147,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "cjzyb_ios/Interface/UserObjDaoInterface.m"
-            timestampString = "416735622.77707"
+            filePath = "cjzyb_ios/controllers/ClassGroupViewController.m"
+            timestampString = "417178032.951747"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
-            landmarkName = "+joinNewGradeWithUserId:withIdentifyCode:withSuccess:withFailure:"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

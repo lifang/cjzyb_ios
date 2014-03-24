@@ -96,13 +96,14 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     __weak UserInfoPopViewController *weakSelf = self;
     
-    [UserObjDaoInterface dowloadGradeListWithUserId:@"73" withSuccess:^(NSArray *gradeList) {
+    [UserObjDaoInterface dowloadGradeListWithUserId:@"72" withSuccess:^(NSArray *gradeList) {
         UserInfoPopViewController *tempSelf = weakSelf;
         if (tempSelf) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             ClassGroupViewController *group = [[ClassGroupViewController alloc] initWithNibName:@"ClassGroupViewController" bundle:nil];
             tempSelf.popViewController = [[WYPopoverController alloc] initWithContentViewController:group];
             tempSelf.popViewController.popoverContentSize = (CGSize){224,150};
+            group.classArray =[NSMutableArray arrayWithArray:gradeList] ;
             CGRect rect = [tempSelf.view convertRect:tempSelf.userClassButton.frame fromView:tempSelf.userClassButton.superview];
             [tempSelf.popViewController presentPopoverFromRect:rect inView:tempSelf.view permittedArrowDirections:WYPopoverArrowDirectionRight animated:YES completion:^{
                 [tempSelf.userClassButton setUserInteractionEnabled:YES];

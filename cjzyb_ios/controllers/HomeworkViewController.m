@@ -8,6 +8,8 @@
 
 #import "HomeworkViewController.h"
 #import "HomeworkHistoryCollectionCell.h"
+#import "HomeworkDaoInterface.h"
+//{"id": "181", "content": "This is! an aps!", "resource_url": "/question_packages/201402/questions_package_222/media_181.mp3"},
 @interface HomeworkViewController ()
 @property (nonatomic,strong) WYPopoverController *calendarPopController;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
@@ -49,7 +51,83 @@
     }
     return self;
 }
+-(void)addDownloadTaskWithDictionary:(NSDictionary *)dic andName:(NSString *)name{
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"resource_url"]]]];
+    request.delegate = self;
+    
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    NSString *nameString = [NSString stringWithFormat:@"%@-%@.mp3",name,[dic objectForKey:@"id"]];
+    NSString *savePath=[path stringByAppendingPathComponent:nameString];
+    NSString *temp = [path stringByAppendingPathComponent:@"temp"];
+    NSString *tempPath = [temp stringByAppendingPathComponent:nameString];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:temp]) {
+        [fileManager createDirectoryAtPath:temp
+               withIntermediateDirectories:YES
+                                attributes:nil
+                                     error:nil];
+    }
+    
+    [request setDownloadDestinationPath:savePath];//下载路径
+    [request setTemporaryFileDownloadPath:tempPath];//缓存路径
+    request.allowResumeForFileDownloads = YES;//打开断点，是否要断点续传
+    [request setShowAccurateProgress:YES];
+    [[self networkQueue] addOperation:request];
+}
 
+-(void)downLoadService {
+    NSDictionary * dic = [Utility initWithJSONFile:@"question"];
+    NSArray *array = [NSArray arrayWithObjects:LISTEN,READ,SELECT, nil];
+    
+    for (int i=0; i<array.count; i++) {
+        if (i!=array.count-1) {
+            NSDictionary *questionDic = [dic objectForKey:[array objectAtIndex:i]];
+            NSArray *questions = [questionDic objectForKey:@"questions"];
+            for (int k=0; k<questions.count; k++) {
+                NSDictionary *branch_dic = [questions objectAtIndex:k];
+                NSArray *branch_questions = [branch_dic objectForKey:@"branch_questions"];
+                
+                for (int j=0; j<branch_questions.count; j++) {
+                    NSDictionary *q_dic = [branch_questions objectAtIndex:j];
+                    [self addDownloadTaskWithDictionary:q_dic andName:[array objectAtIndex:i]];
+                }
+            }
+        }else {
+            NSDictionary *questionDic = [dic objectForKey:SELECT];
+            NSArray *questions = [questionDic objectForKey:@"questions"];
+            for (int k=0; k<questions.count; k++) {
+                NSDictionary *branch_dic = [questions objectAtIndex:k];
+                NSArray *branch_questions = [branch_dic objectForKey:@"branch_questions"];
+                
+                for (int j=0; j<branch_questions.count; j++) {
+                    NSDictionary *q_dic = [branch_questions objectAtIndex:j];
+                    NSString *content = [q_dic objectForKey:@"content"];
+                    NSString *str = @".wav";
+                    NSRange range = [content rangeOfString:str];
+                    if (range.location != NSNotFound) {
+                        NSMutableString *mutableStr = [NSMutableString stringWithFormat:@"%@",content];
+                        NSString *tempStr1=[mutableStr stringByReplacingOccurrencesOfString:@"</file>" withString:@""];
+                        mutableStr = [NSMutableString stringWithFormat:@"%@",tempStr1];
+                        NSString *tempStr2=[mutableStr stringByReplacingOccurrencesOfString:@"<file>" withString:@""];
+                        NSDictionary *theDic = [NSDictionary dictionaryWithObjectsAndKeys:[q_dic objectForKey:@"id"],@"id",tempStr2,@"resource_url", nil];
+                        [self addDownloadTaskWithDictionary:theDic andName:SELECT];
+                    }
+                }
+            }
+        }
+    }
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request {
+    if ([self.networkQueue requestsCount] > 0) {
+        //还有未下载完成
+    }
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -63,22 +141,39 @@
     [self.flowLayout setSectionInset:UIEdgeInsetsZero];
     [self.collectionView setCollectionViewLayout:self.flowLayout];
     
-    for (int i = 0; i < 5; i++) {
-        TaskObj *task = [[TaskObj alloc] init];
-        NSMutableArray *types = [NSMutableArray array];
-        for (int i = 0; i < 15; i++) {
-            HomeworkTypeObj *obj = [[HomeworkTypeObj alloc] init];
-            obj.homeworkType = HomeworkType_line;
-            obj.homeworkTypeRanking = @"100";
-            obj.homeworkTypeIsFinished = YES;
-            [types addObject:obj];
+//    for (int i = 0; i < 5; i++) {
+//        TaskObj *task = [[TaskObj alloc] init];
+//        NSMutableArray *types = [NSMutableArray array];
+//        for (int i = 0; i < 15; i++) {
+//            HomeworkTypeObj *obj = [[HomeworkTypeObj alloc] init];
+//            obj.homeworkType = HomeworkType_line;
+//            obj.homeworkTypeRanking = @"100";
+//            obj.homeworkTypeIsFinished = YES;
+//            [types addObject:obj];
+//        }
+//        task.taskHomeworkTypeArray = types;
+//        self.taskObj = task;
+//        [self.allHistoryTaskArray addObject:task];
+//    }
+    __weak HomeworkViewController *weakSelf = self;
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    DataService *data = [DataService sharedService];
+    [HomeworkDaoInterface downloadCurrentTaskWithUserId:data.user.userId withClassId:data.theClass.classId withSuccess:^(TaskObj *taskObj) {
+        HomeworkViewController *tempSelf= weakSelf;
+        if (tempSelf) {
+            tempSelf.taskObj = taskObj;
+            data.taskObj = taskObj;
+            tempSelf.isShowHistory = NO;
+            [tempSelf.collectionView reloadData];
+            [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
         }
-        task.taskHomeworkTypeArray = types;
-        self.taskObj = task;
-        [self.allHistoryTaskArray addObject:task];
-    }
-    
-    
+    } withError:^(NSError *error) {
+        HomeworkViewController *tempSelf= weakSelf;
+        if (tempSelf) {
+            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+            [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
+        }
+    }];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -89,16 +184,52 @@
 }
 
 - (IBAction)historyButtonClicked:(id)sender {
-    self.isShowHistory = YES;
-    [self.collectionView reloadData];
+    __weak HomeworkViewController *weakSelf = self;
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    DataService *data = [DataService sharedService];
+    [HomeworkDaoInterface downloadHistoryTaskWithUserId:data.user.userId withClassId:data.theClass.classId withCurrentTaskID:self.taskObj.taskID withSuccess:^(NSArray *taskObjArr) {
+        HomeworkViewController *tempSelf= weakSelf;
+        if (tempSelf) {
+            tempSelf.allHistoryTaskArray = [NSMutableArray arrayWithArray:taskObjArr] ;
+            tempSelf.isShowHistory = YES;
+            [tempSelf.collectionView reloadData];
+            [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
+        }
+    } withError:^(NSError *error) {
+        HomeworkViewController *tempSelf= weakSelf;
+        if (tempSelf) {
+            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+            [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
+        }
+    }];
+
 }
 
 - (IBAction)calendarButtonClicked:(id)sender {
+    __weak HomeworkViewController *weakSelf = self;
     CalendarViewController *calendarViewContr = [[CalendarViewController alloc] initWithNibName:@"CalendarViewController" bundle:nil];
     self.calendarPopController = [[WYPopoverController alloc] initWithContentViewController:calendarViewContr];
     __weak WYPopoverController *weakPopoverController = self.calendarPopController;
     calendarViewContr.selectedDateBlock =   ^(NSArray *selectedDateArray){
         [weakPopoverController dismissPopoverAnimated:YES];
+
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        DataService *data = [DataService sharedService];
+        [HomeworkDaoInterface searchTaskWithUserId:data.user.userId withClassId:data.theClass.classId withSelectedDate:selectedDateArray.firstObject withSuccess:^(NSArray *taskObjArr) {
+            HomeworkViewController *tempSelf= weakSelf;
+            if (tempSelf) {
+                tempSelf.allHistoryTaskArray = [NSMutableArray arrayWithArray:taskObjArr] ;
+                tempSelf.isShowHistory = YES;
+                [tempSelf.collectionView reloadData];
+                [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
+            }
+        } withError:^(NSError *error) {
+            HomeworkViewController *tempSelf= weakSelf;
+            if (tempSelf) {
+                [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+                [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
+            }
+        }];
     };
     WYPopoverTheme *theme = [self.calendarPopController theme];
     [theme setFillTopColor:[UIColor whiteColor]];
@@ -182,8 +313,8 @@
         self.historyStartTaskLabel.text = [NSString stringWithFormat:@"%@ 发布",task.taskStartDate];
     }else{
         cell.dailyCollectionViewController.taskObj = self.taskObj;
-        self.startTaskTimeLabel.text = [NSString stringWithFormat:@"发布时间为 %@",self.taskObj.taskStartDate];
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"今日作业截止时间为 %@",self.taskObj.taskEndDate]];
+        self.startTaskTimeLabel.text = [NSString stringWithFormat:@"发布时间为 %@",self.taskObj.taskStartDate?:@""];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"今日作业截止时间为 %@",self.taskObj.taskEndDate?:@""]];
         [str addAttribute:NSFontAttributeName value:self.endTaskTimeLabel.font range:NSMakeRange(0, str.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, 9)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(9, str.length - 9)];

@@ -36,6 +36,7 @@
 //匹配相似度
 +(int)DistanceBetweenTwoString:(NSString*)strA StrAbegin:(int)strAbegin StrAend:(int)strAend StrB:(NSString*)strB StrBbegin:(int)strBbegin StrBend:(int)strBend;
 //返回结果
++(NSDictionary *)listenCompareWithArray:(NSArray *)arrA andArray:(NSArray *)arrAA WithArray:(NSArray *)arrB andArray:(NSArray *)arrBB;
 +(NSDictionary *)compareWithArray:(NSArray *)arrA andArray:(NSArray *)arrAA WithArray:(NSArray *)arrB andArray:(NSArray *)arrBB WithRange:(NSArray *)rangeArray;
 
 
@@ -82,4 +83,12 @@
 +(CGSize)getAttributeStringSizeWithWidth:(float)width withAttributeString:(NSAttributedString*)attriString;
 +(CGSize)getTextSizeWithString:(NSString*)text withFont:(UIFont*)font;
 +(NSString*)convertFileSizeUnitWithBytes:(NSString*)bytes;
++ (Class)JSONParserClass;
+//answer.json文件路径
++(NSMutableDictionary *)returnAnswerDictionaryWithName:(NSString *)name;
++(void)returnAnswerPathWithDictionary:(NSDictionary *)aDic andName:(NSString *)name;
++(BOOL)compareTime;
++(NSMutableArray *)returnAnswerProps;
++(void)returnAnswerPathWithProps:(NSMutableArray *)array;
++ (NSString *)isExistenceNetwork;
 @end

@@ -8,6 +8,9 @@
 
 #import "TenSecChallengeViewController.h"
 #import "LHLTestInterface.h"
+#import "HomeworkContainerController.h"
+
+#define parentVC ((HomeworkContainerController *)[self parentViewController])
 
 @interface TenSecChallengeViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton; //返回键
@@ -20,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *lowerButton;
 @property (weak, nonatomic) IBOutlet UIView *historyView;
 @property (weak, nonatomic) IBOutlet UILabel *historyYourChoiceLabel;
+
+
 @property (assign,nonatomic) double timeCount; //计时时间(单位为秒)
 @property (strong,nonatomic) NSTimer *timer;
 @property (assign,nonatomic) NSInteger currentNO;//当前正在做的题目序号,如超过问题数量代表答题完毕
@@ -32,6 +37,7 @@
 @property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
 @property (strong,nonatomic) NSString *answerStatus;    //文件中记载的完成状态
 @property (assign,nonatomic) BOOL isReDoingChallenge; //是否为重新挑战
+@property (strong,nonatomic) NSMutableDictionary *reChallengeTimesLeft; //剩余挑战数
 @end
 
 @implementation TenSecChallengeViewController
@@ -55,12 +61,18 @@
     self.questionArray = [NSMutableArray arrayWithArray:[TenSecChallengeObject parseTenSecQuestionsFromFile]];
     
     //载入answer文件
-    [self parseAnswerJSON];
+    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit"]];
+//    [self parseAnswerJSON];
     
-    [self startChallenge];//到时此方法由外部调用
+    self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+    self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
     
-    //获取今日作业截止时间
-    [self fetchHomeworkFinishTime];
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    HomeworkContainerController *container = (HomeworkContainerController *)[self parentViewController];
+    container.spendSecond = self.timeCount;
+    
 }
 
 - (void)setupViews{  //控件初始设置
@@ -83,17 +95,45 @@
     if (self.isViewingHistory) {  //浏览历史
         self.currentNO = 0;
         self.historyView.hidden = NO;
-        //上方动作条添加"下一个"按钮
+        NSInteger ratio = 0;
+        for (int i = 0; i < self.answerArray.count; i ++) {
+            OrdinaryAnswerObject *answer = self.answerArray[i];
+            if ([answer.answerRatio isEqualToString:@"100"]) {
+                ratio += 10;
+            }
+        }
+        parentVC.rotioLabel.text = [NSString stringWithFormat:@"%d%@",ratio,@"%"];
+        NSInteger second = self.timeCount;
+        NSInteger minite = second / 60;
+        second = second % 60;
+        parentVC.timeLabel.text = [NSString stringWithFormat:@"%d'%d\"",minite,second];
     }else{
-        if ([self.answerStatus isEqualToString:@"1"]) { //重新做题
+        if ([self.answerStatus isEqualToString:@"1"]) { //重新做题  ,此时应判断是否有重新做题的剩余次数
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+            NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
+            NSString *timesLeft = [self.reChallengeTimesLeft objectForKey:nowDate];
+            if (timesLeft.integerValue < 1) {
+                return;
+            }else{
+                [self.reChallengeTimesLeft setObject:[NSString stringWithFormat:@"%d",timesLeft.integerValue - 1] forKey:nowDate];
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+                NSString *path = [paths firstObject];
+                path = [path stringByAppendingPathComponent:@"challengeTimeLeft.plist"];
+                [self.reChallengeTimesLeft writeToFile:path atomically:YES];
+            }
             self.timeCount = 0;
+            parentVC.spendSecond = 0;
             self.isReDoingChallenge = YES;
             self.currentNO = 0;
             self.answerArray = [NSMutableArray array];
         }else{ //继续做题
-            self.currentNO = self.lastTimeCurrentNO - 1;
+            if (self.lastTimeCurrentNO > 1) {
+                self.currentNO = self.lastTimeCurrentNO;
+            }
         }
         self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+        [parentVC startTimer];
     }
     self.isLastQuestion = NO;
     [self showNextQuestion];
@@ -101,21 +141,30 @@
 
 - (void)pauseChallenge{
     [self.timer invalidate];
+    [parentVC stopTimer];
 }
 
 - (void)finishChallenge{
     //终止计时
     [self.timer invalidate];
+    [parentVC stopTimer];
     //计算成绩
     //保存挑战数据
     //显示结果界面
     [self.view addSubview:self.resultView];
+    if (self.isReDoingChallenge) {
+        self.resultView.resultBgView.hidden = YES;
+        self.resultView.noneArchiveView.hidden = NO;
+    }else{
+        self.resultView.resultBgView.hidden = NO;
+        self.resultView.noneArchiveView.hidden = YES;
+    }
     [self makeResult];
     self.answerStatus = @"1";
 }
 
 - (void)makeResult{
-    //准确率,耗时,提交时间  判断精准/迅速/捷足成就
+    //准确率,耗时,提交时间  判断精准/迅速/捷足成就  显示结果界面
     NSInteger numberOfRightAnswers = 0;
     if (self.answerArray.count == self.questionArray.count) {
         for (int i = 0; i < self.answerArray.count; i ++) {
@@ -125,43 +174,48 @@
             }
         }
         NSInteger percentOfRightAnswers = numberOfRightAnswers * 10; //正确率
-        self.resultView.correctPersent.text = [NSString stringWithFormat:@"正确率: %i%@",percentOfRightAnswers,@"%"];
-        self.resultView.timeLabel.text = [NSString stringWithFormat:@"用时: %@",self.timeLabel.text];
+        self.resultView.ratio = percentOfRightAnswers;
         
-        if (percentOfRightAnswers < 100) {
-            self.resultView.accuracyAchievementLabel.text = [NSString stringWithFormat:@"好可惜没有全对哦,不能拿到精准得分哦!"];
-        }else{
-            self.resultView.accuracyAchievementLabel.text = [NSString stringWithFormat:@"所有题目全部正确!<精准>成就加10分!"];
-        }
+        self.resultView.timeCount = self.timeCount;
         
         TenSecChallengeObject *question = [self.questionArray firstObject];
-        if (self.timeCount <= [question.tenTimeLimit floatValue]) {
-            //迅速成就
-            self.resultView.fastAchievementLabel.text = [NSString stringWithFormat:@"恭喜你的用时在%@秒内,<迅速>成就加10分!",question.tenTimeLimit];
+        
+        self.resultView.timeLimit = question.tenTimeLimit.integerValue;
+        
+//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+//        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+//        NSDate *homeworkFinishTime = [formatter dateFromString:self.homeworkFinishTime];
+//        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+//        NSUInteger unitFlag = NSSecondCalendarUnit;
+//        NSDateComponents *comps = [gregorian components:unitFlag fromDate:[NSDate date] toDate:homeworkFinishTime options:0];
+//        NSInteger seconds = [comps second];
+        
+        if ([Utility compareTime]) {
+            self.resultView.isEarly = YES;
         }else{
-            self.resultView.fastAchievementLabel.text = [NSString stringWithFormat:@"你的用时超过了%@秒,不能拿到迅速得分哦!",question.tenTimeLimit];
+            self.resultView.isEarly = NO;
         }
         
-        //捷足成就
-        if ([self compareNowWithTime:self.homeworkFinishTime]) {
-            self.resultView.earlyAchievementLabel.text = [NSString stringWithFormat:@"恭喜你在截止时间提前两小时完成作业,<捷足>成就加10分!"];
-        }else{
-            self.resultView.earlyAchievementLabel.text = [NSString stringWithFormat:@"未能在截止时间提前两小时完成作业,不能拿到捷足得分哦!"];
-        }
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
+        self.resultView.challengeTimesLeft = [self.reChallengeTimesLeft objectForKey:nowDate];
+        
+        [self.resultView initView];
     }else{
         [Utility errorAlert:@"题目与答案不匹配!"];
     }
 }
 
 - (NSDictionary *)makeAnswerJSON{
-    //按照answer.js的格式制作一个字典
+    //按照answer.js的格式制作一个字典,并保存
     NSMutableDictionary *answerDic = [[NSMutableDictionary alloc] init];
-    [answerDic setObject:(self.currentNO > self.questionArray.count ? @"1" : @"0") forKey:@"status"];//完成情况
+    [answerDic setObject:(self.currentNO >= self.questionArray.count ? @"1" : @"0") forKey:@"status"];//完成情况
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
     [answerDic setObject:nowDate forKey:@"update_time"];
-    [answerDic setObject:@"1" forKey:@"questions_item"];//大题索引  ,在十速挑战中无用,暂用来存答题开始时间
+    [answerDic setObject:@"1" forKey:@"questions_item"];
     [answerDic setObject:[NSString stringWithFormat:@"%d",self.currentNO] forKey:@"branch_item"];  //小题索引,即当前做的题
     
     [answerDic setObject:[NSString stringWithFormat:@"%d",(NSInteger)self.timeCount] forKey:@"use_time"];   //用时
@@ -184,6 +238,8 @@
         [questions addObject:questionDic];
     [answerDic setObject:questions forKey:@"questions"];
     
+    //保存JSON
+    [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"time_limit"];
     return [NSDictionary dictionaryWithDictionary:answerDic];
 }
 
@@ -200,15 +256,18 @@
             answer.answerAnswer = self.upperOptionLabel.text;
             answer.answerRatio = [self.upperOptionLabel.text isEqualToString:self.currentQuestion.tenRightAnswer] ? @"100" : @"0";
             [self.answerArray addObject:answer];
+            if (!self.isReDoingChallenge) {
+                [self makeAnswerJSON];
+            }
         }
-        self.upperOptionLabel.backgroundColor = [UIColor greenColor];
+        self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:53.0/255.0 green:207.0/255.0 blue:143.0/255.0 alpha:1.0];
         self.upperButton.enabled = NO;
         self.lowerButton.enabled = NO;
         [UIView animateWithDuration:0.5 animations:^{
             self.upperButton.alpha = self.upperButton.alpha > 0.5 ? 0.5 : 1;
         } completion:^(BOOL finished) {
-            self.upperOptionLabel.backgroundColor = [UIColor blackColor];
-            self.lowerOptionLabel.backgroundColor = [UIColor blackColor];
+            self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+            self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
             if (self.isLastQuestion) {
                 [self finishChallenge];
                 self.currentNO = self.questionArray.count + 1; //标志答题结束
@@ -227,15 +286,18 @@
             answer.answerAnswer = self.lowerOptionLabel.text;
             answer.answerRatio = [self.lowerOptionLabel.text isEqualToString:self.currentQuestion.tenRightAnswer] ? @"100" : @"0";
             [self.answerArray addObject:answer];
+            if (!self.isReDoingChallenge) {
+                [self makeAnswerJSON];
+            }
         }
-        self.lowerOptionLabel.backgroundColor = [UIColor greenColor];
+        self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:53.0/255.0 green:207.0/255.0 blue:143.0/255.0 alpha:1.0];
         self.upperButton.enabled = NO;
         self.lowerButton.enabled = NO;
         [UIView animateWithDuration:0.5 animations:^{
             self.upperButton.alpha = self.upperButton.alpha > 0.5 ? 0.5 : 1;
         } completion:^(BOOL finished) {
-            self.upperOptionLabel.backgroundColor = [UIColor blackColor];
-            self.lowerOptionLabel.backgroundColor = [UIColor blackColor];
+            self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+            self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
             if (self.isLastQuestion) {
                 [self finishChallenge];
                 self.currentNO = self.questionArray.count + 1; //标志答题结束
@@ -291,12 +353,26 @@
     }
 }
 
-//获取作业完成期限
--(void)fetchHomeworkFinishTime{
-//    LHLTestInterface *inter = [[LHLTestInterface alloc] init];
-//    inter.delegate = self;
-//    
-//    [inter getLHLTestDelegateWithClassId:@"1" andUserId:@"8"];
+-(void)parseAnswerDic:(NSMutableDictionary *)dicc{
+    self.answerArray = [NSMutableArray array];
+    
+    self.answerStatus = [dicc objectForKey:@"status"];  //解析状态,已答题时间,题号,答案
+    self.timeCount = [[dicc objectForKey:@"use_time"] doubleValue];
+    self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"branch_item"] integerValue];
+    NSArray *questionsArray = [dicc objectForKey:@"questions"];
+    NSDictionary *bigQuestion = [questionsArray firstObject];
+    if (bigQuestion) {
+        NSArray *branchQuestionsArray = [bigQuestion objectForKey:@"branch_questions"];
+        for (NSInteger i = 0; i < branchQuestionsArray.count; i ++) {
+            NSDictionary *branchQuestionDic = branchQuestionsArray[i];
+            OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
+            answer.answerID = [branchQuestionDic objectForKey:@"id"];
+            answer.answerAnswer = [branchQuestionDic objectForKey:@"answer"];
+            answer.answerRatio = [branchQuestionDic objectForKey:@"ratio"];
+            
+            [self.answerArray addObject:answer];
+        }
+    }
 }
 
 //显示当前题目的正确答案,使用道具/浏览历史时调用
@@ -314,7 +390,7 @@
 -(void)showHistoryAnswer{
     if (self.currentNO < self.answerArray.count) {
         OrdinaryAnswerObject *answer = self.answerArray[self.currentNO];
-        self.historyYourChoiceLabel.text = answer.answerAnswer;
+        self.historyYourChoiceLabel.text = [NSString stringWithFormat:@"你的答案:%@",answer.answerAnswer];
     }else{
         [Utility errorAlert:@"历史答案错误!"];
     }
@@ -354,12 +430,26 @@
         
         if (self.currentNO == self.questionArray.count) {
             self.isLastQuestion = YES;
+            [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+            [parentVC.checkHomeworkButton addTarget:self action:@selector(resultViewCommitButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         }
         
     }else{
         [Utility errorAlert:@"未成功获取题目!"];
     }
 }
+
+//题目切换动画效果
+//- (void) showNextQuestionWithAnimation{
+//    CATransition *animation = [CATransition animation];
+//    [animation setType:kCATransitionPush];
+//    [animation setSubtype:kCATransitionFromRight];
+//    [animation setDuration:0.5];
+//    [animation setRemovedOnCompletion:YES];
+//    [animation setDelegate:self];
+//    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+//    [self.view.layer addAnimation:animation forKey:@"PushLeft"];
+//}
 
 //调整某个label的字体,使其适合长度
 - (void)handleLabelFont:(UILabel *)label{
@@ -390,6 +480,25 @@
 }
 
 #pragma mark -- property
+//从文件中读取字典,否则新建一个包含字符串@"3"的值
+- (NSMutableDictionary *)reChallengeTimesLeft{
+    if (!_reChallengeTimesLeft) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths firstObject];
+        NSString *filePath = [NSString stringWithFormat:@"%@/challengeTimeLeft.plist",path];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
+        _reChallengeTimesLeft = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+        //如果无文件,或文件中无今日记录,则新建dic
+        if (!_reChallengeTimesLeft || [_reChallengeTimesLeft objectForKey:nowDate] == nil) {
+            _reChallengeTimesLeft = [NSMutableDictionary dictionary];
+            [_reChallengeTimesLeft setObject:@"3" forKey:nowDate];
+        }
+    }
+    return _reChallengeTimesLeft;
+}
+
 - (NSArray *)questionNumberImages{
     if (!_questionNumberImages || _questionNumberImages.count < 1) {
         NSMutableArray *array = [NSMutableArray array];
@@ -429,7 +538,6 @@
     if (!_resultView) {
         _resultView = [[[NSBundle mainBundle]loadNibNamed:@"TenSecChallengeResultView" owner:self options:nil] lastObject];
         _resultView.delegate = self;
-        [_resultView initView];
     }
     return _resultView;
 }
@@ -438,6 +546,7 @@
 - (void)resultViewCommitButtonClicked{
     [self.resultView removeFromSuperview];
     self.resultView = nil;
+    [parentVC.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)resultViewRestartButtonClicked{
@@ -446,20 +555,7 @@
     self.resultView = nil;
 }
 
-#pragma mark LHLTestInterfaceDelegate
--(void) getLHLInfoDidFinished:(NSDictionary *)result{
-    id tasks = [result objectForKey:@"Tasks"];
-    if ([tasks isKindOfClass:[NSDictionary class]]) {
-        NSString *endTime = [(NSDictionary *)tasks objectForKey:@"end_time"];
-        if (endTime != nil && endTime.length > 0) {
-            self.homeworkFinishTime = endTime;
-        }
-    }
-}
 
--(void) getLHLInfoDidFailed:(NSString *)errorMsg{
-    [Utility errorAlert:errorMsg];
-}
 
 - (void)didReceiveMemoryWarning
 {

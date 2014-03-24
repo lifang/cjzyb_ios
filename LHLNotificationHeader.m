@@ -15,19 +15,7 @@
 @end
 @implementation LHLNotificationHeader
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-        
-    }
-    return self;
-}
-
-- (id)initWithReuseIdentifier:(NSString *)reuseIdentifier{
-    self = [super initWithReuseIdentifier:reuseIdentifier];
-    if (self) {
+- (void)initHeader{
         self.backgroundView = [[UIView alloc] init];
         self.backgroundView.backgroundColor = [UIColor colorWithRed:204.0/255.0 green:205.0/255.0 blue:206.0/255.0 alpha:1.0];
         [self addSubview:self.backgroundView];
@@ -54,8 +42,6 @@
         self.smallTriangle = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"smallTriangle.png"]];
         self.smallTriangle.backgroundColor = [UIColor clearColor];
         [self.backgroundView addSubview:self.smallTriangle];
-    }
-    return self;
 }
 
 -(void)layoutSubviews{

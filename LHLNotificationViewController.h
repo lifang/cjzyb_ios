@@ -10,7 +10,12 @@
 #import "LHLNotificationCell.h"
 #import "LHLReplyNotificationCell.h"
 #import "LHLNotificationHeader.h"
+#import "LHLGetSysNoticeInterface.h"
+#import "LHLGetMyNoticeInterface.h"
+#import "LHLDeleteMyNoticeInterface.h"
+#import "LHLDeleteSysNoticeInterface.h"
+#import "MJRefresh.h"
 
-@interface LHLNotificationViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,LHLNotificationCellDelegate,LHLNotificationHeaderDelegate,LHLReplyNotificationCellDelegate>
+@interface LHLNotificationViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,LHLNotificationCellDelegate,LHLNotificationHeaderDelegate,LHLReplyNotificationCellDelegate,LHLGetMyNoticeInterfaceDelegate,LHLGetSysNoticeInterfaceDelegate,LHLDeleteSysNoticeInterfaceDelegate,LHLDeleteMyNoticeInterfaceDelegate,MJRefreshBaseViewDelegate>
 
 @end

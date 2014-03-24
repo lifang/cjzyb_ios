@@ -20,4 +20,7 @@
 
 ///音频本地保存位置
 @property (strong,nonatomic) NSString *readingSentenceLocalFileURL;
+
+///是否该道题已经完成
+@property (assign,nonatomic) BOOL isFinished;
 @end

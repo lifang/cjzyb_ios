@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-
+/** ClassObject
+ *
+ * 班级对象
+ */
 @interface ClassObject : NSObject
 
 @property (nonatomic, strong) NSString *classId;

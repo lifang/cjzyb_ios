@@ -15,6 +15,7 @@
 @property (assign,nonatomic) BOOL optionSelected;
 @property (assign,nonatomic) CGFloat maxLabelWidth;//一个问题的最大选项label长度
 @property (strong,nonatomic) id<SelectingChallengeOptionCellDelegate> delegate;
+@property (strong,nonatomic) UIButton *optionButton;
 @end
 
 @protocol SelectingChallengeOptionCellDelegate <NSObject>

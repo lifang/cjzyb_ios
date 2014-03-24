@@ -141,18 +141,16 @@
 #pragma mark - SelectedTagInterfaceDelegate
 -(void)pressedButton:(UIButton *)btn {
     [self.tagtxt resignFirstResponder];
-    [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
-        if ([networkStatus isEqualToString:@"NotReachable"]) {
-            [Utility errorAlert:@"暂无网络!"];
-        }else {
-            self.tmpIndex = btn.tag;
-            TagObject *tagObj = [self.tagArray objectAtIndex:btn.tag];
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//            [self.tagInter getTagInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andCardId:self.aCard.carId andName:self.tagtxt.text];
-            
-            [self.selectedInter getSelectedTagInterfaceDelegateWithStudentId:@"1" andClassId:@"1" andCardId:self.aCard.carId andCardTagId:tagObj.tagId];
-        }
-    }];
+    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+        [Utility errorAlert:@"暂无网络!"];
+    }else {
+        self.tmpIndex = btn.tag;
+        TagObject *tagObj = [self.tagArray objectAtIndex:btn.tag];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        //            [self.tagInter getTagInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andCardId:self.aCard.carId andName:self.tagtxt.text];
+        
+        [self.selectedInter getSelectedTagInterfaceDelegateWithStudentId:@"1" andClassId:@"1" andCardId:self.aCard.carId andCardTagId:tagObj.tagId];
+    }
 }
 -(void)getSelectedTagInfoDidFinished:(NSDictionary *)result {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -208,15 +206,13 @@
 //创建新的
 -(void)detailHeader:(TagViewFooter*)header {
     [self.tagtxt resignFirstResponder];
-    [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
-        if ([networkStatus isEqualToString:@"NotReachable"]) {
-            [Utility errorAlert:@"暂无网络!"];
-        }else {
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//            [self.tagInter getTagInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andCardId:self.aCard.carId andName:self.tagtxt.text];
-            
-            [self.tagInter getTagInterfaceDelegateWithStudentId:@"1" andClassId:@"1" andCardId:self.aCard.carId andName:self.tagtxt.text];
-        }
-    }];
+    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+        [Utility errorAlert:@"暂无网络!"];
+    }else {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        //            [self.tagInter getTagInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andCardId:self.aCard.carId andName:self.tagtxt.text];
+        
+        [self.tagInter getTagInterfaceDelegateWithStudentId:@"1" andClassId:@"1" andCardId:self.aCard.carId andName:self.tagtxt.text];
+    }
 }
 @end

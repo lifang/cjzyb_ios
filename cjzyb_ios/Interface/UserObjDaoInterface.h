@@ -49,4 +49,13 @@
 
 ///获取当前用户加入的班级列表
 +(void)dowloadGradeListWithUserId:(NSString*)userId withSuccess:(void(^)(NSArray *gradeList))success withFailure:(void(^)(NSError *error))failure;
+
+/*!
+ * @brief 切换班级
+ *
+ * @param  userId 当前用户id
+ *@param  gradeId 当前用户所在班级id
+ * @return userObj 获取当前用户信息 ，gradeObj 当前加入的班级信息
+ */
++(void)exchangeGradeWithUserId:(NSString*)userId withGradeId:(NSString*)gradeId withSuccess:(void(^)(UserObject *userObj,ClassObject *gradeObj))success withFailure:(void(^)(NSError *error))failure;
 @end
