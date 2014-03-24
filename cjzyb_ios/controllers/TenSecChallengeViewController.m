@@ -114,10 +114,11 @@
                 return;
             }else{
                 [self.reChallengeTimesLeft setObject:[NSString stringWithFormat:@"%d",timesLeft.integerValue - 1] forKey:nowDate];
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                 NSString *path = [paths firstObject];
-                path = [path stringByAppendingPathComponent:@"challengeTimeLeft.plist"];
-                [self.reChallengeTimesLeft writeToFile:path atomically:YES];
+                path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.start_time];
+                NSString *filePath = [NSString stringWithFormat:@"%@/tenSecChallenge.plist",path];
+                [self.reChallengeTimesLeft writeToFile:filePath atomically:YES];
             }
             parentVC.spendSecond = 0;
             self.isReDoingChallenge = YES;
@@ -445,9 +446,14 @@
 //从文件中读取字典,否则新建一个包含字符串@"3"的值
 - (NSMutableDictionary *)reChallengeTimesLeft{
     if (!_reChallengeTimesLeft) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *path = [paths firstObject];
-        NSString *filePath = [NSString stringWithFormat:@"%@/challengeTimeLeft.plist",path];
+        path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.start_time];
+        NSFileManager *manager = [NSFileManager defaultManager];
+        if (![manager fileExistsAtPath:path]) {
+            [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+        NSString *filePath = [NSString stringWithFormat:@"%@/tenSecChallenge.plist",path];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd"];
         NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
