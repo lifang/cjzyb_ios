@@ -40,10 +40,18 @@
                             <rect key="frame" x="186" y="28" width="21" height="11"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                         </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gRx-zk-ghh" userLabel="0">
-                            <rect key="frame" x="0.0" y="0.0" width="220" height="67"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gRx-zk-ghh" userLabel="label">
+                            <rect key="frame" x="62" y="0.0" width="158" height="67"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="VQX-5c-RC3" userLabel="image">
+                            <rect key="frame" x="0.0" y="0.0" width="62" height="67"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <state key="normal">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -56,6 +64,7 @@
             <color key="backgroundColor" red="0.20784313725490194" green="0.81176470588235294" blue="0.5607843137254902" alpha="1" colorSpace="deviceRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="imageButton" destination="VQX-5c-RC3" id="qeP-BZ-e72"/>
                 <outlet property="leftButtonItem" destination="dlm-Av-vlg" id="NZG-ff-GEf"/>
                 <outlet property="rightButtonItem" destination="gRx-zk-ghh" id="9wC-B5-OWz"/>
                 <outlet property="userHeaderImage" destination="eO2-2f-FpF" id="x6x-Ek-3KL"/>

@@ -99,10 +99,10 @@
 //    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
 //    self.window.rootViewController = notificationViewController;
 
-//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-//    tabBarController.childenControllerArray = @[main];
-//    self.window.rootViewController = tabBarController;
+    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+    tabBarController.childenControllerArray = @[main];
+    self.window.rootViewController = tabBarController;
 
 //
 //     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
@@ -110,7 +110,7 @@
 //    self.window.rootViewController = cardView;
     
 
-    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
+//    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
     
     [self.window makeKeyAndVisible];
     
@@ -188,7 +188,7 @@
     self.isReachable = YES;
     if(status == NotReachable)
     {
-        [Utility errorAlert:@"暂无网络!"];
+//        [Utility errorAlert:@"暂无网络!"];
         self.isReachable = NO;
     }
 }

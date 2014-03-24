@@ -29,6 +29,7 @@
 		0E5D1C8718C9A13C008A13F2 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D1C8618C9A13C008A13F2 /* logo@2x.png */; };
 		0E5D1C8918C9A18F008A13F2 /* QQLogIn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D1C8818C9A18F008A13F2 /* QQLogIn@2x.png */; };
 		0E660F1D18E0249E0074454C /* PostImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E660F1C18E0249E0074454C /* PostImage.m */; };
+		0E660F2118E027910074454C /* VPImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E660F2018E027910074454C /* VPImageCropperViewController.m */; };
 		0E92654F18BD9016003ADEC3 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92654D18BD9016003ADEC3 /* MainViewController.m */; };
 		0E92655018BD9016003ADEC3 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92654E18BD9016003ADEC3 /* MainViewController.xib */; };
 		0E92655818BD9228003ADEC3 /* DAPagesContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92655318BD9228003ADEC3 /* DAPagesContainer.m */; };
@@ -406,6 +407,8 @@
 		0E5D1C8818C9A18F008A13F2 /* QQLogIn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QQLogIn@2x.png"; sourceTree = "<group>"; };
 		0E660F1B18E0249E0074454C /* PostImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostImage.h; sourceTree = "<group>"; };
 		0E660F1C18E0249E0074454C /* PostImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostImage.m; sourceTree = "<group>"; };
+		0E660F1F18E027910074454C /* VPImageCropperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPImageCropperViewController.h; sourceTree = "<group>"; };
+		0E660F2018E027910074454C /* VPImageCropperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPImageCropperViewController.m; sourceTree = "<group>"; };
 		0E92654C18BD9016003ADEC3 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = SOURCE_ROOT; };
 		0E92654D18BD9016003ADEC3 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = SOURCE_ROOT; };
 		0E92654E18BD9016003ADEC3 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -971,6 +974,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E660F1E18E0277D0074454C /* upLoadImage */ = {
+			isa = PBXGroup;
+			children = (
+				0E660F1F18E027910074454C /* VPImageCropperViewController.h */,
+				0E660F2018E027910074454C /* VPImageCropperViewController.m */,
+			);
+			name = upLoadImage;
+			sourceTree = "<group>";
+		};
 		0E92655118BD920F003ADEC3 /* TabBarController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1505,6 +1517,7 @@
 		632954C318BC879B00F2B78D /* thirtys */ = {
 			isa = PBXGroup;
 			children = (
+				0E660F1E18E0277D0074454C /* upLoadImage */,
 				0E9D68C218CD965B00EACFA3 /* 搜索算法 */,
 				0E9D689418CD4DEC00EACFA3 /* SVPullToRefresh */,
 				63DD5C6C18C9B7790034512D /* metaphone */,
@@ -2376,6 +2389,7 @@
 				6329556618BC900600F2B78D /* SDWebImageDownloader.m in Sources */,
 				6396581218C04F68002F2A90 /* HomeworkTypeCollctionCell.m in Sources */,
 				6396578418C0374C002F2A90 /* StudentSummaryCell.m in Sources */,
+				0E660F2118E027910074454C /* VPImageCropperViewController.m in Sources */,
 				6329556418BC900600F2B78D /* SDWebImageCompat.m in Sources */,
 				18AA80BD18BF04E800EC08CE /* LHLNotificationHeader.m in Sources */,
 				6329551C18BC8AA700F2B78D /* ASICloudFilesContainerXMLParserDelegate.m in Sources */,

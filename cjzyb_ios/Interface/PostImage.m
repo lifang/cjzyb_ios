@@ -10,7 +10,15 @@
 
 @implementation PostImage
 -(void)postImageWithImage:(UIImage *)image {
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:@"http://58.240.210.42:3004/api/students/finish_question_packge"]];
+    [request setPostValue:[DataService sharedService].user.studentId forKey:@"student_id"];
+    [request setPostValue:[DataService sharedService].theClass.classId forKey:@"school_class_id"];
+    [request setPostValue:[DataService sharedService].taskObj.taskID forKey:@"publish_question_package_id"];
     
+    
+    [request setDelegate:self];
+    
+    [request startAsynchronous];
 }
 
 - (void)requestFinished:(ASIFormDataRequest *)requestForm {
