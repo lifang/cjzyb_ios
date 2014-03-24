@@ -211,6 +211,7 @@
     self.questionArray = [NSMutableArray arrayWithArray:[listebDic objectForKey:@"questions"]];
     self.specified_time = [[listebDic objectForKey:@"specified_time"]intValue];
 
+    
     [Utility shared].isOrg = YES;
 }
 -(void)listenMusicViewUI {
@@ -330,6 +331,7 @@ static int numberOfMusic =0;
 -(IBAction)listenMusic:(id)sender {
     self.urlArray = nil;
     self.listenBtn.enabled=NO;
+    self.playMusicModel=0;
     [self.listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
     NSString *path;
     if (platform>5.0) {
@@ -337,50 +339,58 @@ static int numberOfMusic =0;
     }else{
         path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }
-    
-//    for (int i=self.branchNumber; i<self.branchQuestionArray.count; i++) {
-//        NSDictionary *dic = [self.branchQuestionArray objectAtIndex:i];
-//        NSString *nameString = [NSString stringWithFormat:@"%@-%@.mp3",LISTEN,[dic objectForKey:@"id"]];
-//        NSString *savePath=[path stringByAppendingPathComponent:nameString];
-//        [self.urlArray addObject:savePath];
-//    }
-    NSString *str1 = [[NSBundle mainBundle] pathForResource:@"right_sound" ofType:@"mp3"];
-    [self.urlArray addObject:str1];
-    NSString *str2 = [[NSBundle mainBundle] pathForResource:@"wrong_sound" ofType:@"mp3"];
-    [self.urlArray addObject:str2];
-    NSString *str3 = [[NSBundle mainBundle] pathForResource:@"btnEffect" ofType:@"wav"];
-    [self.urlArray addObject:str3];
+    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
+    for (int i=self.branchNumber; i<self.branchQuestionArray.count; i++) {
+        NSDictionary *dic = [self.branchQuestionArray objectAtIndex:i];
+        NSString *nameString = [NSString stringWithFormat:@"%@-%@.mp3",LISTEN,[dic objectForKey:@"id"]];
+        NSString *savePath=[documentDirectory stringByAppendingPathComponent:nameString];
+        [self.urlArray addObject:savePath];
+    }
     numberOfMusic=0;
     [self playMusic];
 }
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
     if (flag) {
-        numberOfMusic++;
-        if (numberOfMusic<self.urlArray.count) {
-            [self performSelector:@selector(playMusic) withObject:nil afterDelay:2];
+        if (self.playMusicModel==0) {
+            numberOfMusic++;
+            if (numberOfMusic<self.urlArray.count) {
+                [self performSelector:@selector(playMusic) withObject:nil afterDelay:2];
+            }else {
+                numberOfMusic = 0;
+                [self.appDel.avPlayer stop];
+                self.appDel.avPlayer=nil;
+                self.listenBtn.enabled=YES;
+                [self.listenBtn setImage:[UIImage imageNamed:@"ios-stop"] forState:UIControlStateNormal];
+            }
         }else {
-            numberOfMusic = 0;
             [self.appDel.avPlayer stop];
             self.appDel.avPlayer=nil;
-            self.listenBtn.enabled=YES;
+            self.branch_listenBtn.enabled=YES;
             [self.listenBtn setImage:[UIImage imageNamed:@"ios-stop"] forState:UIControlStateNormal];
         }
+        
     }
 }
 -(IBAction)branchListenMusic:(id)sender {
+    self.branch_listenBtn.enabled=NO;
+    [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
+    self.playMusicModel=1;
     NSString *path;
     if (platform>5.0) {
         path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }else{
         path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }
+    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
+    
     NSString *nameString = [NSString stringWithFormat:@"%@-%@.mp3",LISTEN,[self.branchQuestionDic objectForKey:@"id"]];
-    NSString *savePath=[path stringByAppendingPathComponent:nameString];
+    NSString *savePath=[documentDirectory stringByAppendingPathComponent:nameString];
     
     NSError *error;
     self.appDel.avPlayer = nil;
     self.appDel.avPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:savePath] error:&error];
     self.appDel.avPlayer.volume = 1;
+    self.appDel.avPlayer.delegate = self;
     [self.appDel.avPlayer play];
 }
 - (void)didReceiveMemoryWarning
@@ -617,6 +627,14 @@ static int numberOfMusic =0;
     [Utility returnAnswerPathWithDictionary:self.answerDic andName:LISTEN andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 -(void)nextQuestion:(id)sender {
+    if (self.appDel.avPlayer) {
+        [self.appDel.avPlayer stop];
+        self.appDel.avPlayer=nil;
+    }
+    
+    self.branch_listenBtn.enabled=YES;
+    [self.listenBtn setImage:[UIImage imageNamed:@"ios-stop"] forState:UIControlStateNormal];
+    
     
     if (self.branchNumber == self.branchQuestionArray.count-1) {
         self.number++;self.branchNumber = 0;
@@ -678,17 +696,18 @@ static int numberOfMusic =0;
 -(void)finishQuestion:(id)sender {
     self.homeControl.reduceTimeButton.enabled=NO;
     self.checkHomeworkButton.enabled=NO;
-    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
-        [Utility errorAlert:@"暂无网络!"];
-    }else {
-        if (self.isFirst==YES) {
+
+    if (self.isFirst==YES) {
+        if (self.appDel.isReachable == NO) {
+            [Utility errorAlert:@"暂无网络!"];
+        }else {
             [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             self.postInter = [[BasePostInterface alloc]init];
             self.postInter.delegate = self;
             [self.postInter postAnswerFile];
-        }else {
-            [self showResultView];
         }
+    }else {
+        [self showResultView];
     }
 }
 

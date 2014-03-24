@@ -37,6 +37,12 @@
                                                  name:UITextFieldTextDidChangeNotification
                                                object:self.tagtxt];
 }
+-(AppDelegate *)appDel {
+    if (!_appDel) {
+        _appDel = [AppDelegate shareIntance];
+    }
+    return _appDel;
+}
 -(TagInterface *)tagInter {
     if (!_tagInter) {
         _tagInter = [[TagInterface alloc]init];
@@ -141,7 +147,8 @@
 #pragma mark - SelectedTagInterfaceDelegate
 -(void)pressedButton:(UIButton *)btn {
     [self.tagtxt resignFirstResponder];
-    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+
+    if (self.appDel.isReachable == NO) {
         [Utility errorAlert:@"暂无网络!"];
     }else {
         self.tmpIndex = btn.tag;
@@ -206,7 +213,8 @@
 //创建新的
 -(void)detailHeader:(TagViewFooter*)header {
     [self.tagtxt resignFirstResponder];
-    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+
+    if (self.appDel.isReachable == NO) {
         [Utility errorAlert:@"暂无网络!"];
     }else {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];

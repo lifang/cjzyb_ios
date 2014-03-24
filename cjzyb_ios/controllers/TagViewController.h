@@ -24,6 +24,6 @@
 @property (nonatomic, strong) TagInterface *tagInter;
 @property (nonatomic, strong) SelectedTagInterface *selectedInter;
 @property (nonatomic, strong) NSMutableArray  *filteredArray;
-
+@property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, assign) NSInteger tmpIndex;
 @end

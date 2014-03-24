@@ -19,6 +19,7 @@
 
 @property (nonatomic, strong) IBOutlet UIView *listenMusicView;
 @property (nonatomic, strong) IBOutlet UIButton *listenBtn;
+@property (nonatomic, strong) IBOutlet UIButton *branch_listenBtn;
 
 @property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) BasePostInterface *postInter;
@@ -49,7 +50,7 @@
 
 
 @property (nonatomic, strong) NSMutableArray *urlArray;//存放预听界面播放的url
-
+@property (nonatomic, assign) NSInteger playMusicModel;
 -(void)listenViewReduceTimeButtonClicked;
 //道具
 @property (nonatomic, strong) NSMutableArray *propsArray;

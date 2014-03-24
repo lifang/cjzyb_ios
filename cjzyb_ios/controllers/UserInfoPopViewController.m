@@ -64,6 +64,11 @@
     [self.userClassButton setUserInteractionEnabled:NO];
     ClassGroupViewController *group = [[ClassGroupViewController alloc] initWithNibName:@"ClassGroupViewController" bundle:nil];
     self.popViewController = [[WYPopoverController alloc] initWithContentViewController:group];
+    self.popViewController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.popViewController.theme.fillTopColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.popViewController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.popViewController.theme.glossShadowColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    
     self.popViewController.popoverContentSize = (CGSize){224,150};
     CGRect rect = [self.view convertRect:self.userClassButton.frame fromView:self.userClassButton.superview];
     [self.popViewController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:WYPopoverArrowDirectionRight animated:YES completion:^{

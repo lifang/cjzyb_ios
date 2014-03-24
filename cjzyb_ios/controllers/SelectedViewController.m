@@ -368,18 +368,20 @@
     self.homeControl.appearCorrectButton.enabled=NO;
     self.homeControl.reduceTimeButton.enabled=NO;
     self.checkHomeworkButton.enabled=NO;
-    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
-        [Utility errorAlert:@"暂无网络!"];
-    }else {
-        if (self.isFirst==YES) {
+
+    if (self.isFirst==YES) {
+        if (self.appDel.isReachable == NO) {
+            [Utility errorAlert:@"暂无网络!"];
+        }else {
             [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             self.postInter = [[BasePostInterface alloc]init];
             self.postInter.delegate = self;
             [self.postInter postAnswerFile];
-        }else {
-            [self showResultView];
         }
+    }else {
+        [self showResultView];
     }
+    
 }
 
 #pragma mark

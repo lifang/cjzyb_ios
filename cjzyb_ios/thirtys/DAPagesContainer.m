@@ -75,8 +75,6 @@
                                                                      self.topBarHeight,
                                                                      CGRectGetWidth(self.view.frame),
                                                                      CGRectGetHeight(self.view.frame) - self.topBarHeight)];
-    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth
-        | UIViewAutoresizingFlexibleHeight;
     self.scrollView.delegate = self;
     self.scrollView.pagingEnabled = YES;
     self.scrollView.showsHorizontalScrollIndicator = NO;
@@ -87,7 +85,6 @@
                                                                            0,
                                                                            CGRectGetWidth(self.view.frame),
                                                                            self.topBarHeight)];
-    self.topBar.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleWidth;
     self.topBar.delegate = self;
     [self.view addSubview:self.topBar];
 

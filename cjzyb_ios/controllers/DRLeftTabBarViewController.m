@@ -111,6 +111,11 @@
 -(void)navigationRightItemClicked{
     [self.drNavigationBar.rightButtonItem setUserInteractionEnabled:NO];
      self.poprController= [[WYPopoverController alloc] initWithContentViewController:self.userInfoPopViewController];
+    self.poprController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.fillTopColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.glossShadowColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    
     self.poprController.popoverContentSize = (CGSize){224,293};
     CGRect rect = (CGRect){720,0,50,70};
     [self.poprController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES completion:^{

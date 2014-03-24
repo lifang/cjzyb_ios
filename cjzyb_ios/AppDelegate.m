@@ -89,14 +89,20 @@
     [popoverAppearance setArrowBase:20];
     [popoverAppearance setFillTopColor:[UIColor colorWithRed:47/255.0 green:201/255.0 blue:133/255.0 alpha:1]];
     
+    //开启网络状况的监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    self.hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"] ;
+    [self.hostReach startNotifier];  //开始监听，会启动一个run loop
+    
+    
     //设置语音识别的apikey
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
 
-//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-//    tabBarController.childenControllerArray = @[main];
+    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+    tabBarController.childenControllerArray = @[main];
     
     
 //    HomeworkContainerController *homeView = [[HomeworkContainerController alloc]initWithNibName:@"HomeworkContainerController" bundle:nil];
@@ -112,7 +118,7 @@
 //
      CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
 //     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
-    self.window.rootViewController = cardView;
+    self.window.rootViewController = tabBarController;
     
 
 //    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
@@ -182,6 +188,22 @@
 //    //收到远程通知推送
 //}
 
+//连接改变
+-(void)reachabilityChanged:(NSNotification *)note
+{
+    Reachability *currReach = [note object];
+    NSParameterAssert([currReach isKindOfClass:[Reachability class]]);
+    
+    //对连接改变做出响应处理动作
+    NetworkStatus status = [currReach currentReachabilityStatus];
+    //如果没有连接到网络就弹出提醒实况
+    self.isReachable = YES;
+    if(status == NotReachable)
+    {
+        [Utility errorAlert:@"暂无网络!"];
+        self.isReachable = NO;
+    }
+}
 
 
 @end
