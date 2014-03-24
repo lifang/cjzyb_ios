@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "UserObject.h"
 #import "ClassObject.h"
-#import "TaskObject.h"
+#import "TaskObj.h"
 
 @interface DataService : NSObject
 
@@ -19,7 +19,7 @@
 
 @property (nonatomic, strong) NSMutableArray *tagsArray;//卡包标签
 
-@property (nonatomic,strong) TaskObject *taskObj;
+@property (nonatomic,strong) TaskObj *taskObj;
 ///道具－－－－记录道具的数量
 @property (nonatomic,assign) NSInteger number_reduceTime,number_correctAnswer;
 ///判断是否是历史作业

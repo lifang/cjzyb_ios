@@ -71,8 +71,8 @@
     if (!self.questionArray) {
         [Utility errorAlert:@"无法读取问题资料!"];
     }
-    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"selecting"]];
-    self.propsArray = [Utility returnAnswerProps];
+    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"selecting" andDate:[DataService sharedService].taskObj.taskStartDate]];
+    self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.taskStartDate];
     
     [self.optionTable registerClass:[SelectingChallengeOptionCell class] forCellReuseIdentifier:@"cell"];
     self.isReDoingChallenge = NO;
@@ -396,9 +396,7 @@
     
     [answerDic setObject:(self.isLastQuestion ? @"1" : @"0") forKey:@"status"];//完成情况
     
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
+    NSString *nowDate = [Utility getNowDateFromatAnDate];
     [answerDic setObject:nowDate forKey:@"update_time"];
     
     [answerDic setObject:[NSString stringWithFormat:@"%d",self.currentNO] forKey:@"questions_item"];//大题索引,即当前正在做的题号
@@ -427,7 +425,7 @@
     
     [answerDic setObject:questions forKey:@"questions"];
     
-    [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"selecting"];
+    [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"selecting" andDate:[DataService sharedService].taskObj.taskStartDate];
     
     return [NSDictionary dictionaryWithDictionary:answerDic];
 }
@@ -730,7 +728,7 @@
     [branchOfPropArray addObject:[NSNumber numberWithInteger:self.currentQuestion.seID.integerValue]];
     [timePropDic setObject:branchOfPropArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:1 withObject:timePropDic];
-    [Utility returnAnswerPathWithProps:self.propsArray];
+    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 
 //道具1
@@ -754,7 +752,7 @@
     [branchOfPropArray addObject:[NSNumber numberWithInteger:self.currentQuestion.seID.integerValue]];
     [rightAnswerPropDic setObject:branchOfPropArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:0 withObject:rightAnswerPropDic];
-    [Utility returnAnswerPathWithProps:self.propsArray];
+    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 
 - (IBAction)nextButtonClicked:(id)sender {

@@ -42,7 +42,12 @@
 @end
 
 @implementation HomeworkViewController
-
+-(AppDelegate *)appDel {
+    if (!_appDel) {
+        _appDel = [AppDelegate shareIntance];
+    }
+    return _appDel;
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -51,6 +56,9 @@
     }
     return self;
 }
+/**
+ *  下载question里面的资源
+ */
 -(void)addDownloadTaskWithDictionary:(NSDictionary *)dic andName:(NSString *)name{
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"resource_url"]]]];
     request.delegate = self;
@@ -61,9 +69,11 @@
     }else{
         path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }
+    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
+    
     NSString *nameString = [NSString stringWithFormat:@"%@-%@.mp3",name,[dic objectForKey:@"id"]];
-    NSString *savePath=[path stringByAppendingPathComponent:nameString];
-    NSString *temp = [path stringByAppendingPathComponent:@"temp"];
+    NSString *savePath=[documentDirectory stringByAppendingPathComponent:nameString];
+    NSString *temp = [documentDirectory stringByAppendingPathComponent:@"temp"];
     NSString *tempPath = [temp stringByAppendingPathComponent:nameString];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     if (![fileManager fileExistsAtPath:temp]) {
@@ -81,7 +91,8 @@
 }
 
 -(void)downLoadService {
-    NSDictionary * dic = [Utility initWithJSONFile:@"question"];
+    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+    NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSArray *array = [NSArray arrayWithObjects:LISTEN,READ,SELECT, nil];
     
     for (int i=0; i<array.count; i++) {
@@ -107,15 +118,17 @@
                 for (int j=0; j<branch_questions.count; j++) {
                     NSDictionary *q_dic = [branch_questions objectAtIndex:j];
                     NSString *content = [q_dic objectForKey:@"content"];
-                    NSString *str = @".wav";
-                    NSRange range = [content rangeOfString:str];
+                    NSRange range = [content rangeOfString:@"</file>"];
                     if (range.location != NSNotFound) {
-                        NSMutableString *mutableStr = [NSMutableString stringWithFormat:@"%@",content];
-                        NSString *tempStr1=[mutableStr stringByReplacingOccurrencesOfString:@"</file>" withString:@""];
-                        mutableStr = [NSMutableString stringWithFormat:@"%@",tempStr1];
-                        NSString *tempStr2=[mutableStr stringByReplacingOccurrencesOfString:@"<file>" withString:@""];
-                        NSDictionary *theDic = [NSDictionary dictionaryWithObjectsAndKeys:[q_dic objectForKey:@"id"],@"id",tempStr2,@"resource_url", nil];
-                        [self addDownloadTaskWithDictionary:theDic andName:SELECT];
+                        NSArray *array = [content componentsSeparatedByString:@"</file>"];
+                        NSString *title_sub  =[array objectAtIndex:0];
+                        NSString *title=[title_sub stringByReplacingOccurrencesOfString:@"<file>" withString:@""];
+                        NSRange range2 = [title rangeOfString:@".jpg"];
+                        if (range2.location != NSNotFound) {//图片
+                        }else {//语音
+                            NSDictionary *theDic = [NSDictionary dictionaryWithObjectsAndKeys:[q_dic objectForKey:@"id"],@"id",title,@"resource_url", nil];
+                            [self addDownloadTaskWithDictionary:theDic andName:SELECT];
+                        }
                     }
                 }
             }
@@ -126,6 +139,8 @@
 - (void)requestFinished:(ASIHTTPRequest *)request {
     if ([self.networkQueue requestsCount] > 0) {
         //还有未下载完成
+    }else {
+        [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
     }
 }
 - (void)viewDidLoad

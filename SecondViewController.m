@@ -96,9 +96,13 @@
 }
 //获取我的主消息
 -(void)getMymessageData {
-    self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
-    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-    [self.mMessageInter getMyMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.userId andPage:1];
+    if (self.appDel.isReachable == NO) {
+        [Utility errorAlert:@"暂无网络!"];
+    }else {
+        self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
+        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+        [self.mMessageInter getMyMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.userId andPage:1];
+    }
 }
 #pragma mark -
 #pragma mark - property
@@ -303,14 +307,23 @@
         }else {
             [textView resignFirstResponder];
             if (self.type == 1) {//回复的主消息
-                [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-                MessageObject *message = (MessageObject *)[self.secondArray objectAtIndex:self.tmpSection];
-                [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:message.userId andReceiverType:message.userType andmessageId:message.messageId andContent:self.textView.text andType:self.type];
+                if (self.appDel.isReachable == NO) {
+                    [Utility errorAlert:@"暂无网络!"];
+                }else {
+                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    MessageObject *message = (MessageObject *)[self.secondArray objectAtIndex:self.tmpSection];
+                    [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:message.userId andReceiverType:message.userType andmessageId:message.messageId andContent:self.textView.text andType:self.type];
+                }
             }else {//回复的子消息
-                [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-                MessageObject *message = (MessageObject *)[self.secondArray objectAtIndex:self.theIndex.section];
-                ReplyMessageObject *replyMsg = (ReplyMessageObject *)[message.replyMessageArray objectAtIndex:self.theIndex.row];
-                [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:replyMsg.sender_id andReceiverType:replyMsg.sender_types andmessageId:message.messageId andContent:self.textView.text andType:self.type];
+                if (self.appDel.isReachable == NO) {
+                    [Utility errorAlert:@"暂无网络!"];
+                }else {
+                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    MessageObject *message = (MessageObject *)[self.secondArray objectAtIndex:self.theIndex.section];
+                    ReplyMessageObject *replyMsg = (ReplyMessageObject *)[message.replyMessageArray objectAtIndex:self.theIndex.row];
+                    [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:replyMsg.sender_id andReceiverType:replyMsg.sender_types andmessageId:message.messageId andContent:self.textView.text andType:self.type];
+                }
+  
             }
         }
         return NO;
@@ -514,9 +527,13 @@
         if ([message.replyCount integerValue]>0) {//有回复的前提下
             if (message.replyMessageArray.count==0) {//没有回复信息
                 //获取子消息
-                [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-                message.pageHeader = 1;
-                [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
+                if (self.appDel.isReachable == NO) {
+                    [Utility errorAlert:@"暂无网络!"];
+                }else {
+                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    message.pageHeader = 1;
+                    [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
+                }
             }else {
                 [self.secondTable beginUpdates];
                 [self.secondTable reloadSections:[NSIndexSet indexSetWithIndex:header.aSection] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -537,12 +554,18 @@
 }
 - (void)contextMenuHeaderDidSelectFocusOption:(FirstViewHeader *)header {
     self.tmpSection = header.aSection;
-    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-    if (header.aMessage.isFollow == YES) {
-        [self.focusInter getFocusInterfaceDelegateWithMessageId:header.aMessage.messageId andUserId:[DataService sharedService].user.userId andType:0];
+
+    if (self.appDel.isReachable == NO) {
+        [Utility errorAlert:@"暂无网络!"];
     }else {
-        [self.focusInter getFocusInterfaceDelegateWithMessageId:header.aMessage.messageId andUserId:[DataService sharedService].user.userId andType:1];
+        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+        if (header.aMessage.isFollow == YES) {
+            [self.focusInter getFocusInterfaceDelegateWithMessageId:header.aMessage.messageId andUserId:[DataService sharedService].user.userId andType:0];
+        }else {
+            [self.focusInter getFocusInterfaceDelegateWithMessageId:header.aMessage.messageId andUserId:[DataService sharedService].user.userId andType:1];
+        }
     }
+ 
 }
 //TODO:回复主消息
 - (void)contextMenuHeaderDidSelectCommentOption:(FirstViewHeader *)header {
@@ -559,9 +582,13 @@
 - (void)contextMenuHeaderDidSelectDeleteOption:(FirstViewHeader *)header {
     [header.superview sendSubviewToBack:header];
     self.tmpSection = header.aSection;
-    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-    MessageObject *message = (MessageObject *)[self.secondArray objectAtIndex:header.aSection];
-    [self.deleteInter getDeleteMessageDelegateDelegateWithMessageId:message.messageId andType:1];
+    if (self.appDel.isReachable == NO) {
+        [Utility errorAlert:@"暂无网络!"];
+    }else {
+        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+        MessageObject *message = (MessageObject *)[self.secondArray objectAtIndex:header.aSection];
+        [self.deleteInter getDeleteMessageDelegateDelegateWithMessageId:message.messageId andType:1];
+    }
 }
 
 #pragma mark
@@ -610,29 +637,34 @@
 - (void)contextMenuCellDidSelectDeleteOption:(FirstCell *)cell {
     [cell.superview sendSubviewToBack:cell];
     self.theIndex = [self.secondTable indexPathForCell:cell];
-    
-    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-    MessageObject *message = (MessageObject *)[self.secondArray objectAtIndex:self.theIndex.section];
-    ReplyMessageObject *replyMsg = (ReplyMessageObject *)[message.replyMessageArray objectAtIndex:self.theIndex.row];
-    
-    [self.deleteInter getDeleteMessageDelegateDelegateWithMessageId:replyMsg.micropost_id andType:0];
-    //
-    //    [self.cellArray removeAllObjects];
-    //    [self.firstArray removeObjectAtIndex:self.theIndex.row];
-    //    [self.firstTable deleteRowsAtIndexPaths:[NSArray arrayWithObjects:self.theIndex, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+    if (self.appDel.isReachable == NO) {
+        [Utility errorAlert:@"暂无网络!"];
+    }else {
+        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+        MessageObject *message = (MessageObject *)[self.secondArray objectAtIndex:self.theIndex.section];
+        ReplyMessageObject *replyMsg = (ReplyMessageObject *)[message.replyMessageArray objectAtIndex:self.theIndex.row];
+        
+        [self.deleteInter getDeleteMessageDelegateDelegateWithMessageId:replyMsg.micropost_id andType:0];
+    }
 }
 - (void)contextMenuCellDidSelectLoadOption:(FirstCell *)cell {
     self.theIndex = [self.secondTable indexPathForCell:cell];
     self.tmpSection = self.theIndex.section;
     MessageObject *message = (MessageObject *)[self.secondArray objectAtIndex:self.theIndex.section];
+
+    if (self.appDel.isReachable == NO) {
+        [Utility errorAlert:@"暂无网络!"];
+    }else {
+        //获取子消息
+        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+        if ([message.replyCount integerValue]<=10) {
+            message.pageHeader = 1;
+        }else
+            message.pageHeader += 1;
+        [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
+    }
     
-    //获取子消息
-    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-    if ([message.replyCount integerValue]<=10) {
-        message.pageHeader = 1;
-    }else
-        message.pageHeader += 1;
-    [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
 }
 
 #pragma mark

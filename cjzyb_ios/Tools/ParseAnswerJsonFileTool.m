@@ -17,7 +17,9 @@
         }
         return;
     }
-    NSMutableArray *propsArray = [Utility returnAnswerProps];
+    NSString *dircName = [jsonFilePath lastPathComponent];
+    dircName = [dircName lastPathComponent];
+    NSMutableArray *propsArray = [Utility returnAnswerPropsandDate:dircName];
     //存储道具记录JSON
     if ([proposType isEqualToString:@"0"]) {
         NSMutableDictionary *timePropDic = [NSMutableDictionary dictionaryWithDictionary:[propsArray firstObject]];
@@ -25,14 +27,14 @@
         [branchOfPropArray addObject:[NSNumber numberWithInteger:questionId.integerValue]];
         [timePropDic setObject:branchOfPropArray forKey:@"branch_id"];
         [propsArray replaceObjectAtIndex:0 withObject:timePropDic];
-        [Utility returnAnswerPathWithProps:propsArray];
+        [Utility returnAnswerPathWithProps:propsArray andDate:dircName];
     }else{
         NSMutableDictionary *timePropDic = [NSMutableDictionary dictionaryWithDictionary:[propsArray lastObject]];
         NSMutableArray *branchOfPropArray = [NSMutableArray arrayWithArray:[timePropDic objectForKey:@"branch_id"]];
         [branchOfPropArray addObject:[NSNumber numberWithInteger:questionId.integerValue]];
         [timePropDic setObject:branchOfPropArray forKey:@"branch_id"];
         [propsArray replaceObjectAtIndex:1 withObject:timePropDic];
-        [Utility returnAnswerPathWithProps:propsArray];
+        [Utility returnAnswerPathWithProps:propsArray andDate:dircName];
     }
     if (success) {
         success();
@@ -42,7 +44,10 @@
 
 ///根据答案的json文件解析出朗读类型的做题记录
 +(void)parseAnswerJsonFile:(NSString*)jsonFilePath withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex))questionArr withParseError:(void (^)(NSError *error))failure{
-    NSDictionary *readingDic = [Utility returnAnswerDictionaryWithName:@"reading"];
+    NSString *dircName = [jsonFilePath lastPathComponent];
+    dircName = [dircName lastPathComponent];
+    NSDictionary *readingDic = [Utility returnAnswerDictionaryWithName:@"reading" andDate:dircName];
+    
     
 }
 @end

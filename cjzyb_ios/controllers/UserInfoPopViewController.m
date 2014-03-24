@@ -102,6 +102,10 @@
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             ClassGroupViewController *group = [[ClassGroupViewController alloc] initWithNibName:@"ClassGroupViewController" bundle:nil];
             tempSelf.popViewController = [[WYPopoverController alloc] initWithContentViewController:group];
+            tempSelf.popViewController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+            tempSelf.popViewController.theme.fillTopColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+            tempSelf.popViewController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+            tempSelf.popViewController.theme.glossShadowColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
             tempSelf.popViewController.popoverContentSize = (CGSize){224,150};
             group.classArray =[NSMutableArray arrayWithArray:gradeList] ;
             CGRect rect = [tempSelf.view convertRect:tempSelf.userClassButton.frame fromView:tempSelf.userClassButton.superview];

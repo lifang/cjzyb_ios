@@ -21,7 +21,7 @@
 
 @property (nonatomic, strong) IBOutlet UIView *logView;
 @property (nonatomic, strong) IBOutlet UIButton *logBtn;
-
+@property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) IBOutlet UIControl *detailView;
 @property (nonatomic, strong) IBOutlet UITextField *nickTxt;
 @property (nonatomic, strong) IBOutlet UITextField *nameTxt;

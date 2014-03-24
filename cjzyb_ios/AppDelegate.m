@@ -8,29 +8,49 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"//主页
-#import "FirstViewController.h"
+
 #import "TestViewController.h"
-#import "SecondViewController.h"
 #import "DRLeftTabBarViewController.h"
 #import "HomeworkDailyCollectionViewController.h"
 #import "HomeworkViewController.h"
 
 #import "LogInViewController.h" //登录
-#import "CardpackageViewController.h"//卡包
 
 #import "ReadingTaskViewController.h"
-#import "LiningHomeworkViewController.h"
-#import "HomeworkContainerController.h"//做题
 
-#import "ListenWriteViewController.h"//听写
-#import "SortViewController.h"//排序
-#import "SelectedViewController.h"//完形填空
+#import "HomeworkContainerController.h"//做题
 
 #import "TenSecChallengeViewController.h"
 
 
 @implementation AppDelegate
-
+-(void)loadTrueSound:(NSInteger)index {
+    NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"trueMusic.wav"];
+    NSError *error;
+    if(self.truePlayer==nil)
+    {
+        self.truePlayer=[[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    }
+    if(index==0)
+        self.truePlayer.volume=0.0f;
+    else
+        self.truePlayer.volume=1.0f;
+    [self.truePlayer play];
+}
+-(void)loadFalseSound:(NSInteger)index {
+    NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"falseMusic.wav"];
+    NSError *error;
+    if(self.falsePlayer==nil)
+    {
+        self.falsePlayer=[[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    }
+    if(index==0)
+        self.falsePlayer.volume=0.0f;
+    else
+        self.falsePlayer.volume=1.0f;
+    
+    [self.falsePlayer play];
+}
 +(AppDelegate *)shareIntance {
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
 }
@@ -68,8 +88,9 @@
         [DataService sharedService].user = [UserObject userFromDictionary:userDic];
         
         MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-        UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:main];
-        self.window.rootViewController = navControl;
+        DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+        tabBarController.childenControllerArray = @[main];
+        self.window.rootViewController = tabBarController;
     }
 }
 
@@ -80,6 +101,12 @@
     [popoverAppearance setArrowHeight:10];
     [popoverAppearance setArrowBase:20];
     [popoverAppearance setFillTopColor:[UIColor colorWithRed:47/255.0 green:201/255.0 blue:133/255.0 alpha:1]];
+    
+    //开启网络状况的监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    self.hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"] ;
+    [self.hostReach startNotifier];  //开始监听，会启动一个run loop
+    
     
     //设置语音识别的apikey
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
@@ -92,6 +119,7 @@
     
 //    [self showTabBarController];
 
+
 //    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
 //    self.window.rootViewController = notificationViewController;
 
@@ -100,14 +128,13 @@
 //    tabBarController.childenControllerArray = @[main];
 //    self.window.rootViewController = tabBarController;
 
-
+//
 //     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
 //     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
-//    self.window.rootViewController = navControl;
+//    self.window.rootViewController = cardView;
     
 
-//    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
-//    [self showRootView];
+    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
     
     [self.window makeKeyAndVisible];
     
@@ -173,6 +200,22 @@
 //    //收到远程通知推送
 //}
 
+//连接改变
+-(void)reachabilityChanged:(NSNotification *)note
+{
+    Reachability *currReach = [note object];
+    NSParameterAssert([currReach isKindOfClass:[Reachability class]]);
+    
+    //对连接改变做出响应处理动作
+    NetworkStatus status = [currReach currentReachabilityStatus];
+    //如果没有连接到网络就弹出提醒实况
+    self.isReachable = YES;
+    if(status == NotReachable)
+    {
+        [Utility errorAlert:@"暂无网络!"];
+        self.isReachable = NO;
+    }
+}
 
 
 @end

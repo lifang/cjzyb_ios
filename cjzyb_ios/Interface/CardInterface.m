@@ -17,9 +17,7 @@
     
     [reqheaders setValue:[NSString stringWithFormat:@"%@",studentId] forKey:@"student_id"];
     [reqheaders setValue:[NSString stringWithFormat:@"%@",classId] forKey:@"school_class_id"];
-//    [reqheaders setValue:[NSString stringWithFormat:@"%@",type] forKey:@"mistake_types"];
 
-    
     self.interfaceUrl = @"http://58.240.210.42:3004/api/students/get_knowledges_card";
     
     self.baseDelegate = self;

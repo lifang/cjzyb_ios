@@ -24,11 +24,11 @@ static NSInteger tmpPage = 0;
     return self;
 }
 -(void)getCardData {
-    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+    if (self.appDel.isReachable == NO) {
         [Utility errorAlert:@"暂无网络!"];
-    }else{
+    }else {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [self.cardInter getCardInterfaceDelegateWithStudentId:@"1" andClassId:@"1" andType:@"4"];
+        [self.cardInter getCardInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andType:@"4"];
     }
 }
 
@@ -442,7 +442,7 @@ static NSInteger tmpPage = 0;
     }
 }
 -(void)pressedDeleteBtn:(UIButton *)btn {
-    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+    if (self.appDel.isReachable == NO) {
         [Utility errorAlert:@"暂无网络!"];
     }else {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];

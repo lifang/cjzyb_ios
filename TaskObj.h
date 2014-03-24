@@ -18,11 +18,14 @@
 @property (strong,nonatomic) NSString *taskStartDate;
 @property (strong,nonatomic) NSString *taskEndDate;
 ///题包下载路径
-@property (strong,nonatomic) NSString *taskFileDownloadURL;
+@property (strong,nonatomic) NSString *taskFileDownloadURL;//question.json
 ///历史记录中答案的json文件下载路径
-@property (strong,nonatomic) NSString *taskAnswerFileDownloadURL;
+@property (strong,nonatomic) NSString *taskAnswerFileDownloadURL;//answer.json
 ///卡片数量
 @property (assign,nonatomic) int taskKnowlegeCount;
 ///这个任务包含的作业类型HomeworkTypeObj
 @property (strong,nonatomic) NSArray *taskHomeworkTypeArray;
+@property (nonatomic, strong) NSMutableArray *finish_types;//
+
++(TaskObj *)taskFromDictionary:(NSDictionary *)aDic;
 @end

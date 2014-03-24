@@ -85,10 +85,11 @@
 +(NSString*)convertFileSizeUnitWithBytes:(NSString*)bytes;
 + (Class)JSONParserClass;
 //answer.json文件路径
-+(NSMutableDictionary *)returnAnswerDictionaryWithName:(NSString *)name;
-+(void)returnAnswerPathWithDictionary:(NSDictionary *)aDic andName:(NSString *)name;
++(NSMutableDictionary *)returnAnswerDictionaryWithName:(NSString *)name  andDate:(NSString *)timeString;
++(void)returnAnswerPathWithDictionary:(NSDictionary *)aDic andName:(NSString *)name andDate:(NSString *)timeString;
 +(BOOL)compareTime;
-+(NSMutableArray *)returnAnswerProps;
-+(void)returnAnswerPathWithProps:(NSMutableArray *)array;
++(NSMutableArray *)returnAnswerPropsandDate:(NSString *)timeString;
++(void)returnAnswerPathWithProps:(NSMutableArray *)array andDate:(NSString *)timeString;
 + (NSString *)isExistenceNetwork;
+
 @end
