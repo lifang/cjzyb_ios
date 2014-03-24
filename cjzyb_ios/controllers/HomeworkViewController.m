@@ -42,7 +42,12 @@
 @end
 
 @implementation HomeworkViewController
-
+-(AppDelegate *)appDel {
+    if (!_appDel) {
+        _appDel = [AppDelegate shareIntance];
+    }
+    return _appDel;
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -51,6 +56,9 @@
     }
     return self;
 }
+/**
+ *  下载question里面的资源
+ */
 -(void)addDownloadTaskWithDictionary:(NSDictionary *)dic andName:(NSString *)name{
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[dic objectForKey:@"resource_url"]]]];
     request.delegate = self;
@@ -83,6 +91,7 @@
 }
 
 -(void)downLoadService {
+    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
     NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSArray *array = [NSArray arrayWithObjects:LISTEN,READ,SELECT, nil];
     
@@ -130,6 +139,8 @@
 - (void)requestFinished:(ASIHTTPRequest *)request {
     if ([self.networkQueue requestsCount] > 0) {
         //还有未下载完成
+    }else {
+        [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
     }
 }
 - (void)viewDidLoad

@@ -8,23 +8,17 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"//主页
-#import "FirstViewController.h"
+
 #import "TestViewController.h"
-#import "SecondViewController.h"
 #import "DRLeftTabBarViewController.h"
 #import "HomeworkDailyCollectionViewController.h"
 #import "HomeworkViewController.h"
 
 #import "LogInViewController.h" //登录
-#import "CardpackageViewController.h"//卡包
 
 #import "ReadingTaskViewController.h"
 
 #import "HomeworkContainerController.h"//做题
-
-#import "ListenWriteViewController.h"//听写
-#import "SortViewController.h"//排序
-#import "SelectedViewController.h"//完形填空
 
 #import "TenSecChallengeViewController.h"
 
@@ -76,8 +70,9 @@
         [DataService sharedService].user = [UserObject userFromDictionary:userDic];
         
         MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-        UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:main];
-        self.window.rootViewController = navControl;
+        DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+        tabBarController.childenControllerArray = @[main];
+        self.window.rootViewController = tabBarController;
     }
 }
 
@@ -99,12 +94,6 @@
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-
-    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-    tabBarController.childenControllerArray = @[main];
-    
-    
 //    HomeworkContainerController *homeView = [[HomeworkContainerController alloc]initWithNibName:@"HomeworkContainerController" bundle:nil];
 //    self.window.rootViewController = homeView;
 //    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
@@ -116,13 +105,12 @@
 //    self.window.rootViewController = tabBarController;
 
 //
-     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
+//     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
 //     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
-    self.window.rootViewController = tabBarController;
+//    self.window.rootViewController = cardView;
     
 
-//    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
-//    [self showRootView];
+    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
     
     [self.window makeKeyAndVisible];
     
