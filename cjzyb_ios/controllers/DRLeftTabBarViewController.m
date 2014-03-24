@@ -315,14 +315,13 @@
 //    [super touchesBegan:touches withEvent:event];
 //    self.isHiddleLeftTabBar = YES;
 //}
+//TODO:上传图片
 #pragma mark VPImageCropperDelegate
 - (void)imageCropper:(VPImageCropperViewController *)cropperViewController didFinished:(UIImage *)editedImage {
     self.drNavigationBar.userHeaderImage.image = editedImage;
     [cropperViewController dismissViewControllerAnimated:YES completion:^{
-        
-        UserObjDaoInterface
-        
-        
+    
+    
     }];
 }
 
