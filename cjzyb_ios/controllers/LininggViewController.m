@@ -378,6 +378,12 @@
             }
         }
         
+        if (self.branchScore == self.leftArray.count) {
+            TRUESOUND;
+        }else {
+            FALSESOUND;
+        }
+        
         if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
             self.homeControl.reduceTimeButton.enabled=NO;
             [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];

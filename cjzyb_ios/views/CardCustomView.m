@@ -100,14 +100,15 @@
     }
     //TYPES_NAME = {0 => "听力", 1 => "朗读",  2 => "十速挑战", 3 => "选择", 4 => "连线", 5 => "完型填空", 6 => "排序"}
     //错误答案
-    int type = 4;
+    int type = 3;
 //    self.aCard.your_answer = @"a";
 //    self.aCard.answer = @"this;||;an;||;apple";
-//    self.aCard.content = @"0";
+    self.aCard.content = @"This is ______ apple!";
 //    self.aCard.full_text = @"[[tag]] is [[tag]] what are you dong [[tag]]";
     
-    self.aCard.your_answer = @"this this  a is  is a";
-    self.aCard.answer = @"this this  is is  a a";
+    self.aCard.your_answer = @"A";
+    self.aCard.answer = @"B;||;C";
+    self.aCard.options = @"a;||;an;||;two";
     
     if (type==0) {//听力
         self.aCard.your_answer = @"this is a salple ;||;apple;||;an";
@@ -143,7 +144,42 @@
         [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:self.aCard.content.length];
         [self.cardSecond.rtLab setLine];
     }else if (type==3) {//选择
+//        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",self.path]];
+//        [self.imgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"UserHeaderImageBox"]];
+        self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
         
+        self.cardSecond.label_title = [[UILabel alloc]init];
+        self.cardSecond.label_title.numberOfLines = 0;
+        self.cardSecond.label_title.font = [UIFont systemFontOfSize:22];
+        CGSize size = [self getSizeWithString:self.aCard.content];
+        self.cardSecond.label_title.frame = CGRectMake(20, 50, 292, size.height);
+        self.cardSecond.label_title.text = self.aCard.content;
+        [self.cardSecond addSubview:self.cardSecond.label_title];
+        
+        self.cardSecond.cardSecondTable = [[UITableView alloc]initWithFrame:CGRectMake(20, self.cardSecond.label_title.frame.origin.y+self.cardSecond.label_title.frame.size.height, 292, 212)];
+        self.cardSecond.cardSecondTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+        self.cardSecond.cardSecondTable.backgroundColor = [UIColor clearColor];
+        self.cardSecond.cardSecondTable.userInteractionEnabled = NO;
+        self.cardSecond.cardSecondTable.delegate = self.cardSecond;
+        self.cardSecond.cardSecondTable.dataSource = self.cardSecond;
+        [self.cardSecond addSubview:self.cardSecond.cardSecondTable];
+        
+        NSArray *answerArray = [self.aCard.answer componentsSeparatedByString:@";||;"];
+        self.cardFirst.rightLetterLab.text = [answerArray componentsJoinedByString:@"  "];
+        
+        NSArray *LetterArray = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F", nil];
+        NSMutableArray *indexArray = [[NSMutableArray alloc]init];
+        for (int i=0; i<answerArray.count; i++) {
+            NSString *str = [answerArray objectAtIndex:i];
+            if ([LetterArray containsObject:str]) {
+                NSString *index_str = [NSString stringWithFormat:@"%d",[LetterArray indexOfObject:str]];
+                [indexArray addObject:index_str];
+            }
+        }
+        self.cardSecond.indexArray = indexArray;
+        self.cardSecond.cardSecondArray = [self.aCard.options componentsSeparatedByString:@";||;"];
+        [self.cardSecond.cardSecondTable reloadData];
+        [self.cardSecond.rtLab removeFromSuperview];
     }else if (type==4) {//连线
         self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
         self.cardFirst.rightLetterLab.text = self.aCard.answer;
@@ -198,7 +234,6 @@
     }
 
 }
-
 
 -(void)setViewtag:(NSInteger)viewtag {
     _viewtag = viewtag;

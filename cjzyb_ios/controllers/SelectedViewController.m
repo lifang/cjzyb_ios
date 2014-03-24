@@ -256,6 +256,12 @@
             [self.checkHomeworkButton addTarget:self action:@selector(nextQuestion:) forControlEvents:UIControlEventTouchUpInside];
         }
         
+        if (self.branchScore == self.answerArray.count) {
+            TRUESOUND;
+        }else {
+            FALSESOUND;
+        }
+        
         //TODO:写入json
         int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
         if (number_question >= self.number) {

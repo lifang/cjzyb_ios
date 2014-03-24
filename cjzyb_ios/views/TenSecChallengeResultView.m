@@ -22,6 +22,8 @@
 
 //初始化设置
 -(void) initView{
+    self.resultBgView.backgroundColor = [UIColor colorWithRed:49.0/255.0 green:200.0/255.0 blue:124.0/255.0 alpha:1.0];
+    
     self.resultBgView.layer.cornerRadius = 10.0;
     self.noneArchiveView.layer.cornerRadius = 10.0;
     self.commitButton.layer.cornerRadius = 4.0;
@@ -54,10 +56,15 @@
     //剩余挑战次数(十速挑战专用)
     if (self.challengeTimesLeft) {
         [self.restartButton setTitle:[NSString stringWithFormat:@"再次挑战 (%@)",self.challengeTimesLeft] forState:UIControlStateNormal];
+        [self.noneRestartButton setTitle:[NSString stringWithFormat:@"再次挑战 (%@)",self.challengeTimesLeft] forState:UIControlStateNormal];
         if (self.challengeTimesLeft.integerValue < 1) {
+            self.noneRestartButton.backgroundColor = [UIColor lightGrayColor];
+            self.noneRestartButton.enabled = NO;
             self.restartButton.backgroundColor = [UIColor lightGrayColor];
             self.restartButton.enabled = NO;
         }else{
+            self.noneRestartButton.backgroundColor = [UIColor whiteColor];
+            self.noneRestartButton.enabled = YES;
             self.restartButton.backgroundColor = [UIColor whiteColor];
             self.restartButton.enabled = YES;
         }

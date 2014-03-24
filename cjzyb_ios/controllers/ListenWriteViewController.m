@@ -547,6 +547,12 @@ static int numberOfMusic =0;
                 [self.checkHomeworkButton addTarget:self action:@selector(nextQuestion:) forControlEvents:UIControlEventTouchUpInside];
             }
         }
+        
+        if (self.scoreRadio-100>=0) {
+            TRUESOUND;
+        }else {
+            FALSESOUND;
+        }
         NSString *answer = [NSString stringWithFormat:@"%@;||;%@",anserString,wrong_anserString];
         //TODO:写入json
         int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];

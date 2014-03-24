@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0E2B517918DC138A0056859D /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5D1C7418C99F19008A13F2 /* TencentOpenAPI.framework */; };
+		0E2B517C18DC27110056859D /* trueMusic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0E2B517A18DC27110056859D /* trueMusic.wav */; };
+		0E2B517D18DC27110056859D /* falseMusic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0E2B517B18DC27110056859D /* falseMusic.wav */; };
 		0E5D1C6318C84BA8008A13F2 /* QuestionInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5D1C6218C84BA8008A13F2 /* QuestionInterface.m */; };
 		0E5D1C6718C85FD5008A13F2 /* FourthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5D1C6518C85FD5008A13F2 /* FourthViewController.m */; };
 		0E5D1C6818C85FD5008A13F2 /* FourthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D1C6618C85FD5008A13F2 /* FourthViewController.xib */; };
@@ -154,6 +156,7 @@
 		1867B53718D006AB0042A95D /* systemMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53618D006AB0042A95D /* systemMessage@2x.png */; };
 		1867B53A18D008C50042A95D /* trash_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53918D008C50042A95D /* trash_icon@2x.png */; };
 		1867B53C18D00D710042A95D /* replyMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53B18D00D710042A95D /* replyMessage@2x.png */; };
+		186C021E18D9866000D77EEC /* SelectingChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 187222B418C8572E00BBE2D1 /* SelectingChallengeViewController.xib */; };
 		186F216618D6D5BA0089A329 /* MJRefresh.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 186F215C18D6D5BA0089A329 /* MJRefresh.bundle */; };
 		186F216718D6D5BA0089A329 /* MJRefreshBaseView.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F215F18D6D5BA0089A329 /* MJRefreshBaseView.m */; };
 		186F216818D6D5BA0089A329 /* MJRefreshConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 186F216118D6D5BA0089A329 /* MJRefreshConst.m */; };
@@ -378,6 +381,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0E2B517A18DC27110056859D /* trueMusic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = trueMusic.wav; sourceTree = "<group>"; };
+		0E2B517B18DC27110056859D /* falseMusic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = falseMusic.wav; sourceTree = "<group>"; };
 		0E5D1C6118C84BA8008A13F2 /* QuestionInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuestionInterface.h; sourceTree = "<group>"; };
 		0E5D1C6218C84BA8008A13F2 /* QuestionInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuestionInterface.m; sourceTree = "<group>"; };
 		0E5D1C6418C85FD5008A13F2 /* FourthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FourthViewController.h; sourceTree = "<group>"; };
@@ -1382,6 +1387,8 @@
 		6329549818BC875800F2B78D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0E2B517A18DC27110056859D /* trueMusic.wav */,
+				0E2B517B18DC27110056859D /* falseMusic.wav */,
 				0E9D68C918CD972600EACFA3 /* multipy_unicode.dat */,
 				639657CF18C03886002F2A90 /* images */,
 				18AA80B318BEE42C00EC08CE /* image */,
@@ -2093,6 +2100,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				186C021E18D9866000D77EEC /* SelectingChallengeViewController.xib in Resources */,
 				185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */,
 				188ED74318CDA6BA00D1210F /* answer-1.js in Resources */,
 				182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */,
@@ -2136,6 +2144,7 @@
 				187C4AC718D304AC0006461D /* 10_02@2x.png in Resources */,
 				630DBDFC18D15AFB009DA0EB /* jiezu_yellow@2x.png in Resources */,
 				0E92657A18BDACDD003ADEC3 /* first@2x.png in Resources */,
+				0E2B517C18DC27110056859D /* trueMusic.wav in Resources */,
 				630DBDF318D15A95009DA0EB /* youxiu@2x.png in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				187C4ACB18D304AC0006461D /* 10_06@2x.png in Resources */,
@@ -2145,6 +2154,7 @@
 				0E92659D18BDE51F003ADEC3 /* commentBtn@2x.png in Resources */,
 				63B81C5018CF05F900004745 /* HomeworkContainerController.xib in Resources */,
 				630DBDD818D15936009DA0EB /* tabBarItemBack@2x.png in Resources */,
+				0E2B517D18DC27110056859D /* falseMusic.wav in Resources */,
 				0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */,
 				0E9265A018BDE51F003ADEC3 /* focusBtn@2x.png in Resources */,
 				63B8D27418C860B6004141E9 /* CarnetResultViewController.xib in Resources */,

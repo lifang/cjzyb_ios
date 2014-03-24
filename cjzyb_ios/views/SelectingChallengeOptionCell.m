@@ -14,7 +14,6 @@
 @property (strong,nonatomic) UIView *optionBackgroundView;  //背景
 @property (strong,nonatomic) UILabel *abcdLabel;
 @property (strong,nonatomic) UILabel *optionLabel;
-@property (strong,nonatomic) UIButton *optionButton;
 @end
 
 @implementation SelectingChallengeOptionCell
@@ -34,7 +33,7 @@
         [self addSubview:_optionBackgroundView];
         
         _abcdLabel = [[UILabel alloc] init];
-        _abcdLabel.backgroundColor = [UIColor greenColor];
+        _abcdLabel.backgroundColor = [UIColor colorWithRed:53.0/255.0 green:207.0/255.0 blue:143.0/255.0 alpha:1.0];
         _abcdLabel.layer.cornerRadius = 4.0;
         _abcdLabel.font = [UIFont systemFontOfSize:35.0];
         _abcdLabel.textColor = [UIColor whiteColor];
@@ -103,7 +102,7 @@
 -(void)setOptionSelected:(BOOL)optionSelected{
     _optionSelected = optionSelected;
     if (optionSelected) {
-        self.optionBackgroundView.layer.borderColor = [UIColor greenColor].CGColor;
+        self.optionBackgroundView.layer.borderColor = [UIColor colorWithRed:53.0/255.0 green:207.0/255.0 blue:143.0/255.0 alpha:1.0].CGColor;
     }else{
         self.optionBackgroundView.layer.borderColor = [UIColor whiteColor].CGColor;
     }

@@ -14,6 +14,9 @@
 #import "SortViewController.h"//排序
 #import "SelectedViewController.h"//完形填空
 #import "LininggViewController.h"
+#import "SelectingChallengeViewController.h"//选择挑战
+#import "TenSecChallengeViewController.h" //十速挑战
+
 /** HomeworkContainerController
  *
  * 所有题目类型的container，子类放置是每个题型的controller
@@ -27,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *quitHomeworkButton;
 ///检查按钮
 @property (weak, nonatomic) IBOutlet UIButton *checkHomeworkButton;
+///检查按钮的背景
+@property (weak, nonatomic) IBOutlet UIView *checkBgView;
 ///计时器label
 @property (weak, nonatomic) IBOutlet UILabel *timerLabel;
 ///显示正确答案button
@@ -53,5 +58,5 @@
  *  历史
  */
 @property (nonatomic, strong) IBOutlet UILabel *label1,*label2;
-@property (nonatomic, strong) IBOutlet UILabel *rotioLabel,*timeLabel;
+@property (nonatomic, strong) IBOutlet UILabel *rotioLabel,*timeLabel; //浏览历史时显示的正确率和用时
 @end

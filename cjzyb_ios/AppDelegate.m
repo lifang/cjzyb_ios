@@ -30,7 +30,33 @@
 
 
 @implementation AppDelegate
-
+-(void)loadTrueSound:(NSInteger)index {
+    NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"trueMusic.wav"];
+    NSError *error;
+    if(self.truePlayer==nil)
+    {
+        self.truePlayer=[[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    }
+    if(index==0)
+        self.truePlayer.volume=0.0f;
+    else
+        self.truePlayer.volume=1.0f;
+    [self.truePlayer play];
+}
+-(void)loadFalseSound:(NSInteger)index {
+    NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"falseMusic.wav"];
+    NSError *error;
+    if(self.falsePlayer==nil)
+    {
+        self.falsePlayer=[[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    }
+    if(index==0)
+        self.falsePlayer.volume=0.0f;
+    else
+        self.falsePlayer.volume=1.0f;
+    
+    [self.falsePlayer play];
+}
 +(AppDelegate *)shareIntance {
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
 }
@@ -68,9 +94,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
 
-    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-    tabBarController.childenControllerArray = @[main];
+//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+//    tabBarController.childenControllerArray = @[main];
     
     
 //    HomeworkContainerController *homeView = [[HomeworkContainerController alloc]initWithNibName:@"HomeworkContainerController" bundle:nil];
@@ -82,17 +108,16 @@
 //    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
 //    tabBarController.childenControllerArray = @[main];
 //    self.window.rootViewController = tabBarController;
-//    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
-//    self.window.rootViewController = notificationViewController;
 
 //
-//     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-//     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
-    self.window.rootViewController = tabBarController;
+     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
+     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
+    self.window.rootViewController = cardView;
     
 
 //    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
-
+//    [self showRootView];
+    
     [self.window makeKeyAndVisible];
     
     [DataService sharedService].first = 0;[DataService sharedService].second = 0;[DataService sharedService].third = 0;[DataService sharedService].fourth = 0;

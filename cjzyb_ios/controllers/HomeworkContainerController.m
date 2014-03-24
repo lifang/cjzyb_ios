@@ -1,3 +1,5 @@
+
+
 //
 //  HomeworkContainerController.m
 //  cjzyb_ios
@@ -17,7 +19,11 @@
 @property (nonatomic,strong) ListenWriteViewController *listenView;//听写
 @property (nonatomic,strong) SortViewController *sortView;//排序
 @property (nonatomic,strong) SelectedViewController *selectedView;//完形填空
+
 @property (nonatomic, strong) LininggViewController *liningView;
+@property (nonatomic,strong) TenSecChallengeViewController *tenSecViewController;///十速挑战
+@property (nonatomic,strong) SelectingChallengeViewController *selectingChallengeViewController; ///选择挑战
+
 ///计时器
 @property (nonatomic,strong) NSTimer *timer;
 /////减时间
@@ -46,7 +52,6 @@
 
 ///开始计时
 -(void)startTimer{
-//    self.timerLabel.text = [NSString stringWithFormat:@"%lld",self.spendSecond];
     if (self.timer) {
         [self.timer invalidate];
         self.timer = nil;
@@ -65,7 +70,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.spendSecond = 0;[DataService sharedService].number_reduceTime=3;[DataService sharedService].isHistory=NO;[DataService sharedService].number_correctAnswer=3;
+    self.spendSecond = 0;[DataService sharedService].number_reduceTime=3;[DataService sharedService].isHistory=YES;[DataService sharedService].number_correctAnswer=3;
     //TODO:判断做题历史 or  做题
     if ([DataService sharedService].isHistory==YES) {
         self.timeImg.hidden=YES; self.timerLabel.hidden=YES;
@@ -75,7 +80,8 @@
         self.label1.hidden=YES;self.label2.hidden=YES;self.rotioLabel.hidden=YES;self.timeLabel.hidden=YES;
     }
     [self startTimer];
-    self.homeworkType = HomeworkType_listeningAndWrite;
+
+    self.homeworkType = HomeworkType_select;
     switch (self.homeworkType) {
         case HomeworkType_line://连线
         {
@@ -141,6 +147,47 @@
             [self.sortView didMoveToParentViewController:self];
         }
             break;
+        case HomeworkType_quick://十速挑战
+            //十速挑战没有道具栏,contentView应为 {0,75,768,949}
+        {
+            [self.djView setHidden:YES];
+            self.tenSecViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
+            [self.tenSecViewController willMoveToParentViewController:self];
+            [self.contentView setFrame:(CGRect){0,75,768,949}];
+            [self.contentView addSubview:self.tenSecViewController.view];
+            [self.tenSecViewController.contentBgView setFrame:(CGRect){0,0,768,949}];
+            [self.tenSecViewController.topBarView setHidden:YES];
+            [self addChildViewController:self.tenSecViewController];
+            [self.tenSecViewController didMoveToParentViewController:self];
+            self.tenSecViewController.isViewingHistory = [DataService sharedService].isHistory;
+            [self.tenSecViewController startChallenge];
+            if (![DataService sharedService].isHistory) {
+                [self.checkBgView setHidden:YES];
+            }else{
+                [self.checkHomeworkButton addTarget:self.tenSecViewController action:@selector(showNextQuestion) forControlEvents:UIControlEventTouchUpInside];
+                [self.checkHomeworkButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentCenter];
+                [self.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
+                self.checkHomeworkButton.frame = (CGRect){0,0,[self.checkHomeworkButton superview].frame.size};
+                self.checkHomeworkButton.backgroundColor = self.checkBgView.backgroundColor ;
+            }
+        }
+            break;
+        case HomeworkType_select://选择挑战
+        {
+            self.selectingChallengeViewController = [[SelectingChallengeViewController alloc] initWithNibName:@"SelectingChallengeViewController" bundle:nil];
+            [self.selectingChallengeViewController willMoveToParentViewController:self];
+            [self.contentView addSubview:self.selectingChallengeViewController.view];
+            [self.selectingChallengeViewController.contentBgView setFrame:(CGRect){0,0,768,874}];
+            [self addChildViewController:self.selectingChallengeViewController];
+            [self.selectingChallengeViewController didMoveToParentViewController:self];
+            [self.checkHomeworkButton addTarget:self.selectingChallengeViewController action:@selector(nextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [self.appearCorrectButton addTarget:self.selectingChallengeViewController action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [self.reduceTimeButton addTarget:self.selectingChallengeViewController action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
+            self.selectingChallengeViewController.topBarView.hidden = YES;
+            self.selectingChallengeViewController.itemsView.hidden = YES;
+            self.selectingChallengeViewController.isViewingHistory = [DataService sharedService].isHistory;
+        }
+            break;
         default:
             break;
     }
@@ -155,7 +202,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+#pragma mark -- property
+-(void)setSpendSecond:(long long)spendSecond{
+    _spendSecond = spendSecond;
+    self.timerLabel.text = [Utility formateDateStringWithSecond:self.spendSecond];
+}
 
 - (IBAction)quitButtonClicked:(id)sender {
     

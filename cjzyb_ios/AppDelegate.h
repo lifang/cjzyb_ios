@@ -19,6 +19,12 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong) MPMoviePlayerController *player;
 @property (strong, nonatomic) AVAudioPlayer *avPlayer;
+
+@property (nonatomic, strong) AVAudioPlayer *truePlayer;
+@property (nonatomic, strong) AVAudioPlayer *falsePlayer;
 - (void)showRootView;
 +(AppDelegate *)shareIntance;
+
+-(void)loadTrueSound:(NSInteger)index;
+-(void)loadFalseSound:(NSInteger)index;
 @end

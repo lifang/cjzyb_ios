@@ -589,6 +589,11 @@
                 [answerBtn setTitleColor:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1] forState:UIControlStateNormal];
             }
         }
+        if (self.branchScore == self.orgArray.count) {
+            TRUESOUND;
+        }else {
+            FALSESOUND;
+        }
         if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
             self.homeControl.reduceTimeButton.enabled=NO;
             [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
