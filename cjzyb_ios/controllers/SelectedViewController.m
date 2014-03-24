@@ -376,7 +376,7 @@
             [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             self.postInter = [[BasePostInterface alloc]init];
             self.postInter.delegate = self;
-            [self.postInter postAnswerFile];
+            [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
         }
     }else {
         [self showResultView];

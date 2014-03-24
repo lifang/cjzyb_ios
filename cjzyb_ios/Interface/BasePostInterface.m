@@ -10,18 +10,20 @@
 
 @implementation BasePostInterface
 
--(void)postAnswerFile {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentDirectory = [paths objectAtIndex:0];
+-(void)postAnswerFileWith:(NSString *)jsonPath {
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    NSString *documentDirectory = [path stringByAppendingPathComponent:jsonPath];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:@"http://58.240.210.42:3004/api/students/finish_question_packge"]];
-//    [request setPostValue:[DataService sharedService].user.studentId forKey:@"student_id"];
-//    [request setPostValue:[DataService sharedService].theClass.classId forKey:@"school_class_id"];
-//    [request setPostValue:[DataService sharedService].taskObj.taskId forKey:@"publish_question_package_id"];
-    [request setPostValue:@"1" forKey:@"student_id"];
-    [request setPostValue:@"1" forKey:@"school_class_id"];
-    [request setPostValue:@"1" forKey:@"publish_question_package_id"];
+    [request setPostValue:[DataService sharedService].user.studentId forKey:@"student_id"];
+    [request setPostValue:[DataService sharedService].theClass.classId forKey:@"school_class_id"];
+    [request setPostValue:[DataService sharedService].taskObj.taskID forKey:@"publish_question_package_id"];
     
     [request setFile:jsPath forKey:@"answer_file"];
     

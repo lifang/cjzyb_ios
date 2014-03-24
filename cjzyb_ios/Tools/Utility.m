@@ -305,7 +305,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     return objc_getClass("NSJSONSerialization");
 }
 
-+ (NSDictionary *)initWithJSONFile:(NSString *)jsonPath{
++ (NSDictionary *)initWithJSONFile:(NSString *)jsonPath {
     Class JSONSerialization = [Utility JSONParserClass];
     NSAssert(JSONSerialization != NULL, @"No JSON serializer available!");
     

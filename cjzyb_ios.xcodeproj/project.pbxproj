@@ -28,6 +28,7 @@
 		0E5D1C8518C9A0FE008A13F2 /* logIn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D1C8418C9A0FE008A13F2 /* logIn@2x.png */; };
 		0E5D1C8718C9A13C008A13F2 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D1C8618C9A13C008A13F2 /* logo@2x.png */; };
 		0E5D1C8918C9A18F008A13F2 /* QQLogIn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D1C8818C9A18F008A13F2 /* QQLogIn@2x.png */; };
+		0E660F1D18E0249E0074454C /* PostImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E660F1C18E0249E0074454C /* PostImage.m */; };
 		0E92654F18BD9016003ADEC3 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92654D18BD9016003ADEC3 /* MainViewController.m */; };
 		0E92655018BD9016003ADEC3 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92654E18BD9016003ADEC3 /* MainViewController.xib */; };
 		0E92655818BD9228003ADEC3 /* DAPagesContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92655318BD9228003ADEC3 /* DAPagesContainer.m */; };
@@ -403,6 +404,8 @@
 		0E5D1C8418C9A0FE008A13F2 /* logIn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logIn@2x.png"; sourceTree = "<group>"; };
 		0E5D1C8618C9A13C008A13F2 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		0E5D1C8818C9A18F008A13F2 /* QQLogIn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QQLogIn@2x.png"; sourceTree = "<group>"; };
+		0E660F1B18E0249E0074454C /* PostImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostImage.h; sourceTree = "<group>"; };
+		0E660F1C18E0249E0074454C /* PostImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostImage.m; sourceTree = "<group>"; };
 		0E92654C18BD9016003ADEC3 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = SOURCE_ROOT; };
 		0E92654D18BD9016003ADEC3 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = SOURCE_ROOT; };
 		0E92654E18BD9016003ADEC3 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -1145,6 +1148,8 @@
 				0EEF4BDF18C561700058606A /* BaseInterface.m */,
 				0E93C9A818D80EB20094AD7B /* BasePostInterface.h */,
 				0E93C9A918D80EB20094AD7B /* BasePostInterface.m */,
+				0E660F1B18E0249E0074454C /* PostImage.h */,
+				0E660F1C18E0249E0074454C /* PostImage.m */,
 				0EEF4BE018C561700058606A /* InterfaceCache.h */,
 				0EEF4BE118C561700058606A /* InterfaceCache.m */,
 				1821470918C6D26B0041A7E7 /* LHLTestInterface.h */,
@@ -2457,6 +2462,7 @@
 				0E9C6EA118D1A16300E807D1 /* ClozeView.m in Sources */,
 				6329549E18BC875800F2B78D /* main.m in Sources */,
 				6341536818C1C96C00DE4480 /* CalendarViewController.m in Sources */,
+				0E660F1D18E0249E0074454C /* PostImage.m in Sources */,
 				6329554018BC8D7C00F2B78D /* FMDatabaseQueue.m in Sources */,
 				18B4EB8418D29E0500986766 /* LHLDeleteMyNoticeInterface.m in Sources */,
 				0EEF4BDA18C561570058606A /* CardSecondView.m in Sources */,
