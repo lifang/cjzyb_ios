@@ -1465,6 +1465,42 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     return nil;
 }
 
+//TODO:请求当天题目
++ (NSString *)getTodayNewestQuestionPackage{
+    __block NSString *returnMsg;
+    NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_newer_task?student_id=%@&school_class_id=%@",[DataService sharedService].user.studentId,[DataService sharedService].theClass.classId];
+    NSURL *url = [NSURL URLWithString:str];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
+        NSNumber *cards_count = [dicData objectForKey:@"knowledges_cards_count"];
+        if (cards_count.integerValue > 20) {
+            returnMsg = @"先清卡包";
+            return;
+        }
+        NSArray *taskArray = [dicData objectForKey:@"tasks"];
+        if (taskArray.count < 1) {
+            returnMsg = @"暂未发布今日作业";
+            return;
+        }
+        NSDictionary *packageDic = [taskArray firstObject];
+        TaskObject *taskObj = [TaskObject taskFromDictionary:packageDic];
+        [DataService sharedService].taskObj = taskObj;
+        returnMsg = @"读取成功";
+    } withFailure:^(NSError *error) {
+        returnMsg = [error.userInfo objectForKey:@"msg"];
+    }];
+    return returnMsg;
+}
+
+//下载question.js ,用户选择"下载"之后调用
++ (void)downloadQuestionJSON{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths firstObject];
+    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"questionJSON_%@.js",[DataService sharedService].taskObj.taskId]];
+    NSData *questionData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.question_packages_url]];
+    [questionData writeToFile:path atomically:YES];
+}
+
 //添加不用备份的属性5.0.1
 + (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
 {

@@ -64,6 +64,9 @@
     [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit"]];
 //    [self parseAnswerJSON];
     
+    self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+    self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -257,14 +260,14 @@
                 [self makeAnswerJSON];
             }
         }
-        self.upperOptionLabel.backgroundColor = [UIColor greenColor];
+        self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:53.0/255.0 green:207.0/255.0 blue:143.0/255.0 alpha:1.0];
         self.upperButton.enabled = NO;
         self.lowerButton.enabled = NO;
         [UIView animateWithDuration:0.5 animations:^{
             self.upperButton.alpha = self.upperButton.alpha > 0.5 ? 0.5 : 1;
         } completion:^(BOOL finished) {
-            self.upperOptionLabel.backgroundColor = [UIColor blackColor];
-            self.lowerOptionLabel.backgroundColor = [UIColor blackColor];
+            self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+            self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
             if (self.isLastQuestion) {
                 [self finishChallenge];
                 self.currentNO = self.questionArray.count + 1; //标志答题结束
@@ -287,14 +290,14 @@
                 [self makeAnswerJSON];
             }
         }
-        self.lowerOptionLabel.backgroundColor = [UIColor greenColor];
+        self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:53.0/255.0 green:207.0/255.0 blue:143.0/255.0 alpha:1.0];
         self.upperButton.enabled = NO;
         self.lowerButton.enabled = NO;
         [UIView animateWithDuration:0.5 animations:^{
             self.upperButton.alpha = self.upperButton.alpha > 0.5 ? 0.5 : 1;
         } completion:^(BOOL finished) {
-            self.upperOptionLabel.backgroundColor = [UIColor blackColor];
-            self.lowerOptionLabel.backgroundColor = [UIColor blackColor];
+            self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+            self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
             if (self.isLastQuestion) {
                 [self finishChallenge];
                 self.currentNO = self.questionArray.count + 1; //标志答题结束
@@ -435,6 +438,18 @@
         [Utility errorAlert:@"未成功获取题目!"];
     }
 }
+
+//题目切换动画效果
+//- (void) showNextQuestionWithAnimation{
+//    CATransition *animation = [CATransition animation];
+//    [animation setType:kCATransitionPush];
+//    [animation setSubtype:kCATransitionFromRight];
+//    [animation setDuration:0.5];
+//    [animation setRemovedOnCompletion:YES];
+//    [animation setDelegate:self];
+//    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+//    [self.view.layer addAnimation:animation forKey:@"PushLeft"];
+//}
 
 //调整某个label的字体,使其适合长度
 - (void)handleLabelFont:(UILabel *)label{
