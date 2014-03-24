@@ -1564,7 +1564,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 //下载questionJSON.js ,用户选择"下载"之后调用
 + (NSDictionary *)downloadQuestionJSON{
     NSFileManager *manager = [NSFileManager defaultManager];
-    NSString *path = [DataService sharedService].taskObj.tas;
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     if (![manager fileExistsAtPath:path]) {
         NSError *error;
         [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
@@ -1575,7 +1575,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     if ([manager fileExistsAtPath:path]) {
         questionData = [NSData dataWithContentsOfFile:path];
     }else{
-        questionData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.question_packages_url]];
+        questionData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.taskFileDownloadURL]];
         [questionData writeToFile:path atomically:YES]; //保存文件,并返回JSON 字典
     }
     NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:questionData options:NSJSONReadingAllowFragments error:&error];
@@ -1585,7 +1585,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 //下载当天的answerJSON.js
 + (NSDictionary *)downloadAnswerJSON{
     NSFileManager *manager = [NSFileManager defaultManager];
-    NSString *path = [DataService sharedService].taskObj.taskSandboxFolder;
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     if (![manager fileExistsAtPath:path]) {
         NSError *error;
         [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
@@ -1649,13 +1649,13 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         for(NSNumber *number in [DataService sharedService].taskObj.finish_types){
             //如果服务器上有本地未完成的答案
             if(![localFinishedChallenges containsObject:[NSString stringWithFormat:@"%d",number.integerValue]]){
-                answerData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.question_packages_url]];
+                answerData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.taskAnswerFileDownloadURL]];
                 [answerData writeToFile:path atomically:YES]; //保存文件,并返回JSON 字典
                 break;
             };
         }
     }else{
-        answerData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.question_packages_url]];
+        answerData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.taskAnswerFileDownloadURL]];
         [answerData writeToFile:path atomically:YES]; //保存文件,并返回JSON 字典
     }
     NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:answerData options:NSJSONReadingAllowFragments error:&error];
