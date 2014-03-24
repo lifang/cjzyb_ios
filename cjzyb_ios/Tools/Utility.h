@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
+#import "ASIHTTPRequest.h"
 @interface Utility : NSObject
 
 @property (nonatomic, assign) int firstpoint;
@@ -44,8 +44,14 @@
 
 +(Utility*)defaultUtility;
 
+///分数转化成等级,满100升一级
++(NSString*)formateLevelWithScore:(float)score;
+
 ///异步请求网络数据
 +(void)requestDataWithRequest:(NSURLRequest*)request withSuccess:(void (^)(NSDictionary *dicData))success withFailure:(void (^)(NSError *error))failure;
+
+///异步请求网络数据
++(void)requestDataWithASIRequest:(ASIHTTPRequest*)request withSuccess:(void (^)(NSDictionary *dicData))success withFailure:(void (^)(NSError *error))failure;
 
 ///过滤json数据，可能出现<NULL>,null,等等情况
 +(NSString *)filterValue:(NSString*)value;
@@ -79,10 +85,11 @@
 +(NSString*)convertFileSizeUnitWithBytes:(NSString*)bytes;
 + (Class)JSONParserClass;
 //answer.json文件路径
-+(NSMutableDictionary *)returnAnswerDictionaryWithName:(NSString *)name;
-+(void)returnAnswerPathWithDictionary:(NSDictionary *)aDic andName:(NSString *)name;
++(NSMutableDictionary *)returnAnswerDictionaryWithName:(NSString *)name  andDate:(NSString *)timeString;
++(void)returnAnswerPathWithDictionary:(NSDictionary *)aDic andName:(NSString *)name andDate:(NSString *)timeString;
 +(BOOL)compareTime;
-+(NSMutableArray *)returnAnswerProps;
-+(void)returnAnswerPathWithProps:(NSMutableArray *)array;
++(NSMutableArray *)returnAnswerPropsandDate:(NSString *)timeString;
++(void)returnAnswerPathWithProps:(NSMutableArray *)array andDate:(NSString *)timeString;
 + (NSString *)isExistenceNetwork;
+
 @end

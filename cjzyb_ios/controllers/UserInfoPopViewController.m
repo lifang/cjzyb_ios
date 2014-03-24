@@ -9,7 +9,9 @@
 #import "UserInfoPopViewController.h"
 #import "DRProgressView.h"
 #import "ClassGroupViewController.h"
+#import "UserObjDaoInterface.h"
 #import "ModelTypeViewController.h"
+#import "DRLeftTabBarViewController.h"
 @interface UserInfoPopViewController ()
 ///用户所在班级按钮
 @property (weak, nonatomic) IBOutlet UIButton *userClassButton;
@@ -47,11 +49,40 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.youyiProgressView setProgressValue:0.1 withLevelName:@"LV2"];
-    [self.jingzhunProgressView setProgressValue:0.5 withLevelName:@"LV2"];
-    [self.xunsuProgressView setProgressValue:0.4 withLevelName:@"LV2"];
-    [self.jiezuProgressView setProgressValue:0.5 withLevelName:@"LV2"];
+//    [self.youyiProgressView setProgressValue:0.1 withLevelName:@"LV2"];
+//    [self.jingzhunProgressView setProgressValue:0.5 withLevelName:@"LV2"];
+//    [self.xunsuProgressView setProgressValue:0.4 withLevelName:@"LV2"];
+//    [self.jiezuProgressView setProgressValue:0.5 withLevelName:@"LV2"];
     // Do any additional setup after loading the view from its nib.
+}
+
+-(void)updateViewContents{
+    DataService *data = [DataService sharedService];
+    self.userNameLabel.text = data.user.nickName;
+    self.drleftTabBarController.drNavigationBar.userNameLabel.text = data.user.nickName;
+    self.userClassNameLabel.text = data.theClass.name;
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    __weak UserInfoPopViewController *weakSelf = self;
+    [UserObjDaoInterface downloadUserAchievementWithUserId:data.user.userId withGradeID:data.theClass.classId withSuccess:^(int youxi, int xunsu, int jiezu, int jingzhun) {
+        UserInfoPopViewController *tempSelf = weakSelf;
+        if (tempSelf) {
+            data.user.youyiScore = youxi;
+            data.user.xunsuScore = xunsu;
+            data.user.jiezuScore = jiezu;
+            data.user.jingzhunScore = jingzhun;
+            [self.youyiProgressView updateContentWithScore:youxi];
+            [self.xunsuProgressView updateContentWithScore:xunsu];
+            [self.jiezuProgressView updateContentWithScore:jiezu];
+            [self.jingzhunProgressView updateContentWithScore:jingzhun];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        }
+    } withFailure:^(NSError *error) {
+        UserInfoPopViewController *tempSelf = weakSelf;
+        if (tempSelf) {
+            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        }
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -62,19 +93,57 @@
 
 - (IBAction)userClassButtonClicked:(id)sender {
     [self.userClassButton setUserInteractionEnabled:NO];
-    ClassGroupViewController *group = [[ClassGroupViewController alloc] initWithNibName:@"ClassGroupViewController" bundle:nil];
-    self.popViewController = [[WYPopoverController alloc] initWithContentViewController:group];
-    self.popViewController.popoverContentSize = (CGSize){224,150};
-    CGRect rect = [self.view convertRect:self.userClassButton.frame fromView:self.userClassButton.superview];
-    [self.popViewController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:WYPopoverArrowDirectionRight animated:YES completion:^{
-        [self.userClassButton setUserInteractionEnabled:YES];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    __weak UserInfoPopViewController *weakSelf = self;
+    
+    [UserObjDaoInterface dowloadGradeListWithUserId:@"72" withSuccess:^(NSArray *gradeList) {
+        UserInfoPopViewController *tempSelf = weakSelf;
+        if (tempSelf) {
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            ClassGroupViewController *group = [[ClassGroupViewController alloc] initWithNibName:@"ClassGroupViewController" bundle:nil];
+            tempSelf.popViewController = [[WYPopoverController alloc] initWithContentViewController:group];
+            tempSelf.popViewController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+            tempSelf.popViewController.theme.fillTopColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+            tempSelf.popViewController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+            tempSelf.popViewController.theme.glossShadowColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+            tempSelf.popViewController.popoverContentSize = (CGSize){224,150};
+            group.classArray =[NSMutableArray arrayWithArray:gradeList] ;
+            CGRect rect = [tempSelf.view convertRect:tempSelf.userClassButton.frame fromView:tempSelf.userClassButton.superview];
+            [tempSelf.popViewController presentPopoverFromRect:rect inView:tempSelf.view permittedArrowDirections:WYPopoverArrowDirectionRight animated:YES completion:^{
+                [tempSelf.userClassButton setUserInteractionEnabled:YES];
+            }];
+        }
+    } withFailure:^(NSError *error) {
+        UserInfoPopViewController *tempSelf = weakSelf;
+        if (tempSelf) {
+            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+            [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+             [tempSelf.userClassButton setUserInteractionEnabled:YES];
+        }
     }];
 }
 
 - (IBAction)modifyUserNameButtonClicked:(id)sender {
+    __weak UserInfoPopViewController *weakSelf = self;
+    DataService *data = [DataService sharedService];
     
-    [ModelTypeViewController presentTypeViewWithTipString:@"请输入名称：" withFinishedInput:^(NSString *inputString) {
-        
+    [ModelTypeViewController presentTypeViewWithTipString:@"请输入新名称：" withFinishedInput:^(NSString *inputString) {
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [UserObjDaoInterface modifyUserNickNameAndHeaderImageWithUserId:data.user.userId withUserName:data.user.name withUserNickName:data.user.nickName withHeaderData:nil withSuccess:^(NSString *msg) {
+            UserInfoPopViewController *tempSelf = weakSelf;
+            if (tempSelf) {
+                data.user.nickName = inputString;
+                [tempSelf updateViewContents];
+                [Utility errorAlert:msg];
+                [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+            }
+        } withFailure:^(NSError *error) {
+            UserInfoPopViewController *tempSelf = weakSelf;
+            if (tempSelf) {
+                [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+                [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+            }
+        }];
     } withCancel:nil];
 }
 @end

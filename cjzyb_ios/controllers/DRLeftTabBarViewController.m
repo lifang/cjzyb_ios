@@ -7,12 +7,10 @@
 //
 
 #import "DRLeftTabBarViewController.h"
-#import "DRNavigationBar.h"
 #import "UserInfoPopViewController.h"
-
+#import "UserObjDaoInterface.h"
 @interface DRLeftTabBarViewController ()
 @property (nonatomic,strong) LeftTabBarView *leftTabBar;
-@property (nonatomic,strong) DRNavigationBar *drNavigationBar;
 @property (nonatomic,strong) UserInfoPopViewController *userInfoPopViewController;
 @property (nonatomic,strong) WYPopoverController *poprController;
 @property (nonatomic,strong) StudentListViewController *studentListViewController;
@@ -46,6 +44,7 @@
     [self.drNavigationBar.rightButtonItem addTarget:self action:@selector(navigationRightItemClicked) forControlEvents:UIControlEventTouchUpInside];
     [self.drNavigationBar.leftButtonItem addTarget:self action:@selector(navigationLeftItemClicked) forControlEvents:UIControlEventTouchUpInside];
     self.drNavigationBar.frame = (CGRect){0,0,768,67};
+    self.drNavigationBar.userNameLabel.text = [[[DataService sharedService] user] nickName];
     [self.view addSubview:self.drNavigationBar];
     //设置子controller
     self.currentViewController = [self.childenControllerArray firstObject];
@@ -109,13 +108,24 @@
 }
 ///导航栏右边item点击事件
 -(void)navigationRightItemClicked{
+    
+
+//    return;
+    /////////////////////////////////////////
     [self.drNavigationBar.rightButtonItem setUserInteractionEnabled:NO];
      self.poprController= [[WYPopoverController alloc] initWithContentViewController:self.userInfoPopViewController];
+    self.poprController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.fillTopColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.glossShadowColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    
     self.poprController.popoverContentSize = (CGSize){224,293};
     CGRect rect = (CGRect){720,0,50,70};
     [self.poprController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES completion:^{
         [self.drNavigationBar.rightButtonItem setUserInteractionEnabled:YES];
     }];
+    self.userInfoPopViewController.drleftTabBarController = self;
+    [self.userInfoPopViewController updateViewContents];
 }
 #pragma mark --
 ///隐藏学生列表
@@ -155,8 +165,6 @@
 #pragma mark LeftTabBarViewDelegate 左边栏代理
 -(void)leftTabBar:(LeftTabBarView *)tabBarView selectedItem:(LeftTabBarItemType)itemType{
     NSLog(@"%d",itemType);
-
-    
     if (itemType == LeftTabBarItemType_userGroup ) {
         if (tabBarView.userGroupTabBarItem.isSelected) {
             [self appearStudentListViewController:self.studentListViewController];

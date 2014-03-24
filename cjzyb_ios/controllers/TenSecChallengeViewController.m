@@ -57,7 +57,7 @@
     self.questionArray = [NSMutableArray arrayWithArray:[TenSecChallengeObject parseTenSecQuestionsFromFile]];
     
     //载入answer文件
-    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit"]];
+    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit" andDate:[DataService sharedService].taskObj.taskStartDate]];
     
 }
 
@@ -116,7 +116,7 @@
                 [self.reChallengeTimesLeft setObject:[NSString stringWithFormat:@"%d",timesLeft.integerValue - 1] forKey:nowDate];
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                 NSString *path = [paths firstObject];
-                path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.start_time];
+                path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
                 NSString *filePath = [NSString stringWithFormat:@"%@/tenSecChallenge.plist",path];
                 [self.reChallengeTimesLeft writeToFile:filePath atomically:YES];
             }
@@ -233,7 +233,7 @@
     [answerDic setObject:questions forKey:@"questions"];
     
     //保存JSON
-    [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"time_limit"];
+    [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"time_limit" andDate:[DataService sharedService].taskObj.taskStartDate];
     return [NSDictionary dictionaryWithDictionary:answerDic];
 }
 
@@ -448,7 +448,7 @@
     if (!_reChallengeTimesLeft) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *path = [paths firstObject];
-        path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.start_time];
+        path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
         NSFileManager *manager = [NSFileManager defaultManager];
         if (![manager fileExistsAtPath:path]) {
             [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];

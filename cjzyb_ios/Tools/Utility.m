@@ -23,6 +23,11 @@
     return defaultUti;
 }
 
+///分数转化成等级,满100升一级
++(NSString*)formateLevelWithScore:(float)score{
+    return [NSString stringWithFormat:@"L%d",(int)score/100];
+}
+
 ///异步请求网络数据
 +(void)requestDataWithRequest:(NSURLRequest*)request withSuccess:(void (^)(NSDictionary *dicData))success withFailure:(void (^)(NSError *error))failure{
     if (!request) {
@@ -59,8 +64,8 @@
             return ;
         }
         
-        
-        if (![dicData objectForKey:@"status"] || [[dicData objectForKey:@"status"] isEqualToString:@"error"]) {
+        NSString *status = [Utility filterValue:[dicData objectForKey:@"status"]];
+        if (!status || [status isEqualToString:@"error"] || [status isEqualToString:@"0"]) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (failure) {
                     failure([NSError errorWithDomain:@"" code:2006 userInfo:@{@"msg": [dicData objectForKey:@"notice"]?:@"获取数据失败"}]);
@@ -74,6 +79,60 @@
         }
     });
 }
+
+
+///异步请求网络数据
++(void)requestDataWithASIRequest:(ASIHTTPRequest*)request withSuccess:(void (^)(NSDictionary *dicData))success withFailure:(void (^)(NSError *error))failure{
+    if (!request) {
+        if (failure) {
+            failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"请求参数不能为空"}]);
+        }
+        return;
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [request startSynchronous];
+        NSError *error = request.error;
+        NSData *data = request.responseData;
+        DLog(@"%@,%@",[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding],error);
+        if (error) {
+            [Utility requestFailure:error tipMessageBlock:^(NSString *tipMsg) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (failure) {
+                        failure([NSError errorWithDomain:@"" code:2002 userInfo:@{@"msg": tipMsg}]);
+                    }
+                });
+            }];
+            
+            return ;
+        }
+        
+        NSError *jsonError = nil;
+        NSDictionary *dicData = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&jsonError];
+        if (!dicData || dicData.count <= 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure([NSError errorWithDomain:@"" code:2002 userInfo:@{@"msg": @"获取空数据"}]);
+                }
+            });
+            return ;
+        }
+        
+        
+        NSString *status = [Utility filterValue:[dicData objectForKey:@"status"]];
+        if (!status || [status isEqualToString:@"error"] || [status isEqualToString:@"0"]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure([NSError errorWithDomain:@"" code:2006 userInfo:@{@"msg": [dicData objectForKey:@"notice"]?:@"获取数据失败"}]);
+                }
+            });
+            return;
+        }
+        if (success) {
+            success(dicData);
+        }
+    });
+}
+
 
 +(NSString *)filterValue:(NSString*)filterValue{
     NSString *value = [NSString stringWithFormat:@"%@",filterValue];
@@ -305,12 +364,21 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     return objc_getClass("NSJSONSerialization");
 }
 
-+ (NSDictionary *)initWithJSONFile:(NSString *)jsonPath {
++ (NSDictionary *)initWithJSONFile:(NSString *)jsonPath{
     Class JSONSerialization = [Utility JSONParserClass];
     NSAssert(JSONSerialization != NULL, @"No JSON serializer available!");
     
     NSError *jsonParsingError = nil;
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:jsonPath ofType:@"json"];
+    
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    NSString *documentDirectory = [path stringByAppendingPathComponent:jsonPath];
+    NSString *filePath = [documentDirectory stringByAppendingPathComponent:@"question.json"];
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource:jsonPath ofType:@"json"];
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:0 error:&jsonParsingError];
     return dataObject;
 }
@@ -1483,7 +1551,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             return;
         }
         NSDictionary *packageDic = [taskArray firstObject];
-        TaskObject *taskObj = [TaskObject taskFromDictionary:packageDic];
+        TaskObj *taskObj = [TaskObj taskFromDictionary:packageDic];
         [DataService sharedService].taskObj = taskObj;
         returnMsg = @"读取成功";
         
@@ -1496,7 +1564,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 //下载questionJSON.js ,用户选择"下载"之后调用
 + (NSDictionary *)downloadQuestionJSON{
     NSFileManager *manager = [NSFileManager defaultManager];
-    NSString *path = [DataService sharedService].taskObj.taskSandboxFolder;
+    NSString *path = [DataService sharedService].taskObj.tas;
     if (![manager fileExistsAtPath:path]) {
         NSError *error;
         [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
@@ -1621,10 +1689,16 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     return YES;
 }
 //TODO:返回题目
-+(NSMutableDictionary *)returnAnswerDictionaryWithName:(NSString *)name {
++(NSMutableDictionary *)returnAnswerDictionaryWithName:(NSString *)name  andDate:(NSString *)timeString{
     NSFileManager *fileManage =[NSFileManager defaultManager];
-    NSArray *paths= NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
-    NSString *documentDirectory = [paths objectAtIndex:0];
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    
+    NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
     if ([fileManage fileExistsAtPath:jsPath]) {
         NSError *error = nil;
@@ -1664,9 +1738,14 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     }
 }
 //TODO:保存题目
-+(void)returnAnswerPathWithDictionary:(NSDictionary *)aDic andName:(NSString *)name {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentDirectory = [paths objectAtIndex:0];
++(void)returnAnswerPathWithDictionary:(NSDictionary *)aDic andName:(NSString *)name andDate:(NSString *)timeString{
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
 
     NSError *error = nil;
@@ -1681,10 +1760,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 }
 //TODO:返回道具
-+(NSMutableArray *)returnAnswerProps{
++(NSMutableArray *)returnAnswerPropsandDate:(NSString *)timeString{
     NSFileManager *fileManage =[NSFileManager defaultManager];
-    NSArray *paths= NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);
-    NSString *documentDirectory = [paths objectAtIndex:0];
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
     if ([fileManage fileExistsAtPath:jsPath]) {
         NSError *error = nil;
@@ -1713,9 +1797,14 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     }
 }
 //TODO:保存道具
-+(void)returnAnswerPathWithProps:(NSMutableArray *)array {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentDirectory = [paths objectAtIndex:0];
++(void)returnAnswerPathWithProps:(NSMutableArray *)array andDate:(NSString *)timeString{
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
     
     NSError *error = nil;
@@ -1733,7 +1822,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
-    NSDate *endDate = [dateFormatter dateFromString:[DataService sharedService].taskObj.end_time];
+    NSDate *endDate = [dateFormatter dateFromString:[DataService sharedService].taskObj.taskEndDate];
     
     NSDate *nowDate = [NSDate date];
     
@@ -1764,4 +1853,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     }
     return str;
 }
+
+
 @end

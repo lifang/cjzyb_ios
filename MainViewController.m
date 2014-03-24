@@ -34,8 +34,6 @@
     [self.pagesContainer willMoveToParentViewController:self];
     self.pagesContainer.view.frame = self.view.bounds;
     
-    NSLog(@"%f",self.view.frame.size.height);
-    self.pagesContainer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.pagesContainer.view];
     [self.pagesContainer didMoveToParentViewController:self];
     self.pagesContainer.topBarBackgroundColor = [UIColor colorWithRed:0.8235 green:0.8275 blue:0.8314 alpha:1];
@@ -43,7 +41,7 @@
     //TODO:加入子页面
     FirstViewController *firstView = [[FirstViewController alloc]initWithNibName:@"FirstViewController" bundle:nil];
     firstView.title = @"first";
-    firstView.view.frame = CGRectMake(0, 44+self.pagesContainer.topBarHeight, 768, 1024-44-self.pagesContainer.topBarHeight);
+    firstView.view.frame = CGRectMake(0, self.pagesContainer.topBarHeight, 768, 1024-67-self.pagesContainer.topBarHeight);
 
     SecondViewController *secondView = [[SecondViewController alloc]initWithNibName:@"SecondViewController" bundle:nil];
     secondView.title = @"second";
@@ -62,15 +60,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.navigationController.navigationBar setHidden:NO];
     if (platform>=7.0) {
         AppDelegate *appDel = [AppDelegate shareIntance];
         self.edgesForExtendedLayout = UIRectEdgeNone;
         self.extendedLayoutIncludesOpaqueBars = YES;
-        self.view.frame = CGRectMake(0, 0, appDel.window.frame.size.width, appDel.window.frame.size.height-44);
+        self.view.frame = CGRectMake(0, 0, appDel.window.frame.size.width, appDel.window.frame.size.height-67);
     }
-    
-    self.title = @"首页";
     
     [self tabBarInit];
     

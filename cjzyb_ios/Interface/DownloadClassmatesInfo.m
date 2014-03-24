@@ -34,13 +34,14 @@
                 mate.name = [Utility filterValue:[mateDic objectForKey:@"name"]];
                 mate.headUrl = [Utility filterValue:[mateDic objectForKey:@"avatar_url"]];
                 for (NSDictionary *scoreDic in [mateDic objectForKey:@"archivement"]) {
+//                    TYPES_NAME = {0 => "优异", 1 => "精准", 2 => "迅速", 3 => "捷足"}
                     NSString *type = [Utility filterValue:[scoreDic objectForKey:@"archivement_types"]];
                     if (type) {
                         switch (type.intValue) {
                             case 0:
                             {
                                 NSString *score = [Utility filterValue:[scoreDic objectForKey:@"archivement_score"]];
-                                mate.jiezuScore = score?score.intValue:0;
+                                mate.youyiScore = score?score.intValue:0;
                             }
                                 break;
                             case 1:
@@ -58,7 +59,7 @@
                             case 3:
                             {
                                 NSString *score = [Utility filterValue:[scoreDic objectForKey:@"archivement_score"]];
-                                mate.youyiScore = score?score.intValue:0;
+                                mate.jiezuScore = score?score.intValue:0;
                             }
                                 break;
                             default:

@@ -12,7 +12,7 @@
 #import "CalendarViewController.h"
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
-#import "TaskObject.h"//提包对象
+#import "TaskObj.h"//提包对象
 /** HomeworkViewController
  *
  * 管理作业界面
@@ -23,6 +23,6 @@
 @property (strong,nonatomic) TaskObj *taskObj;
 ///所有历史任务，存放TaskObj
 @property (strong,nonatomic) NSMutableArray *allHistoryTaskArray;
-
+@property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic,retain) ASINetworkQueue *networkQueue;
 @end

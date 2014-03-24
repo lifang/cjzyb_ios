@@ -65,7 +65,12 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(AppDelegate *)appDel {
+    if (!_appDel) {
+        _appDel = [AppDelegate shareIntance];
+    }
+    return _appDel;
+}
 #pragma mark - 登录
 -(IBAction)logWithQQ:(id)sender {
     if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
@@ -79,8 +84,12 @@
 - (void)tencentDidLogin {
     if (_tencentOAuth.accessToken && 0 != [_tencentOAuth.accessToken length])
     {
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [self.logInter getLogInterfaceDelegateWithQQ:_tencentOAuth.openId];
+        if (self.appDel.isReachable == NO) {
+            [Utility errorAlert:@"暂无网络!"];
+        }else {
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            [self.logInter getLogInterfaceDelegateWithQQ:_tencentOAuth.openId];
+        }
     }
 }
 //登录失败后的回调
@@ -194,8 +203,12 @@
         if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
             [Utility errorAlert:@"暂无网络!"];
         }else {
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            [self.personInter getPersonInterfaceDelegateWithQQ:_tencentOAuth.openId andNick:self.nickTxt.text andName:self.nameTxt.text andCode:self.classTxt.text];
+            if (self.appDel.isReachable == NO) {
+                [Utility errorAlert:@"暂无网络!"];
+            }else {
+                [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                [self.personInter getPersonInterfaceDelegateWithQQ:_tencentOAuth.openId andNick:self.nickTxt.text andName:self.nameTxt.text andCode:self.classTxt.text];
+            }
         }
     }
 }

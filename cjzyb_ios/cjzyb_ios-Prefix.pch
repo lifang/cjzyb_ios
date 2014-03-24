@@ -22,15 +22,17 @@
 #import "DataService.h"
 
 #import "SVPullToRefresh.h"
-
+#import "UIImageView+WebCache.h"
 #import "OrdinaryAnswerObject.h"
 #import "TenSecChallengeResultView.h"
 #endif
 
+#define TRUESOUND [(AppDelegate *)[[UIApplication sharedApplication]delegate] loadTrueSound:1];
+#define FALSESOUND [(AppDelegate *)[[UIApplication sharedApplication]delegate] loadFalseSound:1];
 
 #define platform [[[UIDevice currentDevice] systemVersion] floatValue]
 
-
+#define LINING      @"lining"
 #define CLOZE       @"cloze"
 #define SORT        @"sort"
 #define LISTEN      @"listening"

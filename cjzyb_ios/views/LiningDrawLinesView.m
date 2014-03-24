@@ -39,7 +39,8 @@
     //设置线条宽度
     CGContextSetLineWidth(currentContext,4.0f);
     
-    [[UIColor greenColor] set];
+    UIColor *color = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
+    [color set];
     for (LineObj *line  in self.linesArray) {
         CGContextMoveToPoint(currentContext, line.startPoint.x, line.startPoint.y);
         CGContextAddLineToPoint(currentContext, line.endPoint.x, line.endPoint.y);

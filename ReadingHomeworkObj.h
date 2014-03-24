@@ -16,4 +16,7 @@
 @property (strong,nonatomic) NSString *readingHomeworkID;
 ///存放每小题对象数组,ReadingSentenceObj
 @property (strong,nonatomic) NSMutableArray *readingHomeworkSentenceObjArray;
+
+///是否该道题已经完成
+@property (assign,nonatomic) BOOL isFinished;
 @end

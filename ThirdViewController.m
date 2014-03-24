@@ -156,10 +156,14 @@
     if (wordcount>60) {
         [Utility errorAlert:@"最多输入60个字!"];
     }else {
-        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-        self.questionInter = [[QuestionInterface alloc]init];
-        self.questionInter.delegate = self;
-        [self.questionInter getQuestionInterfaceDelegateWithUserId:[DataService sharedService].user.userId andUserType:@"1" andClassId:[DataService sharedService].theClass.classId andContent:self.txtView.text];
+        if (self.appDel.isReachable == NO) {
+            [Utility errorAlert:@"暂无网络!"];
+        }else {
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+            self.questionInter = [[QuestionInterface alloc]init];
+            self.questionInter.delegate = self;
+            [self.questionInter getQuestionInterfaceDelegateWithUserId:[DataService sharedService].user.userId andUserType:@"1" andClassId:[DataService sharedService].theClass.classId andContent:self.txtView.text];
+        }
     }
 }
 #pragma mark 

@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ListenWriteViewController">
             <connections>
+                <outlet property="branch_listenBtn" destination="Lze-tX-hUg" id="r4Q-vi-HT8"/>
                 <outlet property="historyAnswer" destination="h8t-Xt-T3d" id="57d-cc-LLB"/>
                 <outlet property="historyView" destination="dwB-fC-N3U" id="JfF-QA-Z5N"/>
                 <outlet property="listenBtn" destination="lgJ-5U-j2d" id="7l7-Gf-yHC"/>
@@ -26,7 +27,7 @@
                     <rect key="frame" x="27" y="53" width="64" height="64"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <state key="normal" image="listening_start.png">
+                    <state key="normal" image="ios-stop.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -125,7 +126,6 @@
         <image name="carBarItem.png" width="37" height="37"/>
         <image name="ios-stop.png" width="193" height="193"/>
         <image name="listen_back.png" width="537" height="234"/>
-        <image name="listening_start.png" width="63" height="63"/>
         <image name="yourChoice.png" width="60" height="60"/>
     </resources>
 </document>
