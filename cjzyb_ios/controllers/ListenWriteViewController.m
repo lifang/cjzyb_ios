@@ -339,6 +339,7 @@ static int numberOfMusic =0;
     }else{
         path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }
+
     NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     for (int i=self.branchNumber; i<self.branchQuestionArray.count; i++) {
         NSDictionary *dic = [self.branchQuestionArray objectAtIndex:i];
@@ -704,7 +705,7 @@ static int numberOfMusic =0;
             [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             self.postInter = [[BasePostInterface alloc]init];
             self.postInter.delegate = self;
-            [self.postInter postAnswerFile];
+            [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
         }
     }else {
         [self showResultView];

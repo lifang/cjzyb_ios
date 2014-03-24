@@ -27,6 +27,10 @@
 {
     [super viewDidLoad];
 }
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [DataService sharedService].third = 1;

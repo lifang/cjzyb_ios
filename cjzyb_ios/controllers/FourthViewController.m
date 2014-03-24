@@ -56,9 +56,13 @@
         [table.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];
 }
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    /*
     if (self.fourthArray.count == 0 && [DataService sharedService].fourth==0) {
         [self getMyfocusData];
         [DataService sharedService].fourth = 1;
@@ -72,6 +76,7 @@
                                              selector:@selector(keyboardWillHideFourth:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+     */
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
@@ -82,7 +87,7 @@
 }
 -(void)getMyfocusData {
     if (self.appDel.isReachable == NO) {
-        [Utility errorAlert:@"暂无网络!"];
+        
     }else {
         self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
         [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];

@@ -1,31 +1,20 @@
 //
-//  BasePostInterface.m
+//  PostImage.m
 //  cjzyb_ios
 //
-//  Created by comdosoft on 14-3-18.
+//  Created by comdosoft on 14-3-24.
 //  Copyright (c) 2014年 david. All rights reserved.
 //
 
-#import "BasePostInterface.h"
+#import "PostImage.h"
 
-@implementation BasePostInterface
-
--(void)postAnswerFileWith:(NSString *)jsonPath {
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
-    NSString *documentDirectory = [path stringByAppendingPathComponent:jsonPath];
-    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
-    
+@implementation PostImage
+-(void)postImageWithImage:(UIImage *)image {
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:@"http://58.240.210.42:3004/api/students/finish_question_packge"]];
     [request setPostValue:[DataService sharedService].user.studentId forKey:@"student_id"];
     [request setPostValue:[DataService sharedService].theClass.classId forKey:@"school_class_id"];
     [request setPostValue:[DataService sharedService].taskObj.taskID forKey:@"publish_question_package_id"];
     
-    [request setFile:jsPath forKey:@"answer_file"];
     
     [request setDelegate:self];
     
@@ -41,21 +30,22 @@
             if (jsonData){
                 if ([[jsonData objectForKey:@"status"]isEqualToString:@"success"]) {
                     @try {
-                        [self.delegate getPostInfoDidFinished:jsonData];
+                        [self.delegate getPostImageInfoDidFinished:jsonData];
                     }
                     @catch (NSException *exception) {
-                        [self.delegate getPostInfoDidFailed:@"获取数据失败!"];
+                        [self.delegate getPostImageInfoDidFailed:@"获取数据失败!"];
                     }
                 }
             }else {
-                [self.delegate getPostInfoDidFailed:@"获取数据失败!"];
+                [self.delegate getPostImageInfoDidFailed:@"获取数据失败!"];
             }
         }
     }else {
-        [self.delegate getPostInfoDidFailed:@"获取数据失败!"];
+        [self.delegate getPostImageInfoDidFailed:@"获取数据失败!"];
     }
 }
 -(void)requestFailed:(ASIHTTPRequest *)request {
-    [self.delegate getPostInfoDidFailed:@"获取数据失败!"];
+    [self.delegate getPostImageInfoDidFailed:@"获取数据失败!"];
 }
+
 @end

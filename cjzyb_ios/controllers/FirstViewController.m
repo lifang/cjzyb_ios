@@ -45,7 +45,7 @@
 }
 -(void)getMessageData {
     if (self.appDel.isReachable == NO) {
-        [Utility errorAlert:@"暂无网络!"];
+
     }else {
         self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
         [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
