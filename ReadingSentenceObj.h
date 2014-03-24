@@ -23,4 +23,7 @@
 
 ///是否该道题已经完成
 @property (assign,nonatomic) BOOL isFinished;
+
+///该句子正确率
+@property (strong,nonatomic) NSString *readingSentenceRatio;
 @end
