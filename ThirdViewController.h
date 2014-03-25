@@ -22,5 +22,8 @@
 @property (nonatomic, strong) IBOutlet UIButton *sendBtn;
 @property (nonatomic, strong) QuestionInterface *questionInter;
 @property (nonatomic, strong) AppDelegate *appDel;
+
+
 @property (nonatomic, strong) IBOutlet UILabel *textCountLabel;
+@property (nonatomic, assign) int third;
 @end

@@ -198,6 +198,7 @@
             self.tagArray = [DataService sharedService].tagsArray;
             [self.aCard.tagArray addObject:tagObj.tagId];
             
+            [self sortArray];
             self.tagTable.tableFooterView = nil;
             [self.tagTable reloadData];
             [self.tagTable setContentOffset:CGPointMake(0, 0)];

@@ -50,7 +50,13 @@
     //设置导航栏
     self.drNavigationBar = [[[NSBundle mainBundle]  loadNibNamed:@"DRNavigationBar" owner:self options:nil] firstObject];
     [self.drNavigationBar.rightButtonItem addTarget:self action:@selector(navigationRightItemClicked) forControlEvents:UIControlEventTouchUpInside];
+    
+    //头像
     [self roundView:self.drNavigationBar.userHeaderImage];
+    [self.drNavigationBar.userHeaderImage setImageWithURL:[NSURL URLWithString:[DataService sharedService].user.headUrl] placeholderImage:[UIImage imageNamed:@""]];
+    //用户名
+    self.drNavigationBar.userNameLabel.text = [DataService sharedService].user.nickName;
+    
     [self.drNavigationBar.imageButton addTarget:self action:@selector(selectedImage:) forControlEvents:UIControlEventTouchUpInside];
     [self.drNavigationBar.leftButtonItem addTarget:self action:@selector(navigationLeftItemClicked) forControlEvents:UIControlEventTouchUpInside];
     self.drNavigationBar.frame = (CGRect){0,0,768,67};
