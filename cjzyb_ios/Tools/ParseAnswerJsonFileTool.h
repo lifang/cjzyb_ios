@@ -27,16 +27,19 @@
  *
  * @param  jsonFilePath 题目json文件本地路径
  *
- * @return readingQuestionArr：ReadingHomeworkObj对象数组,error:错误 消息,currentQuestionIndex 当前大题所在位置,currentQuestionItemIndex 当前大题下小题位置，值可以没有
+ * @return readingQuestionArr：ReadingHomeworkObj对象数组,error:错误 消息,currentQuestionIndex 当前大题所在位置,currentQuestionItemIndex 当前大题下小题位置，值可以没有,status 完成状态，0没有完成，1已经完成, updateTime 更新所用时间，userTime 已经使用的时间
  */
-+(void)parseAnswerJsonFile:(NSString*)jsonFilePath withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex))questionArr withParseError:(void (^)(NSError *error))failure;
++(void)parseAnswerJsonFile:(NSString*)jsonFilePath withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex,int status,NSString *updateTime,NSString *userTime))questionArr withParseError:(void (^)(NSError *error))failure;
 
 /**
  * @brief 将已经完成的朗读题写入json文件
  *
  * @param  jsonFilePath 题目json文件本地路径
  *@param readingHomeworkArray 存放ReadingHomeworkObj对象的数组，只写入isFinished=YES的题目
+  @param useTime 做题所花费的时间
+  @param questionIndex 当前结束大题的时间
+  @param questionItemIndex 当前结束小题时间
  * @return
  */
-+(void)writeReadingHomeworkToJsonFile:(NSString*)jsonFilePath withReadingHomworkArr:(NSArray*)readingHomeworkArray withSuccess:(void (^)())success withFailure:(void (^)(NSError *error))failure;
++(void)writeReadingHomeworkToJsonFile:(NSString*)jsonFilePath withUseTime:(NSString*)useTime withQuestionIndex:(int)questionIndex withQuestionItemIndex:(int)questionItemIndex withReadingHomworkArr:(NSArray*)readingHomeworkArray withSuccess:(void (^)())success withFailure:(void (^)(NSError *error))failure;
 @end
