@@ -13,7 +13,7 @@
 @interface BasePostInterface : NSObject
 @property (nonatomic, strong) ASIFormDataRequest *request;
 @property (nonatomic, assign) id<PostDelegate> delegate;
--(void)postAnswerFile;
+-(void)postAnswerFileWith:(NSString *)jsonPath;
 @end
 
 

@@ -46,6 +46,6 @@
 
 @property (nonatomic, strong) IBOutlet UIView *textBar;
 @property (nonatomic, strong) IBOutlet ComtomTxt *textView;
-
 @property (nonatomic, strong) IBOutlet UILabel *textCountLabel;
+@property (nonatomic, assign) int fourth;
 @end

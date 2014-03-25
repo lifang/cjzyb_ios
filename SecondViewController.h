@@ -47,8 +47,10 @@
 @property (nonatomic, strong) UIActivityIndicatorView *indicView;
 @property (nonatomic, assign) BOOL isReloading;
 
+
+
 @property (nonatomic, strong) IBOutlet UIView *textBar;
 @property (nonatomic, strong) IBOutlet ComtomTxt *textView;
-
 @property (nonatomic, strong) IBOutlet UILabel *textCountLabel;
+@property (nonatomic, assign) int second;
 @end

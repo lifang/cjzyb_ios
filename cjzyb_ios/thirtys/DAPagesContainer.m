@@ -115,6 +115,14 @@
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL)animated
 {
+    NSString *indexString = [NSString stringWithFormat:@"%d",selectedIndex];
+    
+    if ([[DataService sharedService].numberOfViewArray containsObject:indexString]) {
+        int index = [[DataService sharedService].numberOfViewArray indexOfObject:indexString];
+        [[DataService sharedService].numberOfViewArray removeObjectAtIndex:index];
+    }
+    [[DataService sharedService].numberOfViewArray addObject:indexString];
+    
     UIButton *previosSelectdItem = self.topBar.itemViews[self.selectedIndex];
     UIButton *nextSelectdItem = self.topBar.itemViews[selectedIndex];
     
@@ -133,6 +141,7 @@
              [viewControl viewWillDisappear:YES];
              UIViewController *viewControl2 = [self.viewControllers objectAtIndex:selectedIndex];
              [viewControl2 viewWillAppear:YES];
+             
              
              [previosSelectdItem setImage:[UIImage imageNamed:previosImg] forState:UIControlStateNormal];
              [nextSelectdItem setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_active",nextImg]] forState:UIControlStateNormal];
@@ -295,6 +304,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     self.selectedIndex = scrollView.contentOffset.x / CGRectGetWidth(self.scrollView.frame);
+//    NSLog(@"%d",self.selectedIndex);
     self.scrollView.userInteractionEnabled = YES;
 }
 
@@ -307,6 +317,7 @@
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
+    
     self.scrollView.userInteractionEnabled = YES;
 }
 

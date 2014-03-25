@@ -43,6 +43,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.fourth = 2;
     self.isReloading = NO;
     [self.fourthTable registerClass:[FirstViewHeader class] forHeaderFooterViewReuseIdentifier:FOURTH_HEADER_IDENTIFIER];
     [self textBarInit];
@@ -55,14 +56,6 @@
         [fourthView getMyfocusData];
         [table.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];
-}
-
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    if (self.fourthArray.count == 0 && [DataService sharedService].fourth==0) {
-        [self getMyfocusData];
-        [DataService sharedService].fourth = 1;
-    }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShowFourth:)
@@ -73,16 +66,24 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
 }
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    if (self.fourthArray.count == 0 ) {
+        [self getMyfocusData];
+    }
+}
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.textView resignFirstResponder];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 -(void)getMyfocusData {
     if (self.appDel.isReachable == NO) {
-        [Utility errorAlert:@"暂无网络!"];
+        
     }else {
         self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
         [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
@@ -175,39 +176,42 @@
 #pragma mark
 #pragma mark - Keyboard notifications
 - (void)keyboardWillShowFourth:(NSNotification *)notification {
-    NSDictionary *userInfo = [notification userInfo];
-    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    
-    CGRect keyboardRect = [aValue CGRectValue];
-    keyboardRect = [self.view convertRect:keyboardRect fromView:nil];
-    
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    
-    [UIView animateWithDuration:animationDuration
-                     animations:^{
-                         CGRect frame = keyboardRect;
-                         frame.origin.y -= self.textBar.frame.size.height;
-                         frame.size.height = self.textBar.frame.size.height;
-                         self.textBar.frame = frame;
-                     }];
-    
+    int lastObject = [[[DataService sharedService].numberOfViewArray lastObject]intValue];
+    if (lastObject == self.fourth) {
+        NSDictionary *userInfo = [notification userInfo];
+        NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+        
+        CGRect keyboardRect = [aValue CGRectValue];
+        keyboardRect = [self.view convertRect:keyboardRect fromView:nil];
+        
+        NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+        NSTimeInterval animationDuration;
+        [animationDurationValue getValue:&animationDuration];
+        
+        [UIView animateWithDuration:animationDuration
+                         animations:^{
+                             CGRect frame = keyboardRect;
+                             frame.origin.y -= self.textBar.frame.size.height;
+                             frame.size.height = self.textBar.frame.size.height;
+                             self.textBar.frame = frame;
+                         }];
+    }
 }
 - (void)keyboardWillHideFourth:(NSNotification *)notification {
-    
-    NSDictionary *userInfo = [notification userInfo];
-    
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    
-    [UIView animateWithDuration:animationDuration
-                     animations:^{
-                         self.textBar.frame = CGRectMake(0, self.view.frame.size.height, 768, 50);
-
-                     }];
-    
+    int lastObject = [[[DataService sharedService].numberOfViewArray lastObject]intValue];
+    if (lastObject == self.fourth) {
+        NSDictionary *userInfo = [notification userInfo];
+        
+        NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+        NSTimeInterval animationDuration;
+        [animationDurationValue getValue:&animationDuration];
+        
+        [UIView animateWithDuration:animationDuration
+                         animations:^{
+                             self.textBar.frame = CGRectMake(0, self.view.frame.size.height, 768, 50);
+                             
+                         }];
+    }
 }
 
 #pragma mark
@@ -438,13 +442,15 @@
 
 //分页加载获取主消息
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.y + self.fourthTable.frame.size.height <= scrollView.contentSize.height) {
-        MessageObject *message = (MessageObject *)[self.fourthArray lastObject];
-        if (message.pageCountHeader>message.pageHeader) {
-            [self initFooterView];
-            [self.fourthTable setContentOffset:CGPointMake(0, scrollView.contentOffset.y+50)];
-            //TODO:分页加载我的消息
-            [self.mFocusInter getMyFocusInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId andPage:message.pageHeader+1];
+    if (scrollView.contentOffset.y > 0) {
+        if (scrollView.contentOffset.y + self.fourthTable.frame.size.height <= scrollView.contentSize.height) {
+            MessageObject *message = (MessageObject *)[self.fourthArray lastObject];
+            if (message.pageCountHeader>message.pageHeader) {
+                [self initFooterView];
+                [self.fourthTable setContentOffset:CGPointMake(0, scrollView.contentOffset.y+50)];
+                //TODO:分页加载我的消息
+                [self.mFocusInter getMyFocusInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId andPage:message.pageHeader+1];
+            }
         }
     }
 }

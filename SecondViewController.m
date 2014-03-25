@@ -44,7 +44,7 @@
     self.isReloading = NO;
     [self.secondTable registerClass:[FirstViewHeader class] forHeaderFooterViewReuseIdentifier:SECOND_HEADER_IDENTIFIER];
     [self textBarInit];
-
+    self.second = 1;
     //问答之后更新界面
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSecondArrayByThirdView:) name:@"reloadSecondArrayByThirdView" object:nil];
     
@@ -57,6 +57,15 @@
         [secondView getMymessageData];
         [table.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShowSecond:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHideSecond:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 - (void)reloadSecondArrayByThirdView:(NSNotification *)notification {
     MessageObject *message = [notification object];
@@ -71,33 +80,25 @@
         header.aSection =i;
     }
 }
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (self.secondArray.count == 0 && [DataService sharedService].second==0) {
+
+    if (self.secondArray.count == 0) {
         [self getMymessageData];
-        [DataService sharedService].second = 1;
     }
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShowSecond:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHideSecond:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.textView resignFirstResponder];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 //获取我的主消息
 -(void)getMymessageData {
     if (self.appDel.isReachable == NO) {
-        [Utility errorAlert:@"暂无网络!"];
+        
     }else {
         self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
         [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
@@ -190,38 +191,44 @@
 #pragma mark
 #pragma mark - Keyboard notifications
 - (void)keyboardWillShowSecond:(NSNotification *)notification {
-    NSDictionary *userInfo = [notification userInfo];
-    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    
-    CGRect keyboardRect = [aValue CGRectValue];
-    keyboardRect = [self.view convertRect:keyboardRect fromView:nil];
-    
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    
-    [UIView animateWithDuration:animationDuration
-                     animations:^{
-                         CGRect frame = keyboardRect;
-                         frame.origin.y -= self.textBar.frame.size.height;
-                         frame.size.height = self.textBar.frame.size.height;
-                         self.textBar.frame = frame;
-                     }];
+    int lastObject = [[[DataService sharedService].numberOfViewArray lastObject]intValue];
+    if (lastObject == self.second){
+        
+        NSDictionary *userInfo = [notification userInfo];
+        NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+        
+        CGRect keyboardRect = [aValue CGRectValue];
+        keyboardRect = [self.view convertRect:keyboardRect fromView:nil];
+        
+        NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+        NSTimeInterval animationDuration;
+        [animationDurationValue getValue:&animationDuration];
+        
+        [UIView animateWithDuration:animationDuration
+                         animations:^{
+                             CGRect frame = keyboardRect;
+                             frame.origin.y -= self.textBar.frame.size.height;
+                             frame.size.height = self.textBar.frame.size.height;
+                             self.textBar.frame = frame;
+                         }];
+    }
     
 }
 - (void)keyboardWillHideSecond:(NSNotification *)notification {
-    
-    NSDictionary *userInfo = [notification userInfo];
-    
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    
-    [UIView animateWithDuration:animationDuration
-                     animations:^{
-                         self.textBar.frame = CGRectMake(0, self.view.frame.size.height, 768, 50);
-
-                     }];
+    int lastObject = [[[DataService sharedService].numberOfViewArray lastObject]intValue];
+    if (lastObject == self.second){
+        NSDictionary *userInfo = [notification userInfo];
+        
+        NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+        NSTimeInterval animationDuration;
+        [animationDurationValue getValue:&animationDuration];
+        
+        [UIView animateWithDuration:animationDuration
+                         animations:^{
+                             self.textBar.frame = CGRectMake(0, self.view.frame.size.height, 768, 50);
+                             
+                         }];
+    }
     
 }
 
@@ -454,13 +461,15 @@
 
 //分页加载获取主消息
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.y + self.secondTable.frame.size.height <= scrollView.contentSize.height) {
-        MessageObject *message = (MessageObject *)[self.secondArray lastObject];
-        if (message.pageCountHeader>message.pageHeader) {
-            [self initFooterView];
-            [self.secondTable setContentOffset:CGPointMake(0, scrollView.contentOffset.y+50)];
-            //TODO:分页加载我的消息
-            [self.mMessageInter getMyMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.userId andPage:message.pageHeader+1];
+    if (scrollView.contentOffset.y > 0){
+        if (scrollView.contentOffset.y + self.secondTable.frame.size.height <= scrollView.contentSize.height) {
+            MessageObject *message = (MessageObject *)[self.secondArray lastObject];
+            if (message.pageCountHeader>message.pageHeader) {
+                [self initFooterView];
+                [self.secondTable setContentOffset:CGPointMake(0, scrollView.contentOffset.y+50)];
+                //TODO:分页加载我的消息
+                [self.mMessageInter getMyMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.userId andPage:message.pageHeader+1];
+            }
         }
     }
 }

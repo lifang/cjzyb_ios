@@ -215,7 +215,7 @@ typedef NSUInteger SVPullToRefreshState;
             NSDate *localeDate = [NSDate date];
 
             NSDateFormatter *outFormat = [[NSDateFormatter alloc] init];
-            [outFormat setDateFormat:@"MM'-'dd HH':'mm'"];
+            [outFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
             NSString *timeStr = [outFormat stringFromDate:localeDate];
             [outFormat release];
             // UI 赋值

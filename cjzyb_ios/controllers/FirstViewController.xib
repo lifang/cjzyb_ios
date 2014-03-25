@@ -8,9 +8,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FirstViewController">
             <connections>
                 <outlet property="firstTable" destination="3yB-PS-XwZ" id="h2h-nx-81k"/>
-                <outlet property="textBar" destination="gf5-hu-Ej1" id="Rmy-Jz-jQM"/>
+                <outlet property="textBarFirst" destination="gf5-hu-Ej1" id="aZo-Ce-ZH1"/>
                 <outlet property="textCountLabel" destination="yPs-Oa-vZx" id="pfP-Nz-PGT"/>
-                <outlet property="textView" destination="El6-KP-Uhh" id="D3M-WC-yv7"/>
+                <outlet property="textViewFirst" destination="El6-KP-Uhh" id="3RT-qQ-OPC"/>
                 <outlet property="view" destination="2" id="3"/>
             </connections>
         </placeholder>
@@ -56,7 +56,7 @@
             <fontDescription key="fontDescription" type="system" pointSize="18"/>
             <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="send"/>
             <connections>
-                <outlet property="delegate" destination="-1" id="rmQ-RF-aPx"/>
+                <outlet property="delegate" destination="-1" id="Dms-S4-JYR"/>
             </connections>
         </textView>
     </objects>
