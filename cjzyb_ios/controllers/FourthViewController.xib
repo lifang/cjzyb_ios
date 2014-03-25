@@ -56,7 +56,7 @@
             <fontDescription key="fontDescription" type="system" pointSize="18"/>
             <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="send"/>
             <connections>
-                <outlet property="delegate" destination="-1" id="f2f-SX-c5d"/>
+                <outlet property="delegate" destination="-1" id="rsR-7U-3sU"/>
             </connections>
         </textView>
     </objects>

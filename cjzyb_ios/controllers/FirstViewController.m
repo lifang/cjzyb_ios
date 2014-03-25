@@ -44,20 +44,21 @@
     return _appDel;
 }
 -(void)getMessageData {
-    if (self.appDel.isReachable == NO) {
-
-    }else {
+//    if (self.appDel.isReachable == NO) {
+//
+//    }else {
         self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
         [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-        [self.messageInter getMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId];
-    }
+//        [self.messageInter getMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId];
+        [self.messageInter getMessageInterfaceDelegateWithClassId:@"83" andUserId:@"73"];
+//    }
 }
 -(void)textBarInit {
-    self.textView.frame = CGRectMake(3, 3, 710, 44);
-    [self.textBar addSubview:self.textView];
+    self.textViewFirst.frame = CGRectMake(3, 3, 710, 44);
+    [self.textBarFirst addSubview:self.textViewFirst];
     
-    self.textBar.frame = CGRectMake(0, self.firstTable.frame.size.height, 768, 50);
-    [self.view addSubview:self.textBar];
+    self.textBarFirst.frame = CGRectMake(0, self.firstTable.frame.size.height, 768, 50);
+    [self.view addSubview:self.textBarFirst];
 }
 
 - (void)viewDidLoad
@@ -68,7 +69,7 @@
     self.isReloading = NO;
     [self getMessageData];
     [self textBarInit];
-    
+    self.first = 0;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShowFirst:)
                                                  name:UIKeyboardWillShowNotification
@@ -100,15 +101,6 @@
 }
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [DataService sharedService].first = 1;
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShowFirst:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHideFirst:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
 }
 - (void)reloadFirstArrayByThirdView:(NSNotification *)notification {
     MessageObject *message = [notification object];
@@ -189,10 +181,7 @@
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self.textView resignFirstResponder];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [self.textViewFirst resignFirstResponder];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -398,14 +387,17 @@
 }
 //分页加载获取主消息
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    if (scrollView.contentOffset.y + self.firstTable.frame.size.height <= scrollView.contentSize.height) {
-        MessageObject *message = (MessageObject *)[self.firstArray lastObject];
-        if (message.pageCountHeader>message.pageHeader) {
-            [self initFooterView];
-            [self.firstTable setContentOffset:CGPointMake(0, scrollView.contentOffset.y+50)];
-            [self.pmessageInter getPageMessageInterfaceDelegateWithClassId:@"83" andUserId:@"73" andPage:message.pageHeader+1];
+    if (scrollView.contentOffset.y > 0) {
+        if (scrollView.contentOffset.y + self.firstTable.frame.size.height <= scrollView.contentSize.height) {
+            MessageObject *message = (MessageObject *)[self.firstArray lastObject];
+            if (message.pageCountHeader>message.pageHeader) {
+                [self initFooterView];
+                [self.firstTable setContentOffset:CGPointMake(0, scrollView.contentOffset.y+50)];
+                [self.pmessageInter getPageMessageInterfaceDelegateWithClassId:@"83" andUserId:@"73" andPage:message.pageHeader+1];
+            }
         }
     }
+    
 }
 #pragma mark
 #pragma mark - FirstViewHeaderDelegate  主消息
@@ -444,7 +436,7 @@
     }
 }
 - (void)contextMenuHeaderDidSelectCoverOption:(FirstViewHeader *)header{
-    [self.textView resignFirstResponder];
+    [self.textViewFirst resignFirstResponder];
     
     self.tmpSection = header.aSection;
     //判断打开还是关闭
@@ -518,7 +510,7 @@
 //    if ([message.userId integerValue]==[[DataService sharedService].user.userId integerValue]) {
 //        //do nothing
 //    }else {
-        [self.textView becomeFirstResponder];
+        [self.textViewFirst becomeFirstResponder];
         self.tmpSection = header.aSection;
         self.type = 1;//回复的主消息
 //    }
@@ -561,7 +553,7 @@
 }
 
 - (void)contextMenuCellDidSelectCoverOption:(FirstCell *)cell {
-    [self.textView resignFirstResponder];
+    [self.textViewFirst resignFirstResponder];
     self.theIndex = [self.firstTable indexPathForCell:cell];
     [self resetTableViewCellByIndex:self.theIndex];
 }
@@ -574,7 +566,7 @@
 //    if ([replyMsg.sender_id integerValue]==[[DataService sharedService].user.userId integerValue]) {
 //        //do nothing
 //    }else {
-        [self.textView becomeFirstResponder];
+        [self.textViewFirst becomeFirstResponder];
         self.type = 0;//回复的子消息
 //    }
 }
@@ -613,39 +605,42 @@
 #pragma mark
 #pragma mark - Keyboard notifications
 - (void)keyboardWillShowFirst:(NSNotification *)notification {
-    NSDictionary *userInfo = [notification userInfo];
-    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
-    
-    CGRect keyboardRect = [aValue CGRectValue];
-    keyboardRect = [self.view convertRect:keyboardRect fromView:nil];
-    
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    
-    [UIView animateWithDuration:animationDuration
-                     animations:^{
-                         
-                         CGRect frame = keyboardRect;
-                         frame.origin.y -= self.textBar.frame.size.height;
-                         frame.size.height = self.textBar.frame.size.height;
-                         self.textBar.frame = frame;
-                     }];
-    
+    int lastObject = [[[DataService sharedService].numberOfViewArray lastObject]intValue];
+    if (lastObject == self.first) {
+        NSDictionary *userInfo = [notification userInfo];
+        NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+        
+        CGRect keyboardRect = [aValue CGRectValue];
+        keyboardRect = [self.view convertRect:keyboardRect fromView:nil];
+        
+        NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+        NSTimeInterval animationDuration;
+        [animationDurationValue getValue:&animationDuration];
+        
+        [UIView animateWithDuration:animationDuration
+                         animations:^{
+                             
+                             CGRect frame = keyboardRect;
+                             frame.origin.y -= self.textBarFirst.frame.size.height;
+                             frame.size.height = self.textBarFirst.frame.size.height;
+                             self.textBarFirst.frame = frame;
+                         }];
+    }
 }
 - (void)keyboardWillHideFirst:(NSNotification *)notification {
-    
-    NSDictionary *userInfo = [notification userInfo];
-    
-    NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSTimeInterval animationDuration;
-    [animationDurationValue getValue:&animationDuration];
-    
-    [UIView animateWithDuration:animationDuration
-                     animations:^{
-                         self.textBar.frame = CGRectMake(0, self.view.frame.size.height, 768, 50);
-                     }];
-    
+    int lastObject = [[[DataService sharedService].numberOfViewArray lastObject]intValue];
+    if (lastObject == self.first) {
+        NSDictionary *userInfo = [notification userInfo];
+        
+        NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+        NSTimeInterval animationDuration;
+        [animationDurationValue getValue:&animationDuration];
+        
+        [UIView animateWithDuration:animationDuration
+                         animations:^{
+                             self.textBarFirst.frame = CGRectMake(0, self.view.frame.size.height, 768, 50);
+                         }];
+    }
 }
 
 #pragma mark ---- 计算文本的字数
@@ -670,7 +665,7 @@
 
 - (void)calculateTextLength
 {
-    NSString *string = self.textView.text;
+    NSString *string = self.textViewFirst.text;
     int wordcount = [self textLength:string];
     
 	NSInteger count  = 60 - wordcount;
@@ -685,17 +680,17 @@
 #pragma mark - Text view delegate
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    [textView becomeFirstResponder];
+    [self.textViewFirst becomeFirstResponder];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    [textView resignFirstResponder];
+    [self.textViewFirst resignFirstResponder];
 }
 
 - (void)textViewDidChange:(UITextView *)_textView {
     [self calculateTextLength];
-    CGSize size = self.textView.contentSize;
+    CGSize size = self.textViewFirst.contentSize;
     size.height -= 2;
     if ( size.height >= 368 ) {
         size.height = 368;
@@ -703,16 +698,16 @@
     else if ( size.height <= 44 ) {
         size.height = 44;
     }
-    if ( size.height != self.textView.frame.size.height ) {
-        CGFloat span = size.height - self.textView.frame.size.height;
-        CGRect frame = self.textBar.frame;
+    if ( size.height != self.textViewFirst.frame.size.height ) {
+        CGFloat span = size.height - self.textViewFirst.frame.size.height;
+        CGRect frame = self.textBarFirst.frame;
         frame.origin.y -= span;
         frame.size.height += span;
-        self.textBar.frame = frame;
+        self.textBarFirst.frame = frame;
 
-        frame = self.textView.frame;
+        frame = self.textViewFirst.frame;
         frame.size = size;
-        self.textView.frame = frame;
+        self.textViewFirst.frame = frame;
         
         frame = self.textCountLabel.frame;
         frame.origin.y -= span;
@@ -724,7 +719,7 @@
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if ([text isEqualToString:@"\n"]) {
-        int wordcount = [self textLength:self.textView.text];
+        int wordcount = [self textLength:self.textViewFirst.text];
         if (wordcount>60) {
             [Utility errorAlert:@"最多输入60个字!"];
         }else {
@@ -735,7 +730,7 @@
                 }else {
                     [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
                     MessageObject *message = (MessageObject *)[self.firstArray objectAtIndex:self.tmpSection];
-                    [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:message.userId andReceiverType:message.userType andmessageId:message.messageId andContent:self.textView.text andType:self.type];
+                    [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:message.userId andReceiverType:message.userType andmessageId:message.messageId andContent:self.textViewFirst.text andType:self.type];
                 }
 
             }else {//回复的子消息
@@ -745,7 +740,7 @@
                     [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
                     MessageObject *message = (MessageObject *)[self.firstArray objectAtIndex:self.theIndex.section];
                     ReplyMessageObject *replyMsg = (ReplyMessageObject *)[message.replyMessageArray objectAtIndex:self.theIndex.row];
-                    [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:replyMsg.sender_id andReceiverType:replyMsg.sender_types andmessageId:message.messageId andContent:self.textView.text andType:self.type];
+                    [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:replyMsg.sender_id andReceiverType:replyMsg.sender_types andmessageId:message.messageId andContent:self.textViewFirst.text andType:self.type];
                 }
             }
         }
@@ -949,7 +944,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
-            self.textView.text = @"";self.textCountLabel.text = @"0/60";
+            self.textViewFirst.text = @"";self.textCountLabel.text = @"0/60";
             if (type==1) {//回复的主消息
                 NSArray *array = [result objectForKey:@"replymicropost"];
                 NSDictionary *dic = [array objectAtIndex:0];

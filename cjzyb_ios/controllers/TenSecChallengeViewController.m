@@ -88,6 +88,12 @@
         self.currentNO = 0;
         self.historyView.hidden = NO;
         self.historyView.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+        [self handleAnyView:self.upperButton];
+        [self handleAnyView:self.lowerButton];
+        [self handleAnyView:self.upperOptionLabel];
+        [self handleAnyView:self.lowerOptionLabel];
+        [self handleAnyView:self.questionLabel];
+        
         NSInteger ratio = 0;
         for (int i = 0; i < self.answerArray.count; i ++) {
             OrdinaryAnswerObject *answer = self.answerArray[i];
@@ -351,7 +357,7 @@
     self.answerArray = [NSMutableArray array];
     
     self.answerStatus = [dicc objectForKey:@"status"];  //解析状态,已答题时间,题号,答案
-    parentVC.spendSecond = [[dicc objectForKey:@"use_time"] longLongValue];
+    parentVC.spendSecond = [(NSString *)[dicc objectForKey:@"use_time"] longLongValue];
     self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"branch_item"] integerValue];
     NSArray *questionsArray = [dicc objectForKey:@"questions"];
     NSDictionary *bigQuestion = [questionsArray firstObject];
@@ -440,6 +446,11 @@
             label.font = [UIFont systemFontOfSize:fontSize];
         }
     }
+}
+
+//把某个view向上移动97
+- (void)handleAnyView:(UIView *)view{
+    view.center = (CGPoint){view.center.x,view.center.y - 97};
 }
 
 #pragma mark -- property

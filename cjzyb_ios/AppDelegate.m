@@ -12,14 +12,14 @@
 #import "TestViewController.h"
 #import "DRLeftTabBarViewController.h"
 #import "HomeworkDailyCollectionViewController.h"
-#import "HomeworkViewController.h"
-
+#import "HomeworkViewController.h"//作业
+#import "LHLNotificationViewController.h"//通知
 #import "LogInViewController.h" //登录
 
 #import "ReadingTaskViewController.h"
 
 #import "HomeworkContainerController.h"//做题
-
+#import "CardpackageViewController.h"//卡包
 #import "TenSecChallengeViewController.h"
 
 #import "PreReadingTaskViewController.h"
@@ -72,6 +72,16 @@
     self.window.rootViewController = preReadingController;
 }
 
+-(void)showMainController{
+    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
+    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
+    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
+    self.window.rootViewController = tabBarController;
+}
+
 -(void)showHomework{
     HomeworkContainerController *container = [[HomeworkContainerController alloc] initWithNibName:@"HomeworkContainerController" bundle:nil];
     self.window.rootViewController = container;
@@ -109,16 +119,18 @@
         tabBarController.childenControllerArray = @[main];
         self.window.rootViewController = tabBarController;
     }
+    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
+    self.window.rootViewController = notificationViewController;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
     //设置popoverViewController属性
     WYPopoverBackgroundView *popoverAppearance = [WYPopoverBackgroundView appearance];
     [popoverAppearance setArrowHeight:10];
     [popoverAppearance setArrowBase:20];
     [popoverAppearance setFillTopColor:[UIColor colorWithRed:47/255.0 green:201/255.0 blue:133/255.0 alpha:1]];
-    
     //开启网络状况的监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     self.hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"] ;
@@ -142,13 +154,8 @@
 //    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
 //    self.window.rootViewController = notificationViewController;
 
-//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-//    tabBarController.childenControllerArray = @[main];
-//    self.window.rootViewController = tabBarController;
 
-//
-//     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
+    
 //     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
 //    self.window.rootViewController = cardView;
     
@@ -157,7 +164,33 @@
     
     [self.window makeKeyAndVisible];
     
-    [DataService sharedService].first = 0;[DataService sharedService].second = 0;[DataService sharedService].third = 0;[DataService sharedService].fourth = 0;
+    
+    
+//    NSString *oringStr = @"this is an apple";
+//    NSArray *orgArray = [Utility handleTheString:oringStr];
+//    NSArray *metaphoneArray = [Utility metaphoneArray:orgArray];
+//    NSLog(@"orgArray = %@",orgArray);
+//    NSLog(@"metaphoneArray = %@",metaphoneArray);
+//    
+//    
+//    NSString *text = @"this a salple";
+//    NSArray *array = [Utility handleTheString:text];
+//    NSLog(@"array = %@",array);
+//    NSArray *array2 = [Utility metaphoneArray:array];
+//    NSLog(@"array2 = %@",array2);
+//    
+//    [Utility shared].isOrg = NO;
+//    [Utility shared].sureArray = [[NSMutableArray alloc]init];
+//    [Utility shared].correctArray = [[NSMutableArray alloc]init];
+//    [Utility shared].noticeArray = [[NSMutableArray alloc]init];
+//    [Utility shared].greenArray = [[NSMutableArray alloc]init];
+//    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
+//    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
+//    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
+//    [Utility shared].firstpoint = 0;
+//    NSDictionary *dic = [Utility compareWithArray:array andArray:array2 WithArray:orgArray andArray:metaphoneArray WithRange:[Utility shared].rangeArray];
+//    NSLog(@"dic = %@",dic);
+    
     return YES;
 }
 

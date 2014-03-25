@@ -28,7 +28,8 @@ static NSInteger tmpPage = 0;
         [Utility errorAlert:@"暂无网络!"];
     }else {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [self.cardInter getCardInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andType:@"4"];
+//        [self.cardInter getCardInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andType:@"4"];
+        [self.cardInter getCardInterfaceDelegateWithStudentId:@"1" andClassId:@"1" andType:@"4"];
     }
 }
 
@@ -89,6 +90,16 @@ static NSInteger tmpPage = 0;
     for (int i=0; i<self.cardArray.count; i++) {
         CardObject *card2 = [self.cardArray objectAtIndex:i];
         if ([card2.carId integerValue]==card_Id) {
+            
+            if (card2.tagArray.count>0) {
+                NSMutableArray *tmpArray = [self compareArray:[DataService sharedService].tagsArray array:card2.tagArray];
+                [[CMRManager sharedService] DeleteContact:[card2.carId intValue]];
+                [[CMRManager sharedService] AddContact:[card2.carId intValue] name:card2.content phone:tmpArray];
+            }else {
+                [[CMRManager sharedService] DeleteContact:[card2.carId intValue]];
+                [[CMRManager sharedService] AddContact:[card2.carId intValue] name:card2.content phone:nil];
+            }
+            
             [self.cardArray replaceObjectAtIndex:i withObject:card];
             
             NSInteger tag = i/4+TableTag;
@@ -153,10 +164,7 @@ static NSInteger tmpPage = 0;
 
 -(void)displayNewView {
     if (self.cardArray.count>0) {
-        NSArray *subViews = [self.myScrollView subviews];
-        for (UIView *vv in subViews) {
-            [vv removeFromSuperview];
-        }
+        [self.myScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         NSInteger count = ([self.cardArray count]-1)/4+1;
         self.myPageControl.numberOfPages = count;
         
@@ -177,6 +185,8 @@ static NSInteger tmpPage = 0;
             self.myPageControl.currentPage = tmpPage;
             [self.myScrollView setContentOffset:CGPointMake(tmpPage*768, 0)];
         }
+    }else {
+        [self.myScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     }
 }
 

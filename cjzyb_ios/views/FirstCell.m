@@ -133,9 +133,9 @@
 
     self.arrowImg.frame = CGRectMake(24, Insets/2, Label_Height, Label_Height);
     
-    self.huifuLab.frame = CGRectMake(self.nameFromLab.frame.origin.x+self.nameFromLab.frame.size.width, Space_Height, [self.huifuLab.text sizeWithFont:[UIFont systemFontOfSize:18]].width, Label_Height);
+    self.huifuLab.frame = CGRectMake(self.nameFromLab.frame.origin.x+self.nameFromLab.frame.size.width+Insets, Space_Height, [self.huifuLab.text sizeWithFont:[UIFont systemFontOfSize:18]].width, Label_Height);
     
-    self.nameToLab.frame = CGRectMake(self.huifuLab.frame.origin.x+self.huifuLab.frame.size.width, Space_Height, [self.aReplyMsg.reciver_name sizeWithFont:[UIFont systemFontOfSize:18]].width, Label_Height);
+    self.nameToLab.frame = CGRectMake(self.huifuLab.frame.origin.x+self.huifuLab.frame.size.width+Insets, Space_Height, [self.aReplyMsg.reciver_name sizeWithFont:[UIFont systemFontOfSize:18]].width, Label_Height);
     
     self.timeLab.frame = CGRectMake(self.nameToLab.frame.origin.x+self.nameToLab.frame.size.width+Insets, Space_Height, [self.aReplyMsg.created_at sizeWithFont:[UIFont systemFontOfSize:18]].width, Label_Height);
 

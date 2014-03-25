@@ -56,7 +56,7 @@
         //昵称from
         self.nameFromLab = [[UILabel alloc]initWithFrame:CGRectZero];
         self.nameFromLab.backgroundColor = [UIColor clearColor];
-        self.nameFromLab.textColor = [UIColor colorWithRed:71/255.0 green:196/255.0 blue:145/255.0 alpha:1];
+        self.nameFromLab.textColor = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
         self.nameFromLab.font = [UIFont systemFontOfSize:18];
         [self.actualContentView addSubview:self.nameFromLab];
         

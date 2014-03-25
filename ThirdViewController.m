@@ -26,15 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-}
--(void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-}
-
--(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [DataService sharedService].third = 1;
-    
+    self.third = 3;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShowThird:)
                                                  name:UIKeyboardWillShowNotification
@@ -43,13 +35,18 @@
                                              selector:@selector(keyboardWillHideThird:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    
+}
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.txtView resignFirstResponder];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -58,6 +55,8 @@
 }
 #pragma mark - Keyboard notifications
 - (void)keyboardWillShowThird:(NSNotification *)notification {
+    int lastObject = [[[DataService sharedService].numberOfViewArray lastObject]intValue];
+    if (lastObject == self.third) {
         NSDictionary *userInfo = [notification userInfo];
         NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
         
@@ -72,10 +71,12 @@
                          animations:^{
                              self.keyboardHeight = keyboardRect.size.height;
                          }];
-
+    }
+    
 }
 - (void)keyboardWillHideThird:(NSNotification *)notification {
-    
+    int lastObject = [[[DataService sharedService].numberOfViewArray lastObject]intValue];
+    if (lastObject == self.third){
         NSDictionary *userInfo = [notification userInfo];
         
         NSValue *animationDurationValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
@@ -86,7 +87,8 @@
                          animations:^{
                              self.keyboardHeight = 0;
                          }];
-
+    }
+    
 }
 
 #pragma mark - Text view delegate
@@ -182,12 +184,12 @@
             MessageObject *message = [MessageObject messageFromDictionary:dic];
 
             [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadFirstArrayByThirdView" object:message];
-            if ([DataService sharedService].second == 1) {
+            NSString *indexString = [NSString stringWithFormat:@"%d",1];
+            if ([[DataService sharedService].numberOfViewArray containsObject:indexString]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadSecondArrayByThirdView" object:message];
             }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"selectedViewController" object:nil];
-//            [Utility errorAlert:@"问题发布成功!"];
         });
     });
 }

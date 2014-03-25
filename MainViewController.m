@@ -46,6 +46,7 @@
     SecondViewController *secondView = [[SecondViewController alloc]initWithNibName:@"SecondViewController" bundle:nil];
     secondView.title = @"second";
     secondView.view.frame = firstView.view.frame;
+    [secondView viewDidAppear:NO];
     
     ThirdViewController *thirdView = [[ThirdViewController alloc]initWithNibName:@"ThirdViewController" bundle:nil];
     thirdView.title = @"third";
@@ -70,6 +71,9 @@
     [self tabBarInit];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedViewController:) name:@"selectedViewController" object:nil];
+}
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 -(void)selectedViewController:(NSNotification *)notification {
     [self.pagesContainer setSelectedIndex:0 animated:YES];
