@@ -22,7 +22,7 @@
 
 #import "TenSecChallengeViewController.h"
 
-
+#import "PreReadingTaskViewController.h"
 @implementation AppDelegate
 -(void)loadTrueSound:(NSInteger)index {
     NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"trueMusic.wav"];
@@ -53,6 +53,23 @@
 }
 +(AppDelegate *)shareIntance {
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
+}
+
+//TODO:显示朗读的预听界面
+-(void)showPreReadingHomework{
+    ReadingHomeworkObj *homework = [[ReadingHomeworkObj alloc] init];
+    NSMutableArray *senArr = [NSMutableArray array];
+    for (int i =0 ; i < 10; i++) {
+        ReadingSentenceObj *sentence = [[ReadingSentenceObj alloc] init];
+        sentence.readingSentenceContent = @"how are you";
+        [senArr addObject:sentence];
+    }
+    homework.readingHomeworkSentenceObjArray = senArr;
+    PreReadingTaskViewController *preReadingController = [[PreReadingTaskViewController alloc] initWithNibName:@"PreReadingTaskViewController" bundle:nil];
+    [preReadingController startPreListeningHomeworkSentence:homework withPlayFinished:^(BOOL isSuccess) {
+        
+    }];
+    self.window.rootViewController = preReadingController;
 }
 
 -(void)showHomework{
@@ -115,6 +132,8 @@
     
     [self showHomework];
     
+//    [self showPreReadingHomework];
+    
 //    [self showHomeworkType];
     
 //    [self showTabBarController];
@@ -123,10 +142,10 @@
 //    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
 //    self.window.rootViewController = notificationViewController;
 
-    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-    tabBarController.childenControllerArray = @[main];
-    self.window.rootViewController = tabBarController;
+//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+//    tabBarController.childenControllerArray = @[main];
+//    self.window.rootViewController = tabBarController;
 
 //
 //     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];

@@ -12,7 +12,18 @@
 #import "DRSentenceSpellMatch.h"
 #import <QuartzCore/QuartzCore.h>
 #import "HomeworkContainerController.h"
+#import "ParseAnswerJsonFileTool.h"
+#import "ParseQuestionJsonFileTool.h"
+
+#import "PreReadingTaskViewController.h"
+
+#define parentVC ((HomeworkContainerController *)[self parentViewController])
+
 @interface ReadingTaskViewController ()
+
+///预听界面
+@property (nonatomic,strong) PreReadingTaskViewController *preReadingController;
+
 ///当前读句子下标
 @property (nonatomic,assign) int currentSentenceIndex;
 ///当前所做大题下标
@@ -21,6 +32,13 @@
 @property (nonatomic,strong) NSString  *recorderTempPath;
 @property (nonatomic,strong) AVAudioRecorder *avRecorder;
 @property (nonatomic,strong) AVAudioPlayer *avPlayer;
+
+
+///是否在检查
+@property (nonatomic,assign) BOOL isChecking;
+///是否是预听
+@property (nonatomic,assign) BOOL isPrePlay;
+
 ///是否在读内容
 @property (nonatomic,assign) BOOL isReading;
 ///是否在听
@@ -52,9 +70,42 @@
     return self;
 }
 
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    if (self.isPrePlay) {
+        [parentVC.checkHomeworkButton setTitle:@"开始做题" forState:UIControlStateNormal];
+        [parentVC stopTimer];
+    }else{
+        self.isChecking = self.isChecking;
+    }
+}
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.isPrePlay = YES;
+    self.preReadingController = [[PreReadingTaskViewController alloc] initWithNibName:@"PreReadingTaskViewController" bundle:nil];
+    [self appearPrePlayControllerWithAnimation:YES];
+    
+    __weak ReadingTaskViewController *weakSelf = self;
+    //TODO:读question json文件
+    NSString * path = [[NSBundle mainBundle] pathForResource:@"questions_lastest" ofType:@"js"]; //测试
+    [ParseQuestionJsonFileTool parseQuestionJsonFile:path withReadingQuestionArray:^(NSArray *readingQuestionArr, NSInteger specifiedTime) {
+        ReadingTaskViewController *tempSelf = weakSelf;
+        if (tempSelf) {
+            tempSelf.readingHomeworksArr = readingQuestionArr;
+             [tempSelf.preReadingController startPreListeningHomeworkSentence:[readingQuestionArr firstObject] withPlayFinished:^(BOOL isSuccess) {
+                 [tempSelf hiddlePrePlayControllerWithAnimation:YES];
+             }];
+        }
+    } withParseError:^(NSError *error) {
+        ReadingTaskViewController *tempSelf = weakSelf;
+        if (tempSelf) {
+             [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+        }
+    }];
+   
     self.readingTextView.text = @"Sure,Where are you flying today?";
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
     
@@ -128,6 +179,29 @@
         
     }
 }
+
+//TODO:开始做题
+-(void)startBeginninghomework{
+    if ([DataService sharedService].isHistory==YES) {
+        
+    }else{
+        if (self.isPrePlay) {
+            [self hiddlePrePlayControllerWithAnimation:YES];
+            self.isPrePlay = NO;
+            self.isChecking = NO;
+        }else{
+            if (self.isChecking) {
+                self.isChecking = NO;
+                [self updateNextSentence];
+            }else{
+                self.isChecking = YES;
+                //TODO:开始检查
+                
+            }
+        }
+    }
+}
+
 ///切换到下一句
 -(void)updateNextSentence{
     if (!self.currentSentence) {
@@ -136,6 +210,7 @@
     if (self.currentSentence) {
         if (self.currentSentenceIndex+1 < self.currentHomework.readingHomeworkSentenceObjArray.count) {
             self.currentSentenceIndex++;
+            self.currentSentence.isFinished = YES;
             [self setCurrentSentence:[self.currentHomework.readingHomeworkSentenceObjArray objectAtIndex:self.currentSentenceIndex] withAnimation:YES];
         }else{//已经是最后一个句子
         
@@ -166,6 +241,7 @@
     if (self.currentHomework) {
         if (self.currentHomeworkIndex+1 < self.readingHomeworksArr.count) {
             self.currentHomeworkIndex++;
+            self.currentHomework.isFinished = YES;
             self.currentHomework = [self.readingHomeworksArr objectAtIndex:self.currentHomeworkIndex];
         }else{//已经是最后一个大题
         
@@ -191,6 +267,24 @@
 }
 #pragma mark --
 
+#pragma mark 开始预听界面切换
+-(void)appearPrePlayControllerWithAnimation:(BOOL)animation{
+    [self.preReadingController willMoveToParentViewController:self];
+    self.preReadingController.view.frame = self.view.bounds;
+    [self.view addSubview:self.preReadingController.view];
+    [self addChildViewController:self.preReadingController];
+    [self.preReadingController didMoveToParentViewController:self];
+}
+
+-(void)hiddlePrePlayControllerWithAnimation:(BOOL)animation{
+    [self.preReadingController willMoveToParentViewController:nil];
+    [self.preReadingController.view removeFromSuperview];
+    [self.preReadingController removeFromParentViewController];
+    [self.preReadingController didMoveToParentViewController:nil];
+}
+
+#pragma mark --
+
 #pragma mark 界面过度动画代理
 -(void)animationDidStart:(CAAnimation *)anim{
     NSLog(@"start aninatiom");
@@ -209,6 +303,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+//TODO:开始识别语音
 - (IBAction)readingButtonClicked:(id)sender {
     ISSpeechRecognition *recognition = [[ISSpeechRecognition alloc] init];
 	
@@ -245,6 +340,8 @@
     }
 }
 
+
+//TODO:开始播放音频，如果没有就tts
 - (IBAction)listeningButtonClicked:(id)sender {
     if (self.isListening) {
         if (self.avPlayer.isPlaying) {
@@ -416,6 +513,16 @@
 #pragma mark --
 
 #pragma mark property
+
+-(void)setIsChecking:(BOOL)isChecking{
+    if (isChecking) {
+         [parentVC.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
+    }else{
+        [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
+    }
+    
+    _isChecking = isChecking;
+}
 -(void)setIsReading:(BOOL)isReading{
     _isReading = isReading;
     if (!isReading) {

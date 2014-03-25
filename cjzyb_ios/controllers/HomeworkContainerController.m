@@ -9,7 +9,6 @@
 //
 
 #import "HomeworkContainerController.h"
-
 @interface HomeworkContainerController ()
 ///朗读题controller
 @property (nonatomic,strong) ReadingTaskViewController *readingController;
@@ -19,6 +18,7 @@
 @property (nonatomic, strong) LininggViewController *liningView;//连线
 @property (nonatomic,strong) TenSecChallengeViewController *tenSecViewController;///十速挑战
 @property (nonatomic,strong) SelectingChallengeViewController *selectingChallengeViewController; ///选择挑战
+
 
 ///计时器
 @property (nonatomic,strong) NSTimer *timer;
@@ -67,7 +67,7 @@
 {
     [super viewDidLoad];
 
-    self.spendSecond = 0;[DataService sharedService].number_reduceTime=3;[DataService sharedService].isHistory=YES;[DataService sharedService].number_correctAnswer=3;
+    self.spendSecond = 0;[DataService sharedService].number_reduceTime=3;[DataService sharedService].isHistory=NO;[DataService sharedService].number_correctAnswer=3;
 
 
     //TODO:判断做题历史 or  做题
@@ -79,7 +79,7 @@
         self.label1.hidden=YES;self.label2.hidden=YES;self.rotioLabel.hidden=YES;self.timeLabel.hidden=YES;
     }
     [self startTimer];
-    self.homeworkType = HomeworkType_select;
+    self.homeworkType = HomeworkType_reading;
     switch (self.homeworkType) {
         case HomeworkType_line://连线
         {
@@ -100,10 +100,11 @@
             [self.readingController willMoveToParentViewController:self];
             self.readingController.view.frame = self.contentView.bounds;
             [self.appearCorrectButton setHidden:YES];
-            [self.checkHomeworkButton addTarget:self.readingController action:@selector(updateNextSentence) forControlEvents:UIControlEventTouchUpInside];
+            [self.checkHomeworkButton addTarget:self.readingController action:@selector(startBeginninghomework) forControlEvents:UIControlEventTouchUpInside];
             [self.contentView addSubview:self.readingController.view];
             [self addChildViewController:self.readingController];
             [self.readingController didMoveToParentViewController:self];
+            break;
         }
         case HomeworkType_listeningAndWrite://听写
         {
@@ -200,6 +201,7 @@
 }
 
 #pragma mark -- property
+
 -(void)setSpendSecond:(long long)spendSecond{
     _spendSecond = spendSecond;
     self.timerLabel.text = [Utility formateDateStringWithSecond:self.spendSecond];

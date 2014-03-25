@@ -26,6 +26,6 @@
 ///当前正在听的句子
 @property (strong,nonatomic) ReadingSentenceObj *currentSentence;
 
-///切换到下一句
--(void)updateNextSentence;
+///开始做题
+-(void)startBeginninghomework;
 @end
