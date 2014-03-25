@@ -92,6 +92,8 @@
         tabBarController.childenControllerArray = @[main];
         self.window.rootViewController = tabBarController;
     }
+    HomeworkContainerController *notificationViewController = [[HomeworkContainerController alloc] initWithNibName:@"HomeworkContainerController" bundle:nil];
+    self.window.rootViewController = notificationViewController;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

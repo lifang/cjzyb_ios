@@ -79,7 +79,7 @@
         self.label1.hidden=YES;self.label2.hidden=YES;self.rotioLabel.hidden=YES;self.timeLabel.hidden=YES;
     }
     [self startTimer];
-    self.homeworkType = HomeworkType_select;
+    self.homeworkType = HomeworkType_quick;
     switch (self.homeworkType) {
         case HomeworkType_line://连线
         {
