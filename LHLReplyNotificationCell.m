@@ -14,7 +14,6 @@
 #define LHLCELL_HEIGHT self.bounds.size.height
 
 @interface LHLReplyNotificationCell()
-@property (nonatomic,strong) UIView *contentBgView;  //头像,名字,内容等的背景
 @property (nonatomic,strong) UIView *titleBgView;  //第一行的背景
 @property (nonatomic,strong) UIView *buttonBgView;  //按钮背景
 @property (nonatomic,strong) UIImageView *imgView;  //头像
@@ -191,7 +190,6 @@
         [self.delegate replyCell:self setIsEditing:self.isEditing];
     }
     if (_contentBgView.frame.origin.x < 0) {
-        _contentBgView.backgroundColor = [UIColor whiteColor];
         [UIView animateWithDuration:0.25 animations:^{
             _contentBgView.frame = (CGRect){0,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
         } completion:^(BOOL finished) {
@@ -200,7 +198,6 @@
     }else{
         _buttonBgView.hidden = NO;
         _contentBgView.frame = (CGRect){-1,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
-        _contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
         [UIView animateWithDuration:0.25 animations:^{
             _contentBgView.frame = (CGRect){-103,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
         } completion:^(BOOL finished) {
@@ -227,10 +224,8 @@
     if (isEditing) {
         _buttonBgView.hidden = NO;
         _contentBgView.frame = (CGRect){-1,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
-        _contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
         _contentBgView.frame = (CGRect){-103,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
     }else{
-        _contentBgView.backgroundColor = [UIColor whiteColor];
         _contentBgView.frame = (CGRect){0,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
         _buttonBgView.hidden = YES;
     }

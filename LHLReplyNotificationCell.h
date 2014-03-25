@@ -15,8 +15,9 @@
 @property (strong,nonatomic) NSIndexPath *indexPath;
 @property (strong,nonatomic) ReplyNotificationObject *replyObject;
 @property (assign,nonatomic) BOOL isEditing;
-
+@property (nonatomic,strong) UIView *contentBgView;  //头像,名字,内容等的背景
 - (void) setInfomations:(ReplyNotificationObject *)reply;
+- (void) coverButtonClicked:(id)sender;
 @end
 @protocol LHLReplyNotificationCellDelegate <NSObject>
 

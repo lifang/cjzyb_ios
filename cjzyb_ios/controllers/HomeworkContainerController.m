@@ -152,9 +152,10 @@
             self.tenSecViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
             [self.tenSecViewController willMoveToParentViewController:self];
             [self.contentView setFrame:(CGRect){0,75,768,949}];
-            [self.contentView addSubview:self.tenSecViewController.view];
+            
             [self.tenSecViewController.contentBgView setFrame:(CGRect){0,0,768,949}];
             [self addChildViewController:self.tenSecViewController];
+            [self.contentView addSubview:self.tenSecViewController.view];
             [self.tenSecViewController didMoveToParentViewController:self];
             self.tenSecViewController.isViewingHistory = [DataService sharedService].isHistory;
             [self.tenSecViewController startChallenge];
@@ -173,9 +174,9 @@
         {
             self.selectingChallengeViewController = [[SelectingChallengeViewController alloc] initWithNibName:@"SelectingChallengeViewController" bundle:nil];
             [self.selectingChallengeViewController willMoveToParentViewController:self];
-            [self.contentView addSubview:self.selectingChallengeViewController.view];
             [self.selectingChallengeViewController.contentBgView setFrame:(CGRect){0,0,768,874}];
             [self addChildViewController:self.selectingChallengeViewController];
+            [self.contentView addSubview:self.selectingChallengeViewController.view];
             [self.selectingChallengeViewController didMoveToParentViewController:self];
             [self.checkHomeworkButton addTarget:self.selectingChallengeViewController action:@selector(nextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.appearCorrectButton addTarget:self.selectingChallengeViewController action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];

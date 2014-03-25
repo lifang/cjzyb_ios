@@ -56,9 +56,9 @@
 }
 
 -(void)showHomework{
-    HomeworkContainerController *container = [[HomeworkContainerController alloc] initWithNibName:@"HomeworkContainerController" bundle:nil];
-    self.window.rootViewController = container;
-    container.homeworkType = HomeworkType_line;
+//    HomeworkContainerController *container = [[HomeworkContainerController alloc] initWithNibName:@"HomeworkContainerController" bundle:nil];
+//    self.window.rootViewController = container;
+//    container.homeworkType = HomeworkType_line;
 }
 
 -(void)showHomeworkType{
@@ -92,7 +92,7 @@
         tabBarController.childenControllerArray = @[main];
         self.window.rootViewController = tabBarController;
     }
-    HomeworkContainerController *notificationViewController = [[HomeworkContainerController alloc] initWithNibName:@"HomeworkContainerController" bundle:nil];
+    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
     self.window.rootViewController = notificationViewController;
 }
 

@@ -32,6 +32,10 @@
 @property (strong,nonatomic) MJRefreshFooterView *refreshFooterView; //下拉加载
 @property (assign,nonatomic) BOOL isRefreshing; //YES刷新,NO分页加载
 @property (strong,nonatomic) NSMutableDictionary *bufferedImageDic; //头像缓冲
+//@property (strong,nonatomic) LHLReplyNotificationCell * editingReplyCell;
+//@property (strong,nonatomic) LHLNotificationCell *editingNotiCell;
+@property (strong,nonatomic) NSIndexPath *editingReplyCellIndexPath;
+@property (strong,nonatomic) NSIndexPath *editingNotiCellIndexPath;
 
 //临时学生数据
 @property (strong,nonatomic) NSString *userID;
@@ -154,14 +158,25 @@
         LHLNotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LHLNotificationCell"];
         cell.delegate = self;
         [cell initCell];
-        [cell setNotificationObject:self.notificationArray[indexPath.row]];
+        NotificationObject *obj = self.notificationArray[indexPath.row];
+        [cell setNotificationObject:obj];
         cell.indexPath = indexPath;
+        if (indexPath.row % 2 == 1) {
+            cell.contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
+            cell.contentBgView.backgroundColor = [UIColor whiteColor];
+        }
         return cell;
     }else{
         LHLReplyNotificationCell *cell = [tableView dequeueReusableCellWithIdentifier:@"LHLReplyNotificationCell"];
         cell.delegate = self;
-        [cell setInfomations:self.replyNotificationArray[indexPath.row]];
+        ReplyNotificationObject *obj = self.replyNotificationArray[indexPath.row];
+        [cell setInfomations:obj];
         cell.indexPath = indexPath;
+        if (indexPath.row % 2 == 1) {
+            cell.contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
+        }else{
+            cell.contentBgView.backgroundColor = [UIColor whiteColor];
+        }
         return cell;
     }
 }
@@ -542,6 +557,21 @@
 -(void)cell:(LHLNotificationCell *)cell setIsEditing:(BOOL)editing{
     NotificationObject *obj = self.notificationArray[cell.indexPath.row];
     obj.isEditing = editing;
+    
+    if (editing) {
+        if (self.editingNotiCellIndexPath) {
+            LHLNotificationCell *editingCell = (LHLNotificationCell *)[self.tableView cellForRowAtIndexPath:self.editingNotiCellIndexPath];
+            if (editingCell) {
+                [editingCell coverButtonClicked:nil];
+            }else{
+                NotificationObject *editingObj = [self.notificationArray objectAtIndex:self.editingNotiCellIndexPath.row];
+                editingObj.isEditing = NO;
+            }
+        }
+        self.editingNotiCellIndexPath = cell.indexPath;
+    }else{
+        self.editingNotiCellIndexPath = nil;
+    }
 }
 
 #pragma mark -- LHLReplyNotificationCellDelegate
@@ -569,6 +599,21 @@
 -(void) replyCell:(LHLReplyNotificationCell *)cell setIsEditing:(BOOL)editing{
     ReplyNotificationObject *obj = self.replyNotificationArray[cell.indexPath.row];
     obj.isEditing = editing;
+    
+    if (editing) {
+        if (self.editingReplyCellIndexPath) {
+            LHLReplyNotificationCell *editingCell = (LHLReplyNotificationCell *)[self.tableView cellForRowAtIndexPath:self.editingReplyCellIndexPath];
+            if (editingCell) {
+                [editingCell coverButtonClicked:nil];
+            }else{
+                ReplyNotificationObject *editingObj = [self.replyNotificationArray objectAtIndex:self.editingReplyCellIndexPath.row];
+                editingObj.isEditing = NO;
+            }
+        }
+        self.editingReplyCellIndexPath = cell.indexPath;
+    }else{
+        self.editingReplyCellIndexPath = nil;
+    }
 }
 
 -(void) replyCell:(LHLReplyNotificationCell *)cell deleteButtonClicked:(id)sender{
