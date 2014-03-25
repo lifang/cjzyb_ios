@@ -76,7 +76,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    /*
+
     if (self.secondArray.count == 0 && [DataService sharedService].second==0) {
         [self getMymessageData];
         [DataService sharedService].second = 1;
@@ -90,7 +90,7 @@
                                              selector:@selector(keyboardWillHideSecond:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-     */
+
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];

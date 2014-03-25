@@ -101,7 +101,7 @@
     [popoverAppearance setArrowHeight:10];
     [popoverAppearance setArrowBase:20];
     [popoverAppearance setFillTopColor:[UIColor colorWithRed:47/255.0 green:201/255.0 blue:133/255.0 alpha:1]];
-    
+    [DataService sharedService].first = 0;[DataService sharedService].second = 0;[DataService sharedService].third = 0;[DataService sharedService].fourth = 0;
     //开启网络状况的监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     self.hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"] ;
@@ -123,10 +123,10 @@
 //    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
 //    self.window.rootViewController = notificationViewController;
 
-    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-    tabBarController.childenControllerArray = @[main];
-    self.window.rootViewController = tabBarController;
+//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+//    tabBarController.childenControllerArray = @[main];
+//    self.window.rootViewController = tabBarController;
 
 //
 //     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
@@ -138,7 +138,33 @@
     
     [self.window makeKeyAndVisible];
     
-    [DataService sharedService].first = 0;[DataService sharedService].second = 0;[DataService sharedService].third = 0;[DataService sharedService].fourth = 0;
+    
+    
+    NSString *oringStr = @"this is an apple";
+    NSArray *orgArray = [Utility handleTheString:oringStr];
+    NSArray *metaphoneArray = [Utility metaphoneArray:orgArray];
+    NSLog(@"orgArray = %@",orgArray);
+    NSLog(@"metaphoneArray = %@",metaphoneArray);
+    
+    
+    NSString *text = @"this a salple";
+    NSArray *array = [Utility handleTheString:text];
+    NSLog(@"array = %@",array);
+    NSArray *array2 = [Utility metaphoneArray:array];
+    NSLog(@"array2 = %@",array2);
+    
+    [Utility shared].isOrg = NO;
+    [Utility shared].sureArray = [[NSMutableArray alloc]init];
+    [Utility shared].correctArray = [[NSMutableArray alloc]init];
+    [Utility shared].noticeArray = [[NSMutableArray alloc]init];
+    [Utility shared].greenArray = [[NSMutableArray alloc]init];
+    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
+    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
+    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
+    [Utility shared].firstpoint = 0;
+    NSDictionary *dic = [Utility compareWithArray:array andArray:array2 WithArray:orgArray andArray:metaphoneArray WithRange:[Utility shared].rangeArray];
+    NSLog(@"dic = %@",dic);
+    
     return YES;
 }
 

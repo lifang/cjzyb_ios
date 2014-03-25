@@ -187,7 +187,6 @@
             }
             
             [[NSNotificationCenter defaultCenter] postNotificationName:@"selectedViewController" object:nil];
-//            [Utility errorAlert:@"问题发布成功!"];
         });
     });
 }
