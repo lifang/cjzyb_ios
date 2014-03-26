@@ -171,7 +171,7 @@
         if (self.appDel.isReachable == NO) {
             [Utility errorAlert:@"暂无网络!"];
         }else {
-            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             self.questionInter = [[QuestionInterface alloc]init];
             self.questionInter.delegate = self;
             [self.questionInter getQuestionInterfaceDelegateWithUserId:[DataService sharedService].user.userId andUserType:@"1" andClassId:[DataService sharedService].theClass.classId andContent:self.txtView.text];
@@ -183,7 +183,7 @@
 -(void)getQuestionInfoDidFinished:(NSDictionary *)result {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             self.txtView.text = @"";self.textCountLabel.text = @"还可以输入60字";
             NSArray *array = [result objectForKey:@"micropost"];
             NSDictionary *dic = [array objectAtIndex:0];
@@ -200,7 +200,7 @@
     });
 }
 -(void)getQuestionInfoDidFailed:(NSString *)errorMsg {
-    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [Utility errorAlert:errorMsg];
 }
 @end

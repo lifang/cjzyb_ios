@@ -31,6 +31,12 @@
     }
     return self;
 }
+-(AppDelegate *)appDel {
+    if (!_appDel) {
+        _appDel = [AppDelegate shareIntance];
+    }
+    return _appDel;
+}
 - (void) roundView: (UIView *) view{
     [view.layer setCornerRadius: (view.frame.size.height/2)];
     [view.layer setMasksToBounds:YES];
@@ -46,6 +52,9 @@
     self.leftTabBar.frame = (CGRect){-120,67,120,1024-67};
     [self.view addSubview:self.leftTabBar];
     [self.leftTabBar defaultSelected];
+    
+    self.leftTabBar.homeworkTabBarItem.redImg.hidden = !self.appDel.isReceiveTask;
+    self.leftTabBar.notificationTabBarItem.redImg.hidden = !self.appDel.isReceiveNotification;
     
     //设置导航栏
     self.drNavigationBar = [[[NSBundle mainBundle]  loadNibNamed:@"DRNavigationBar" owner:self options:nil] firstObject];
@@ -242,22 +251,56 @@
 #pragma mark LeftTabBarViewDelegate 左边栏代理
 -(void)leftTabBar:(LeftTabBarView *)tabBarView selectedItem:(LeftTabBarItemType)itemType{
     NSLog(@"%d",itemType);
-    if (itemType == LeftTabBarItemType_userGroup ) {
-        if (tabBarView.userGroupTabBarItem.isSelected) {
-            [self appearStudentListViewController:self.studentListViewController];
+    if (itemType == LeftTabBarItemType_logOut ) {
+        NSFileManager *fileManage = [NSFileManager defaultManager];
+        NSString *path;
+        if (platform>5.0) {
+            path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         }else{
-            [self hiddleStudentListViewController:self.studentListViewController];
+            path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         }
-        return;
-    }else{
-        if (tabBarView.userGroupTabBarItem.isSelected) {
-            tabBarView.userGroupTabBarItem.isSelected = NO;
-             [self hiddleStudentListViewController:self.studentListViewController];
+        NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
+        if ([fileManage fileExistsAtPath:filename]) {
+            [fileManage removeItemAtPath:filename error:nil];
         }
-    }
-    
-    if (itemType < self.childenControllerArray.count) {
-        [self changeFromController:self.currentViewController toController:[self.childenControllerArray objectAtIndex:itemType]];
+        NSString *filename2 = [path stringByAppendingPathComponent:@"student.plist"];
+        if ([fileManage fileExistsAtPath:filename2]) {
+            [fileManage removeItemAtPath:filename2 error:nil];
+        }
+        
+        AppDelegate *appDel = [AppDelegate shareIntance];
+        [appDel showRootView];
+        
+        
+    }else {
+        if (itemType == LeftTabBarItemType_userGroup ) {
+            if (tabBarView.userGroupTabBarItem.isSelected) {
+                [self appearStudentListViewController:self.studentListViewController];
+            }else{
+                [self hiddleStudentListViewController:self.studentListViewController];
+            }
+            return;
+        }
+        else{
+            if (tabBarView.userGroupTabBarItem.isSelected) {
+                tabBarView.userGroupTabBarItem.isSelected = NO;
+                [self hiddleStudentListViewController:self.studentListViewController];
+            }
+            
+            if (itemType == LeftTabBarItemType_homework ) {
+                self.appDel.isReceiveTask = NO;
+                self.leftTabBar.homeworkTabBarItem.redImg.hidden = !self.appDel.isReceiveTask;
+            }
+            
+            if (itemType == LeftTabBarItemType_notification) {
+                self.appDel.isReceiveNotification = NO;
+                self.leftTabBar.notificationTabBarItem.redImg.hidden = !self.appDel.isReceiveNotification;
+            }
+        }
+        
+        if (itemType < self.childenControllerArray.count) {
+            [self changeFromController:self.currentViewController toController:[self.childenControllerArray objectAtIndex:itemType]];
+        }
     }
 }
 #pragma mark --

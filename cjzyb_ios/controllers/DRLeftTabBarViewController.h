@@ -21,6 +21,7 @@
  */
 @interface DRLeftTabBarViewController : UIViewController<LeftTabBarViewDelegate,StudentListViewControllerDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIActionSheetDelegate, VPImageCropperDelegate>
 
+@property (nonatomic, strong) AppDelegate *appDel;
 @property (assign,nonatomic) BOOL isHiddleLeftTabBar;
 @property (nonatomic,strong) DRNavigationBar *drNavigationBar;
 

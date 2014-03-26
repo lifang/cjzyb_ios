@@ -32,7 +32,7 @@
                     <rect key="frame" x="299" y="286" width="171" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                    <state key="normal" title="问答" backgroundImage="send.png">
+                    <state key="normal" title="提问" backgroundImage="send.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>

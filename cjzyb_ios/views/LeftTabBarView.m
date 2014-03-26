@@ -8,17 +8,6 @@
 
 #import "LeftTabBarView.h"
 @interface LeftTabBarView()
-@property (weak, nonatomic) IBOutlet LeftTabBarItem *mainTabBarItem;
-
-@property (weak, nonatomic) IBOutlet LeftTabBarItem *homeworkTabBarItem;
-@property (weak, nonatomic) IBOutlet LeftTabBarItem *notificationTabBarItem;
-@property (weak, nonatomic) IBOutlet LeftTabBarItem *carBarTabBarItem;
-
-- (IBAction)userGroupItemClicked:(id)sender;
-- (IBAction)carBagItemClicked:(id)sender;
-- (IBAction)notificationItemClicked:(id)sender;
-- (IBAction)homeworkItemClicked:(id)sender;
-- (IBAction)mainItemClicked:(id)sender;
 
 @end
 @implementation LeftTabBarView
@@ -50,6 +39,7 @@
     self.homeworkTabBarItem.isSelected = NO;
     self.notificationTabBarItem.isSelected = NO;
     self.carBarTabBarItem.isSelected = NO;
+    self.logOutItem.isSelected = NO;
 //    self.userGroupTabBarItem.isSelected = NO;
 }
 
@@ -84,5 +74,11 @@
     [self unSelectedAllItems];
     self.mainTabBarItem.isSelected = YES;
     [self.delegate leftTabBar:self selectedItem:LeftTabBarItemType_main];
+}
+
+-(IBAction)logOutItemClicked:(id)sender {
+    [self unSelectedAllItems];
+    self.logOutItem.isSelected = YES;
+    [self.delegate leftTabBar:self selectedItem:LeftTabBarItemType_logOut];
 }
 @end

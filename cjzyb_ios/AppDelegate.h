@@ -21,7 +21,7 @@
 //网络是否连接
 @property (assign, nonatomic) BOOL isReachable;
 
-
+@property (nonatomic, strong) NSString *pushstr;
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong) MPMoviePlayerController *player;
 @property (strong, nonatomic) AVAudioPlayer *avPlayer;
@@ -33,4 +33,7 @@
 
 -(void)loadTrueSound:(NSInteger)index;
 -(void)loadFalseSound:(NSInteger)index;
+
+
+@property (nonatomic, assign) BOOL isReceiveTask,isReceiveNotification;
 @end
