@@ -196,7 +196,7 @@
             }else{
                 self.isChecking = YES;
                 //TODO:开始检查
-                
+                [[AppDelegate shareIntance] loadTrueSound:2];
             }
         }
     }
