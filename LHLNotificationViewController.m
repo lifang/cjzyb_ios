@@ -228,6 +228,7 @@
             NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
             NSURL *url = [NSURL URLWithString:str];
             NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 if (self.isRefreshing) {
                     self.notificationArray = [NSMutableArray array];
@@ -246,6 +247,7 @@
                     [self.notificationArray addObject:obj];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                     if (self.displayCategory == NotificationDisplayCategoryDefault) {
                         [self.tableView reloadData];
                         [self.refreshFooterView endRefreshing];
@@ -253,6 +255,7 @@
                     }
                 });
             } withFailure:^(NSError *error) {
+                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                 [self.refreshFooterView endRefreshing];
                 [self.refreshHeaderView endRefreshing];
                 if (self.displayCategory == NotificationDisplayCategoryDefault) {
@@ -272,6 +275,7 @@
             NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
             NSURL *url1 = [NSURL URLWithString:str1];
             NSURLRequest *request1 = [NSURLRequest requestWithURL:url1];
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request1 withSuccess:^(NSDictionary *dicData) {
                 if (self.isRefreshing) {
                     self.replyNotificationArray = [NSMutableArray array];
@@ -306,6 +310,7 @@
                     [self.replyNotificationArray addObject:obj];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                     if (self.displayCategory == NotificationDisplayCategoryReply) {
                         [self.tableView reloadData];
                         [self.refreshFooterView endRefreshing];
@@ -313,6 +318,7 @@
                     }
                 });
             } withFailure:^(NSError *error) {
+                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                 [self.refreshFooterView endRefreshing];
                 [self.refreshHeaderView endRefreshing];
                 if (self.displayCategory == NotificationDisplayCategoryReply) {
@@ -333,9 +339,11 @@
             NSURL *url = [NSURL URLWithString:str];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
             [request setHTTPMethod:@"POST"];
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 [self.notificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
                         self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
@@ -346,6 +354,7 @@
                     [Utility errorAlert:@"删除成功!"];
                 });
             } withFailure:^(NSError *error) {
+                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                 NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                 [Utility errorAlert:errorMsg];
                 self.deletingIndexPath = nil;
@@ -362,9 +371,12 @@
             NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/delete_message?user_id=%@&school_class_id=%@&message_id=%@",studentID,classID,noticeID];
             NSURL *url = [NSURL URLWithString:str];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+            
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 [self.replyNotificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
                         self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
@@ -375,6 +387,7 @@
                     [Utility errorAlert:@"删除成功!"];
                 });
             } withFailure:^(NSError *error) {
+                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                 NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                 [Utility errorAlert:errorMsg];
                 self.deletingIndexPath = nil;
@@ -392,12 +405,16 @@
             NSURL *url = [NSURL URLWithString:str];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
             [request setHTTPMethod:@"POST"];
+            
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                     [self replyInputCancelButtonClicked:nil];
                     [Utility errorAlert:@"回复成功!"];
                 });
             } withFailure:^(NSError *error) {
+                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                 NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                 [Utility errorAlert:errorMsg];
             }];
@@ -406,6 +423,13 @@
 }
 
 #pragma mark -- property
+-(AppDelegate *)appDel {
+    if (!_appDel) {
+        _appDel = [AppDelegate shareIntance];
+    }
+    return _appDel;
+}
+
 -(NSMutableDictionary *)bufferedImageDic{
     if (!_bufferedImageDic) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);

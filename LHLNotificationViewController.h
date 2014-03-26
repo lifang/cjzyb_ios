@@ -18,5 +18,5 @@
 #import "LHLTableView.h"
 
 @interface LHLNotificationViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,LHLNotificationCellDelegate,LHLNotificationHeaderDelegate,LHLReplyNotificationCellDelegate,LHLGetMyNoticeInterfaceDelegate,LHLGetSysNoticeInterfaceDelegate,LHLDeleteSysNoticeInterfaceDelegate,LHLDeleteMyNoticeInterfaceDelegate,MJRefreshBaseViewDelegate,LHLTableViewDelegate>
-
+@property (strong,nonatomic) AppDelegate *appDel;
 @end
