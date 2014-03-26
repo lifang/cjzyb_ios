@@ -9,8 +9,6 @@
 #import "LHLNotificationHeader.h"
 @interface LHLNotificationHeader ()
 @property (nonatomic,strong) UIView *backgroundView;
-@property (nonatomic,strong) UIButton *replyButton; //回复通知
-@property (nonatomic,strong) UIButton *noticeButton; //系统通知
 @property (nonatomic,strong) UIImageView *smallTriangle; //白色小三角形
 @end
 @implementation LHLNotificationHeader

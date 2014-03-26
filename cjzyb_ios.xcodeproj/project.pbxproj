@@ -201,6 +201,8 @@
 		18B4EB7E18D29D9F00986766 /* LHLGetSysNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB7D18D29D9F00986766 /* LHLGetSysNoticeInterface.m */; };
 		18B4EB8118D29DD800986766 /* LHLDeleteSysNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB8018D29DD800986766 /* LHLDeleteSysNoticeInterface.m */; };
 		18B4EB8418D29E0500986766 /* LHLDeleteMyNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB8318D29E0500986766 /* LHLDeleteMyNoticeInterface.m */; };
+		18DF865D18E2AAEA009BEB58 /* LHLButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DF865C18E2AAEA009BEB58 /* LHLButton.m */; };
+		18DF866018E2C697009BEB58 /* LHLTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DF865F18E2C697009BEB58 /* LHLTableView.m */; };
 		18E01DA518CDB70B0016FA7D /* yourChoice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18E01DA418CDB70B0016FA7D /* yourChoice@2x.png */; };
 		18E01DA718CDC42C0016FA7D /* libiSpeechSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18E01DA618CDC42C0016FA7D /* libiSpeechSDK.a */; };
 		630DBDC918D1562D009DA0EB /* DRNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 630DBDC818D1562D009DA0EB /* DRNavigationBar.m */; };
@@ -679,6 +681,10 @@
 		18B4EB8018D29DD800986766 /* LHLDeleteSysNoticeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLDeleteSysNoticeInterface.m; sourceTree = "<group>"; };
 		18B4EB8218D29E0500986766 /* LHLDeleteMyNoticeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLDeleteMyNoticeInterface.h; sourceTree = "<group>"; };
 		18B4EB8318D29E0500986766 /* LHLDeleteMyNoticeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLDeleteMyNoticeInterface.m; sourceTree = "<group>"; };
+		18DF865B18E2AAEA009BEB58 /* LHLButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLButton.h; sourceTree = "<group>"; };
+		18DF865C18E2AAEA009BEB58 /* LHLButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLButton.m; sourceTree = "<group>"; };
+		18DF865E18E2C697009BEB58 /* LHLTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLTableView.h; sourceTree = "<group>"; };
+		18DF865F18E2C697009BEB58 /* LHLTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLTableView.m; sourceTree = "<group>"; };
 		18E01DA418CDB70B0016FA7D /* yourChoice@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yourChoice@2x.png"; sourceTree = "<group>"; };
 		18E01DA618CDC42C0016FA7D /* libiSpeechSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiSpeechSDK.a; sourceTree = "<group>"; };
 		630DBDC718D1562D009DA0EB /* DRNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRNavigationBar.h; sourceTree = "<group>"; };
@@ -1627,6 +1633,10 @@
 				18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */,
 				18AA80C218BF1A3300EC08CE /* LHLReplyNotificationCell.h */,
 				18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */,
+				18DF865B18E2AAEA009BEB58 /* LHLButton.h */,
+				18DF865C18E2AAEA009BEB58 /* LHLButton.m */,
+				18DF865E18E2C697009BEB58 /* LHLTableView.h */,
+				18DF865F18E2C697009BEB58 /* LHLTableView.m */,
 				1802DC3118C01E4A0016F110 /* LHLTextView.h */,
 				1802DC3218C01E4A0016F110 /* LHLTextView.m */,
 				0E9265BD18C028A9003ADEC3 /* ComtomTxt.h */,
@@ -2469,6 +2479,7 @@
 				6329551018BC8AA700F2B78D /* ASIAuthenticationDialog.m in Sources */,
 				0EEF4BE818C561700058606A /* BaseInterface.m in Sources */,
 				6396583A18C07B37002F2A90 /* HomeworkTypeObj.m in Sources */,
+				18DF866018E2C697009BEB58 /* LHLTableView.m in Sources */,
 				6341536118C1C90300DE4480 /* NSMutableArray+convenience.m in Sources */,
 				0E5D1C6718C85FD5008A13F2 /* FourthViewController.m in Sources */,
 				18B4EB7E18D29D9F00986766 /* LHLGetSysNoticeInterface.m in Sources */,
@@ -2504,6 +2515,7 @@
 				6329551418BC8AA700F2B78D /* ASIFormDataRequest.m in Sources */,
 				186F216918D6D5BA0089A329 /* MJRefreshFooterView.m in Sources */,
 				187222B118C8434D00BBE2D1 /* answer-1.js in Sources */,
+				18DF865D18E2AAEA009BEB58 /* LHLButton.m in Sources */,
 				6396579218C03766002F2A90 /* LeftTabBarItem.m in Sources */,
 				0EAABDA818D0062100CD2DE7 /* SelectedTagInterface.m in Sources */,
 				6396576718C03664002F2A90 /* WYPopoverController.m in Sources */,

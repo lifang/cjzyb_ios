@@ -22,7 +22,7 @@
 @property (nonatomic,strong) UILabel *replyerNameLabel;  //回复者的名字
 @property (nonatomic,strong) UILabel *timeLabel;   //时间
 @property (nonatomic,strong) LHLTextView *textView;   //内容
-@property (nonatomic,strong) UIButton *coverButton;  //覆盖CELL的按钮
+@property (nonatomic,strong) LHLButton *coverButton;  //覆盖CELL的按钮
 @property (nonatomic,strong) UIButton *replyButton;   //回复消息按钮
 @property (nonatomic,strong) UIButton *deleteButton;  //删除消息按钮
 @end
@@ -105,9 +105,9 @@
         [_contentBgView addSubview:_textView];
         
         //覆盖按钮
-        self.coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.coverButton = [LHLButton buttonWithType:UIButtonTypeCustom];
         _coverButton.backgroundColor = [UIColor clearColor];
-        [_coverButton addTarget:self action:@selector(coverButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        _coverButton.delegate = self;
         [_contentBgView addSubview:_coverButton];
     }
     [self layoutItems];
@@ -183,6 +183,9 @@
 }
 
 #pragma mark -- 按钮响应方法
+//- (void) coverButtonTouchDragInside:(id)sender{
+//    NSLog(@"%@",[super class]);
+//}
 
 - (void) coverButtonClicked:(id)sender{
     _isEditing = !_isEditing;
@@ -203,6 +206,12 @@
         } completion:^(BOOL finished) {
             
         }];
+    }
+}
+
+- (void) coverButtonDraged:(BOOL)toLeft{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(replyCell:dragToLeft:)]) {
+        [self.delegate replyCell:self dragToLeft:toLeft];
     }
 }
 

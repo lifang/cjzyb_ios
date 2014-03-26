@@ -1496,11 +1496,11 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSURL *url = [NSURL URLWithString:str];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
-        NSNumber *cards_count = [dicData objectForKey:@"knowledges_cards_count"];
-        if (cards_count.integerValue > 20) {
-            returnMsg = @"先清卡包";
-            return;
-        }
+//        NSNumber *cards_count = [dicData objectForKey:@"knowledges_cards_count"];
+//        if (cards_count.integerValue > 20) {
+//            returnMsg = @"先清卡包";
+//            return;
+//        }
         NSArray *taskArray = [dicData objectForKey:@"tasks"];
         if (taskArray.count < 1) {
             returnMsg = @"暂未发布今日作业";
@@ -1553,12 +1553,18 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         return nil;
     }
     NSFileManager *manager = [NSFileManager defaultManager];
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:date]; //日期对应的文件夹(task文件夹)
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    path = [path stringByAppendingPathComponent:date]; //日期对应的文件夹(task文件夹)
     if (![manager fileExistsAtPath:path]) {
         NSError *error;
         [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
     }
-    NSString *questionPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"questions.js"]];
+    NSString *questionPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"questions.json"]];
     if (![manager fileExistsAtPath:questionPath]) {
         //在此下载并解压缩
         NSString *resourcePath = [path stringByAppendingPathComponent:@"resourse.zip"];
@@ -1590,12 +1596,18 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         return nil;
     }
     NSFileManager *manager = [NSFileManager defaultManager];
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:date];
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    path = [path stringByAppendingPathComponent:date]; //日期对应的文件夹(task文件夹)
     if (![manager fileExistsAtPath:path]) {
         NSError *error;
         [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
     }
-    NSString *answerPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.js",[DataService sharedService].user.userId]];
+    NSString *answerPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     NSError *error;
     NSData *answerData;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];

@@ -9,7 +9,7 @@
 #import "LHLNotificationViewController.h"
 
 @interface LHLNotificationViewController ()
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet LHLTableView *tableView;
 @property (weak, nonatomic) IBOutlet LHLNotificationHeader *topBar;
 @property (strong,nonatomic) UIView *replyInputBgView;//回复消息时,输入框的背景
 @property (strong,nonatomic) UITextView *replyInputTextView;  //回复消息时,输入框
@@ -32,14 +32,9 @@
 @property (strong,nonatomic) MJRefreshFooterView *refreshFooterView; //下拉加载
 @property (assign,nonatomic) BOOL isRefreshing; //YES刷新,NO分页加载
 @property (strong,nonatomic) NSMutableDictionary *bufferedImageDic; //头像缓冲
-//@property (strong,nonatomic) LHLReplyNotificationCell * editingReplyCell;
-//@property (strong,nonatomic) LHLNotificationCell *editingNotiCell;
-@property (strong,nonatomic) NSIndexPath *editingReplyCellIndexPath;
-@property (strong,nonatomic) NSIndexPath *editingNotiCellIndexPath;
 
-//临时学生数据
-@property (strong,nonatomic) NSString *userID;
-@property (strong,nonatomic) NSString *classID;
+@property (strong,nonatomic) NSIndexPath *editingReplyCellIndexPath;//存储正在编辑状态的格子位置
+@property (strong,nonatomic) NSIndexPath *editingNotiCellIndexPath;
 @end
 
 @implementation LHLNotificationViewController
@@ -80,13 +75,7 @@
     self.pageOfNotification = 1;
     self.replyNotificationArray = [NSMutableArray array];
     self.pageOfReplyNotification = 1;
-    
-    self.userID = @"115";
-    self.classID = @"83";
     self.isRefreshing = YES;
-    
-    [self requestSysNoticeWithStudentID:self.userID andClassID:self.classID andPage:@"1"];
-    [self requestMyNoticeWithStudentID:self.userID andClassID:self.classID andPage:@"1"];
 }
 
 - (void)addNotificationOb{
@@ -112,6 +101,11 @@
         NSString *filePath = [NSString stringWithFormat:@"%@/tempImages.plist",path];
         [_bufferedImageDic writeToFile:filePath atomically:YES];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+    [self requestMyNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -210,6 +204,19 @@
         time = [time stringByReplacingCharactersInRange:NSMakeRange(time.length - @"+08:00".length, @"+08:00".length) withString:@""];
     }
     return [NSString stringWithFormat:@"%@ %@",date,time];
+}
+
+-(void)dragMethod:(BOOL) toLeft{
+    if (toLeft) {
+        //手指向左划
+        if (self.displayCategory == NotificationDisplayCategoryReply) {
+            [self.topBar noticeButtonClicked:self.topBar.noticeButton];
+        }
+    }else{
+        if (self.displayCategory == NotificationDisplayCategoryDefault) {
+            [self.topBar replyButtonClicked:self.topBar.replyButton];
+        }
+    }
 }
 
 #pragma mark -- 请求接口(很多地方写死,需修改)
@@ -533,10 +540,10 @@
 }
 
 -(void)replyInputCommitButtonClicked:(id)sender{
+    //TODO:content尚未赋值
     ReplyNotificationObject *notice = self.replyNotificationArray[self.replyingIndexPath.row];
-    [self replyMessageWithSenderID:self.userID andSenderType:@"1" andContent:@"string" andClassID:self.classID andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
+    [self replyMessageWithSenderID:[DataService sharedService].user.studentId andSenderType:@"1" andContent:@"string" andClassID:[DataService sharedService].theClass.classId andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
 }
-
 
 #pragma mark -- LHLNotificationCellDelegate
 -(void)cell:(LHLNotificationCell *)cell deleteButtonClicked:(id)sender{
@@ -572,6 +579,10 @@
     }else{
         self.editingNotiCellIndexPath = nil;
     }
+}
+
+- (void)cell:(LHLNotificationCell *)cell dragToLeft:(BOOL)toLeft{
+    [self dragMethod:toLeft];
 }
 
 #pragma mark -- LHLReplyNotificationCellDelegate
@@ -627,12 +638,35 @@
     self.deletingIndexPath = cell.indexPath;
 }
 
+-(void) replyCell:(LHLReplyNotificationCell *)cell dragToLeft:(BOOL)toLeft{
+    [self dragMethod:toLeft];
+}
+
 #pragma mark -- LHLNotificationHeaderDelegate
 //点击header按钮后触发
 -(void)header:(LHLNotificationHeader *)header didSelectedDisplayCategory:(NotificationDisplayCategory)category{
     if (self.displayCategory != category) {
         self.displayCategory = category;
         [self.tableView reloadData];
+        
+        CATransition *animation = [CATransition animation];
+        [animation setType:kCATransitionPush];
+        if (self.displayCategory == NotificationDisplayCategoryDefault) {
+            [animation setSubtype:kCATransitionFromRight];
+        }else{
+            [animation setSubtype:kCATransitionFromLeft];
+        }
+        
+        [animation setDuration:0.5];
+        [animation setRemovedOnCompletion:YES];
+        [animation setDelegate:self];
+        [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+        if (self.displayCategory == NotificationDisplayCategoryDefault) {
+            [self.tableView.layer addAnimation:animation forKey:@"PushLeft"];
+        }else{
+            [self.tableView.layer addAnimation:animation forKey:@"PushRight"];
+        }
+        
     }
 }
 
@@ -641,18 +675,18 @@
     if (self.refreshHeaderView == refreshView) { //刷新
         self.isRefreshing = YES;
         if (self.displayCategory == NotificationDisplayCategoryDefault) {
-            [self requestSysNoticeWithStudentID:self.userID andClassID:self.classID andPage:@"1"];
+            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
             self.pageOfNotification = 1;
         }else{
-            [self requestMyNoticeWithStudentID:self.userID andClassID:self.classID andPage:@"1"];
+            [self requestMyNoticeWithStudentID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
             self.pageOfReplyNotification = 1;
         }
     }else{   //分页加载
         self.isRefreshing = NO;
         if (self.displayCategory == NotificationDisplayCategoryDefault) {
-            [self requestSysNoticeWithStudentID:self.userID andClassID:self.classID andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
+            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
         }else{
-            [self requestMyNoticeWithStudentID:self.userID andClassID:self.classID andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
+            [self requestMyNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
         }
     }
 }
