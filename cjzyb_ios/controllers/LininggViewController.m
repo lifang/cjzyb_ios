@@ -20,6 +20,14 @@
 
 @implementation LininggViewController
 
+-(CardFullInterface *)cardFullInter {
+    if (!_cardFullInter) {
+        _cardFullInter = [[CardFullInterface alloc]init];
+        _cardFullInter.delegate = self;
+    }
+    return _cardFullInter;
+}
+
 -(UIButton *)returnUIButton {
     UIButton *btn = [[UIButton alloc]init];
     [btn.layer setMasksToBounds:YES];
@@ -932,6 +940,7 @@
     [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 
+
 #pragma mark
 #pragma mark - TenSecChallengeResultViewDelegate
 -(void)resultViewCommitButtonClicked {//确认完成
@@ -954,11 +963,29 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            //上传answer.json文件之后返回的更新时间
+            NSString *timeStr = [result objectForKey:@""];
+            [Utility returnAnswerPAthWithString:timeStr];
             [self showResultView];
         });
     });
 }
 -(void)getPostInfoDidFailed:(NSString *)errorMsg {
+    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [Utility errorAlert:errorMsg];
+}
+
+#pragma mark
+#pragma mark - 判断卡包是否已满
+-(void)getCardFullInfoDidFinished:(NSDictionary *)result {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            
+        });
+    });
+}
+-(void)getCardFullInfoDidFailed:(NSString *)errorMsg {
     [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
     [Utility errorAlert:errorMsg];
 }

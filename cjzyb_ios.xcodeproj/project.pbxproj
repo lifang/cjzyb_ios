@@ -69,6 +69,10 @@
 		0E93C9BE18D9927E0094AD7B /* LininggViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9BC18D9927E0094AD7B /* LininggViewController.m */; };
 		0E93C9BF18D9927E0094AD7B /* LininggViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E93C9BD18D9927E0094AD7B /* LininggViewController.xib */; };
 		0E93C9D618DAE7C30094AD7B /* CustomLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9D518DAE7C30094AD7B /* CustomLabel.m */; };
+		0E97C9CC18E2A17500890F60 /* logOut@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9CB18E2A17500890F60 /* logOut@2x.png */; };
+		0E97C9CE18E2A81700890F60 /* contact_message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9CD18E2A81700890F60 /* contact_message@2x.png */; };
+		0E97C9DA18E2BA7200890F60 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E97C9D918E2BA7200890F60 /* libPushSDK.a */; };
+		0E97C9DC18E2BABB00890F60 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9DB18E2BABB00890F60 /* PushConfig.plist */; };
 		0E9C6E9818D1496000E807D1 /* SortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C6E9618D1496000E807D1 /* SortViewController.m */; };
 		0E9C6E9918D1496000E807D1 /* SortViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9C6E9718D1496000E807D1 /* SortViewController.xib */; };
 		0E9C6E9D18D1977E00E807D1 /* SelectedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C6E9B18D1977E00E807D1 /* SelectedViewController.m */; };
@@ -252,6 +256,8 @@
 		630DBE2318D15CB1009DA0EB /* homwwork_listenWrite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 630DBE1618D15CB1009DA0EB /* homwwork_listenWrite@2x.png */; };
 		630DBEBD18D1B0F3009DA0EB /* ModelTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630DBEBB18D1B0F3009DA0EB /* ModelTypeViewController.m */; };
 		630DBEBE18D1B0F3009DA0EB /* ModelTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DBEBC18D1B0F3009DA0EB /* ModelTypeViewController.xib */; };
+		630E063618E16C760044F819 /* PreReadingTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630E063418E16C760044F819 /* PreReadingTaskViewController.m */; };
+		630E063718E16C760044F819 /* PreReadingTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630E063518E16C760044F819 /* PreReadingTaskViewController.xib */; };
 		63289A2418C594DB00C0083E /* ReadingTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63289A2218C594DB00C0083E /* ReadingTaskViewController.m */; };
 		63289A2518C594DB00C0083E /* ReadingTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2318C594DB00C0083E /* ReadingTaskViewController.xib */; };
 		63289A2B18C595D300C0083E /* listening_start@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2718C595D300C0083E /* listening_start@2x.png */; };
@@ -476,6 +482,11 @@
 		0E93C9BD18D9927E0094AD7B /* LininggViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LininggViewController.xib; sourceTree = "<group>"; };
 		0E93C9D418DAE7C30094AD7B /* CustomLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLabel.h; sourceTree = "<group>"; };
 		0E93C9D518DAE7C30094AD7B /* CustomLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLabel.m; sourceTree = "<group>"; };
+		0E97C9CB18E2A17500890F60 /* logOut@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logOut@2x.png"; sourceTree = "<group>"; };
+		0E97C9CD18E2A81700890F60 /* contact_message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact_message@2x.png"; sourceTree = "<group>"; };
+		0E97C9D818E2BA7200890F60 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
+		0E97C9D918E2BA7200890F60 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
+		0E97C9DB18E2BABB00890F60 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		0E9C6E9518D1496000E807D1 /* SortViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortViewController.h; sourceTree = "<group>"; };
 		0E9C6E9618D1496000E807D1 /* SortViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortViewController.m; sourceTree = "<group>"; };
 		0E9C6E9718D1496000E807D1 /* SortViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortViewController.xib; sourceTree = "<group>"; };
@@ -736,6 +747,9 @@
 		630DBEBA18D1B0F3009DA0EB /* ModelTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelTypeViewController.h; sourceTree = "<group>"; };
 		630DBEBB18D1B0F3009DA0EB /* ModelTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelTypeViewController.m; sourceTree = "<group>"; };
 		630DBEBC18D1B0F3009DA0EB /* ModelTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModelTypeViewController.xib; sourceTree = "<group>"; };
+		630E063318E16C760044F819 /* PreReadingTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreReadingTaskViewController.h; sourceTree = "<group>"; };
+		630E063418E16C760044F819 /* PreReadingTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreReadingTaskViewController.m; sourceTree = "<group>"; };
+		630E063518E16C760044F819 /* PreReadingTaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreReadingTaskViewController.xib; sourceTree = "<group>"; };
 		63289A2118C594DB00C0083E /* ReadingTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadingTaskViewController.h; sourceTree = "<group>"; };
 		63289A2218C594DB00C0083E /* ReadingTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadingTaskViewController.m; sourceTree = "<group>"; };
 		63289A2318C594DB00C0083E /* ReadingTaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReadingTaskViewController.xib; sourceTree = "<group>"; };
@@ -983,6 +997,7 @@
 				0E5D1C8318C99FCB008A13F2 /* libiconv.dylib in Frameworks */,
 				0E5D1C8118C99FBD008A13F2 /* CoreTelephony.framework in Frameworks */,
 				0E5D1C7F18C99FAE008A13F2 /* Security.framework in Frameworks */,
+				0E97C9DA18E2BA7200890F60 /* libPushSDK.a in Frameworks */,
 				0E5D1C7D18C99FA7008A13F2 /* libc++.dylib in Frameworks */,
 				63B8D26C18C84C7C004141E9 /* Foundation.framework in Frameworks */,
 				6334F29418C6BA6500515A3F /* AVFoundation.framework in Frameworks */,
@@ -1040,6 +1055,8 @@
 		0E92657218BDACCE003ADEC3 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E97C9CD18E2A81700890F60 /* contact_message@2x.png */,
+				0E97C9CB18E2A17500890F60 /* logOut@2x.png */,
 				0E93C9AE18D834630094AD7B /* ios-playing@2x.png */,
 				0E93C9AF18D834630094AD7B /* ios-stop@2x.png */,
 				0EAABDBE18D0416E00CD2DE7 /* listen_back@2x.png */,
@@ -1081,6 +1098,15 @@
 				0E9265A518BF008C003ADEC3 /* arrowImg@2x.png */,
 			);
 			name = images;
+			sourceTree = "<group>";
+		};
+		0E97C9D718E2BA7200890F60 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				0E97C9D818E2BA7200890F60 /* APService.h */,
+				0E97C9D918E2BA7200890F60 /* libPushSDK.a */,
+			);
+			path = lib;
 			sourceTree = "<group>";
 		};
 		0E9D689418CD4DEC00EACFA3 /* SVPullToRefresh */ = {
@@ -1465,6 +1491,7 @@
 		6329549818BC875800F2B78D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				0E97C9DB18E2BABB00890F60 /* PushConfig.plist */,
 				0E2B517A18DC27110056859D /* trueMusic.wav */,
 				0E2B517B18DC27110056859D /* falseMusic.wav */,
 				0E9D68C918CD972600EACFA3 /* multipy_unicode.dat */,
@@ -1532,6 +1559,9 @@
 				63289A2118C594DB00C0083E /* ReadingTaskViewController.h */,
 				63289A2218C594DB00C0083E /* ReadingTaskViewController.m */,
 				63289A2318C594DB00C0083E /* ReadingTaskViewController.xib */,
+				630E063318E16C760044F819 /* PreReadingTaskViewController.h */,
+				630E063418E16C760044F819 /* PreReadingTaskViewController.m */,
+				630E063518E16C760044F819 /* PreReadingTaskViewController.xib */,
 				63B8D27018C860B6004141E9 /* CarnetResultViewController.h */,
 				63B8D27118C860B6004141E9 /* CarnetResultViewController.m */,
 				63B8D27218C860B6004141E9 /* CarnetResultViewController.xib */,
@@ -1591,6 +1621,7 @@
 		632954C318BC879B00F2B78D /* thirtys */ = {
 			isa = PBXGroup;
 			children = (
+				0E97C9D718E2BA7200890F60 /* lib */,
 				182BEE4218E12F8100FC0AA0 /* ZipArchiever */,
 				0E660F1E18E0277D0074454C /* upLoadImage */,
 				0E9D68C218CD965B00EACFA3 /* 搜索算法 */,
@@ -2228,6 +2259,7 @@
 				630DBE1E18D15CB1009DA0EB /* homework_quik@2x.png in Resources */,
 				1818F6A618C561ED00DC6207 /* TenSecChallengeResultView.xib in Resources */,
 				630DBDD618D15936009DA0EB /* mainTabBarItem@2x.png in Resources */,
+				0E97C9CE18E2A81700890F60 /* contact_message@2x.png in Resources */,
 				187C4ACC18D304AC0006461D /* 10_07@2x.png in Resources */,
 				188ED74118CD850700D1210F /* right_sound.mp3 in Resources */,
 				0EAABD7C18CF136900CD2DE7 /* TagViewController.xib in Resources */,
@@ -2269,6 +2301,7 @@
 				0E92659D18BDE51F003ADEC3 /* commentBtn@2x.png in Resources */,
 				0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */,
 				0E5D1C8918C9A18F008A13F2 /* QQLogIn@2x.png in Resources */,
+				630E063718E16C760044F819 /* PreReadingTaskViewController.xib in Resources */,
 				0E9265A018BDE51F003ADEC3 /* focusBtn@2x.png in Resources */,
 				0E92657918BDACDD003ADEC3 /* first_active@2x.png in Resources */,
 				0E9D68BB18CD6C5500EACFA3 /* card_searchBtn@2x.png in Resources */,
@@ -2278,6 +2311,7 @@
 				63B8D27418C860B6004141E9 /* CarnetResultViewController.xib in Resources */,
 				0E92657918BDACDD003ADEC3 /* first_active@2x.png in Resources */,
 				0E92657E18BDACDD003ADEC3 /* third@2x.png in Resources */,
+				0E97C9DC18E2BABB00890F60 /* PushConfig.plist in Resources */,
 				0E5D1C6818C85FD5008A13F2 /* FourthViewController.xib in Resources */,
 				0E92655018BD9016003ADEC3 /* MainViewController.xib in Resources */,
 				188ED74218CD850700D1210F /* wrong_sound.mp3 in Resources */,
@@ -2304,6 +2338,7 @@
 				18E01DA518CDB70B0016FA7D /* yourChoice@2x.png in Resources */,
 				1867B53718D006AB0042A95D /* systemMessage@2x.png in Resources */,
 				1833276B18CEB38000638107 /* smallTriangle@2x.png in Resources */,
+				0E97C9CC18E2A17500890F60 /* logOut@2x.png in Resources */,
 				0E9D68DD18CDC45400EACFA3 /* card_normal@2x.png in Resources */,
 				0E9D68AB18CD685100EACFA3 /* card_back@2x.png in Resources */,
 				6396583418C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib in Resources */,
@@ -2477,6 +2512,7 @@
 				6329556218BC900600F2B78D /* NSData+ImageContentType.m in Sources */,
 				6329556B18BC900600F2B78D /* UIImage+GIF.m in Sources */,
 				6329551018BC8AA700F2B78D /* ASIAuthenticationDialog.m in Sources */,
+				630E063618E16C760044F819 /* PreReadingTaskViewController.m in Sources */,
 				0EEF4BE818C561700058606A /* BaseInterface.m in Sources */,
 				6396583A18C07B37002F2A90 /* HomeworkTypeObj.m in Sources */,
 				18DF866018E2C697009BEB58 /* LHLTableView.m in Sources */,
@@ -2718,7 +2754,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sen Ye (FE46ZS29LM)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/cjzyb_ios\"",
+					"$(SRCROOT)/cjzyb_ios",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cjzyb_ios/cjzyb_ios-Prefix.pch";
@@ -2731,7 +2767,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/cjzyb_ios/thirtys/iSpeech/\"",
+					"$(SRCROOT)/cjzyb_ios/thirtys/iSpeech",
+					"$(SRCROOT)/cjzyb_ios/thirtys/lib",
 				);
 				OTHER_LDFLAGS = "-fobjc-arc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -2749,7 +2786,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Sen Ye (FE46ZS29LM)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/cjzyb_ios\"",
+					"$(SRCROOT)/cjzyb_ios",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cjzyb_ios/cjzyb_ios-Prefix.pch";
@@ -2762,7 +2799,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/cjzyb_ios/thirtys/iSpeech/\"",
+					"$(SRCROOT)/cjzyb_ios/thirtys/iSpeech",
+					"$(SRCROOT)/cjzyb_ios/thirtys/lib",
 				);
 				OTHER_LDFLAGS = "-fobjc-arc";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -377,8 +377,8 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }
     NSString *documentDirectory = [path stringByAppendingPathComponent:jsonPath];
-//    NSString *filePath = [documentDirectory stringByAppendingPathComponent:@"question.json"];
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:jsonPath ofType:@"json"];
+    NSString *filePath = [documentDirectory stringByAppendingPathComponent:@"question.json"];
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource:jsonPath ofType:@"json"];
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:0 error:&jsonParsingError];
     return dataObject;
 }
@@ -1598,11 +1598,11 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSFileManager *manager = [NSFileManager defaultManager];
     NSString *path;
     if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]stringByAppendingPathComponent:date];
     }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0]stringByAppendingPathComponent:date];
     }
-    path = [path stringByAppendingPathComponent:date]; //日期对应的文件夹(task文件夹)
+    
     if (![manager fileExistsAtPath:path]) {
         NSError *error;
         [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
@@ -1731,7 +1731,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     }
     
     NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
-    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     if ([fileManage fileExistsAtPath:jsPath]) {
         NSError *error = nil;
         Class JSONSerialization = [Utility JSONParserClass];
@@ -1769,8 +1769,33 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         return dic;
     }
 }
++(NSString *)returnTypeOfQuestionWithString:(NSString *)str {
+    NSString *type;
+    
+    if ([str isEqualToString:@"listening"]) {
+        type = [NSString stringWithFormat:@"%d",0];
+    }else if ([str isEqualToString:@"reading"]) {
+        type = [NSString stringWithFormat:@"%d",1];
+    }else if ([str isEqualToString:@"time_limit"]) {
+        type = [NSString stringWithFormat:@"%d",2];
+    }else if ([str isEqualToString:@"selecting"]) {
+        type = [NSString stringWithFormat:@"%d",3];
+    }else if ([str isEqualToString:@"lining"]) {
+        type = [NSString stringWithFormat:@"%d",4];
+    }else if ([str isEqualToString:@"cloze"]) {
+        type = [NSString stringWithFormat:@"%d",5];
+    }else if ([str isEqualToString:@"sort"]) {
+        type = [NSString stringWithFormat:@"%d",6];
+    }
+    
+    return type;
+}
 //TODO:保存题目
 +(void)returnAnswerPathWithDictionary:(NSDictionary *)aDic andName:(NSString *)name andDate:(NSString *)timeString{
+    
+    NSString *str = [Utility returnTypeOfQuestionWithString:name];
+    [[DataService sharedService].taskObj.finish_types addObject:str];
+    
     NSString *path;
     if (platform>5.0) {
         path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -1778,13 +1803,15 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }
     NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
-    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
 
     NSError *error = nil;
     Class JSONSerialization = [Utility JSONParserClass];
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
     NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
-
+    if ([DataService sharedService].taskObj.finish_types.count == [DataService sharedService].taskObj.taskHomeworkTypeArray.count) {
+        [answerDic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"status"];
+    }
 //    [answerDic setObject:[DataService sharedService].taskObj.taskId forKey:@"pub_id"];
     [answerDic setObject:aDic forKey:name];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
@@ -1801,7 +1828,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }
     NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
-    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     if ([fileManage fileExistsAtPath:jsPath]) {
         NSError *error = nil;
         Class JSONSerialization = [Utility JSONParserClass];
@@ -1837,7 +1864,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }
     NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
-    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     
     NSError *error = nil;
     Class JSONSerialization = [Utility JSONParserClass];
@@ -1849,6 +1876,27 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
     [jsonData writeToFile:jsPath atomically:YES];
 }
+//TODO：更新时间
++(void)returnAnswerPAthWithString:(NSString *)str {
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
+    
+    NSError *error = nil;
+    Class JSONSerialization = [Utility JSONParserClass];
+    NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
+    NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
+    [answerDic setObject:str forKey:@"update"];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
+    [jsonData writeToFile:jsPath atomically:YES];
+}
+
+
 //比较时间
 +(BOOL)compareTime {
     

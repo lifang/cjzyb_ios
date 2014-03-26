@@ -222,8 +222,13 @@
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             if ([[result objectForKey:@"status"]isEqualToString:@"success"]) {
                 NSFileManager *fileManage = [NSFileManager defaultManager];
-                NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                NSString *filename = [Path stringByAppendingPathComponent:@"class.plist"];
+                NSString *path;
+                if (platform>5.0) {
+                    path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                }else{
+                    path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                }
+                NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
                 if ([fileManage fileExistsAtPath:filename]) {
                     [fileManage removeItemAtPath:filename error:nil];
                 }
@@ -232,7 +237,7 @@
                 [NSKeyedArchiver archiveRootObject:classDic toFile:filename];
                 
                 
-                NSString *filename2 = [Path stringByAppendingPathComponent:@"student.plist"];
+                NSString *filename2 = [path stringByAppendingPathComponent:@"student.plist"];
                 if ([fileManage fileExistsAtPath:filename2]) {
                     [fileManage removeItemAtPath:filename2 error:nil];
                 }

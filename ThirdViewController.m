@@ -27,15 +27,6 @@
 {
     [super viewDidLoad];
     self.third = 3;
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShowThird:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHideThird:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-    
 }
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -43,10 +34,25 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    int lastObject = [[[DataService sharedService].numberOfViewArray lastObject]intValue];
+    
+    if (lastObject==self.third){
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillShowThird:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHideThird:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+    }
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.txtView resignFirstResponder];
+    
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -165,7 +171,7 @@
         if (self.appDel.isReachable == NO) {
             [Utility errorAlert:@"暂无网络!"];
         }else {
-            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             self.questionInter = [[QuestionInterface alloc]init];
             self.questionInter.delegate = self;
             [self.questionInter getQuestionInterfaceDelegateWithUserId:[DataService sharedService].user.userId andUserType:@"1" andClassId:[DataService sharedService].theClass.classId andContent:self.txtView.text];
@@ -177,7 +183,7 @@
 -(void)getQuestionInfoDidFinished:(NSDictionary *)result {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             self.txtView.text = @"";self.textCountLabel.text = @"还可以输入60字";
             NSArray *array = [result objectForKey:@"micropost"];
             NSDictionary *dic = [array objectAtIndex:0];
@@ -194,7 +200,7 @@
     });
 }
 -(void)getQuestionInfoDidFailed:(NSString *)errorMsg {
-    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [Utility errorAlert:errorMsg];
 }
 @end

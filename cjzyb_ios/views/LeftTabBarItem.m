@@ -11,6 +11,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *backImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *tagImageView;
 @property (weak, nonatomic) IBOutlet UILabel *tagTitleLabel;
+
 @end
 @implementation LeftTabBarItem
 

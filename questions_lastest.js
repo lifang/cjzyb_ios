@@ -120,11 +120,11 @@
         [
             {"id": "284",
                 "branch_questions": [
-                    {"id": "181", "content": "This is an apple!", "resource_url": "/question_packages/201402/questions_package_222/media_181.mp3"}
+                    {"id": "181", "content": "This is an apple!", "resource_url": ""}
                 ]},
             {"id": "284",
                 "branch_questions": [
-                    {"id": "181", "content": "This is an apple!", "resource_url": "/question_packages/201402/questions_package_222/media_181.mp3"}
+                    {"id": "181", "content": "This is an apple!", "resource_url": ""}
                 ]}
         ]
     }

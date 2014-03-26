@@ -61,6 +61,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     if (platform>=7.0) {
         AppDelegate *appDel = [AppDelegate shareIntance];
         self.edgesForExtendedLayout = UIRectEdgeNone;

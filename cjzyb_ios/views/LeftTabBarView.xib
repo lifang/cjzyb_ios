@@ -17,7 +17,7 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="PeA-oS-wwk" userLabel="backImageView">
                     <rect key="frame" x="0.0" y="0.0" width="110" height="957"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" red="0.21563674741363584" green="0.24674093321394289" blue="0.29466278698979587" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.15294117647058825" green="0.18823529411764706" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
                 </imageView>
                 <view contentMode="scaleToFill" id="oev-oA-zNa" userLabel="mainItem" customClass="LeftTabBarItem">
                     <rect key="frame" x="0.0" y="0.0" width="120" height="90"/>
@@ -31,7 +31,7 @@
                             <rect key="frame" x="32" y="16" width="41" height="39"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         </imageView>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="首页" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WBg-zV-41W" userLabel="tagTitleLabel">
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="问答" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WBg-zV-41W" userLabel="tagTitleLabel">
                             <rect key="frame" x="0.0" y="55" width="105" height="17"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -51,16 +51,21 @@
                                 <action selector="mainItemClicked:" destination="1" eventType="touchUpInside" id="9d4-lC-JIO"/>
                             </connections>
                         </button>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact_message.png" id="3lD-aL-uxw" userLabel="redImg">
+                            <rect key="frame" x="73" y="15" width="10" height="10"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="backImageView" destination="64s-qx-rMz" id="f9v-rr-6Fn"/>
+                        <outlet property="redImg" destination="3lD-aL-uxw" id="4fA-NR-1P2"/>
                         <outlet property="tagImageView" destination="bno-0s-NF7" id="pC5-r9-iiG"/>
                         <outlet property="tagTitleLabel" destination="WBg-zV-41W" id="iHg-4T-lu6"/>
                     </connections>
                 </view>
                 <view contentMode="scaleToFill" id="5Rn-LL-TaL" userLabel="homeworkItem" customClass="LeftTabBarItem">
-                    <rect key="frame" x="0.0" y="146" width="120" height="90"/>
+                    <rect key="frame" x="0.0" y="120" width="120" height="90"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tabBarItemBack.png" id="QrI-W4-gqH" userLabel="backImageView">
@@ -91,16 +96,21 @@
                                 <action selector="homeworkItemClicked:" destination="1" eventType="touchUpInside" id="GBs-Cb-5OJ"/>
                             </connections>
                         </button>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact_message.png" id="Y6D-zK-0YW" userLabel="redImg">
+                            <rect key="frame" x="73" y="15" width="10" height="10"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="backImageView" destination="QrI-W4-gqH" id="PoL-og-Qmy"/>
+                        <outlet property="redImg" destination="Y6D-zK-0YW" id="g3m-5Q-DYW"/>
                         <outlet property="tagImageView" destination="EcL-lm-uh7" id="NRX-ip-7qG"/>
                         <outlet property="tagTitleLabel" destination="bFr-Dr-iJ9" id="jeU-UR-zDm"/>
                     </connections>
                 </view>
                 <view contentMode="scaleToFill" id="EPB-AA-WxH" userLabel="notificationItem" customClass="LeftTabBarItem">
-                    <rect key="frame" x="0.0" y="294" width="120" height="90"/>
+                    <rect key="frame" x="0.0" y="240" width="120" height="90"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tabBarItemBack.png" id="Lns-ET-6V3" userLabel="backImageView">
@@ -131,18 +141,27 @@
                                 <action selector="notificationItemClicked:" destination="1" eventType="touchUpInside" id="ZOt-b0-rI5"/>
                             </connections>
                         </button>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact_message.png" id="p71-dT-yeW" userLabel="redImg">
+                            <rect key="frame" x="73" y="15" width="10" height="10"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="backImageView" destination="Lns-ET-6V3" id="sz9-Gn-you"/>
+                        <outlet property="redImg" destination="p71-dT-yeW" id="kUa-EA-wrL"/>
                         <outlet property="tagImageView" destination="xYP-87-Qvx" id="Nwy-B8-WIG"/>
                         <outlet property="tagTitleLabel" destination="gaK-cp-dGk" id="Iil-IU-XCQ"/>
                     </connections>
                 </view>
                 <view contentMode="scaleToFill" id="T9c-Jw-GpH" userLabel="carBagItem" customClass="LeftTabBarItem">
-                    <rect key="frame" x="0.0" y="447" width="120" height="90"/>
+                    <rect key="frame" x="0.0" y="360" width="120" height="90"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <subviews>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="cNZ-vA-kXq" userLabel="redImg">
+                            <rect key="frame" x="73" y="15" width="10" height="10"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tabBarItemBack.png" id="Ix3-il-KYz" userLabel="backImageView">
                             <rect key="frame" x="0.0" y="0.0" width="117" height="90"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -175,14 +194,19 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="backImageView" destination="Ix3-il-KYz" id="5fY-7E-m98"/>
+                        <outlet property="redImg" destination="cNZ-vA-kXq" id="yyq-t8-Xrb"/>
                         <outlet property="tagImageView" destination="sbG-SL-KP3" id="z4A-zA-e6t"/>
                         <outlet property="tagTitleLabel" destination="s9K-pw-QDm" id="Exs-xz-ZBV"/>
                     </connections>
                 </view>
                 <view contentMode="scaleToFill" id="aPJ-1R-7MG" userLabel="userGroudItem" customClass="LeftTabBarItem">
-                    <rect key="frame" x="0.0" y="706" width="120" height="77"/>
+                    <rect key="frame" x="0.0" y="535" width="120" height="77"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <subviews>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="QB3-go-vcm" userLabel="redImg">
+                            <rect key="frame" x="73" y="15" width="10" height="10"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
                         <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="O55-cb-Gy8" userLabel="backImageView">
                             <rect key="frame" x="19" y="15" width="85" height="39"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
@@ -215,8 +239,54 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="backImageView" destination="O55-cb-Gy8" id="9J7-jI-7m7"/>
+                        <outlet property="redImg" destination="QB3-go-vcm" id="IbC-0V-dIz"/>
                         <outlet property="tagImageView" destination="ouu-bP-Fqs" id="Rzv-Gg-nX4"/>
                         <outlet property="tagTitleLabel" destination="nrl-l1-JiX" id="9Zc-AN-HSW"/>
+                    </connections>
+                </view>
+                <view contentMode="scaleToFill" id="iaj-KG-Co9" userLabel="logOutItem" customClass="LeftTabBarItem">
+                    <rect key="frame" x="7" y="765" width="120" height="77"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="gIU-2d-zP1" userLabel="redImg">
+                            <rect key="frame" x="73" y="15" width="10" height="10"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="v4n-0T-p1N" userLabel="backImageView">
+                            <rect key="frame" x="19" y="15" width="85" height="39"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logOut.png" id="sgy-tv-qyK" userLabel="tagImageView">
+                            <rect key="frame" x="32" y="16" width="28" height="27"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                        <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="作业" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tez-if-Su2" userLabel="tagTitleLabel">
+                            <rect key="frame" x="0.0" y="62" width="105" height="15"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Bev-qo-Yqx">
+                            <rect key="frame" x="0.0" y="0.0" width="120" height="77"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="logOutItemClicked:" destination="1" eventType="touchUpInside" id="kFk-JX-VGh"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="backImageView" destination="v4n-0T-p1N" id="8fk-U8-Xla"/>
+                        <outlet property="redImg" destination="gIU-2d-zP1" id="E9b-Px-x1R"/>
+                        <outlet property="tagImageView" destination="sgy-tv-qyK" id="CqJ-MW-0CZ"/>
+                        <outlet property="tagTitleLabel" destination="tez-if-Su2" id="QzM-i4-juM"/>
                     </connections>
                 </view>
             </subviews>
@@ -225,6 +295,7 @@
             <connections>
                 <outlet property="carBarTabBarItem" destination="T9c-Jw-GpH" id="xrm-Ba-f0w"/>
                 <outlet property="homeworkTabBarItem" destination="5Rn-LL-TaL" id="twi-Gc-eMM"/>
+                <outlet property="logOutItem" destination="iaj-KG-Co9" id="ulI-jp-maz"/>
                 <outlet property="mainTabBarItem" destination="oev-oA-zNa" id="aBr-JO-wnY"/>
                 <outlet property="notificationTabBarItem" destination="EPB-AA-WxH" id="Rfn-tz-a2m"/>
                 <outlet property="userGroupTabBarItem" destination="aPJ-1R-7MG" id="BPg-7U-lN1"/>
@@ -233,7 +304,9 @@
     </objects>
     <resources>
         <image name="carBarItem.png" width="37" height="37"/>
+        <image name="contact_message.png" width="10" height="10"/>
         <image name="homeworkTabBarItem.png" width="37" height="37"/>
+        <image name="logOut.png" width="27" height="26"/>
         <image name="mainTabBarItem.png" width="37" height="37"/>
         <image name="notificationTabBarItem.png" width="37" height="37"/>
         <image name="tabBarItemBack.png" width="145" height="89"/>

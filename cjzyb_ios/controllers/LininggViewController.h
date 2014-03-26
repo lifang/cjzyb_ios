@@ -12,11 +12,18 @@
 
 #import "LiningDrawLinesView.h"
 #import "LineObj.h"
+#import "CardFullInterface.h"
 
-@interface LininggViewController : UIViewController<TenSecChallengeResultViewDelegate,PostDelegate>
+/**
+*  连线
+*/
+
+@interface LininggViewController : UIViewController<TenSecChallengeResultViewDelegate,PostDelegate,CardFullInterfaceDelegate>
 
 @property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) BasePostInterface *postInter;
+@property (nonatomic, strong) CardFullInterface *cardFullInter;
+
 @property (nonatomic, strong) LiningDrawLinesView *wordsContainerView;
 
 @property (nonatomic, strong) NSMutableArray *leftArray;

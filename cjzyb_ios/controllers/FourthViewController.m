@@ -56,15 +56,6 @@
         [fourthView getMyfocusData];
         [table.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShowFourth:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHideFourth:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
 }
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
@@ -72,21 +63,34 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    if (self.fourthArray.count == 0 ) {
-        [self getMyfocusData];
+    int lastObject = [[[DataService sharedService].numberOfViewArray lastObject]intValue];
+    if (lastObject == self.fourth) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillShowFourth:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHideFourth:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+        
+        if (self.fourthArray.count == 0) {
+            [self getMyfocusData];
+        }
     }
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.textView resignFirstResponder];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 -(void)getMyfocusData {
     if (self.appDel.isReachable == NO) {
-        
+        [Utility errorAlert:@"暂无网络!"];
     }else {
         self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
-        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         [self.mFocusInter getMyFocusInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId andPage:1];
     }
 }
@@ -298,7 +302,7 @@
                 if (self.appDel.isReachable == NO) {
                     [Utility errorAlert:@"暂无网络!"];
                 }else {
-                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
                     MessageObject *message = (MessageObject *)[self.fourthArray objectAtIndex:self.tmpSection];
                     [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:message.userId andReceiverType:message.userType andmessageId:message.messageId andContent:self.textView.text andType:self.type];
                 }
@@ -307,7 +311,7 @@
                 if (self.appDel.isReachable == NO) {
                     [Utility errorAlert:@"暂无网络!"];
                 }else {
-                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
                     MessageObject *message = (MessageObject *)[self.fourthArray objectAtIndex:self.theIndex.section];
                     ReplyMessageObject *replyMsg = (ReplyMessageObject *)[message.replyMessageArray objectAtIndex:self.theIndex.row];
                     [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:replyMsg.sender_id andReceiverType:replyMsg.sender_types andmessageId:message.messageId andContent:self.textView.text andType:self.type];
@@ -520,7 +524,7 @@
                     [Utility errorAlert:@"暂无网络!"];
                 }else {
                     //获取子消息
-                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
                     message.pageHeader = 1;
                     [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
                 }
@@ -547,7 +551,7 @@
         [Utility errorAlert:@"暂无网络!"];
     }else {
         self.tmpSection = header.aSection;
-        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         if (header.aMessage.isFollow == YES) {
             [self.focusInter getFocusInterfaceDelegateWithMessageId:header.aMessage.messageId andUserId:[DataService sharedService].user.userId andType:0];
         }else {
@@ -573,7 +577,7 @@
     }else {
         [header.superview sendSubviewToBack:header];
         self.tmpSection = header.aSection;
-        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         MessageObject *message = (MessageObject *)[self.fourthArray objectAtIndex:header.aSection];
         [self.deleteInter getDeleteMessageDelegateDelegateWithMessageId:message.messageId andType:1];
     }
@@ -628,7 +632,7 @@
     if (self.appDel.isReachable == NO) {
         [Utility errorAlert:@"暂无网络!"];
     }else {
-        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         MessageObject *message = (MessageObject *)[self.fourthArray objectAtIndex:self.theIndex.section];
         ReplyMessageObject *replyMsg = (ReplyMessageObject *)[message.replyMessageArray objectAtIndex:self.theIndex.row];
         
@@ -644,7 +648,7 @@
         [Utility errorAlert:@"暂无网络!"];
     }else {
         //获取子消息
-        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         if ([message.replyCount integerValue]<=10) {
             message.pageHeader = 1;
         }else
@@ -659,7 +663,7 @@
 -(void)getReplyMessageInfoDidFinished:(NSDictionary *)result {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             NSDictionary *aDic = [result objectForKey:@"reply_microposts"];
             
             
@@ -686,7 +690,7 @@
     });
 }
 -(void)getReplyMessageInfoDidFailed:(NSString *)errorMsg {
-    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [Utility errorAlert:errorMsg];
 }
 
@@ -695,7 +699,7 @@
 -(void)getFocusInfoDidFinished:(NSDictionary *)result andType:(NSInteger)type{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             
             MessageObject *message = (MessageObject *)[self.fourthArray objectAtIndex:self.tmpSection];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadFirstArrayByFourthView" object:message];
@@ -714,7 +718,7 @@
     });
 }
 -(void)getFocusInfoDidFailed:(NSString *)errorMsg {
-    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [Utility errorAlert:errorMsg];
 }
 #pragma mark
@@ -723,7 +727,7 @@
 -(void)getDeleteMsgInfoDidFinished:(NSDictionary *)result andType:(NSInteger)type{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             if (type==1) {
                 [self.arrSelSection removeAllObjects];
                 [self.fourthArray removeObjectAtIndex:self.tmpSection];
@@ -756,7 +760,7 @@
     });
 }
 -(void)getDeleteMsgInfoDidFailed:(NSString *)errorMsg {
-    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [Utility errorAlert:errorMsg];
 }
 
@@ -765,7 +769,7 @@
 -(void)getSendInfoDidFinished:(NSDictionary *)result anType:(NSInteger)type{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             self.textView.text = @"";self.textCountLabel.text = @"0/60";
             if (type==1) {//回复的主消息
                 NSArray *array = [result objectForKey:@"replymicropost"];
@@ -822,7 +826,7 @@
     });
 }
 -(void)getSendInfoDidFailed:(NSString *)errorMsg {
-    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [Utility errorAlert:errorMsg];
 }
 #pragma mark
@@ -831,7 +835,7 @@
 -(void)getMyFocusInfoDidFinished:(NSDictionary *)result {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
             NSArray *array = [result objectForKey:@"microposts"];
             if (array.count>0) {
                 
@@ -856,7 +860,7 @@
     });
 }
 -(void)getMyFocusInfoDidFailed:(NSString *)errorMsg {
-    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [Utility errorAlert:errorMsg];
 }
 

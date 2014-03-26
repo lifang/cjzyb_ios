@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"//主页
-
+#import "APService.h"//极光推送
 #import "TestViewController.h"
 #import "DRLeftTabBarViewController.h"
 #import "HomeworkDailyCollectionViewController.h"
@@ -22,7 +22,7 @@
 #import "CardpackageViewController.h"//卡包
 #import "TenSecChallengeViewController.h"
 
-
+#import "PreReadingTaskViewController.h"
 @implementation AppDelegate
 -(void)loadTrueSound:(NSInteger)index {
     NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"trueMusic.wav"];
@@ -55,10 +55,37 @@
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
+//TODO:显示朗读的预听界面
+-(void)showPreReadingHomework{
+    ReadingHomeworkObj *homework = [[ReadingHomeworkObj alloc] init];
+    NSMutableArray *senArr = [NSMutableArray array];
+    for (int i =0 ; i < 10; i++) {
+        ReadingSentenceObj *sentence = [[ReadingSentenceObj alloc] init];
+        sentence.readingSentenceContent = @"how are you";
+        [senArr addObject:sentence];
+    }
+    homework.readingHomeworkSentenceObjArray = senArr;
+    PreReadingTaskViewController *preReadingController = [[PreReadingTaskViewController alloc] initWithNibName:@"PreReadingTaskViewController" bundle:nil];
+    [preReadingController startPreListeningHomeworkSentence:homework withPlayFinished:^(BOOL isSuccess) {
+        
+    }];
+    self.window.rootViewController = preReadingController;
+}
+
+-(void)showMainController{
+    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
+    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
+    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
+    self.window.rootViewController = tabBarController;
+}
+
 -(void)showHomework{
-//    HomeworkContainerController *container = [[HomeworkContainerController alloc] initWithNibName:@"HomeworkContainerController" bundle:nil];
-//    self.window.rootViewController = container;
-//    container.homeworkType = HomeworkType_line;
+    HomeworkContainerController *container = [[HomeworkContainerController alloc] initWithNibName:@"HomeworkContainerController" bundle:nil];
+    self.window.rootViewController = container;
+    container.homeworkType = HomeworkType_line;
 }
 
 -(void)showHomeworkType{
@@ -75,55 +102,62 @@
 
 - (void)showRootView {
     NSFileManager *fileManage = [NSFileManager defaultManager];
-    NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    NSString *filename = [Path stringByAppendingPathComponent:@"class.plist"];
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
     if (![fileManage fileExistsAtPath:filename]) {
         LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
         self.window.rootViewController = logView;
     }else {
         NSDictionary *classDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
-        filename = [Path stringByAppendingPathComponent:@"student.plist"];
+        filename = [path stringByAppendingPathComponent:@"student.plist"];
         NSDictionary *userDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         [DataService sharedService].user = [UserObject userFromDictionary:userDic];
         
         MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+        HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
+        LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+        CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
         DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-        tabBarController.childenControllerArray = @[main];
+        tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
         self.window.rootViewController = tabBarController;
     }
-    LHLNotificationViewController *notificationViewController = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
-    self.window.rootViewController = notificationViewController;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
     //设置popoverViewController属性
     WYPopoverBackgroundView *popoverAppearance = [WYPopoverBackgroundView appearance];
     [popoverAppearance setArrowHeight:10];
     [popoverAppearance setArrowBase:20];
     [popoverAppearance setFillTopColor:[UIColor colorWithRed:47/255.0 green:201/255.0 blue:133/255.0 alpha:1]];
+    
+    if ([[Utility isExistenceNetwork]isEqualToString:@"NotReachable"]) {
+        self.isReachable = NO;
+    }else
+        self.isReachable = YES;
     //开启网络状况的监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     self.hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"] ;
     [self.hostReach startNotifier];  //开始监听，会启动一个run loop
     
+    self.isReceiveTask = YES;
+    self.isReceiveNotification=YES;
     
     //设置语音识别的apikey
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
     
-    [self showHomework];
-    
-//    [self showHomeworkType];
-    
-//    [self showTabBarController];
-
-
-//    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
-//    self.window.rootViewController = notificationViewController;
 
     MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
@@ -135,15 +169,8 @@
 
 
     
-//     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
-//    self.window.rootViewController = cardView;
-    
 
 //    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
-    
-    [self.window makeKeyAndVisible];
-    
-    
     
 //    NSString *oringStr = @"this is an apple";
 //    NSArray *orgArray = [Utility handleTheString:oringStr];
@@ -169,6 +196,12 @@
 //    [Utility shared].firstpoint = 0;
 //    NSDictionary *dic = [Utility compareWithArray:array andArray:array2 WithArray:orgArray andArray:metaphoneArray WithRange:[Utility shared].rangeArray];
 //    NSLog(@"dic = %@",dic);
+    
+    // Required
+    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                   UIRemoteNotificationTypeSound |
+                                                   UIRemoteNotificationTypeAlert)];
+    [APService setupWithOption:launchOptions];
     
     return YES;
 }
@@ -199,37 +232,30 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-//QQ
+
+#pragma mark - QQ
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
     return [TencentOAuth HandleOpenURL:url];
 }
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
     return [TencentOAuth HandleOpenURL:url];
 }
+#pragma mark - 推送
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    
+    [APService registerDeviceToken:deviceToken];
+}
+#ifdef __IPHONE_7_0
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    [APService handleRemoteNotification:userInfo];
+    completionHandler(UIBackgroundFetchResultNoData);
+}
+#endif
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+    [APService handleRemoteNotification:userInfo];
+}
 
-//- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
-//    //注册推送成功,收到设备token号
-//    NSString *tokenStr = [deviceToken description];
-//    NSString *pushToken = [[[tokenStr stringByReplacingOccurrencesOfString:@"<" withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""];
-//    NSString *urlStr = [NSString stringWithFormat:@"https://%@/push_token",@"58.240.210.42:3004"];
-//    NSURL *url = [NSURL URLWithString:urlStr];
-//    NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
-//    [req setHTTPMethod:@"POST"];
-//    [req setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-type"];
-//    NSMutableData *postBody = [NSMutableData data];
-//    [postBody appendData:[[NSString stringWithFormat:@"username=%@",@"啦啦"] dataUsingEncoding:NSUTF8StringEncoding]];
-//    [postBody appendData:[[NSString stringWithFormat:@"&token=%@",pushToken] dataUsingEncoding:NSUTF8StringEncoding]];
-//    [req setHTTPBody:postBody];
-//    id a = [[NSURLConnection alloc] initWithRequest:req delegate:nil];
-//}
-
-//- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
-//    //注册推送不成功
-//}
-//
-//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
-//    //收到远程通知推送
-//}
 
 //连接改变
 -(void)reachabilityChanged:(NSNotification *)note

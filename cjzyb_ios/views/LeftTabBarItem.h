@@ -10,4 +10,5 @@
 
 @interface LeftTabBarItem : UIView
 @property (assign,nonatomic) BOOL isSelected;
+@property (weak, nonatomic) IBOutlet UIImageView *redImg;
 @end
