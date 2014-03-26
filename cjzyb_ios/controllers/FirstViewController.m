@@ -44,14 +44,14 @@
     return _appDel;
 }
 -(void)getMessageData {
-//    if (self.appDel.isReachable == NO) {
-//
-//    }else {
+    if (self.appDel.isReachable == NO) {
+        [Utility errorAlert:@"暂无网络!"];
+    }else {
         self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
         [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
 //        [self.messageInter getMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId];
         [self.messageInter getMessageInterfaceDelegateWithClassId:@"83" andUserId:@"73"];
-//    }
+    }
 }
 -(void)textBarInit {
     self.textViewFirst.frame = CGRectMake(3, 3, 710, 44);
@@ -67,17 +67,9 @@
     [self.firstTable registerClass:[FirstViewHeader class] forHeaderFooterViewReuseIdentifier:FIRST_HEADER_IDENTIFIER];
 
     self.isReloading = NO;
-    [self getMessageData];
+    
     [self textBarInit];
     self.first = 0;
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShowFirst:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHideFirst:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
     
     //问答之后更新界面
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadFirstArrayByThirdView:) name:@"reloadFirstArrayByThirdView" object:nil];
@@ -101,6 +93,21 @@
 }
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    int lastObject = [[[DataService sharedService].numberOfViewArray lastObject]intValue];
+    
+    if (lastObject==self.first) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillShowFirst:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHideFirst:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+        if (self.firstArray.count==0) {
+            [self getMessageData];
+        }
+    }
 }
 - (void)reloadFirstArrayByThirdView:(NSNotification *)notification {
     MessageObject *message = [notification object];
@@ -182,6 +189,9 @@
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.textViewFirst resignFirstResponder];
+    
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -755,6 +765,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            
             //用户
             NSDictionary *userDic = [result objectForKey:@"student"];
             [DataService sharedService].user = [UserObject userFromDictionary:userDic];

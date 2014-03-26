@@ -62,8 +62,6 @@
 {
     [super viewDidLoad];
     
-    [DataService sharedService].pageOfView = 0;
-    
     if (platform>=7.0) {
         AppDelegate *appDel = [AppDelegate shareIntance];
         self.edgesForExtendedLayout = UIRectEdgeNone;

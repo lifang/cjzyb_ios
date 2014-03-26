@@ -11,13 +11,16 @@
 #import "UnderLineLabel.h"
 #import "HomeworkContainerController.h"
 #import "BasePostInterface.h"
+#import "CardFullInterface.h"
 /**
  *  完形填空
  */
-@interface SelectedViewController : UIViewController<ClozeViewDelegate,TenSecChallengeResultViewDelegate,PostDelegate>
+@interface SelectedViewController : UIViewController<ClozeViewDelegate,TenSecChallengeResultViewDelegate,PostDelegate,CardFullInterfaceDelegate>
 
 @property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) BasePostInterface *postInter;
+@property (nonatomic, strong) CardFullInterface *cardFullInter;
+
 @property (nonatomic, strong) ClozeView *clozeVV;
 
 @property (nonatomic, strong) NSDictionary *clozeDic;//整个题目－－－－代表完形填空

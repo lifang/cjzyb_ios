@@ -57,15 +57,7 @@
         [secondView getMymessageData];
         [table.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShowSecond:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHideSecond:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
+
 }
 - (void)reloadSecondArrayByThirdView:(NSNotification *)notification {
     MessageObject *message = [notification object];
@@ -86,19 +78,34 @@
 }
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
-    if (self.secondArray.count == 0) {
-        [self getMymessageData];
+    int lastObject = [[[DataService sharedService].numberOfViewArray lastObject]intValue];
+    
+    if (lastObject==self.second) {
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillShowSecond:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHideSecond:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+        
+        if (self.secondArray.count == 0) {
+            [self getMymessageData];
+        }
     }
 }
 -(void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self.textView resignFirstResponder];
+    
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 //获取我的主消息
 -(void)getMymessageData {
     if (self.appDel.isReachable == NO) {
-        
+        [Utility errorAlert:@"暂无网络!"];
     }else {
         self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
         [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];

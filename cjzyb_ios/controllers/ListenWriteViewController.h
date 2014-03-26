@@ -11,11 +11,11 @@
 #import "TenSecChallengeResultView.h"
 #import "BasePostInterface.h"
 #import <AVFoundation/AVFoundation.h> 
-
+#import "CardFullInterface.h"
 /**
  *  听写
  */
-@interface ListenWriteViewController : UIViewController<UITextFieldDelegate,TenSecChallengeResultViewDelegate,PostDelegate,AVAudioPlayerDelegate>
+@interface ListenWriteViewController : UIViewController<UITextFieldDelegate,TenSecChallengeResultViewDelegate,PostDelegate,AVAudioPlayerDelegate,CardFullInterfaceDelegate>
 
 @property (nonatomic, strong) IBOutlet UIView *listenMusicView;
 @property (nonatomic, strong) IBOutlet UIButton *listenBtn;
@@ -23,6 +23,7 @@
 
 @property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) BasePostInterface *postInter;
+@property (nonatomic, strong) CardFullInterface *cardFullInter;
 
 @property (nonatomic, strong) UIView *wordsContainerView;
 @property (nonatomic, assign) NSInteger number;//记录第几题--大题

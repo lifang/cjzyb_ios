@@ -98,12 +98,23 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    self.window.backgroundColor = [UIColor whiteColor];
+    [self.window makeKeyAndVisible];
+    
+    
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
     //设置popoverViewController属性
     WYPopoverBackgroundView *popoverAppearance = [WYPopoverBackgroundView appearance];
     [popoverAppearance setArrowHeight:10];
     [popoverAppearance setArrowBase:20];
     [popoverAppearance setFillTopColor:[UIColor colorWithRed:47/255.0 green:201/255.0 blue:133/255.0 alpha:1]];
+    
+    if ([[Utility isExistenceNetwork]isEqualToString:@"NotReachable"]) {
+        self.isReachable = NO;
+    }else
+        self.isReachable = YES;
     //开启网络状况的监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     self.hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"] ;
@@ -112,7 +123,7 @@
     
     //设置语音识别的apikey
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
 
     
     [self showHomework];
@@ -120,10 +131,6 @@
 //    [self showHomeworkType];
     
 //    [self showTabBarController];
-
-
-//    TenSecChallengeViewController *notificationViewController = [[TenSecChallengeViewController alloc] initWithNibName:@"TenSecChallengeViewController" bundle:nil];
-//    self.window.rootViewController = notificationViewController;
 
     MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
@@ -133,15 +140,10 @@
     tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
     self.window.rootViewController = tabBarController;
 
-
-    
-//     UINavigationController *navControl = [[UINavigationController alloc]initWithRootViewController:cardView];
-//    self.window.rootViewController = cardView;
     
 
 //    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
     
-    [self.window makeKeyAndVisible];
     
     
     

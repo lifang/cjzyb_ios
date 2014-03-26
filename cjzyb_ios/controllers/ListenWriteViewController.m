@@ -20,6 +20,13 @@
 
 @implementation ListenWriteViewController
 
+-(CardFullInterface *)cardFullInter {
+    if (!_cardFullInter) {
+        _cardFullInter = [[CardFullInterface alloc]init];
+        _cardFullInter.delegate = self;
+    }
+    return _cardFullInter;
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -265,6 +272,9 @@
         if (status == 1) {
             //题目已经完成
         }else {
+            //判断卡包
+            [self.cardFullInter getCardFullInterfaceDelegate];
+            
             self.isFirst = YES;
             if ([DataService sharedService].number_reduceTime>0) {
                 self.homeControl.reduceTimeButton.enabled = YES;
@@ -328,6 +338,7 @@ static int numberOfMusic =0;
     self.appDel.avPlayer.delegate=self;
     [self.appDel.avPlayer play];
 }
+#warning 路径有无问题？
 -(IBAction)listenMusic:(id)sender {
     self.urlArray = nil;
     self.listenBtn.enabled=NO;
@@ -339,11 +350,10 @@ static int numberOfMusic =0;
     }else{
         path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }
-
     NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     for (int i=self.branchNumber; i<self.branchQuestionArray.count; i++) {
         NSDictionary *dic = [self.branchQuestionArray objectAtIndex:i];
-        NSString *nameString = [NSString stringWithFormat:@"%@-%@.mp3",LISTEN,[dic objectForKey:@"id"]];
+        NSString *nameString = [NSString stringWithFormat:@"%@%@",documentDirectory,[dic objectForKey:@"resource_url"]];
         NSString *savePath=[documentDirectory stringByAppendingPathComponent:nameString];
         [self.urlArray addObject:savePath];
     }
@@ -384,7 +394,7 @@ static int numberOfMusic =0;
     }
     NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     
-    NSString *nameString = [NSString stringWithFormat:@"%@-%@.mp3",LISTEN,[self.branchQuestionDic objectForKey:@"id"]];
+    NSString *nameString = [NSString stringWithFormat:@"%@%@.mp3",documentDirectory,[self.branchQuestionDic objectForKey:@"resource_url"]];
     NSString *savePath=[documentDirectory stringByAppendingPathComponent:nameString];
     
     NSError *error;
@@ -718,6 +728,10 @@ static int numberOfMusic =0;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            //上传answer.json文件之后返回的更新时间
+            NSString *timeStr = [result objectForKey:@""];
+            [Utility returnAnswerPAthWithString:timeStr];
+            
             [self showResultView];
         });
     });
@@ -776,5 +790,19 @@ static int numberOfMusic =0;
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:1 withObject:branch_propDic];
     [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
+}
+#pragma mark
+#pragma mark - 判断卡包是否已满
+-(void)getCardFullInfoDidFinished:(NSDictionary *)result {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+
+        });
+    });
+}
+-(void)getCardFullInfoDidFailed:(NSString *)errorMsg {
+    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [Utility errorAlert:errorMsg];
 }
 @end

@@ -55,13 +55,13 @@ typedef NSUInteger SVPullToRefreshState;
     self.scrollView = scrollView;
     [_scrollView addSubview:self];
     
-    self.titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(ceil(self.superview.bounds.size.width*0.21+40), 20, 180, 20)]autorelease];
+    self.titleLabel = [[[UILabel alloc] initWithFrame:CGRectMake(ceil(self.superview.bounds.size.width*0.36+70), 20, 180, 20)]autorelease];
     titleLabel.text = NSLocalizedString(@"拖曳以更新...",);
     titleLabel.font = [UIFont boldSystemFontOfSize:12];
     titleLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:titleLabel];
     
-    self.lastUpdatedLabel = [[[UILabel alloc] initWithFrame:CGRectMake(ceil(self.superview.bounds.size.width*0.21+10), 40, 180, 20)]autorelease];
+    self.lastUpdatedLabel = [[[UILabel alloc] initWithFrame:CGRectMake(ceil(self.superview.bounds.size.width*0.36+10), 40, 180, 20)]autorelease];
     lastUpdatedLabel.adjustsFontSizeToFitWidth = YES;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *timeStr = [defaults objectForKey:@"time"];
@@ -98,7 +98,7 @@ typedef NSUInteger SVPullToRefreshState;
 - (UIImageView *)arrow {
     if(!arrow) {
         arrow = [[UIImageView alloc] initWithImage:self.arrowImage];
-        arrow.frame = CGRectMake(ceil(self.superview.bounds.size.width*0.21-30), 12, 22, 48);
+        arrow.frame = CGRectMake(ceil(self.superview.bounds.size.width*0.36-30), 12, 22, 48);
         arrow.backgroundColor = [UIColor clearColor];
     }
     return arrow;

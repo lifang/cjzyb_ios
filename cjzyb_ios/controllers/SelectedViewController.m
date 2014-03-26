@@ -19,6 +19,14 @@
 
 @implementation SelectedViewController
 
+-(CardFullInterface *)cardFullInter {
+    if (!_cardFullInter) {
+        _cardFullInter = [[CardFullInterface alloc]init];
+        _cardFullInter.delegate = self;
+    }
+    return _cardFullInter;
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -390,6 +398,9 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            //上传answer.json文件之后返回的更新时间
+            NSString *timeStr = [result objectForKey:@""];
+            [Utility returnAnswerPAthWithString:timeStr];
             [self showResultView];
         });
     });
@@ -477,5 +488,20 @@
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
     [self.propsArray replaceObjectAtIndex:1 withObject:branch_propDic];
     [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
+}
+
+#pragma mark
+#pragma mark - 判断卡包是否已满
+-(void)getCardFullInfoDidFinished:(NSDictionary *)result {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            
+        });
+    });
+}
+-(void)getCardFullInfoDidFailed:(NSString *)errorMsg {
+    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [Utility errorAlert:errorMsg];
 }
 @end
