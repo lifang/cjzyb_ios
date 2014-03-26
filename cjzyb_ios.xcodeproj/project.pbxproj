@@ -254,6 +254,8 @@
 		630DBE2318D15CB1009DA0EB /* homwwork_listenWrite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 630DBE1618D15CB1009DA0EB /* homwwork_listenWrite@2x.png */; };
 		630DBEBD18D1B0F3009DA0EB /* ModelTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630DBEBB18D1B0F3009DA0EB /* ModelTypeViewController.m */; };
 		630DBEBE18D1B0F3009DA0EB /* ModelTypeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DBEBC18D1B0F3009DA0EB /* ModelTypeViewController.xib */; };
+		630E063618E16C760044F819 /* PreReadingTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 630E063418E16C760044F819 /* PreReadingTaskViewController.m */; };
+		630E063718E16C760044F819 /* PreReadingTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630E063518E16C760044F819 /* PreReadingTaskViewController.xib */; };
 		63289A2418C594DB00C0083E /* ReadingTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63289A2218C594DB00C0083E /* ReadingTaskViewController.m */; };
 		63289A2518C594DB00C0083E /* ReadingTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2318C594DB00C0083E /* ReadingTaskViewController.xib */; };
 		63289A2B18C595D300C0083E /* listening_start@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2718C595D300C0083E /* listening_start@2x.png */; };
@@ -739,6 +741,9 @@
 		630DBEBA18D1B0F3009DA0EB /* ModelTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelTypeViewController.h; sourceTree = "<group>"; };
 		630DBEBB18D1B0F3009DA0EB /* ModelTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelTypeViewController.m; sourceTree = "<group>"; };
 		630DBEBC18D1B0F3009DA0EB /* ModelTypeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModelTypeViewController.xib; sourceTree = "<group>"; };
+		630E063318E16C760044F819 /* PreReadingTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreReadingTaskViewController.h; sourceTree = "<group>"; };
+		630E063418E16C760044F819 /* PreReadingTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreReadingTaskViewController.m; sourceTree = "<group>"; };
+		630E063518E16C760044F819 /* PreReadingTaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreReadingTaskViewController.xib; sourceTree = "<group>"; };
 		63289A2118C594DB00C0083E /* ReadingTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadingTaskViewController.h; sourceTree = "<group>"; };
 		63289A2218C594DB00C0083E /* ReadingTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadingTaskViewController.m; sourceTree = "<group>"; };
 		63289A2318C594DB00C0083E /* ReadingTaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReadingTaskViewController.xib; sourceTree = "<group>"; };
@@ -1548,6 +1553,9 @@
 				63289A2118C594DB00C0083E /* ReadingTaskViewController.h */,
 				63289A2218C594DB00C0083E /* ReadingTaskViewController.m */,
 				63289A2318C594DB00C0083E /* ReadingTaskViewController.xib */,
+				630E063318E16C760044F819 /* PreReadingTaskViewController.h */,
+				630E063418E16C760044F819 /* PreReadingTaskViewController.m */,
+				630E063518E16C760044F819 /* PreReadingTaskViewController.xib */,
 				63B8D27018C860B6004141E9 /* CarnetResultViewController.h */,
 				63B8D27118C860B6004141E9 /* CarnetResultViewController.m */,
 				63B8D27218C860B6004141E9 /* CarnetResultViewController.xib */,
@@ -2283,6 +2291,7 @@
 				0E92659D18BDE51F003ADEC3 /* commentBtn@2x.png in Resources */,
 				0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */,
 				0E5D1C8918C9A18F008A13F2 /* QQLogIn@2x.png in Resources */,
+				630E063718E16C760044F819 /* PreReadingTaskViewController.xib in Resources */,
 				0E9265A018BDE51F003ADEC3 /* focusBtn@2x.png in Resources */,
 				0E92657918BDACDD003ADEC3 /* first_active@2x.png in Resources */,
 				0E9D68BB18CD6C5500EACFA3 /* card_searchBtn@2x.png in Resources */,
@@ -2493,6 +2502,7 @@
 				6329556218BC900600F2B78D /* NSData+ImageContentType.m in Sources */,
 				6329556B18BC900600F2B78D /* UIImage+GIF.m in Sources */,
 				6329551018BC8AA700F2B78D /* ASIAuthenticationDialog.m in Sources */,
+				630E063618E16C760044F819 /* PreReadingTaskViewController.m in Sources */,
 				0EEF4BE818C561700058606A /* BaseInterface.m in Sources */,
 				6396583A18C07B37002F2A90 /* HomeworkTypeObj.m in Sources */,
 				6341536118C1C90300DE4480 /* NSMutableArray+convenience.m in Sources */,

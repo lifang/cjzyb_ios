@@ -58,7 +58,12 @@
 
 //TODO:根据题目的json文件解析出朗读类型的数据
 +(void)parseQuestionJsonFile:(NSString*)jsonFilePath withReadingQuestionArray:( void(^)(NSArray *readingQuestionArr,NSInteger specifiedTime))questionArr withParseError:(void (^)(NSError *error))failure{
-    
+    if (!jsonFilePath || [jsonFilePath isEqualToString:@""]) {
+        if (failure) {
+             failure([NSError errorWithDomain:@"" code:1000 userInfo:@{@"msg": @"指定文件路径不正确"}]);
+        }
+        return;
+    }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         NSError *jsonError = nil;
         NSDictionary *questionData = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsonFilePath] options:NSJSONReadingMutableLeaves error:&jsonError];

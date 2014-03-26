@@ -16,11 +16,14 @@
 #import "SelectingChallengeViewController.h"//选择挑战
 #import "TenSecChallengeViewController.h" //十速挑战
 
+
+
 /** HomeworkContainerController
  *
  * 所有题目类型的container，子类放置是每个题型的controller
  */
 @interface HomeworkContainerController : UIViewController
+
 ///作业类型
 @property (assign,nonatomic) HomeworkType homeworkType;
 @property (strong, nonatomic) IBOutlet UIView *djView;
@@ -42,6 +45,7 @@
 
 ///记录的秒数
 @property (assign,nonatomic) long long spendSecond;
+
 ///开始计时
 -(void)startTimer;
 
