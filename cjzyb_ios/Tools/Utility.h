@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import "ASIHTTPRequest.h"
+#import "ZipArchive.h"
 @interface Utility : NSObject
 
 @property (nonatomic, assign) int firstpoint;

@@ -156,6 +156,11 @@
 		1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */; };
 		182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */ = {isa = PBXBuildFile; fileRef = 187222BA18C87A5700BBE2D1 /* questions_lastest.js */; };
 		182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */; };
+		182BEE4F18E12FA000FC0AA0 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 182BEE4518E12FA000FC0AA0 /* ioapi.c */; };
+		182BEE5018E12FA000FC0AA0 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 182BEE4718E12FA000FC0AA0 /* mztools.c */; };
+		182BEE5118E12FA000FC0AA0 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 182BEE4918E12FA000FC0AA0 /* unzip.c */; };
+		182BEE5218E12FA000FC0AA0 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = 182BEE4B18E12FA000FC0AA0 /* zip.c */; };
+		182BEE5318E12FA000FC0AA0 /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = 182BEE4E18E12FA000FC0AA0 /* ZipArchive.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1833276B18CEB38000638107 /* smallTriangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1833276A18CEB38000638107 /* smallTriangle@2x.png */; };
 		185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */; };
 		1867B53718D006AB0042A95D /* systemMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53618D006AB0042A95D /* systemMessage@2x.png */; };
@@ -610,6 +615,17 @@
 		1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLTestInterface.m; sourceTree = "<group>"; };
 		182A89D718C977BC00CF4B30 /* OrdinaryAnswerObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdinaryAnswerObject.h; sourceTree = SOURCE_ROOT; };
 		182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdinaryAnswerObject.m; sourceTree = SOURCE_ROOT; };
+		182BEE4418E12FA000FC0AA0 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		182BEE4518E12FA000FC0AA0 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		182BEE4618E12FA000FC0AA0 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		182BEE4718E12FA000FC0AA0 /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		182BEE4818E12FA000FC0AA0 /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		182BEE4918E12FA000FC0AA0 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		182BEE4A18E12FA000FC0AA0 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		182BEE4B18E12FA000FC0AA0 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		182BEE4C18E12FA000FC0AA0 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		182BEE4D18E12FA000FC0AA0 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
+		182BEE4E18E12FA000FC0AA0 /* ZipArchive.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZipArchive.mm; sourceTree = "<group>"; };
 		1833276A18CEB38000638107 /* smallTriangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smallTriangle@2x.png"; sourceTree = "<group>"; };
 		1867B53618D006AB0042A95D /* systemMessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "systemMessage@2x.png"; sourceTree = "<group>"; };
 		1867B53918D008C50042A95D /* trash_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trash_icon@2x.png"; sourceTree = "<group>"; };
@@ -1242,6 +1258,32 @@
 			path = UILabel;
 			sourceTree = "<group>";
 		};
+		182BEE4218E12F8100FC0AA0 /* ZipArchiever */ = {
+			isa = PBXGroup;
+			children = (
+				182BEE4318E12FA000FC0AA0 /* minizip */,
+				182BEE4D18E12FA000FC0AA0 /* ZipArchive.h */,
+				182BEE4E18E12FA000FC0AA0 /* ZipArchive.mm */,
+			);
+			name = ZipArchiever;
+			sourceTree = "<group>";
+		};
+		182BEE4318E12FA000FC0AA0 /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				182BEE4418E12FA000FC0AA0 /* crypt.h */,
+				182BEE4518E12FA000FC0AA0 /* ioapi.c */,
+				182BEE4618E12FA000FC0AA0 /* ioapi.h */,
+				182BEE4718E12FA000FC0AA0 /* mztools.c */,
+				182BEE4818E12FA000FC0AA0 /* mztools.h */,
+				182BEE4918E12FA000FC0AA0 /* unzip.c */,
+				182BEE4A18E12FA000FC0AA0 /* unzip.h */,
+				182BEE4B18E12FA000FC0AA0 /* zip.c */,
+				182BEE4C18E12FA000FC0AA0 /* zip.h */,
+			);
+			path = minizip;
+			sourceTree = "<group>";
+		};
 		1848612618C72D18002B6C78 /* tenSecChallenge */ = {
 			isa = PBXGroup;
 			children = (
@@ -1543,6 +1585,7 @@
 		632954C318BC879B00F2B78D /* thirtys */ = {
 			isa = PBXGroup;
 			children = (
+				182BEE4218E12F8100FC0AA0 /* ZipArchiever */,
 				0E660F1E18E0277D0074454C /* upLoadImage */,
 				0E9D68C218CD965B00EACFA3 /* 搜索算法 */,
 				0E9D689418CD4DEC00EACFA3 /* SVPullToRefresh */,
@@ -2378,6 +2421,7 @@
 				63DB925D18CDE4C600157D74 /* DownloadClassmatesInfo.m in Sources */,
 				6396579018C03766002F2A90 /* LeftTabBarView.m in Sources */,
 				0EEF4BEA18C561700058606A /* MessageInterface.m in Sources */,
+				182BEE5318E12FA000FC0AA0 /* ZipArchive.mm in Sources */,
 				6329556C18BC900600F2B78D /* UIImage+MultiFormat.m in Sources */,
 				0E9D689018C9B7F400EACFA3 /* LogInterface.m in Sources */,
 				0E9C6E9D18D1977E00E807D1 /* SelectedViewController.m in Sources */,
@@ -2403,6 +2447,7 @@
 				6341536318C1C90300DE4480 /* UIView+convenience.m in Sources */,
 				0EAABD6818CEE72C00CD2DE7 /* TagObject.m in Sources */,
 				0EAABDB518D034B800CD2DE7 /* answer.json in Sources */,
+				182BEE5018E12FA000FC0AA0 /* mztools.c in Sources */,
 				63DD5C6F18C9B7860034512D /* double_metaphone.c in Sources */,
 				63B8D28118C87FA0004141E9 /* Base64.m in Sources */,
 				63DB921518CDA39C00157D74 /* LineObj.m in Sources */,
@@ -2470,9 +2515,11 @@
 				0EEF4C2B18C5C0490058606A /* SendMessageInterface.m in Sources */,
 				6329551218BC8AA700F2B78D /* ASIDataDecompressor.m in Sources */,
 				0EAABD7B18CF136900CD2DE7 /* TagViewController.m in Sources */,
+				182BEE4F18E12FA000FC0AA0 /* ioapi.c in Sources */,
 				1818F6A418C561D200DC6207 /* TenSecChallengeResultView.m in Sources */,
 				0E93C9AA18D80EB20094AD7B /* BasePostInterface.m in Sources */,
 				0EEF4C0E18C561F30058606A /* MessageObject.m in Sources */,
+				182BEE5218E12FA000FC0AA0 /* zip.c in Sources */,
 				632954CD18BC898B00F2B78D /* Reachability.m in Sources */,
 				0EEF4C1918C562370058606A /* FirstViewHeader.m in Sources */,
 				6329551F18BC8AA700F2B78D /* ASICloudFilesRequest.m in Sources */,
@@ -2534,6 +2581,7 @@
 				1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */,
 				0EAABD8518CF1B5500CD2DE7 /* CMRManager.mm in Sources */,
 				6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */,
+				182BEE5118E12FA000FC0AA0 /* unzip.c in Sources */,
 				0E93C9D618DAE7C30094AD7B /* CustomLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
