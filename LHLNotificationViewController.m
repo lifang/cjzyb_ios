@@ -248,6 +248,8 @@
             NSURLRequest *request = [NSURLRequest requestWithURL:url];
             [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
+                self.appDel.isReceiveNotification = NO;
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
                 if (self.isRefreshing) {
                     self.notificationArray = [NSMutableArray array];
                 }else{
