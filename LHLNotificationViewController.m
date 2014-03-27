@@ -33,7 +33,7 @@
 @property (strong,nonatomic) LHLDeleteMyNoticeInterface *deleteMyNoticeInterface;
 @property (strong,nonatomic) LHLDeleteSysNoticeInterface *deleteSysNoticeInterface;
 @property (strong,nonatomic) MJRefreshHeaderView *refreshHeaderView; //下拉刷新
-@property (strong,nonatomic) MJRefreshFooterView *refreshFooterView; //下拉加载
+//@property (strong,nonatomic) MJRefreshFooterView *refreshFooterView; //下拉加载
 @property (assign,nonatomic) BOOL isRefreshing; //YES刷新,NO分页加载
 @property (strong,nonatomic) NSMutableDictionary *bufferedImageDic; //头像缓冲
 
@@ -58,7 +58,12 @@
 {
     [super viewDidLoad];
     
-    self.displayCategory = NotificationDisplayCategoryDefault;
+    if ([DataService sharedService].notificationPage == 1) {
+        self.displayCategory = NotificationDisplayCategoryDefault;
+    }else{
+        self.displayCategory = NotificationDisplayCategoryReply;
+    }
+    
     
     UINib *nib = [UINib nibWithNibName:@"LHLNotificationCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"LHLNotificationCell"];
@@ -67,7 +72,7 @@
     self.topBar.delegate = self;
     [self.tableView registerClass:[LHLReplyNotificationCell class] forCellReuseIdentifier:@"LHLReplyNotificationCell"];
     
-    [self refreshFooterView];
+//    [self refreshFooterView];
     [self refreshHeaderView];
     
     [self initData];
@@ -193,7 +198,18 @@
     if (!leftBarVC.isHiddleLeftTabBar) {
         [leftBarVC navigationLeftItemClicked];
     }
-    
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    if (self.tableView.contentOffset.y >= self.tableView.contentSize.height + self.tableView.contentInset.bottom - self.tableView.frame.size.height - 20) {
+        //到达底部,分页加载
+        self.isRefreshing = NO;
+        if (self.displayCategory == NotificationDisplayCategoryDefault) {
+            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
+        }else{
+            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
+        }
+    }
 }
 
 //
@@ -248,7 +264,7 @@
             NSURLRequest *request = [NSURLRequest requestWithURL:url];
             [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
-                self.appDel.isReceiveNotification = NO;
+                self.appDel.isReceiveNotificationSystem = NO;
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
                 if (self.isRefreshing) {
                     self.notificationArray = [NSMutableArray array];
@@ -270,7 +286,7 @@
                     [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
                     if (self.displayCategory == NotificationDisplayCategoryDefault) {
                         [self.tableView reloadData];
-                        [self.refreshFooterView endRefreshing];
+//                        [self.refreshFooterView endRefreshing];
                         [self.refreshHeaderView endRefreshing];
                     }
                 });
@@ -278,7 +294,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
                 });
-                [self.refreshFooterView endRefreshing];
+//                [self.refreshFooterView endRefreshing];
                 [self.refreshHeaderView endRefreshing];
                 if (self.displayCategory == NotificationDisplayCategoryDefault) {
                     NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
@@ -299,6 +315,8 @@
             NSURLRequest *request1 = [NSURLRequest requestWithURL:url1];
             [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request1 withSuccess:^(NSDictionary *dicData) {
+                self.appDel.isReceiveNotificationReply = NO;
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
                 if (self.isRefreshing) {
                     self.replyNotificationArray = [NSMutableArray array];
                 }else{
@@ -335,7 +353,7 @@
                     [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
                     if (self.displayCategory == NotificationDisplayCategoryReply) {
                         [self.tableView reloadData];
-                        [self.refreshFooterView endRefreshing];
+//                        [self.refreshFooterView endRefreshing];
                         [self.refreshHeaderView endRefreshing];
                     }
                 });
@@ -343,7 +361,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
                 });
-                [self.refreshFooterView endRefreshing];
+//                [self.refreshFooterView endRefreshing];
                 [self.refreshHeaderView endRefreshing];
                 if (self.displayCategory == NotificationDisplayCategoryReply) {
                     NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
@@ -532,14 +550,14 @@
     return _refreshHeaderView;
 }
 
--(MJRefreshFooterView *)refreshFooterView{
-    if (!_refreshFooterView) {
-        _refreshFooterView = [MJRefreshFooterView footer];
-        _refreshFooterView.scrollView = self.tableView;
-        _refreshFooterView.delegate = self;
-    }
-    return _refreshFooterView;
-}
+//-(MJRefreshFooterView *)refreshFooterView{
+//    if (!_refreshFooterView) {
+//        _refreshFooterView = [MJRefreshFooterView footer];
+//        _refreshFooterView.scrollView = self.tableView;
+//        _refreshFooterView.delegate = self;
+//    }
+//    return _refreshFooterView;
+//}
 
 -(LHLGetSysNoticeInterface *)getSysNoticeInterface{
     if (!_getSysNoticeInterface) {

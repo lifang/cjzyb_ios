@@ -395,7 +395,7 @@
 //分页加载获取主消息
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView.contentOffset.y > 0) {
-        if (scrollView.contentOffset.y + self.firstTable.frame.size.height <= scrollView.contentSize.height) {
+        if (scrollView.contentOffset.y + self.firstTable.frame.size.height >= scrollView.contentSize.height) {
             MessageObject *message = (MessageObject *)[self.firstArray lastObject];
             if (message.pageCountHeader>message.pageHeader) {
                 [self initFooterView];
