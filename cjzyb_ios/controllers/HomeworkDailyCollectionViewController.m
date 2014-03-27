@@ -23,6 +23,13 @@
     }
     return self;
 }
+-(void)uploadCollectionCell{
+    [self.collectionView registerNib:[UINib nibWithNibName:@"HomeworkTypeCollctionCell" bundle:nil] forCellWithReuseIdentifier:@"cell"];
+    [self.flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
+    [self resizeItemSize];
+    [self.collectionView setCollectionViewLayout:self.flowLayout];
+    [self.collectionView reloadData];
+}
 
 -(void)resizeItemSize{
     float itemWidth = CGRectGetWidth(self.view.frame)/3;
@@ -78,7 +85,7 @@
 #pragma mark property
 -(void)setTaskObj:(TaskObj *)taskObj{
     _taskObj = taskObj;
-    [self.collectionView reloadData];
+//    [self.collectionView reloadData];
 }
 
 #pragma mark --

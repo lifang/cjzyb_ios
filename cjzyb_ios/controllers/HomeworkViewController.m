@@ -216,11 +216,10 @@
 #pragma mark UICollectionViewDataSource
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     HomeworkHistoryCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    if (![cell.subviews containsObject:cell.dailyCollectionViewController.view]) {
-        cell.dailyCollectionViewController.view.frame = (CGRect){10,0,cell.bounds.size.width-20,cell.bounds.size.height};
-        [cell.dailyCollectionViewController resizeItemSize];
-        [cell addSubview:cell.dailyCollectionViewController.view];
-    }
+    cell.dailyCollectionViewController = nil;
+    cell.dailyCollectionViewController.view.frame = (CGRect){10,0,cell.bounds.size.width-20,cell.bounds.size.height};
+    [cell.dailyCollectionViewController resizeItemSize];
+    [cell addSubview:cell.dailyCollectionViewController.view];
     cell.dailyCollectionViewController.delegate = self;
     if (self.isShowHistory) {
         TaskObj *task = [self.allHistoryTaskArray objectAtIndex:indexPath.item];

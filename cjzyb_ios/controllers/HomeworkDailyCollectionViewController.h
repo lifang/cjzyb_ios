@@ -21,6 +21,8 @@
 @property (strong,nonatomic) TaskObj *taskObj;
 @property (weak,nonatomic) id<HomeworkDailyCollectionViewControllerDelegate> delegate;
 -(void)resizeItemSize;
+
+-(void)uploadCollectionCell;
 @end
 
 @protocol HomeworkDailyCollectionViewControllerDelegate <NSObject>
