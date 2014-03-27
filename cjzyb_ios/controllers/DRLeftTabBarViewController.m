@@ -41,6 +41,24 @@
     [view.layer setCornerRadius: (view.frame.size.height/2)];
     [view.layer setMasksToBounds:YES];
 }
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark notification 用户信息改变通知
+-(void)modifyUserNickNameNotification{
+    self.drNavigationBar.userNameLabel.text = [DataService sharedService].user.nickName;
+}
+
+-(void)changeGradeNtificationNotification{
+    AppDelegate *appDel = [AppDelegate shareIntance];
+    [appDel showRootView];
+
+}
+#pragma mark --
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

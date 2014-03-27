@@ -29,4 +29,5 @@
 ///同学列表界面使用
 @property (nonatomic,assign) BOOL isExtend;
 +(UserObject *)userFromDictionary:(NSDictionary *)aDic;
+
 @end

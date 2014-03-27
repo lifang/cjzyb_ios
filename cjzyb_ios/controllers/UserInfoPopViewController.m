@@ -54,7 +54,7 @@
 -(void)updateViewContents{
     AppDelegate *appDel = [AppDelegate shareIntance];
     DataService *data = [DataService sharedService];
-    self.userNameLabel.text = data.user.name;
+    self.userNameLabel.text = data.user.nickName;
     self.userClassNameLabel.text = data.theClass.name;
     [MBProgressHUD showHUDAddedTo:appDel.window animated:YES];
     __weak UserInfoPopViewController *weakSelf = self;
@@ -129,7 +129,7 @@
             UserInfoPopViewController *tempSelf = weakSelf;
             if (tempSelf) {
                 data.user.nickName = inputString;
-                [tempSelf updateViewContents];
+//                [tempSelf updateViewContents];
                 [Utility errorAlert:msg];
                 [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
             }

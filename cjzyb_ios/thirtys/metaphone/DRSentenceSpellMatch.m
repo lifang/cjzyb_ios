@@ -40,7 +40,41 @@
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        //    NSString *oringStr = @"this is an apple";
+        //    NSArray *orgArray = [Utility handleTheString:oringStr];
+        //    NSArray *metaphoneArray = [Utility metaphoneArray:orgArray];
+        //    NSLog(@"orgArray = %@",orgArray);
+        //    NSLog(@"metaphoneArray = %@",metaphoneArray);
+        //
+        //
+        //    NSString *text = @"this a salple";
+        //    NSArray *array = [Utility handleTheString:text];
+        //    NSLog(@"array = %@",array);
+        //    NSArray *array2 = [Utility metaphoneArray:array];
+        //    NSLog(@"array2 = %@",array2);
+        //
+        //    [Utility shared].isOrg = NO;
+        //    [Utility shared].sureArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].correctArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].noticeArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].greenArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].firstpoint = 0;
+        //    NSDictionary *dic = [Utility compareWithArray:array andArray:array2 WithArray:orgArray andArray:metaphoneArray WithRange:[Utility shared].rangeArray];
+        //    NSLog(@"dic = %@",dic);
+        
         [Utility shared].isOrg = NO;
+        [Utility shared].sureArray = [[NSMutableArray alloc]init];
+         [Utility shared].correctArray = [[NSMutableArray alloc]init];
+        [Utility shared].noticeArray = [[NSMutableArray alloc]init];
+         [Utility shared].greenArray = [[NSMutableArray alloc]init];
+        [Utility shared].yellowArray = [[NSMutableArray alloc]init];
+        [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
+        [Utility shared].wrongArray = [[NSMutableArray alloc]init];
+        [Utility shared].firstpoint = 0;
+        
         [Utility shared].orgArray  = [Utility handleTheString:senStr];
         [Utility shared].metaphoneArray = [Utility metaphoneArray:[Utility shared].orgArray];
         NSArray *spellMatchRangeArr = [DRSentenceSpellMatch spellMatchWord:spellStr];

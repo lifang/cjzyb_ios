@@ -121,20 +121,22 @@
         [DataService sharedService].user = [UserObject userFromDictionary:userDic];
         
         MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-        main.view.frame = (CGRect){0,67,768,1024-67};
+//        main.view.frame = (CGRect){0,67,768,1024-67};
         HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-        homework.view.frame = (CGRect){0,67,768,1024-67};
+//        homework.view.frame = (CGRect){0,67,768,1024-67};
         LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
-        notificationView.view.frame = (CGRect){0,67,768,1024-67};
+//        notificationView.view.frame = (CGRect){0,67,768,1024-67};
         CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-        cardView.view.frame = (CGRect){0,67,768,1024-67};
+//        cardView.view.frame = (CGRect){0,67,768,1024-67};
         DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
         tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
         
         tabBarController.currentPage = self.notification_type;
         
         self.window.rootViewController = tabBarController;
+       
     }
+     [self.window makeKeyAndVisible];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -142,8 +144,6 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
-    
     self.notification_type = 0;
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
     //推送
@@ -197,15 +197,7 @@
     //设置语音识别的apikey
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
     
-    [self showHomework];
-
-//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-//    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-//    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
-//    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-//    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
-//    self.window.rootViewController = tabBarController;
+//    [self showHomework];
 
     NSDictionary *pushDict = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
     NSLog(@"aps = %@",pushDict);
@@ -217,36 +209,8 @@
             self.notification_type = 2;
         }
     }
-    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
-    
-    
-//    NSString *oringStr = @"this is an apple";
-//    NSArray *orgArray = [Utility handleTheString:oringStr];
-//    NSArray *metaphoneArray = [Utility metaphoneArray:orgArray];
-//    NSLog(@"orgArray = %@",orgArray);
-//    NSLog(@"metaphoneArray = %@",metaphoneArray);
-//    
-//    
-//    NSString *text = @"this a salple";
-//    NSArray *array = [Utility handleTheString:text];
-//    NSLog(@"array = %@",array);
-//    NSArray *array2 = [Utility metaphoneArray:array];
-//    NSLog(@"array2 = %@",array2);
-//    
-//    [Utility shared].isOrg = NO;
-//    [Utility shared].sureArray = [[NSMutableArray alloc]init];
-//    [Utility shared].correctArray = [[NSMutableArray alloc]init];
-//    [Utility shared].noticeArray = [[NSMutableArray alloc]init];
-//    [Utility shared].greenArray = [[NSMutableArray alloc]init];
-//    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
-//    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
-//    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
-//    [Utility shared].firstpoint = 0;
-//    NSDictionary *dic = [Utility compareWithArray:array andArray:array2 WithArray:orgArray andArray:metaphoneArray WithRange:[Utility shared].rangeArray];
-//    NSLog(@"dic = %@",dic);
-    
-    
-    
+//    [self performSelectorOnMainThread:@selector() withObject:nil waitUntilDone:NO];
+    [self showRootView];
     return YES;
 }
 

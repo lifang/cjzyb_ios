@@ -19,4 +19,5 @@
 @property (nonatomic, strong) NSString *tId;
 
 +(ClassObject *)classFromDictionary:(NSDictionary *)aDic;
+
 @end
