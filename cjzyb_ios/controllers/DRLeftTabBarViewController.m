@@ -62,19 +62,25 @@
     
     //头像
     [self roundView:self.drNavigationBar.userHeaderImage];
-    [self.drNavigationBar.userHeaderImage setImageWithURL:[NSURL URLWithString:[DataService sharedService].user.headUrl] placeholderImage:[UIImage imageNamed:@""]];
+    [self.drNavigationBar.userHeaderImage setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://58.240.210.42:3004%@",[DataService sharedService].user.headUrl]] placeholderImage:[UIImage imageNamed:@""]];
     //用户名
-    self.drNavigationBar.userNameLabel.text = [DataService sharedService].user.nickName;
+    self.drNavigationBar.userNameLabel.text = [DataService sharedService].user.name;
     
     [self.drNavigationBar.imageButton addTarget:self action:@selector(selectedImage:) forControlEvents:UIControlEventTouchUpInside];
     [self.drNavigationBar.leftButtonItem addTarget:self action:@selector(navigationLeftItemClicked) forControlEvents:UIControlEventTouchUpInside];
     self.drNavigationBar.frame = (CGRect){0,0,768,67};
-    self.drNavigationBar.userNameLabel.text = [[[DataService sharedService] user] nickName];
     [self.view addSubview:self.drNavigationBar];
     //设置子controller
-    self.currentViewController = [self.childenControllerArray firstObject];
+    self.currentViewController = [self.childenControllerArray objectAtIndex:self.currentPage];
     if (self.currentViewController) {
         [self addOneController:self.currentViewController];
+    }
+    if (self.currentPage==0) {
+        self.leftTabBar.mainTabBarItem.isSelected=YES;
+    }else if (self.currentPage==1) {
+        self.leftTabBar.homeworkTabBarItem.isSelected=YES;
+    }else if (self.currentPage==2) {
+        self.leftTabBar.notificationTabBarItem.isSelected=YES;
     }
     
     //加载用户信息界面
@@ -88,8 +94,15 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showImageWithAlbum:) name:@"showImageWithAlbum" object:nil];
     //拍照
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showImageWithCamera:) name:@"showImageWithCamera" object:nil];
+    
+    
+    //推送
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setStatus:) name:@"loadByNotification" object:nil];
 }
-
+-(void)setStatus:(NSNotification *)object {
+    self.leftTabBar.homeworkTabBarItem.redImg.hidden = !self.appDel.isReceiveTask;
+    self.leftTabBar.notificationTabBarItem.redImg.hidden = !self.appDel.isReceiveNotification;
+}
 -(void)showImageWithAlbum:(NSNotification *)object {
     [self.poprController dismissPopoverAnimated:YES];
     
@@ -129,6 +142,7 @@
                          }];
     }
 }
+
 #pragma mark 子controller之间切换
 -(void)addOneController:(UIViewController*)childController{
     if (!childController) {
@@ -177,9 +191,6 @@
 ///导航栏右边item点击事件
 -(void)navigationRightItemClicked{
     
-
-//    return;
-    /////////////////////////////////////////
     [self.drNavigationBar.rightButtonItem setUserInteractionEnabled:NO];
     self.poprController= [[WYPopoverController alloc] initWithContentViewController:self.userInfoPopViewController];
     self.poprController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
@@ -286,18 +297,11 @@
                 tabBarView.userGroupTabBarItem.isSelected = NO;
                 [self hiddleStudentListViewController:self.studentListViewController];
             }
-            
-            if (itemType == LeftTabBarItemType_homework ) {
-                self.appDel.isReceiveTask = NO;
-                self.leftTabBar.homeworkTabBarItem.redImg.hidden = !self.appDel.isReceiveTask;
-            }
-            
             if (itemType == LeftTabBarItemType_notification) {
                 self.appDel.isReceiveNotification = NO;
                 self.leftTabBar.notificationTabBarItem.redImg.hidden = !self.appDel.isReceiveNotification;
             }
         }
-        
         if (itemType < self.childenControllerArray.count) {
             [self changeFromController:self.currentViewController toController:[self.childenControllerArray objectAtIndex:itemType]];
         }
@@ -355,7 +359,6 @@
             [self addChildViewController:controller];
         }
     }
-    
     _childenControllerArray = childenControllerArray;
 }
 #pragma mark --
