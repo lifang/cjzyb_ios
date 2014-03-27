@@ -93,4 +93,5 @@
 +(void)returnAnswerPathWithProps:(NSMutableArray *)array andDate:(NSString *)timeString;
 + (NSString *)isExistenceNetwork;
 +(void)returnAnswerPAthWithString:(NSString *)str;
++(NSString *)returnPath;
 @end

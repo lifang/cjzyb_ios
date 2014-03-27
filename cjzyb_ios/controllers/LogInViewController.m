@@ -222,12 +222,7 @@
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             if ([[result objectForKey:@"status"]isEqualToString:@"success"]) {
                 NSFileManager *fileManage = [NSFileManager defaultManager];
-                NSString *path;
-                if (platform>5.0) {
-                    path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                }else{
-                    path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                }
+                NSString *path = [Utility returnPath];
                 NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
                 if ([fileManage fileExistsAtPath:filename]) {
                     [fileManage removeItemAtPath:filename error:nil];

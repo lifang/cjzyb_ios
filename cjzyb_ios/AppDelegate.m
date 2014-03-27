@@ -102,19 +102,13 @@
 
 - (void)showRootView{
     NSFileManager *fileManage = [NSFileManager defaultManager];
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
+    NSString *path = [Utility returnPath];
     NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
     if (![fileManage fileExistsAtPath:filename]) {
         LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
         self.window.rootViewController = logView;
     }else {
         NSDictionary *classDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-        NSLog(@"%@",[classDic objectForKey:@"name"]);
         [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
         filename = [path stringByAppendingPathComponent:@"student.plist"];
         NSDictionary *userDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
@@ -143,7 +137,7 @@
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
-    
+    [DataService sharedService].notificationPage=1;
     self.notification_type = 0;
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
     //推送
@@ -159,28 +153,25 @@
     
     //判断作业＋通知右上角红点点～～
     self.isReceiveTask=NO;
-    self.isReceiveNotification=NO;
+    self.isReceiveNotificationReply=NO;
+    self.isReceiveNotificationSystem=NO;
     NSFileManager *fileManage = [NSFileManager defaultManager];
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
+    NSString *path = [Utility returnPath];
     NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
     if (![fileManage fileExistsAtPath:filename]) {
-        self.isReceiveNotification=NO;
-        self.isReceiveTask=NO;
     }else {
         NSArray *typeArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-        int taskType = [[typeArray objectAtIndex:0]integerValue];
-        if (taskType == 1) {
-            self.isReceiveTask=YES;
+        int notificationTypeSystem = [[typeArray objectAtIndex:0]integerValue];
+        if (notificationTypeSystem == 0) {
+            self.isReceiveNotificationSystem=YES;
         }
-        
-        int notificationType = [[typeArray objectAtIndex:1]integerValue];
-        if (notificationType == 1) {
-            self.isReceiveNotification=YES;
+        int notificationTypeReply = [[typeArray objectAtIndex:1]integerValue];
+        if (notificationTypeReply == 1) {
+            self.isReceiveNotificationReply=YES;
+        }
+        int taskType = [[typeArray objectAtIndex:2]integerValue];
+        if (taskType == 2) {
+            self.isReceiveTask=YES;
         }
     }
     
@@ -196,56 +187,32 @@
     
     //设置语音识别的apikey
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
-    
 
-//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-//    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-//    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
-//    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-//    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
-//    self.window.rootViewController = tabBarController;
-
+    //点击推送进入App
     NSDictionary *pushDict = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
-    NSLog(@"aps = %@",pushDict);
     if (pushDict) {
         int typeValue = [[pushDict objectForKey:@"type"]integerValue];
-        if (typeValue == 0) {
+        if (typeValue == 2) {
             self.notification_type = 1;
-        }else if (typeValue == 1) {
+        }else {
             self.notification_type = 2;
+            if (typeValue==0) {
+                [DataService sharedService].notificationPage=0;
+            }else {
+                [DataService sharedService].notificationPage=1;
+            }
         }
     }
-    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
+//    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
     
-    
-//    NSString *oringStr = @"this is an apple";
-//    NSArray *orgArray = [Utility handleTheString:oringStr];
-//    NSArray *metaphoneArray = [Utility metaphoneArray:orgArray];
-//    NSLog(@"orgArray = %@",orgArray);
-//    NSLog(@"metaphoneArray = %@",metaphoneArray);
-//    
-//    
-//    NSString *text = @"this a salple";
-//    NSArray *array = [Utility handleTheString:text];
-//    NSLog(@"array = %@",array);
-//    NSArray *array2 = [Utility metaphoneArray:array];
-//    NSLog(@"array2 = %@",array2);
-//    
-//    [Utility shared].isOrg = NO;
-//    [Utility shared].sureArray = [[NSMutableArray alloc]init];
-//    [Utility shared].correctArray = [[NSMutableArray alloc]init];
-//    [Utility shared].noticeArray = [[NSMutableArray alloc]init];
-//    [Utility shared].greenArray = [[NSMutableArray alloc]init];
-//    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
-//    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
-//    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
-//    [Utility shared].firstpoint = 0;
-//    NSDictionary *dic = [Utility compareWithArray:array andArray:array2 WithArray:orgArray andArray:metaphoneArray WithRange:[Utility shared].rangeArray];
-//    NSLog(@"dic = %@",dic);
-    
-    
-    
+    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
+    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
+    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
+    self.window.rootViewController = tabBarController;
+
     return YES;
 }
 
@@ -279,22 +246,18 @@
     
     //记录作业＋通知右上角红点点～～
     NSFileManager *fileManage = [NSFileManager defaultManager];
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
+    NSString *path = [Utility returnPath];
     NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
     if ([fileManage fileExistsAtPath:filename]) {
         [fileManage removeItemAtPath:filename error:nil];
     }
     NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
-    
+    NSString *notificationSystemType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationSystem];
+    [tmpArray addObject:notificationSystemType];
+    NSString *notificationReplyType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationReply];
+    [tmpArray addObject:notificationReplyType];
     NSString *taskType = [NSString stringWithFormat:@"%d",self.isReceiveTask];
     [tmpArray addObject:taskType];
-    NSString *notificationType = [NSString stringWithFormat:@"%d",self.isReceiveNotification];
-    [tmpArray addObject:notificationType];
     
     [NSKeyedArchiver archiveRootObject:tmpArray toFile:filename];
 }
@@ -319,20 +282,23 @@
 	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     
     self.isReceiveTask=NO;
-    self.isReceiveNotification=NO;
-    
+    self.isReceiveNotificationSystem=NO;
+    self.isReceiveNotificationReply=NO;
     NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
     
     NSString *badge = [apsInfo objectForKey:@"badge"];
 	if (badge != nil) {
         [UIApplication sharedApplication].applicationIconBadgeNumber = [badge intValue];
     }
+    
     if (![[userInfo objectForKey:@"type"]isKindOfClass:[NSNull class]] && [userInfo objectForKey:@"type"]!=nil) {
         int type = [[userInfo objectForKey:@"type"] intValue];
-        if (type == 0) {
+        if (type == 2) {
             self.isReceiveTask = YES;
         }else if (type == 1){
-            self.isReceiveNotification=YES;
+            self.isReceiveNotificationReply=YES;
+        }else if (type==0){
+            self.isReceiveNotificationSystem=YES;
         }
     }
     
@@ -342,34 +308,36 @@
         [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
     }else {
         NSFileManager *fileManage = [NSFileManager defaultManager];
-        NSString *path;
-        if (platform>5.0) {
-            path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        }else{
-            path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        }
+        NSString *path = [Utility returnPath];
         NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
         if (![fileManage fileExistsAtPath:filename]) {
         }else {
             NSArray *typeArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-            int taskType = [[typeArray objectAtIndex:0]integerValue];
-            if (taskType == 1) {
+            
+            int notificationTypeSystem = [[typeArray objectAtIndex:0]integerValue];
+            if (notificationTypeSystem == 0) {
+                self.isReceiveNotificationSystem=YES;
+            }
+            int notificationTypeReply = [[typeArray objectAtIndex:1]integerValue];
+            if (notificationTypeReply == 1) {
+                self.isReceiveNotificationReply=YES;
+            }
+            int taskType = [[typeArray objectAtIndex:2]integerValue];
+            if (taskType == 2) {
                 self.isReceiveTask=YES;
             }
-            int notificationType = [[typeArray objectAtIndex:1]integerValue];
-            if (notificationType == 1) {
-                self.isReceiveNotification=YES;
-            }
-            
+
             [fileManage removeItemAtPath:filename error:nil];
         }
         
         NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
         
+        NSString *notificationSystemType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationSystem];
+        [tmpArray addObject:notificationSystemType];
+        NSString *notificationReplyType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationReply];
+        [tmpArray addObject:notificationReplyType];
         NSString *taskType = [NSString stringWithFormat:@"%d",self.isReceiveTask];
         [tmpArray addObject:taskType];
-        NSString *notificationType = [NSString stringWithFormat:@"%d",self.isReceiveNotification];
-        [tmpArray addObject:notificationType];
         
         [NSKeyedArchiver archiveRootObject:tmpArray toFile:filename];
     }
@@ -383,20 +351,23 @@
     //接收到push  会震动
 	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     self.isReceiveTask=NO;
-    self.isReceiveNotification=NO;
-    
+    self.isReceiveNotificationSystem=NO;
+    self.isReceiveNotificationReply=NO;
     NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
     
     NSString *badge = [apsInfo objectForKey:@"badge"];
 	if (badge != nil) {
         [UIApplication sharedApplication].applicationIconBadgeNumber = [badge intValue];
     }
+    
     if (![[userInfo objectForKey:@"type"]isKindOfClass:[NSNull class]] && [userInfo objectForKey:@"type"]!=nil) {
         int type = [[userInfo objectForKey:@"type"] intValue];
-        if (type == 0) {
+        if (type == 2) {
             self.isReceiveTask = YES;
         }else if (type == 1){
-            self.isReceiveNotification=YES;
+            self.isReceiveNotificationReply=YES;
+        }else if (type==0){
+            self.isReceiveNotificationSystem=YES;
         }
     }
     
@@ -406,23 +377,23 @@
         [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
     }else {
         NSFileManager *fileManage = [NSFileManager defaultManager];
-        NSString *path;
-        if (platform>5.0) {
-            path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        }else{
-            path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        }
+        NSString *path = [Utility returnPath];
         NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
         if (![fileManage fileExistsAtPath:filename]) {
         }else {
             NSArray *typeArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-            int taskType = [[typeArray objectAtIndex:0]integerValue];
-            if (taskType == 1) {
-                self.isReceiveTask=YES;
+            
+            int notificationTypeSystem = [[typeArray objectAtIndex:0]integerValue];
+            if (notificationTypeSystem == 0) {
+                self.isReceiveNotificationSystem=YES;
             }
-            int notificationType = [[typeArray objectAtIndex:1]integerValue];
-            if (notificationType == 1) {
-                self.isReceiveNotification=YES;
+            int notificationTypeReply = [[typeArray objectAtIndex:1]integerValue];
+            if (notificationTypeReply == 1) {
+                self.isReceiveNotificationReply=YES;
+            }
+            int taskType = [[typeArray objectAtIndex:2]integerValue];
+            if (taskType == 2) {
+                self.isReceiveTask=YES;
             }
             
             [fileManage removeItemAtPath:filename error:nil];
@@ -430,10 +401,12 @@
         
         NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
         
+        NSString *notificationSystemType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationSystem];
+        [tmpArray addObject:notificationSystemType];
+        NSString *notificationReplyType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationReply];
+        [tmpArray addObject:notificationReplyType];
         NSString *taskType = [NSString stringWithFormat:@"%d",self.isReceiveTask];
         [tmpArray addObject:taskType];
-        NSString *notificationType = [NSString stringWithFormat:@"%d",self.isReceiveNotification];
-        [tmpArray addObject:notificationType];
         
         [NSKeyedArchiver archiveRootObject:tmpArray toFile:filename];
     }
