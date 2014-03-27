@@ -7,14 +7,18 @@
 //
 
 #import "LHLNotificationViewController.h"
+#import "DRLeftTabBarViewController.h"
+
+#define leftBarVC ((DRLeftTabBarViewController *)self.parentVC)
 
 @interface LHLNotificationViewController ()
 @property (weak, nonatomic) IBOutlet LHLTableView *tableView;
 @property (weak, nonatomic) IBOutlet LHLNotificationHeader *topBar;
 @property (strong,nonatomic) UIView *replyInputBgView;//回复消息时,输入框的背景
 @property (strong,nonatomic) UITextView *replyInputTextView;  //回复消息时,输入框
-@property (strong,nonatomic) UIButton *replyInputCancelButton;
-@property (strong,nonatomic) UIButton *replyInputCommitButton;
+//@property (strong,nonatomic) UIButton *replyInputCancelButton;
+//@property (strong,nonatomic) UIButton *replyInputCommitButton;
+@property (strong,nonatomic) UILabel *characterCountLabel; //显示输入字数的label
 
 @property (strong,nonatomic) LHLNotificationCell *tempCell;
 @property (assign,nonatomic) NotificationDisplayCategory displayCategory;//当前页面显示的通知类型
@@ -35,6 +39,8 @@
 
 @property (strong,nonatomic) NSIndexPath *editingReplyCellIndexPath;//存储正在编辑状态的格子位置
 @property (strong,nonatomic) NSIndexPath *editingNotiCellIndexPath;
+
+@property (strong,nonatomic) id parentVC; //找到DRLeftTabBarVC
 @end
 
 @implementation LHLNotificationViewController
@@ -104,8 +110,12 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated{
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated{
     [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
-    [self requestMyNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+    [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -178,6 +188,14 @@
 #pragma mark --
 
 #pragma mark -- UITableViewDelegate
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    [self.replyInputTextView resignFirstResponder];
+    if (!leftBarVC.isHiddleLeftTabBar) {
+        [leftBarVC navigationLeftItemClicked];
+    }
+    
+}
+
 //
 //-(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
 //    return 90;
@@ -219,7 +237,7 @@
     }
 }
 
-#pragma mark -- 请求接口(很多地方写死,需修改)
+#pragma mark -- 请求接口
 //请求接口,获取系统通知
 -(void)requestSysNoticeWithStudentID:(NSString *)studentID andClassID:(NSString *)classID andPage:(NSString *)page{
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
@@ -247,7 +265,7 @@
                     [self.notificationArray addObject:obj];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
                     if (self.displayCategory == NotificationDisplayCategoryDefault) {
                         [self.tableView reloadData];
                         [self.refreshFooterView endRefreshing];
@@ -255,7 +273,9 @@
                     }
                 });
             } withFailure:^(NSError *error) {
-                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                });
                 [self.refreshFooterView endRefreshing];
                 [self.refreshHeaderView endRefreshing];
                 if (self.displayCategory == NotificationDisplayCategoryDefault) {
@@ -268,7 +288,7 @@
 }
 
 //请求接口,获取回复通知
--(void)requestMyNoticeWithStudentID:(NSString *)studentID andClassID:(NSString *)classID andPage:(NSString *)page{
+-(void)requestMyNoticeWithUserID:(NSString *)studentID andClassID:(NSString *)classID andPage:(NSString *)page{
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
             //请求回复通知
@@ -310,7 +330,7 @@
                     [self.replyNotificationArray addObject:obj];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
                     if (self.displayCategory == NotificationDisplayCategoryReply) {
                         [self.tableView reloadData];
                         [self.refreshFooterView endRefreshing];
@@ -318,7 +338,9 @@
                     }
                 });
             } withFailure:^(NSError *error) {
-                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                });
                 [self.refreshFooterView endRefreshing];
                 [self.refreshHeaderView endRefreshing];
                 if (self.displayCategory == NotificationDisplayCategoryReply) {
@@ -343,7 +365,7 @@
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 [self.notificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
                         self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
@@ -354,7 +376,9 @@
                     [Utility errorAlert:@"删除成功!"];
                 });
             } withFailure:^(NSError *error) {
-                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                });
                 NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                 [Utility errorAlert:errorMsg];
                 self.deletingIndexPath = nil;
@@ -376,7 +400,7 @@
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 [self.replyNotificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
                         self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
@@ -387,7 +411,9 @@
                     [Utility errorAlert:@"删除成功!"];
                 });
             } withFailure:^(NSError *error) {
-                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                });
                 NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                 [Utility errorAlert:errorMsg];
                 self.deletingIndexPath = nil;
@@ -400,8 +426,15 @@
 -(void)replyMessageWithSenderID:(NSString *)senderID andSenderType:(NSString *)senderType andContent:(NSString *)content andClassID:(NSString *)classID andMicropostID:(NSString *)microPostID andReciverID:(NSString *)reciverID andReciverType:(NSString *)reciverType{
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
+            //转码
+            NSString *originString = [NSString stringWithString:content];
+            originString = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                    (CFStringRef)originString,
+                                                    NULL,
+                                                    NULL,
+                                                    kCFStringEncodingUTF8));
             //请求系统通知
-            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/reply_message?sender_id=%@&sender_types=%@&content=%@&school_class_id=%@&micropost_id=%@&reciver_id=%@&reciver_types=%@",senderID,senderType,content,classID,microPostID,reciverID,reciverType];
+            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/reply_message?sender_id=%@&sender_types=%@&content=%@&school_class_id=%@&micropost_id=%@&reciver_id=%@&reciver_types=%@",senderID,senderType,originString,classID,microPostID,reciverID,reciverType];
             NSURL *url = [NSURL URLWithString:str];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
             [request setHTTPMethod:@"POST"];
@@ -409,12 +442,14 @@
             [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
                     [self replyInputCancelButtonClicked:nil];
                     [Utility errorAlert:@"回复成功!"];
                 });
             } withFailure:^(NSError *error) {
-                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                });
                 NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                 [Utility errorAlert:errorMsg];
             }];
@@ -423,6 +458,20 @@
 }
 
 #pragma mark -- property
+-(id)parentVC{
+    if (!_parentVC) {
+        _parentVC = [self parentViewController];
+        for (int i = 0; i < 5; i ++) {
+            if ([_parentVC isKindOfClass:[DRLeftTabBarViewController class]]) {
+                return _parentVC;
+            }
+            _parentVC = [_parentVC parentViewController];
+        }
+        _parentVC = nil;
+    }
+    return _parentVC;
+}
+
 -(AppDelegate *)appDel {
     if (!_appDel) {
         _appDel = [AppDelegate shareIntance];
@@ -442,30 +491,16 @@
 
 -(UIView *)replyInputBgView{
     if (!_replyInputBgView) {
-        _replyInputBgView = [[UIView alloc] initWithFrame:(CGRect){0,1030,768,250}];
+        _replyInputBgView = [[UIView alloc] initWithFrame:(CGRect){0,self.view.bounds.size.height + 1,768,50}];
         _replyInputBgView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
         [self.view addSubview:_replyInputBgView];
-        if (!_replyInputCancelButton) {
-            _replyInputCancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [_replyInputCancelButton setTitle:@"取  消" forState:UIControlStateNormal];
-            _replyInputCancelButton.backgroundColor = [UIColor blueColor];
-            [_replyInputCancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            _replyInputCancelButton.titleLabel.font = [UIFont systemFontOfSize:24.0];
-            [_replyInputCancelButton addTarget:self action:@selector(replyInputCancelButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            _replyInputCancelButton.layer.cornerRadius = 5.0;
-            _replyInputCancelButton.frame = (CGRect){80,10,200,50};
-            [_replyInputBgView addSubview:_replyInputCancelButton];
-        }
-        if (!_replyInputCommitButton) {
-            _replyInputCommitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-            [_replyInputCommitButton setTitle:@"提  交" forState:UIControlStateNormal];
-            _replyInputCommitButton.backgroundColor = [UIColor blueColor];
-            [_replyInputCommitButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            _replyInputCommitButton.titleLabel.font = [UIFont systemFontOfSize:24.0];
-            [_replyInputCommitButton addTarget:self action:@selector(replyInputCommitButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            _replyInputCommitButton.layer.cornerRadius = 5.0;
-            _replyInputCommitButton.frame = (CGRect){500,10,200,50};
-            [_replyInputBgView addSubview:_replyInputCommitButton];
+        if (!_characterCountLabel) {
+            _characterCountLabel = [[UILabel alloc] initWithFrame:(CGRect){710,4,50,40}];
+            _characterCountLabel.textColor = [UIColor grayColor];
+            _characterCountLabel.textAlignment = NSTextAlignmentRight;
+            _characterCountLabel.text = @"0/60";
+            _characterCountLabel.font = [UIFont systemFontOfSize:18.0];
+            [_replyInputBgView addSubview:_characterCountLabel];
         }
     }
     return _replyInputBgView;
@@ -473,11 +508,13 @@
 
 -(UITextView *)replyInputTextView{
     if (!_replyInputTextView) {
-        _replyInputTextView = [[UITextView alloc] initWithFrame:(CGRect){40,68,688,180}];
+        _replyInputTextView = [[UITextView alloc] initWithFrame:(CGRect){20,4,688,40}];
         _replyInputTextView.font = [UIFont systemFontOfSize:25.0];
         _replyInputTextView.layer.cornerRadius = 6.0;
         _replyInputTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        _replyInputTextView.layer.borderWidth = 2.0;
+        _replyInputTextView.layer.borderWidth = 1.0;
+        _replyInputTextView.returnKeyType = UIReturnKeySend;
+        _replyInputTextView.delegate = self;
         [self.replyInputBgView addSubview:_replyInputTextView];
     }
     return _replyInputTextView;
@@ -543,7 +580,7 @@
     NSTimeInterval duration;
     [durationValue getValue:&duration];
     [UIView animateWithDuration:duration animations:^{
-        self.replyInputBgView.center = (CGPoint){self.replyInputBgView.center.x,frame.origin.y - self.replyInputBgView.frame.size.height / 2};
+        self.replyInputBgView.center = (CGPoint){self.replyInputBgView.center.x,frame.origin.y - self.replyInputBgView.frame.size.height / 2 - 67}; //67为本VC的view在屏幕的偏移量
     }];
 }
 
@@ -553,7 +590,7 @@
     NSTimeInterval duration;
     [durationValue getValue:&duration];
     [UIView animateWithDuration:duration animations:^{
-        self.replyInputBgView.center = (CGPoint){self.replyInputBgView.center.x,1025 + self.replyInputBgView.frame.size.height / 2};
+        self.replyInputBgView.center = (CGPoint){self.replyInputBgView.center.x,self.view.bounds.size.height + 1 + self.replyInputBgView.frame.size.height / 2};
     }];
 }
 
@@ -564,9 +601,15 @@
 }
 
 -(void)replyInputCommitButtonClicked:(id)sender{
-    //TODO:content尚未赋值
+    if (self.replyInputTextView.text.length < 1) {
+        [Utility errorAlert:@"回复内容不能为空"];
+        return;
+    }else if(self.replyInputTextView.text.length > 500){
+        [Utility errorAlert:@"回复内容不能超过500个字符"];
+        return;
+    }
     ReplyNotificationObject *notice = self.replyNotificationArray[self.replyingIndexPath.row];
-    [self replyMessageWithSenderID:[DataService sharedService].user.studentId andSenderType:@"1" andContent:@"string" andClassID:[DataService sharedService].theClass.classId andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
+    [self replyMessageWithSenderID:[DataService sharedService].user.studentId andSenderType:@"1" andContent:self.replyInputTextView.text andClassID:[DataService sharedService].theClass.classId andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
 }
 
 #pragma mark -- LHLNotificationCellDelegate
@@ -575,7 +618,7 @@
     NotificationObject *notice = self.notificationArray[cell.indexPath.row];
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
-            [self deleteSysNoticeWithUserID:@"1" andClassID:@"1" andNoticeID:notice.notiID];
+            [self deleteSysNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andNoticeID:notice.notiID];
         }
     }];
     self.deletingIndexPath = cell.indexPath;
@@ -632,6 +675,7 @@
 }
 
 -(void) replyCell:(LHLReplyNotificationCell *)cell setIsEditing:(BOOL)editing{
+    [self replyInputCancelButtonClicked:nil];
     ReplyNotificationObject *obj = self.replyNotificationArray[cell.indexPath.row];
     obj.isEditing = editing;
     
@@ -656,7 +700,7 @@
     ReplyNotificationObject *notice = self.replyNotificationArray[cell.indexPath.row];
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
-            [self deleteMyNoticeWithUserID:@"115" andClassID:@"83" andNoticeID:notice.replyId];
+            [self deleteMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andNoticeID:notice.replyId];
         }
     }];
     self.deletingIndexPath = cell.indexPath;
@@ -694,6 +738,60 @@
     }
 }
 
+#pragma mark -- uitextView Delegate
+-(void)textViewDidChange:(UITextView *)textView{
+    [self calculateTextLength];
+}
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    if ([text isEqualToString:@"\n"]){
+        if (self.replyInputTextView.text.length < 1) {
+            [Utility errorAlert:@"回复内容不能为空"];
+            return NO;
+        }else if([self textLength:self.replyInputTextView.text] > 60){
+            [Utility errorAlert:@"回复内容不能超过60个字符"];
+            return NO;
+        }
+        ReplyNotificationObject *notice = self.replyNotificationArray[self.replyingIndexPath.row];
+        [self replyMessageWithSenderID:[DataService sharedService].user.studentId andSenderType:@"1" andContent:self.replyInputTextView.text andClassID:[DataService sharedService].theClass.classId andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
+        return NO;
+    }
+    return YES;
+}
+
+#pragma mark ---- 计算文本的字数
+- (int)textLength:(NSString *)text
+{
+    float number = 0.0;
+    for (int index = 0; index < [text length]; index++)
+    {
+        NSString *character = [text substringWithRange:NSMakeRange(index, 1)];
+        
+        if ([character lengthOfBytesUsingEncoding:NSUTF8StringEncoding] == 3)
+        {
+            number++;
+        }
+        else
+        {
+            number = number + 0.5;
+        }
+    }
+    return ceil(number);
+}
+
+- (void)calculateTextLength
+{
+    NSString *string = self.replyInputTextView.text;
+    int wordcount = [self textLength:string];
+    
+	NSInteger count  = 60 - wordcount;
+    if (count<0) {
+        [self.characterCountLabel setText:[NSString stringWithFormat:@"%i/60",60]];
+    }else {
+        [self.characterCountLabel setText:[NSString stringWithFormat:@"%i/60",wordcount]];
+    }
+}
+
 #pragma mark -- MJRefreshDelegate
 -(void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView{
     if (self.refreshHeaderView == refreshView) { //刷新
@@ -702,7 +800,7 @@
             [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
             self.pageOfNotification = 1;
         }else{
-            [self requestMyNoticeWithStudentID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
             self.pageOfReplyNotification = 1;
         }
     }else{   //分页加载
@@ -710,7 +808,7 @@
         if (self.displayCategory == NotificationDisplayCategoryDefault) {
             [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
         }else{
-            [self requestMyNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
+            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
         }
     }
 }

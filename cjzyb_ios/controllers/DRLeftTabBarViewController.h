@@ -31,4 +31,6 @@
  */
 @property (strong,nonatomic) NSArray *childenControllerArray;
 @property (strong,nonatomic) UIViewController *currentViewController;
+
+-(void)navigationLeftItemClicked;
 @end
