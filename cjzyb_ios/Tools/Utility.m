@@ -370,12 +370,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
     NSError *jsonParsingError = nil;
     
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
+    NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:jsonPath];
     NSString *filePath = [documentDirectory stringByAppendingPathComponent:@"question.json"];
 //    NSString *filePath = [[NSBundle mainBundle] pathForResource:jsonPath ofType:@"json"];
@@ -1553,12 +1548,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         return nil;
     }
     NSFileManager *manager = [NSFileManager defaultManager];
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
+    NSString *path = [Utility returnPath];
     path = [path stringByAppendingPathComponent:date]; //日期对应的文件夹(task文件夹)
     if (![manager fileExistsAtPath:path]) {
         NSError *error;
@@ -1596,12 +1586,8 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         return nil;
     }
     NSFileManager *manager = [NSFileManager defaultManager];
-    NSString *path;
-    if (platform>5.0) {
-        path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0]stringByAppendingPathComponent:date];
-    }else{
-        path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0]stringByAppendingPathComponent:date];
-    }
+    NSString *path1 = [Utility returnPath];
+    NSString *path = [path1 stringByAppendingPathComponent:date];
     
     if (![manager fileExistsAtPath:path]) {
         NSError *error;
@@ -1720,16 +1706,19 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     }
     return YES;
 }
-//TODO:返回题目
-+(NSMutableDictionary *)returnAnswerDictionaryWithName:(NSString *)name  andDate:(NSString *)timeString{
-    NSFileManager *fileManage =[NSFileManager defaultManager];
++(NSString *)returnPath {
     NSString *path;
     if (platform>5.0) {
         path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }else{
         path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     }
-    
+    return path;
+}
+//TODO:返回题目
++(NSMutableDictionary *)returnAnswerDictionaryWithName:(NSString *)name  andDate:(NSString *)timeString{
+    NSFileManager *fileManage =[NSFileManager defaultManager];
+    NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     if ([fileManage fileExistsAtPath:jsPath]) {
@@ -1796,12 +1785,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSString *str = [Utility returnTypeOfQuestionWithString:name];
     [[DataService sharedService].taskObj.finish_types addObject:str];
     
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
+    NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
 
@@ -1821,12 +1805,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 //TODO:返回道具
 +(NSMutableArray *)returnAnswerPropsandDate:(NSString *)timeString{
     NSFileManager *fileManage =[NSFileManager defaultManager];
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
+    NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     if ([fileManage fileExistsAtPath:jsPath]) {
@@ -1857,12 +1836,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 }
 //TODO:保存道具
 +(void)returnAnswerPathWithProps:(NSMutableArray *)array andDate:(NSString *)timeString{
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
+    NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     
@@ -1878,12 +1852,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 }
 //TODO：更新时间
 +(void)returnAnswerPAthWithString:(NSString *)str {
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
+    NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     

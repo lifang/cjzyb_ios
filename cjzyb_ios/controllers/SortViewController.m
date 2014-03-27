@@ -692,7 +692,7 @@
 -(void)showResultView {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentDirectory = [paths objectAtIndex:0];
-    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     
     NSError *error = nil;
     Class JSONSerialization = [Utility JSONParserClass];

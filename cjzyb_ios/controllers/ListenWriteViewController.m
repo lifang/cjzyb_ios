@@ -344,12 +344,7 @@ static int numberOfMusic =0;
     self.listenBtn.enabled=NO;
     self.playMusicModel=0;
     [self.listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
+    NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     for (int i=self.branchNumber; i<self.branchQuestionArray.count; i++) {
         NSDictionary *dic = [self.branchQuestionArray objectAtIndex:i];
@@ -386,12 +381,7 @@ static int numberOfMusic =0;
     self.branch_listenBtn.enabled=NO;
     [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
     self.playMusicModel=1;
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
+    NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     
     NSString *nameString = [NSString stringWithFormat:@"%@%@.mp3",documentDirectory,[self.branchQuestionDic objectForKey:@"resource_url"]];
@@ -662,7 +652,7 @@ static int numberOfMusic =0;
 -(void)showResultView {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentDirectory = [paths objectAtIndex:0];
-    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     
     NSError *error = nil;
     Class JSONSerialization = [Utility JSONParserClass];
