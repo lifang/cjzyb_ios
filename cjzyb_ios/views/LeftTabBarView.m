@@ -23,7 +23,6 @@
 
 -(void)defaultSelected{
     [self unSelectedAllItems];
-    self.mainTabBarItem.isSelected = YES;
 }
 /*
 // Only override drawRect: if you perform custom drawing.

@@ -25,10 +25,15 @@
 @property (assign,nonatomic) BOOL isHiddleLeftTabBar;
 @property (nonatomic,strong) DRNavigationBar *drNavigationBar;
 
+@property (nonatomic, assign) NSInteger currentPage;
 /** childenControllerArray
  *
  * 放置要显示的子controller
  */
 @property (strong,nonatomic) NSArray *childenControllerArray;
 @property (strong,nonatomic) UIViewController *currentViewController;
+
+-(void)addOneController:(UIViewController*)childController;
+-(void)changeFromController:(UIViewController*)from toController:(UIViewController*)to;
+
 @end

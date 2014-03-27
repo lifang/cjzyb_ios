@@ -58,7 +58,7 @@
             [Utility errorAlert:@"班级验证码不能为空"];
             return ;
         }
-        [UserObjDaoInterface joinNewGradeWithUserId:@"72" withIdentifyCode:inputString withSuccess:^(UserObject *userObj, ClassObject *gradeObj) {
+        [UserObjDaoInterface joinNewGradeWithUserId:[DataService sharedService].user.userId withIdentifyCode:inputString withSuccess:^(UserObject *userObj, ClassObject *gradeObj) {
             ClassGroupViewController *tempSelf = weakSelf;
             if (tempSelf) {
                 data.user = userObj;

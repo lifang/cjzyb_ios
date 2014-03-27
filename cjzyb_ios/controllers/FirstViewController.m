@@ -49,8 +49,8 @@
     }else {
         self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//        [self.messageInter getMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId];
-        [self.messageInter getMessageInterfaceDelegateWithClassId:@"83" andUserId:@"73"];
+        [self.messageInter getMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId];
+//        [self.messageInter getMessageInterfaceDelegateWithClassId:@"83" andUserId:@"73"];
     }
 }
 -(void)textBarInit {
