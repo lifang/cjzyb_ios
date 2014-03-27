@@ -33,6 +33,7 @@
 @property (strong,nonatomic) NSArray *childenControllerArray;
 @property (strong,nonatomic) UIViewController *currentViewController;
 
+-(void)navigationLeftItemClicked;
 -(void)addOneController:(UIViewController*)childController;
 -(void)changeFromController:(UIViewController*)from toController:(UIViewController*)to;
 
