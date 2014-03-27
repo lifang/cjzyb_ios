@@ -63,7 +63,7 @@
     self.userClassNameLabel.text = data.theClass.name;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     __weak UserInfoPopViewController *weakSelf = self;
-    [UserObjDaoInterface downloadUserAchievementWithUserId:data.user.userId withGradeID:data.theClass.classId withSuccess:^(int youxi, int xunsu, int jiezu, int jingzhun) {
+    [UserObjDaoInterface downloadUserAchievementWithUserId:data.user.studentId withGradeID:data.theClass.classId withSuccess:^(int youxi, int xunsu, int jiezu, int jingzhun) {
         UserInfoPopViewController *tempSelf = weakSelf;
         if (tempSelf) {
             data.user.youyiScore = youxi;
@@ -96,7 +96,7 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     __weak UserInfoPopViewController *weakSelf = self;
     
-    [UserObjDaoInterface dowloadGradeListWithUserId:@"72" withSuccess:^(NSArray *gradeList) {
+    [UserObjDaoInterface dowloadGradeListWithUserId:[DataService sharedService].user.studentId withSuccess:^(NSArray *gradeList) {
         UserInfoPopViewController *tempSelf = weakSelf;
         if (tempSelf) {
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -129,7 +129,7 @@
     
     [ModelTypeViewController presentTypeViewWithTipString:@"请输入新名称：" withFinishedInput:^(NSString *inputString) {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [UserObjDaoInterface modifyUserNickNameAndHeaderImageWithUserId:data.user.userId withUserName:data.user.name withUserNickName:data.user.nickName withHeaderData:nil withSuccess:^(NSString *msg) {
+        [UserObjDaoInterface modifyUserNickNameAndHeaderImageWithUserId:data.user.studentId withUserName:data.user.name withUserNickName:data.user.nickName withHeaderData:nil withSuccess:^(NSString *msg) {
             UserInfoPopViewController *tempSelf = weakSelf;
             if (tempSelf) {
                 data.user.nickName = inputString;

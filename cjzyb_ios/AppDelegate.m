@@ -158,14 +158,15 @@
     //设置语音识别的apikey
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
     
+    [self showHomework];
 
-    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
-    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
-    self.window.rootViewController = tabBarController;
+//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+//    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
+//    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+//    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
+//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+//    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
+//    self.window.rootViewController = tabBarController;
 
 
     

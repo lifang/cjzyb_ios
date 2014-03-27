@@ -10,7 +10,7 @@
 #import "SpellMatchObj.h"
 
 @implementation DRSentenceSpellMatch
-+(void)checkSentence:(NSString*)sentence withSpellMatchSentence:(NSString*)spellSentence andSpellMatchAttributeString:(void(^)(NSAttributedString *spellAttriString,float matchScore))success orSpellMatchFailure:(void(^)(NSError *error))failure{
++(void)checkSentence:(NSString*)sentence withSpellMatchSentence:(NSString*)spellSentence andSpellMatchAttributeString:(void(^)(NSAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray))success orSpellMatchFailure:(void(^)(NSError *error))failure{
     if (!sentence || !spellSentence) {
         if (failure) {
             failure([NSError errorWithDomain:@"" code:10010 userInfo:@{@"msg": @"要匹配对象不存在"}]);
@@ -35,7 +35,7 @@
         NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:senStr];
         [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0, attri.length)];
         [attri addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(0, attri.length)];
-        success(attri,1);
+        success(attri,1,nil);
         return;
     }
     
@@ -48,11 +48,13 @@
         [spellAttribute addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0, spellAttribute.length)];
         [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(0, spellAttribute.length)];
         int unMatch = 0;
+        NSMutableArray *errorWordArr = [NSMutableArray array];
         for (SpellMatchObj *obj in spellMatchRangeArr) {
             if (obj.spellLevel == 1 || obj.spellLevel == 0.5) {
                 [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:obj.range];
             }else{
                 unMatch++;
+                [errorWordArr addObject:obj.originText];
             }
         }
         float score = 1;
@@ -63,7 +65,7 @@
             [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(0, spellAttribute.length)];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            success(spellAttribute,score);
+            success(spellAttribute,score,errorWordArr.count>0 ?errorWordArr:nil);
         });
     });
 

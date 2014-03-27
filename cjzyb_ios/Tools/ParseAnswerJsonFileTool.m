@@ -75,7 +75,8 @@
             ReadingSentenceObj *sentence = [[ReadingSentenceObj alloc] init];
             sentence.readingSentenceID = [Utility filterValue:[sentenceDic objectForKey:@"id"]];
             sentence.readingSentenceRatio = [Utility filterValue:[sentenceDic objectForKey:@"ratio"]];
-            sentence.readingSentenceContent = [Utility filterValue:[sentenceDic objectForKey:@"answer"]];
+            sentence.readingSentenceContent = [Utility filterValue:[sentenceDic objectForKey:@"answerContent"]];
+            sentence.readingErrorWordArray = [ParseAnswerJsonFileTool getErrorWordArrayFromString:[sentenceDic objectForKey:@"answer"]];
             [sentenceList addObject:sentence];
         }
         reading.readingHomeworkSentenceObjArray = sentenceList;
@@ -123,7 +124,8 @@
         for (ReadingSentenceObj *sentence in reading.readingHomeworkSentenceObjArray) {
             NSMutableDictionary *sentenceDic = [NSMutableDictionary dictionary];
             [sentenceDic setValue:sentence.readingSentenceID forKey:@"id"];
-            [sentenceDic setValue:sentence.readingSentenceContent forKey:@"answer"];
+            [sentenceDic setValue:sentence.readingSentenceContent forKey:@"answerContent"];
+            [sentenceDic setValue:[ParseAnswerJsonFileTool getErrorWordContentFromErrorArray:sentence.readingErrorWordArray] forKey:@"answer"];
             [sentenceDic setValue:sentence.readingSentenceRatio forKey:@"ratio"];
             [sentenceArr addObject:sentenceDic];
         }
@@ -132,8 +134,32 @@
     }
     [readingDic setValue:homeworkArr forKey:@"questions"];
     [Utility returnAnswerPathWithDictionary:readingDic andName:@"reading" andDate:dircName];
+    if (success) {
+        success();
+    }
 }
 
+//TODO:将读错的单词拼接成字符串
++(NSString*)getErrorWordContentFromErrorArray:(NSArray*)array{
+    NSMutableString *content = [[NSMutableString alloc] init];
+    for (NSString *sentence in array) {
+        [content appendFormat:@"%@;||;",sentence];
+    }
+    if (content.length <= 0) {
+        return @"";
+    }
+    return content;
+}
+
+//TODO:从字符串中获取
++(NSMutableArray*)getErrorWordArrayFromString:(NSString*)content{
+    if (!content || [content isEqualToString:@""]) {
+        return nil;
+    }
+    return [NSMutableArray arrayWithArray:[content componentsSeparatedByString:@";||;"]];
+}
+
+//TODO:判断当前作业是否做完
 +(NSString*)getStatusWithReadingHomeworkArray:(NSArray*)homeworkArray{
     NSString *status = @"1";
     for (ReadingHomeworkObj *reading in homeworkArray) {
