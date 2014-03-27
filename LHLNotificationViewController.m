@@ -9,7 +9,7 @@
 #import "LHLNotificationViewController.h"
 
 @interface LHLNotificationViewController ()
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet LHLTableView *tableView;
 @property (weak, nonatomic) IBOutlet LHLNotificationHeader *topBar;
 @property (strong,nonatomic) UIView *replyInputBgView;//回复消息时,输入框的背景
 @property (strong,nonatomic) UITextView *replyInputTextView;  //回复消息时,输入框
@@ -32,14 +32,9 @@
 @property (strong,nonatomic) MJRefreshFooterView *refreshFooterView; //下拉加载
 @property (assign,nonatomic) BOOL isRefreshing; //YES刷新,NO分页加载
 @property (strong,nonatomic) NSMutableDictionary *bufferedImageDic; //头像缓冲
-//@property (strong,nonatomic) LHLReplyNotificationCell * editingReplyCell;
-//@property (strong,nonatomic) LHLNotificationCell *editingNotiCell;
-@property (strong,nonatomic) NSIndexPath *editingReplyCellIndexPath;
-@property (strong,nonatomic) NSIndexPath *editingNotiCellIndexPath;
 
-//临时学生数据
-@property (strong,nonatomic) NSString *userID;
-@property (strong,nonatomic) NSString *classID;
+@property (strong,nonatomic) NSIndexPath *editingReplyCellIndexPath;//存储正在编辑状态的格子位置
+@property (strong,nonatomic) NSIndexPath *editingNotiCellIndexPath;
 @end
 
 @implementation LHLNotificationViewController
@@ -80,13 +75,7 @@
     self.pageOfNotification = 1;
     self.replyNotificationArray = [NSMutableArray array];
     self.pageOfReplyNotification = 1;
-    
-    self.userID = @"115";
-    self.classID = @"83";
     self.isRefreshing = YES;
-    
-    [self requestSysNoticeWithStudentID:self.userID andClassID:self.classID andPage:@"1"];
-    [self requestMyNoticeWithStudentID:self.userID andClassID:self.classID andPage:@"1"];
 }
 
 - (void)addNotificationOb{
@@ -112,6 +101,11 @@
         NSString *filePath = [NSString stringWithFormat:@"%@/tempImages.plist",path];
         [_bufferedImageDic writeToFile:filePath atomically:YES];
     }
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+    [self requestMyNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -212,6 +206,19 @@
     return [NSString stringWithFormat:@"%@ %@",date,time];
 }
 
+-(void)dragMethod:(BOOL) toLeft{
+    if (toLeft) {
+        //手指向左划
+        if (self.displayCategory == NotificationDisplayCategoryReply) {
+            [self.topBar noticeButtonClicked:self.topBar.noticeButton];
+        }
+    }else{
+        if (self.displayCategory == NotificationDisplayCategoryDefault) {
+            [self.topBar replyButtonClicked:self.topBar.replyButton];
+        }
+    }
+}
+
 #pragma mark -- 请求接口(很多地方写死,需修改)
 //请求接口,获取系统通知
 -(void)requestSysNoticeWithStudentID:(NSString *)studentID andClassID:(NSString *)classID andPage:(NSString *)page{
@@ -221,6 +228,7 @@
             NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
             NSURL *url = [NSURL URLWithString:str];
             NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 if (self.isRefreshing) {
                     self.notificationArray = [NSMutableArray array];
@@ -239,6 +247,7 @@
                     [self.notificationArray addObject:obj];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                     if (self.displayCategory == NotificationDisplayCategoryDefault) {
                         [self.tableView reloadData];
                         [self.refreshFooterView endRefreshing];
@@ -246,6 +255,7 @@
                     }
                 });
             } withFailure:^(NSError *error) {
+                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                 [self.refreshFooterView endRefreshing];
                 [self.refreshHeaderView endRefreshing];
                 if (self.displayCategory == NotificationDisplayCategoryDefault) {
@@ -265,6 +275,7 @@
             NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
             NSURL *url1 = [NSURL URLWithString:str1];
             NSURLRequest *request1 = [NSURLRequest requestWithURL:url1];
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request1 withSuccess:^(NSDictionary *dicData) {
                 if (self.isRefreshing) {
                     self.replyNotificationArray = [NSMutableArray array];
@@ -299,6 +310,7 @@
                     [self.replyNotificationArray addObject:obj];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                     if (self.displayCategory == NotificationDisplayCategoryReply) {
                         [self.tableView reloadData];
                         [self.refreshFooterView endRefreshing];
@@ -306,6 +318,7 @@
                     }
                 });
             } withFailure:^(NSError *error) {
+                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                 [self.refreshFooterView endRefreshing];
                 [self.refreshHeaderView endRefreshing];
                 if (self.displayCategory == NotificationDisplayCategoryReply) {
@@ -326,9 +339,11 @@
             NSURL *url = [NSURL URLWithString:str];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
             [request setHTTPMethod:@"POST"];
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 [self.notificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
                         self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
@@ -339,6 +354,7 @@
                     [Utility errorAlert:@"删除成功!"];
                 });
             } withFailure:^(NSError *error) {
+                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                 NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                 [Utility errorAlert:errorMsg];
                 self.deletingIndexPath = nil;
@@ -355,9 +371,12 @@
             NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/delete_message?user_id=%@&school_class_id=%@&message_id=%@",studentID,classID,noticeID];
             NSURL *url = [NSURL URLWithString:str];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+            
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 [self.replyNotificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
                         self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
@@ -368,6 +387,7 @@
                     [Utility errorAlert:@"删除成功!"];
                 });
             } withFailure:^(NSError *error) {
+                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                 NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                 [Utility errorAlert:errorMsg];
                 self.deletingIndexPath = nil;
@@ -385,12 +405,16 @@
             NSURL *url = [NSURL URLWithString:str];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
             [request setHTTPMethod:@"POST"];
+            
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                     [self replyInputCancelButtonClicked:nil];
                     [Utility errorAlert:@"回复成功!"];
                 });
             } withFailure:^(NSError *error) {
+                [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
                 NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                 [Utility errorAlert:errorMsg];
             }];
@@ -399,6 +423,13 @@
 }
 
 #pragma mark -- property
+-(AppDelegate *)appDel {
+    if (!_appDel) {
+        _appDel = [AppDelegate shareIntance];
+    }
+    return _appDel;
+}
+
 -(NSMutableDictionary *)bufferedImageDic{
     if (!_bufferedImageDic) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
@@ -533,10 +564,10 @@
 }
 
 -(void)replyInputCommitButtonClicked:(id)sender{
+    //TODO:content尚未赋值
     ReplyNotificationObject *notice = self.replyNotificationArray[self.replyingIndexPath.row];
-    [self replyMessageWithSenderID:self.userID andSenderType:@"1" andContent:@"string" andClassID:self.classID andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
+    [self replyMessageWithSenderID:[DataService sharedService].user.studentId andSenderType:@"1" andContent:@"string" andClassID:[DataService sharedService].theClass.classId andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
 }
-
 
 #pragma mark -- LHLNotificationCellDelegate
 -(void)cell:(LHLNotificationCell *)cell deleteButtonClicked:(id)sender{
@@ -572,6 +603,10 @@
     }else{
         self.editingNotiCellIndexPath = nil;
     }
+}
+
+- (void)cell:(LHLNotificationCell *)cell dragToLeft:(BOOL)toLeft{
+    [self dragMethod:toLeft];
 }
 
 #pragma mark -- LHLReplyNotificationCellDelegate
@@ -627,12 +662,35 @@
     self.deletingIndexPath = cell.indexPath;
 }
 
+-(void) replyCell:(LHLReplyNotificationCell *)cell dragToLeft:(BOOL)toLeft{
+    [self dragMethod:toLeft];
+}
+
 #pragma mark -- LHLNotificationHeaderDelegate
 //点击header按钮后触发
 -(void)header:(LHLNotificationHeader *)header didSelectedDisplayCategory:(NotificationDisplayCategory)category{
     if (self.displayCategory != category) {
         self.displayCategory = category;
         [self.tableView reloadData];
+        
+        CATransition *animation = [CATransition animation];
+        [animation setType:kCATransitionPush];
+        if (self.displayCategory == NotificationDisplayCategoryDefault) {
+            [animation setSubtype:kCATransitionFromRight];
+        }else{
+            [animation setSubtype:kCATransitionFromLeft];
+        }
+        
+        [animation setDuration:0.5];
+        [animation setRemovedOnCompletion:YES];
+        [animation setDelegate:self];
+        [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+        if (self.displayCategory == NotificationDisplayCategoryDefault) {
+            [self.tableView.layer addAnimation:animation forKey:@"PushLeft"];
+        }else{
+            [self.tableView.layer addAnimation:animation forKey:@"PushRight"];
+        }
+        
     }
 }
 
@@ -641,18 +699,18 @@
     if (self.refreshHeaderView == refreshView) { //刷新
         self.isRefreshing = YES;
         if (self.displayCategory == NotificationDisplayCategoryDefault) {
-            [self requestSysNoticeWithStudentID:self.userID andClassID:self.classID andPage:@"1"];
+            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
             self.pageOfNotification = 1;
         }else{
-            [self requestMyNoticeWithStudentID:self.userID andClassID:self.classID andPage:@"1"];
+            [self requestMyNoticeWithStudentID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
             self.pageOfReplyNotification = 1;
         }
     }else{   //分页加载
         self.isRefreshing = NO;
         if (self.displayCategory == NotificationDisplayCategoryDefault) {
-            [self requestSysNoticeWithStudentID:self.userID andClassID:self.classID andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
+            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
         }else{
-            [self requestMyNoticeWithStudentID:self.userID andClassID:self.classID andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
+            [self requestMyNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
         }
     }
 }

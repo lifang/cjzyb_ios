@@ -17,9 +17,13 @@ typedef enum{
 @interface LHLNotificationHeader : UIView
 
 @property (nonatomic,strong) id<LHLNotificationHeaderDelegate> delegate;
+@property (nonatomic,strong) UIButton *replyButton; //回复通知
+@property (nonatomic,strong) UIButton *noticeButton; //系统通知
 
 -(void)initHeader;  //初始化
 
+- (void)replyButtonClicked:(UIButton *) sender;
+- (void)noticeButtonClicked:(UIButton *) sender;
 @end
 
 @protocol LHLNotificationHeaderDelegate <NSObject>

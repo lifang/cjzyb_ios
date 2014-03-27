@@ -9,13 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "LHLTextView.h"
 #import "NotificationObject.h"
+#import "LHLButton.h"
+
 @protocol LHLNotificationCellDelegate;
-@interface LHLNotificationCell : UITableViewCell<UITextViewDelegate>
+@interface LHLNotificationCell : UITableViewCell<UITextViewDelegate,LHLButtonDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet LHLTextView *textView;
 @property (weak, nonatomic) IBOutlet UIView *contentBgView;
-- (IBAction)coverButtonClicked:(id)sender;
+@property (weak, nonatomic) IBOutlet LHLButton *coverButton;
 
 @property (strong,nonatomic) NotificationObject *notification;
 
@@ -37,6 +39,7 @@
 @required
 -(void)cell:(LHLNotificationCell *)cell deleteButtonClicked:(id)sender;
 -(void)cell:(LHLNotificationCell *)cell setIsEditing:(BOOL)editing;
+-(void)cell:(LHLNotificationCell *)cell dragToLeft:(BOOL) toLeft;
 @optional
 -(void)refreshHeightForCell:(LHLNotificationCell *)cell;
 @end

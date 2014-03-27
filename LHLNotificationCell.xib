@@ -38,7 +38,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9sX-cP-gJi" userLabel="coverButton">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9sX-cP-gJi" userLabel="coverButton" customClass="LHLButton">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="191"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -47,7 +47,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="coverButtonClicked:" destination="CwL-y2-VrE" eventType="touchUpInside" id="CeR-yJ-mOk"/>
+                                    <outlet property="delegate" destination="-1" id="sSh-tu-9ck"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -57,6 +57,7 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="contentBgView" destination="zEb-8H-PJk" id="WSQ-jD-X12"/>
+                <outlet property="coverButton" destination="9sX-cP-gJi" id="I9q-5u-3Po"/>
                 <outlet property="imgView" destination="P9L-bG-aPO" id="dde-AI-Wng"/>
                 <outlet property="textView" destination="aZ2-52-odC" id="ab2-Qv-RYL"/>
                 <outlet property="timeLabel" destination="O5T-j2-DXJ" id="vAQ-PE-co3"/>

@@ -75,7 +75,7 @@
 //}
 
 
-- (IBAction)coverButtonClicked:(id)sender {
+- (void)coverButtonClicked:(id)sender {
     _isEditing = !_isEditing;
     if (self.delegate && [self.delegate respondsToSelector:@selector(cell:setIsEditing:)]) {
         [self.delegate cell:self setIsEditing:_isEditing];
@@ -94,6 +94,12 @@
         } completion:^(BOOL finished) {
             
         }];
+    }
+}
+
+- (void)coverButtonDraged:(BOOL)toLeft{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(cell:dragToLeft:)]) {
+        [self.delegate cell:self dragToLeft:toLeft];
     }
 }
 
