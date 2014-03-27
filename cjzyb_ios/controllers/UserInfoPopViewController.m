@@ -49,19 +49,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    [self.youyiProgressView setProgressValue:0.1 withLevelName:@"LV2"];
-//    [self.jingzhunProgressView setProgressValue:0.5 withLevelName:@"LV2"];
-//    [self.xunsuProgressView setProgressValue:0.4 withLevelName:@"LV2"];
-//    [self.jiezuProgressView setProgressValue:0.5 withLevelName:@"LV2"];
-    // Do any additional setup after loading the view from its nib.
 }
 
 -(void)updateViewContents{
+    AppDelegate *appDel = [AppDelegate shareIntance];
     DataService *data = [DataService sharedService];
-    self.userNameLabel.text = data.user.nickName;
-    self.drleftTabBarController.drNavigationBar.userNameLabel.text = data.user.nickName;
+    self.userNameLabel.text = data.user.name;
     self.userClassNameLabel.text = data.theClass.name;
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [MBProgressHUD showHUDAddedTo:appDel.window animated:YES];
     __weak UserInfoPopViewController *weakSelf = self;
     [UserObjDaoInterface downloadUserAchievementWithUserId:data.user.studentId withGradeID:data.theClass.classId withSuccess:^(int youxi, int xunsu, int jiezu, int jingzhun) {
         UserInfoPopViewController *tempSelf = weakSelf;
@@ -74,13 +69,13 @@
             [self.xunsuProgressView updateContentWithScore:xunsu];
             [self.jiezuProgressView updateContentWithScore:jiezu];
             [self.jingzhunProgressView updateContentWithScore:jingzhun];
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [MBProgressHUD hideHUDForView:appDel.window animated:YES];
         }
     } withFailure:^(NSError *error) {
         UserInfoPopViewController *tempSelf = weakSelf;
         if (tempSelf) {
             [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [MBProgressHUD hideHUDForView:appDel.window animated:YES];
         }
     }];
 }
@@ -92,14 +87,15 @@
 }
 
 - (IBAction)userClassButtonClicked:(id)sender {
+    AppDelegate *appDel = [AppDelegate shareIntance];
     [self.userClassButton setUserInteractionEnabled:NO];
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [MBProgressHUD showHUDAddedTo:appDel.window animated:YES];
     __weak UserInfoPopViewController *weakSelf = self;
     
     [UserObjDaoInterface dowloadGradeListWithUserId:[DataService sharedService].user.studentId withSuccess:^(NSArray *gradeList) {
         UserInfoPopViewController *tempSelf = weakSelf;
         if (tempSelf) {
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
+            [MBProgressHUD hideHUDForView:appDel.window animated:YES];
             ClassGroupViewController *group = [[ClassGroupViewController alloc] initWithNibName:@"ClassGroupViewController" bundle:nil];
             tempSelf.popViewController = [[WYPopoverController alloc] initWithContentViewController:group];
             tempSelf.popViewController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
@@ -117,7 +113,7 @@
         UserInfoPopViewController *tempSelf = weakSelf;
         if (tempSelf) {
             [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-            [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+            [MBProgressHUD hideHUDForView:appDel.window animated:YES];
              [tempSelf.userClassButton setUserInteractionEnabled:YES];
         }
     }];

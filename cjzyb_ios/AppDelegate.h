@@ -28,6 +28,7 @@
 
 @property (nonatomic, strong) AVAudioPlayer *truePlayer;
 @property (nonatomic, strong) AVAudioPlayer *falsePlayer;
+@property (nonatomic, assign) NSInteger notification_type;
 - (void)showRootView;
 +(AppDelegate *)shareIntance;
 

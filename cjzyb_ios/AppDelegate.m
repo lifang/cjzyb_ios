@@ -100,7 +100,7 @@
     self.window.rootViewController = tabBarController;
 }
 
-- (void)showRootView {
+- (void)showRootView{
     NSFileManager *fileManage = [NSFileManager defaultManager];
     NSString *path;
     if (platform>5.0) {
@@ -114,17 +114,25 @@
         self.window.rootViewController = logView;
     }else {
         NSDictionary *classDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
+        NSLog(@"%@",[classDic objectForKey:@"name"]);
         [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
         filename = [path stringByAppendingPathComponent:@"student.plist"];
         NSDictionary *userDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         [DataService sharedService].user = [UserObject userFromDictionary:userDic];
         
         MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+        main.view.frame = (CGRect){0,67,768,1024-67};
         HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
+        homework.view.frame = (CGRect){0,67,768,1024-67};
         LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+        notificationView.view.frame = (CGRect){0,67,768,1024-67};
         CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
+        cardView.view.frame = (CGRect){0,67,768,1024-67};
         DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
         tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
+        
+        tabBarController.currentPage = self.notification_type;
+        
         self.window.rootViewController = tabBarController;
     }
 }
@@ -136,13 +144,47 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
+    self.notification_type = 0;
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
-    //设置popoverViewController属性
-    WYPopoverBackgroundView *popoverAppearance = [WYPopoverBackgroundView appearance];
-    [popoverAppearance setArrowHeight:10];
-    [popoverAppearance setArrowBase:20];
-    [popoverAppearance setFillTopColor:[UIColor colorWithRed:47/255.0 green:201/255.0 blue:133/255.0 alpha:1]];
+    //推送
+    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                   UIRemoteNotificationTypeSound |
+                                                   UIRemoteNotificationTypeAlert)];
+    [APService setupWithOption:launchOptions];
     
+    //表示app是登录状态
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:@"1" forKey:@"isOn"];
+    [defaults synchronize];
+    
+    //判断作业＋通知右上角红点点～～
+    self.isReceiveTask=NO;
+    self.isReceiveNotification=NO;
+    NSFileManager *fileManage = [NSFileManager defaultManager];
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
+    if (![fileManage fileExistsAtPath:filename]) {
+        self.isReceiveNotification=NO;
+        self.isReceiveTask=NO;
+    }else {
+        NSArray *typeArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
+        int taskType = [[typeArray objectAtIndex:0]integerValue];
+        if (taskType == 1) {
+            self.isReceiveTask=YES;
+        }
+        
+        int notificationType = [[typeArray objectAtIndex:1]integerValue];
+        if (notificationType == 1) {
+            self.isReceiveNotification=YES;
+        }
+    }
+    
+    //网络
     if ([[Utility isExistenceNetwork]isEqualToString:@"NotReachable"]) {
         self.isReachable = NO;
     }else
@@ -151,9 +193,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     self.hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"] ;
     [self.hostReach startNotifier];  //开始监听，会启动一个run loop
-    
-    self.isReceiveTask = YES;
-    self.isReceiveNotification=YES;
     
     //设置语音识别的apikey
     [[iSpeechSDK sharedSDK] setAPIKey:@"74acbcbba2f470f9c9341c7e4e303027"];
@@ -168,10 +207,18 @@
 //    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
 //    self.window.rootViewController = tabBarController;
 
-
+    NSDictionary *pushDict = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
+    NSLog(@"aps = %@",pushDict);
+    if (pushDict) {
+        int typeValue = [[pushDict objectForKey:@"type"]integerValue];
+        if (typeValue == 0) {
+            self.notification_type = 1;
+        }else if (typeValue == 1) {
+            self.notification_type = 2;
+        }
+    }
+    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
     
-
-//    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
     
 //    NSString *oringStr = @"this is an apple";
 //    NSArray *orgArray = [Utility handleTheString:oringStr];
@@ -198,11 +245,7 @@
 //    NSDictionary *dic = [Utility compareWithArray:array andArray:array2 WithArray:orgArray andArray:metaphoneArray WithRange:[Utility shared].rangeArray];
 //    NSLog(@"dic = %@",dic);
     
-    // Required
-    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                   UIRemoteNotificationTypeSound |
-                                                   UIRemoteNotificationTypeAlert)];
-    [APService setupWithOption:launchOptions];
+    
     
     return YES;
 }
@@ -215,8 +258,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [application setApplicationIconBadgeNumber:0];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -231,7 +273,31 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    //app退出
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:@"0" forKey:@"isOn"];
+    [defaults synchronize];
+    
+    //记录作业＋通知右上角红点点～～
+    NSFileManager *fileManage = [NSFileManager defaultManager];
+    NSString *path;
+    if (platform>5.0) {
+        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }else{
+        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    }
+    NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
+    if ([fileManage fileExistsAtPath:filename]) {
+        [fileManage removeItemAtPath:filename error:nil];
+    }
+    NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
+    
+    NSString *taskType = [NSString stringWithFormat:@"%d",self.isReceiveTask];
+    [tmpArray addObject:taskType];
+    NSString *notificationType = [NSString stringWithFormat:@"%d",self.isReceiveNotification];
+    [tmpArray addObject:notificationType];
+    
+    [NSKeyedArchiver archiveRootObject:tmpArray toFile:filename];
 }
 
 #pragma mark - QQ
@@ -249,12 +315,129 @@
 #ifdef __IPHONE_7_0
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     [APService handleRemoteNotification:userInfo];
+    
+    //接收到push  会震动
+	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    
+    self.isReceiveTask=NO;
+    self.isReceiveNotification=NO;
+    
+    NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
+    
+    NSString *badge = [apsInfo objectForKey:@"badge"];
+	if (badge != nil) {
+        [UIApplication sharedApplication].applicationIconBadgeNumber = [badge intValue];
+    }
+    if (![[userInfo objectForKey:@"type"]isKindOfClass:[NSNull class]] && [userInfo objectForKey:@"type"]!=nil) {
+        int type = [[userInfo objectForKey:@"type"] intValue];
+        if (type == 0) {
+            self.isReceiveTask = YES;
+        }else if (type == 1){
+            self.isReceiveNotification=YES;
+        }
+    }
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *isOn = [defaults objectForKey:@"isOn"];
+    if ([isOn intValue] == 1) {//app登录
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
+    }else {
+        NSFileManager *fileManage = [NSFileManager defaultManager];
+        NSString *path;
+        if (platform>5.0) {
+            path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        }else{
+            path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        }
+        NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
+        if (![fileManage fileExistsAtPath:filename]) {
+        }else {
+            NSArray *typeArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
+            int taskType = [[typeArray objectAtIndex:0]integerValue];
+            if (taskType == 1) {
+                self.isReceiveTask=YES;
+            }
+            int notificationType = [[typeArray objectAtIndex:1]integerValue];
+            if (notificationType == 1) {
+                self.isReceiveNotification=YES;
+            }
+            
+            [fileManage removeItemAtPath:filename error:nil];
+        }
+        
+        NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
+        
+        NSString *taskType = [NSString stringWithFormat:@"%d",self.isReceiveTask];
+        [tmpArray addObject:taskType];
+        NSString *notificationType = [NSString stringWithFormat:@"%d",self.isReceiveNotification];
+        [tmpArray addObject:notificationType];
+        
+        [NSKeyedArchiver archiveRootObject:tmpArray toFile:filename];
+    }
+    
     completionHandler(UIBackgroundFetchResultNoData);
 }
 #endif
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    
     [APService handleRemoteNotification:userInfo];
+    
+    //接收到push  会震动
+	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    self.isReceiveTask=NO;
+    self.isReceiveNotification=NO;
+    
+    NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
+    
+    NSString *badge = [apsInfo objectForKey:@"badge"];
+	if (badge != nil) {
+        [UIApplication sharedApplication].applicationIconBadgeNumber = [badge intValue];
+    }
+    if (![[userInfo objectForKey:@"type"]isKindOfClass:[NSNull class]] && [userInfo objectForKey:@"type"]!=nil) {
+        int type = [[userInfo objectForKey:@"type"] intValue];
+        if (type == 0) {
+            self.isReceiveTask = YES;
+        }else if (type == 1){
+            self.isReceiveNotification=YES;
+        }
+    }
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *isOn = [defaults objectForKey:@"isOn"];
+    if ([isOn intValue] == 1) {//app登录
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
+    }else {
+        NSFileManager *fileManage = [NSFileManager defaultManager];
+        NSString *path;
+        if (platform>5.0) {
+            path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        }else{
+            path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        }
+        NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
+        if (![fileManage fileExistsAtPath:filename]) {
+        }else {
+            NSArray *typeArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
+            int taskType = [[typeArray objectAtIndex:0]integerValue];
+            if (taskType == 1) {
+                self.isReceiveTask=YES;
+            }
+            int notificationType = [[typeArray objectAtIndex:1]integerValue];
+            if (notificationType == 1) {
+                self.isReceiveNotification=YES;
+            }
+            
+            [fileManage removeItemAtPath:filename error:nil];
+        }
+        
+        NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
+        
+        NSString *taskType = [NSString stringWithFormat:@"%d",self.isReceiveTask];
+        [tmpArray addObject:taskType];
+        NSString *notificationType = [NSString stringWithFormat:@"%d",self.isReceiveNotification];
+        [tmpArray addObject:notificationType];
+        
+        [NSKeyedArchiver archiveRootObject:tmpArray toFile:filename];
+    }
 }
 
 
