@@ -11,14 +11,9 @@
 @implementation BasePostInterface
 
 -(void)postAnswerFileWith:(NSString *)jsonPath {
-    NSString *path;
-    if (platform>5.0) {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }else{
-        path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    }
+    NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:jsonPath];
-    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:@"answer.json"];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:@"http://58.240.210.42:3004/api/students/finish_question_packge"]];
     [request setPostValue:[DataService sharedService].user.studentId forKey:@"student_id"];

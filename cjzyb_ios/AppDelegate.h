@@ -28,7 +28,7 @@
 
 @property (nonatomic, strong) AVAudioPlayer *truePlayer;
 @property (nonatomic, strong) AVAudioPlayer *falsePlayer;
-@property (nonatomic, assign) NSInteger notification_type;
+@property (nonatomic, assign) NSInteger notification_type;//0:系统，1：回复，2：作业
 - (void)showRootView;
 +(AppDelegate *)shareIntance;
 
@@ -36,5 +36,5 @@
 -(void)loadFalseSound:(NSInteger)index;
 
 
-@property (nonatomic, assign) BOOL isReceiveTask,isReceiveNotification;
+@property (nonatomic, assign) BOOL isReceiveTask,isReceiveNotificationReply,isReceiveNotificationSystem;
 @end

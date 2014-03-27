@@ -73,7 +73,7 @@
     __weak HomeworkViewController *weakSelf = self;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     DataService *data = [DataService sharedService];
-    [HomeworkDaoInterface downloadCurrentTaskWithUserId:data.user.userId withClassId:data.theClass.classId withSuccess:^(TaskObj *taskObj) {
+    [HomeworkDaoInterface downloadCurrentTaskWithUserId:data.user.studentId withClassId:data.theClass.classId withSuccess:^(TaskObj *taskObj) {
         HomeworkViewController *tempSelf= weakSelf;
         if (tempSelf) {
             tempSelf.taskObj = taskObj;
@@ -102,7 +102,7 @@
     __weak HomeworkViewController *weakSelf = self;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     DataService *data = [DataService sharedService];
-    [HomeworkDaoInterface downloadHistoryTaskWithUserId:data.user.userId withClassId:data.theClass.classId withCurrentTaskID:self.taskObj.taskID withSuccess:^(NSArray *taskObjArr) {
+    [HomeworkDaoInterface downloadHistoryTaskWithUserId:data.user.studentId withClassId:data.theClass.classId withCurrentTaskID:self.taskObj.taskID withSuccess:^(NSArray *taskObjArr) {
         HomeworkViewController *tempSelf= weakSelf;
         if (tempSelf) {
             tempSelf.allHistoryTaskArray = [NSMutableArray arrayWithArray:taskObjArr] ;
@@ -130,7 +130,7 @@
 
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         DataService *data = [DataService sharedService];
-        [HomeworkDaoInterface searchTaskWithUserId:data.user.userId withClassId:data.theClass.classId withSelectedDate:selectedDateArray.firstObject withSuccess:^(NSArray *taskObjArr) {
+        [HomeworkDaoInterface searchTaskWithUserId:data.user.studentId withClassId:data.theClass.classId withSelectedDate:selectedDateArray.firstObject withSuccess:^(NSArray *taskObjArr) {
             HomeworkViewController *tempSelf= weakSelf;
             if (tempSelf) {
                 tempSelf.allHistoryTaskArray = [NSMutableArray arrayWithArray:taskObjArr] ;

@@ -125,13 +125,16 @@
     
     [ModelTypeViewController presentTypeViewWithTipString:@"请输入新名称：" withFinishedInput:^(NSString *inputString) {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [UserObjDaoInterface modifyUserNickNameAndHeaderImageWithUserId:data.user.studentId withUserName:data.user.name withUserNickName:data.user.nickName withHeaderData:nil withSuccess:^(NSString *msg) {
+        [UserObjDaoInterface modifyUserNickNameAndHeaderImageWithUserId:data.user.studentId withUserName:data.user.name withUserNickName:inputString withHeaderData:nil withSuccess:^(NSString *msg) {
             UserInfoPopViewController *tempSelf = weakSelf;
             if (tempSelf) {
                 data.user.nickName = inputString;
+                [data.user archiverUser];
+                tempSelf.userNameLabel.text = data.user.nickName;
 //                [tempSelf updateViewContents];
                 [Utility errorAlert:msg];
                 [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kModifyUserNickNameNotification object:nil];
             }
         } withFailure:^(NSError *error) {
             UserInfoPopViewController *tempSelf = weakSelf;

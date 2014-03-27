@@ -18,7 +18,7 @@
 @property (nonatomic,strong) NSMutableArray *numberOfViewArray;//判断4个页面
 
 @property (nonatomic, strong) NSMutableArray *tagsArray;//卡包标签
-
+@property (nonatomic, assign) NSInteger notificationPage;
 @property (nonatomic,strong) TaskObj *taskObj;
 ///道具－－－－记录道具的数量
 @property (nonatomic,assign) NSInteger number_reduceTime,number_correctAnswer;

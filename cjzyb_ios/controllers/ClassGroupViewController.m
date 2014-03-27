@@ -63,9 +63,11 @@
             if (tempSelf) {
                 data.user = userObj;
                 data.theClass = gradeObj;
+                [data.theClass archiverClass];
                 //退回到主界面
-                [tempSelf.tableView reloadData];
+//                [tempSelf.tableView reloadData];
                 [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kChangeGradeNotification object:nil];
             }
         } withFailure:^(NSError *error) {
             ClassGroupViewController *tempSelf = weakSelf;
@@ -149,9 +151,12 @@
         if (tempSelf) {
             data.user = userObj;
             data.theClass = gradeObj;
+            [data.theClass archiverClass];
+            
             //退回到主界面
-            [tempSelf.tableView reloadData];
+//            [tempSelf.tableView reloadData];
             [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kChangeGradeNotification object:nil];
         }
     } withFailure:^(NSError *error) {
         ClassGroupViewController *tempSelf = weakSelf;

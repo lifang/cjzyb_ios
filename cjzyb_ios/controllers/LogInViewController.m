@@ -222,12 +222,7 @@
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             if ([[result objectForKey:@"status"]isEqualToString:@"success"]) {
                 NSFileManager *fileManage = [NSFileManager defaultManager];
-                NSString *path;
-                if (platform>5.0) {
-                    path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                }else{
-                    path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                }
+                NSString *path = [Utility returnPath];
                 NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
                 if ([fileManage fileExistsAtPath:filename]) {
                     [fileManage removeItemAtPath:filename error:nil];
@@ -262,7 +257,7 @@
 #pragma mark
 #pragma mark - PersonInterfaceDelegate
 
--(void)getPersonInfoDidFinished:(NSDictionary *)result {
+-(void) :(NSDictionary *)result {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];

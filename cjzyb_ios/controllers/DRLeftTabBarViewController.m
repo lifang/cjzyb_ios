@@ -62,6 +62,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(modifyUserNickNameNotification) name:kModifyUserNickNameNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeGradeNtificationNotification) name:kChangeGradeNotification object:nil];
     //设置左边栏
     NSArray *bundles = [[NSBundle mainBundle] loadNibNamed:@"LeftTabBarView" owner:self options:nil];
     self.leftTabBar = (LeftTabBarView*)[bundles objectAtIndex:0];
@@ -72,7 +74,10 @@
     [self.leftTabBar defaultSelected];
     
     self.leftTabBar.homeworkTabBarItem.redImg.hidden = !self.appDel.isReceiveTask;
-    self.leftTabBar.notificationTabBarItem.redImg.hidden = !self.appDel.isReceiveNotification;
+    if (self.appDel.isReceiveNotificationReply==YES || self.appDel.isReceiveNotificationSystem==YES) {
+        self.leftTabBar.notificationTabBarItem.redImg.hidden = NO;
+    }
+    
     
     //设置导航栏
     self.drNavigationBar = [[[NSBundle mainBundle]  loadNibNamed:@"DRNavigationBar" owner:self options:nil] firstObject];
@@ -82,7 +87,7 @@
     [self roundView:self.drNavigationBar.userHeaderImage];
     [self.drNavigationBar.userHeaderImage setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://58.240.210.42:3004%@",[DataService sharedService].user.headUrl]] placeholderImage:[UIImage imageNamed:@""]];
     //用户名
-    self.drNavigationBar.userNameLabel.text = [DataService sharedService].user.name;
+    self.drNavigationBar.userNameLabel.text = [DataService sharedService].user.nickName;
     
     [self.drNavigationBar.imageButton addTarget:self action:@selector(selectedImage:) forControlEvents:UIControlEventTouchUpInside];
     [self.drNavigationBar.leftButtonItem addTarget:self action:@selector(navigationLeftItemClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -112,14 +117,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showImageWithAlbum:) name:@"showImageWithAlbum" object:nil];
     //拍照
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showImageWithCamera:) name:@"showImageWithCamera" object:nil];
-    
-    
     //推送
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setStatus:) name:@"loadByNotification" object:nil];
 }
--(void)setStatus:(NSNotification *)object {
+-(void)setStatus:(NSNotification *)notifice {
     self.leftTabBar.homeworkTabBarItem.redImg.hidden = !self.appDel.isReceiveTask;
-    self.leftTabBar.notificationTabBarItem.redImg.hidden = !self.appDel.isReceiveNotification;
+    if (self.appDel.isReceiveNotificationReply==YES || self.appDel.isReceiveNotificationSystem==YES) {
+        self.leftTabBar.notificationTabBarItem.redImg.hidden = NO;
+    }
 }
 -(void)showImageWithAlbum:(NSNotification *)object {
     [self.poprController dismissPopoverAnimated:YES];
@@ -135,7 +140,7 @@
         [self presentViewController:controller
                            animated:YES
                          completion:^(void){
-                             NSLog(@"Picker View Controller is presented");
+                             
                          }];
     }
     
@@ -156,7 +161,7 @@
         [self presentViewController:controller
                            animated:YES
                          completion:^(void){
-                             NSLog(@"Picker View Controller is presented");
+                             
                          }];
     }
 }
@@ -282,12 +287,7 @@
     NSLog(@"%d",itemType);
     if (itemType == LeftTabBarItemType_logOut ) {
         NSFileManager *fileManage = [NSFileManager defaultManager];
-        NSString *path;
-        if (platform>5.0) {
-            path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        }else{
-            path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        }
+        NSString *path = [Utility returnPath];
         NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
         if ([fileManage fileExistsAtPath:filename]) {
             [fileManage removeItemAtPath:filename error:nil];
@@ -314,10 +314,6 @@
             if (tabBarView.userGroupTabBarItem.isSelected) {
                 tabBarView.userGroupTabBarItem.isSelected = NO;
                 [self hiddleStudentListViewController:self.studentListViewController];
-            }
-            if (itemType == LeftTabBarItemType_notification) {
-                self.appDel.isReceiveNotification = NO;
-                self.leftTabBar.notificationTabBarItem.redImg.hidden = !self.appDel.isReceiveNotification;
             }
         }
         if (itemType < self.childenControllerArray.count) {
