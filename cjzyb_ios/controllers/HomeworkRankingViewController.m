@@ -9,6 +9,7 @@
 #import "HomeworkRankingViewController.h"
 
 @interface HomeworkRankingViewController ()
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
 
@@ -27,6 +28,9 @@
 {
     [super viewDidLoad];
     [self.tableView registerNib:[UINib nibWithNibName:@"HomeworkRankingTableViewCell" bundle:nil] forCellReuseIdentifier:@"cell"];
+    self.titleLabel.layer.cornerRadius = 10;
+    self.tableView.layer.cornerRadius = 10;
+    self.view.layer.cornerRadius = 10;
     // Do any additional setup after loading the view from its nib.
 }
 

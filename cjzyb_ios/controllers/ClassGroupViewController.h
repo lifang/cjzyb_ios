@@ -11,6 +11,6 @@
  *
  * 所有班级列表
  */
-@interface ClassGroupViewController : UITableViewController
+@interface ClassGroupViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 @property (strong,nonatomic) NSMutableArray *classArray;
 @end

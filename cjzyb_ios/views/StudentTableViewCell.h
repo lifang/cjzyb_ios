@@ -10,4 +10,9 @@
 
 @interface StudentTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *youyiLabel;
+@property (weak, nonatomic) IBOutlet UILabel *jinzhunLabel;
+@property (weak, nonatomic) IBOutlet UILabel *jiezuLabel;
+@property (weak, nonatomic) IBOutlet UILabel *xunsuLabel;
 @end

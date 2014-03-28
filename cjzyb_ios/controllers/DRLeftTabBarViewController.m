@@ -126,6 +126,7 @@
         self.leftTabBar.notificationTabBarItem.redImg.hidden = NO;
     }
 }
+//TODO:拍照
 -(void)showImageWithAlbum:(NSNotification *)object {
     [self.poprController dismissPopoverAnimated:YES];
     
@@ -305,6 +306,7 @@
         if (itemType == LeftTabBarItemType_userGroup ) {
             if (tabBarView.userGroupTabBarItem.isSelected) {
                 [self appearStudentListViewController:self.studentListViewController];
+                [self.studentListViewController reloadClassmatesData];
             }else{
                 [self hiddleStudentListViewController:self.studentListViewController];
             }
@@ -386,8 +388,22 @@
 - (void)imageCropper:(VPImageCropperViewController *)cropperViewController didFinished:(UIImage *)editedImage {
     self.drNavigationBar.userHeaderImage.image = editedImage;
     [cropperViewController dismissViewControllerAnimated:YES completion:^{
-    
-    
+        DataService *data = [DataService sharedService];
+        __weak DRLeftTabBarViewController *weakSelf = self;
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [UserObjDaoInterface modifyUserNickNameAndHeaderImageWithUserId:data.user.studentId withUserName:data.user.name withUserNickName:data.user.nickName withHeaderData:UIImagePNGRepresentation(editedImage) withSuccess:^(NSString *msg) {
+            DRLeftTabBarViewController *tempSelf = weakSelf;
+            if (tempSelf) {
+                [Utility errorAlert:@"修改头像成功"];
+                [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+            }
+        } withFailure:^(NSError *error) {
+            DRLeftTabBarViewController *tempSelf = weakSelf;
+            if (tempSelf) {
+                [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+                [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+            }
+        }];
     }];
 }
 

@@ -25,7 +25,7 @@
 
 ///分数转化成等级,满100升一级
 +(NSString*)formateLevelWithScore:(float)score{
-    return [NSString stringWithFormat:@"L%d",(int)score/100];
+    return [NSString stringWithFormat:@"LV%d",(int)score/100];
 }
 
 ///异步请求网络数据
