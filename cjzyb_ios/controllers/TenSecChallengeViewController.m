@@ -239,9 +239,9 @@
 }
 
 #pragma mark --按钮响应
-- (void)cancelButtonClicked:(id)sender{
-    
-}
+//- (void)cancelButtonClicked:(id)sender{
+//    
+//}
 
 - (void)upperClicked:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -530,7 +530,8 @@
 - (void)resultViewCommitButtonClicked{
     [self.resultView removeFromSuperview];
     self.resultView = nil;
-    [parentVC.navigationController popViewControllerAnimated:YES];
+//    [parentVC.navigationController popViewControllerAnimated:YES];
+    [parentVC quitButtonClicked:parentVC.quitHomeworkButton];
 }
 
 - (void)resultViewRestartButtonClicked{

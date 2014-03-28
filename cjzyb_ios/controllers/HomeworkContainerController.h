@@ -42,7 +42,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *reduceTimeButton;
 ///容器内容view，所有子类view放到里面
 @property (weak, nonatomic) IBOutlet UIView *contentView;
-
+///退出作业
+- (IBAction)quitButtonClicked:(id)sender;
 ///记录的秒数
 @property (assign,nonatomic) long long spendSecond;
 

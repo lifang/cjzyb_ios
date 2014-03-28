@@ -890,6 +890,8 @@
 #pragma mark TenSecChallengeResultViewDelegate
 -(void)resultViewCommitButtonClicked{
     [self.resultView removeFromSuperview];
+    self.resultView = nil;
+    [parentVC quitButtonClicked:parentVC.quitHomeworkButton];
 }
 
 -(void)resultViewRestartButtonClicked{
