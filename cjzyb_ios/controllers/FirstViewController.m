@@ -432,6 +432,28 @@
         [self.headerArray addObject:[NSString stringWithFormat:@"%d",theSection]];
     }
 }
+//调整位置
+-(void)setContentOfsetWithSection:(int)aSection {
+    NSInteger rows = [self.firstTable numberOfRowsInSection:aSection];
+    if(rows > 0) {
+        MessageObject *message = (MessageObject *)[self.firstArray objectAtIndex:aSection];
+        
+        int row = 0;
+        int replyMsgCount = message.replyMessageArray.count;
+        if (replyMsgCount>10) {
+            int left = replyMsgCount%10;
+            if (left==0) {
+                row = replyMsgCount-10;
+            }else {
+                row = replyMsgCount-left;
+            }
+        }
+        
+        [self.firstTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:aSection]
+                               atScrollPosition:UITableViewScrollPositionTop
+                                       animated:YES];
+    }
+}
 - (void)contextMenuHeaderDidSelectCoverOption:(FirstViewHeader *)header{
     [self.textViewFirst resignFirstResponder];
     
@@ -464,8 +486,7 @@
                 }else {
                     //获取子消息
                     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                    message.pageHeader = 1;
-                    [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
+                    [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:1];
                 }
             }else {
                 [self.firstTable beginUpdates];
@@ -580,6 +601,8 @@
         [self.deleteInter getDeleteMessageDelegateDelegateWithMessageId:replyMsg.micropost_id andType:0];
     }
 }
+
+//点击加载更多
 - (void)contextMenuCellDidSelectLoadOption:(FirstCell *)cell {
     self.theIndex = [self.firstTable indexPathForCell:cell];
     self.tmpSection = self.theIndex.section;
@@ -591,11 +614,16 @@
         
         //获取子消息
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        if ([message.replyCount integerValue]<=10) {
-            message.pageHeader = 1;
-        }else
-            message.pageHeader += 1;
-        [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
+        
+        int page = 1;
+        int replyCount = [message.replyCount integerValue];
+        int replyMsgCount = message.replyMessageArray.count;
+        int left_number = replyCount-replyMsgCount;
+        if (left_number>0) {
+            page += replyMsgCount/10;
+        }
+        
+        [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:page];
     }
 }
 #pragma mark
@@ -755,8 +783,6 @@
             //用户
             NSDictionary *userDic = [result objectForKey:@"student"];
             [DataService sharedService].user = [UserObject userFromDictionary:userDic];
-            NSLog(@"name= %@",[userDic objectForKey:@"name"]);
-            NSLog(@"nickname= %@",[userDic objectForKey:@"nickname"]);
             //班级
             NSDictionary *classDic =[result objectForKey:@"class"];
             [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
@@ -851,6 +877,8 @@
             }
             [self.headerArray removeAllObjects];
             [self resetTableViewHeaderByIndex:self.tmpSection];
+            
+            [self setContentOfsetWithSection:self.tmpSection];
         });
     });
 }

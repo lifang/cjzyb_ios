@@ -18,7 +18,11 @@
 #import "WYPopoverController.h"
 
 #define kHOST @"http://58.240.210.42:3004"
+//修改用户昵称
+#define kModifyUserNickNameNotification @"kModifyUserNickNameNotification"
 
+//切换班级
+#define kChangeGradeNotification @"kChangeGradeNotification"
 #if 1 
 #define DLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
 #else

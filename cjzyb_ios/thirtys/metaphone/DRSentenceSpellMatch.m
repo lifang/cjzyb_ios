@@ -10,7 +10,7 @@
 #import "SpellMatchObj.h"
 
 @implementation DRSentenceSpellMatch
-+(void)checkSentence:(NSString*)sentence withSpellMatchSentence:(NSString*)spellSentence andSpellMatchAttributeString:(void(^)(NSAttributedString *spellAttriString,float matchScore))success orSpellMatchFailure:(void(^)(NSError *error))failure{
++(void)checkSentence:(NSString*)sentence withSpellMatchSentence:(NSString*)spellSentence andSpellMatchAttributeString:(void(^)(NSAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray))success orSpellMatchFailure:(void(^)(NSError *error))failure{
     if (!sentence || !spellSentence) {
         if (failure) {
             failure([NSError errorWithDomain:@"" code:10010 userInfo:@{@"msg": @"要匹配对象不存在"}]);
@@ -35,12 +35,46 @@
         NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:senStr];
         [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0, attri.length)];
         [attri addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(0, attri.length)];
-        success(attri,1);
+        success(attri,1,nil);
         return;
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        //    NSString *oringStr = @"this is an apple";
+        //    NSArray *orgArray = [Utility handleTheString:oringStr];
+        //    NSArray *metaphoneArray = [Utility metaphoneArray:orgArray];
+        //    NSLog(@"orgArray = %@",orgArray);
+        //    NSLog(@"metaphoneArray = %@",metaphoneArray);
+        //
+        //
+        //    NSString *text = @"this a salple";
+        //    NSArray *array = [Utility handleTheString:text];
+        //    NSLog(@"array = %@",array);
+        //    NSArray *array2 = [Utility metaphoneArray:array];
+        //    NSLog(@"array2 = %@",array2);
+        //
+        //    [Utility shared].isOrg = NO;
+        //    [Utility shared].sureArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].correctArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].noticeArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].greenArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
+        //    [Utility shared].firstpoint = 0;
+        //    NSDictionary *dic = [Utility compareWithArray:array andArray:array2 WithArray:orgArray andArray:metaphoneArray WithRange:[Utility shared].rangeArray];
+        //    NSLog(@"dic = %@",dic);
+        
         [Utility shared].isOrg = NO;
+        [Utility shared].sureArray = [[NSMutableArray alloc]init];
+         [Utility shared].correctArray = [[NSMutableArray alloc]init];
+        [Utility shared].noticeArray = [[NSMutableArray alloc]init];
+         [Utility shared].greenArray = [[NSMutableArray alloc]init];
+        [Utility shared].yellowArray = [[NSMutableArray alloc]init];
+        [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
+        [Utility shared].wrongArray = [[NSMutableArray alloc]init];
+        [Utility shared].firstpoint = 0;
+        
         [Utility shared].orgArray  = [Utility handleTheString:senStr];
         [Utility shared].metaphoneArray = [Utility metaphoneArray:[Utility shared].orgArray];
         NSArray *spellMatchRangeArr = [DRSentenceSpellMatch spellMatchWord:spellStr];
@@ -48,11 +82,13 @@
         [spellAttribute addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0, spellAttribute.length)];
         [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(0, spellAttribute.length)];
         int unMatch = 0;
+        NSMutableArray *errorWordArr = [NSMutableArray array];
         for (SpellMatchObj *obj in spellMatchRangeArr) {
             if (obj.spellLevel == 1 || obj.spellLevel == 0.5) {
                 [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:obj.range];
             }else{
                 unMatch++;
+                [errorWordArr addObject:obj.originText];
             }
         }
         float score = 1;
@@ -63,7 +99,7 @@
             [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(0, spellAttribute.length)];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            success(spellAttribute,score);
+            success(spellAttribute,score,errorWordArr.count>0 ?errorWordArr:nil);
         });
     });
 

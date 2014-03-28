@@ -470,6 +470,28 @@
         }
     }
 }
+//调整位置
+-(void)setContentOfsetWithSection:(int)aSection {
+    NSInteger rows = [self.secondTable numberOfRowsInSection:aSection];
+    if(rows > 0) {
+        MessageObject *message = (MessageObject *)[self.secondArray objectAtIndex:aSection];
+        
+        int row = 0;
+        int replyMsgCount = message.replyMessageArray.count;
+        if (replyMsgCount>10) {
+            int left = replyMsgCount%10;
+            if (left==0) {
+                row = replyMsgCount-10;
+            }else {
+                row = replyMsgCount-left;
+            }
+        }
+        
+        [self.secondTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:aSection]
+                               atScrollPosition:UITableViewScrollPositionTop
+                                       animated:YES];
+    }
+}
 #pragma mark
 #pragma mark - FirstViewHeaderDelegate  主消息
 -(void)comfirmTheCellWith:(NSInteger)aSection {
@@ -537,8 +559,7 @@
                     [Utility errorAlert:@"暂无网络!"];
                 }else {
                     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                    message.pageHeader = 1;
-                    [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
+                    [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:1];
                 }
             }else {
                 [self.secondTable beginUpdates];
@@ -663,11 +684,15 @@
     }else {
         //获取子消息
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        if ([message.replyCount integerValue]<=10) {
-            message.pageHeader = 1;
-        }else
-            message.pageHeader += 1;
-        [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
+
+        int page = 1;
+        int replyCount = [message.replyCount integerValue];
+        int replyMsgCount = message.replyMessageArray.count;
+        int left_number = replyCount-replyMsgCount;
+        if (left_number>0) {
+            page += replyMsgCount/10;
+        }
+        [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:page];
     }
     
 }
@@ -700,6 +725,8 @@
             }
             [self.headerArray removeAllObjects];
             [self resetTableViewHeaderByIndex:self.tmpSection];
+            
+            [self setContentOfsetWithSection:self.tmpSection];
         });
     });
 }

@@ -238,9 +238,6 @@
                 }
                 NSDictionary *studentDic = [result objectForKey:@"student"];
                 
-                NSLog(@"name= %@",[studentDic objectForKey:@"name"]);
-                NSLog(@"nickname= %@",[studentDic objectForKey:@"nickname"]);
-                
                 [DataService sharedService].user = [UserObject userFromDictionary:studentDic];
                 [NSKeyedArchiver archiveRootObject:studentDic toFile:filename2];
                 
@@ -274,7 +271,6 @@
             NSDictionary *classDic = [result objectForKey:@"class"];
             [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
             [NSKeyedArchiver archiveRootObject:classDic toFile:filename];
-            
             
             NSString *filename2 = [Path stringByAppendingPathComponent:@"student.plist"];
             if ([fileManage fileExistsAtPath:filename2]) {
