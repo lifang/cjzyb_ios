@@ -102,8 +102,8 @@
             tempSelf.popViewController.theme.fillTopColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
             tempSelf.popViewController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
             tempSelf.popViewController.theme.glossShadowColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
-            tempSelf.popViewController.popoverContentSize = (CGSize){224,150};
             group.classArray =[NSMutableArray arrayWithArray:gradeList] ;
+            tempSelf.popViewController.popoverContentSize = (CGSize){224,45*group.classArray.count+70};
             CGRect rect = [tempSelf.view convertRect:tempSelf.userClassButton.frame fromView:tempSelf.userClassButton.superview];
             [tempSelf.popViewController presentPopoverFromRect:rect inView:tempSelf.view permittedArrowDirections:WYPopoverArrowDirectionRight animated:YES completion:^{
                 [tempSelf.userClassButton setUserInteractionEnabled:YES];

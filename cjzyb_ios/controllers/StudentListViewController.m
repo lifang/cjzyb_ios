@@ -26,7 +26,8 @@
 }
 
 -(void)reloadClassmatesData{
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    AppDelegate *app = [AppDelegate shareIntance];
+    [MBProgressHUD showHUDAddedTo:app.window animated:YES];
     __weak StudentListViewController *weakSelf = self;
     DataService *data = [DataService sharedService];
     [DownloadClassmatesInfo downloadClassmatesinfoWithUserId:data.user.studentId withClassId:data.theClass.classId withSuccess:^(NSArray *classmatesArray) {
@@ -40,14 +41,13 @@
                     [controller.studentArray addObject:user];
                 }
             }
-            [MBProgressHUD hideHUDForView:controller.view animated:YES];
+            [MBProgressHUD hideHUDForView:app.window animated:YES];
             [controller.tableView reloadData];
         }
     } withError:^(NSError *error) {
         if (weakSelf) {
-            StudentListViewController *controller = weakSelf;
             [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-            [MBProgressHUD hideHUDForView:controller.view animated:YES];
+            [MBProgressHUD hideHUDForView:app.window animated:YES];
         }
     }];
 }
@@ -100,12 +100,17 @@
     if (st.isExtend) {
         StudentTableViewCell *detailCell = (StudentTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"detailCell"];
         detailCell.backgroundColor = self.tableView.backgroundColor;
-        detailCell.userImageView.image = [UIImage imageNamed:@"jiezu@2x.png"];
+        [detailCell.userImageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,st.headUrl]]];
+        detailCell.userNameLabel.text = st.name;
+        detailCell.jiezuLabel.text = [Utility formateLevelWithScore:st.jiezuScore];
+        detailCell.xunsuLabel.text = [Utility formateLevelWithScore:st.xunsuScore];
+        detailCell.jinzhunLabel.text = [Utility formateLevelWithScore:st.jingzhunScore];
+        detailCell.youyiLabel.text = [Utility formateLevelWithScore:st.youyiScore];
         return detailCell;
     }else{
         StudentSummaryCell *summaryCell = (StudentSummaryCell*)[tableView dequeueReusableCellWithIdentifier:@"cell"];
-        summaryCell.userImageView.image = [UIImage imageNamed:@"jiezu@2x.png"];
-        summaryCell.userNameLabel.text = @"希腊女生";
+        [summaryCell.userImageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,st.headUrl]]];
+        summaryCell.userNameLabel.text = st.name;
         summaryCell.backgroundColor = [UIColor clearColor];
         return summaryCell;
     }

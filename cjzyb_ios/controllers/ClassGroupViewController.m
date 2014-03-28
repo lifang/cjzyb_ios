@@ -10,20 +10,14 @@
 #import "UserObjDaoInterface.h"
 #import "ModelTypeViewController.h"
 @interface ClassGroupViewController ()
-@property (nonatomic,strong) UIButton *addClassButton;
 @property (nonatomic,strong) UIView *footerBackView;
+@property (nonatomic,strong) IBOutlet UITableView *tableView;
+-(IBAction)addMoreClasses;
 @end
 
 @implementation ClassGroupViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+
 
 - (void)viewDidLoad
 {
@@ -31,9 +25,6 @@
 //    [self.classArray addObject:@"夏洛克三班"];
 //    [self.classArray addObject:@"好基友五班级"];
     self.tableView.separatorColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"line.png"]];
-    self.addClassButton = [[UIButton alloc] initWithFrame:(CGRect){0,0,200,70}];
-    [self.addClassButton addTarget:self action:@selector(addMoreClasses) forControlEvents:UIControlEventTouchUpInside];
-    [self.addClassButton setImage:[UIImage imageNamed:@"addClass.png"] forState:UIControlStateNormal];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -47,13 +38,14 @@
     // Dispose of any resources that can be recreated.
 }
 
-///加入更多班级
--(void)addMoreClasses{
+//TODO:加入更多班级
+-(IBAction)addMoreClasses{
     __weak ClassGroupViewController *weakSelf = self;
     DataService *data = [DataService sharedService];
     
     [ModelTypeViewController presentTypeViewWithTipString:@"请输入班级验证码：" withFinishedInput:^(NSString *inputString) {
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        AppDelegate *app = [AppDelegate shareIntance];
+        [MBProgressHUD showHUDAddedTo:app.window animated:YES];
         if (!inputString && [inputString isEqualToString:@""]) {
             [Utility errorAlert:@"班级验证码不能为空"];
             return ;
@@ -66,14 +58,14 @@
                 [data.theClass archiverClass];
                 //退回到主界面
 //                [tempSelf.tableView reloadData];
-                [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+                [MBProgressHUD hideHUDForView:app.window animated:YES];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kChangeGradeNotification object:nil];
             }
         } withFailure:^(NSError *error) {
             ClassGroupViewController *tempSelf = weakSelf;
             if (tempSelf) {
                 [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-                [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+                [MBProgressHUD hideHUDForView:app.window animated:YES];
             }
         }];
     } withCancel:nil];
@@ -116,24 +108,10 @@
     return cell;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
-    return 70;
-}
-
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 44;
 }
 
-
--(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
-    if (!self.footerBackView) {
-        self.footerBackView = [[UIView alloc] initWithFrame:(CGRect){0,0,tableView.frame.size.width,70}];
-        self.footerBackView.backgroundColor = tableView.backgroundColor;
-        [self.footerBackView addSubview:self.addClassButton];
-    }
-    self.addClassButton.center = (CGPoint){CGRectGetWidth(self.footerBackView.frame)/2,CGRectGetHeight(self.footerBackView.frame)/2};
-    return self.footerBackView;
-}
 #pragma mark - Table view delegate
 
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
@@ -144,8 +122,10 @@
     if ([data.theClass.classId isEqualToString:grade.classId]) {
         return;
     }
+    //TODO:切换班级
     __weak ClassGroupViewController *weakSelf = self;
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    AppDelegate *app = [AppDelegate shareIntance];
+    [MBProgressHUD showHUDAddedTo:app.window animated:YES];
     [UserObjDaoInterface exchangeGradeWithUserId:data.user.studentId withGradeId:grade.classId withSuccess:^(UserObject *userObj, ClassObject *gradeObj) {
         ClassGroupViewController *tempSelf = weakSelf;
         if (tempSelf) {
@@ -155,14 +135,14 @@
             
             //退回到主界面
 //            [tempSelf.tableView reloadData];
-            [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+            [MBProgressHUD hideHUDForView:app.window animated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:kChangeGradeNotification object:nil];
         }
     } withFailure:^(NSError *error) {
         ClassGroupViewController *tempSelf = weakSelf;
         if (tempSelf) {
             [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-            [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+            [MBProgressHUD hideHUDForView:app.window animated:YES];
         }
     }];
     

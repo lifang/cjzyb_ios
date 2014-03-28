@@ -579,7 +579,6 @@
                 self.optionTable.frame = (CGRect){38,317,650,400};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
-//                NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.comdosoft.com/images/ad.jpg"]];
                 NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.currentQuestion.seContentAttachment]];
                 [self.questionImageWebView loadRequest:request];
             
@@ -594,11 +593,6 @@
     });
 }
 
-//<<<<<<< HEAD
-////检查正确与否
-//-(void) checkAnswer{
-//    
-//=======
 //加载本题的历史回答情况
 -(void)refreshHistoryView{
     //1,下方显示
@@ -711,14 +705,14 @@
     //播放声音
     if (answerRatio) {
         [AppDelegate shareIntance].avPlayer = nil;
-        [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"right_sound" ofType:@"mp3"]] error:nil];
+        [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"trueMusic" ofType:@"wav"]] error:nil];
         [AppDelegate shareIntance].avPlayer.volume = 1;
         if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
             [[AppDelegate shareIntance].avPlayer play];
         }
     }else{
         [AppDelegate shareIntance].avPlayer = nil;
-        [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"right_sound" ofType:@"mp3"]] error:nil];
+        [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"falseMusic" ofType:@"wav"]] error:nil];
         [AppDelegate shareIntance].avPlayer.volume = 1;
         if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
             [[AppDelegate shareIntance].avPlayer play];
@@ -896,6 +890,8 @@
 #pragma mark TenSecChallengeResultViewDelegate
 -(void)resultViewCommitButtonClicked{
     [self.resultView removeFromSuperview];
+    self.resultView = nil;
+    [parentVC quitButtonClicked:parentVC.quitHomeworkButton];
 }
 
 -(void)resultViewRestartButtonClicked{

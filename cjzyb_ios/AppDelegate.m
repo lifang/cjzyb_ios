@@ -102,6 +102,7 @@
 }
 
 - (void)showRootView{
+    
     NSFileManager *fileManage = [NSFileManager defaultManager];
     NSString *path = [Utility returnPath];
     NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
@@ -118,9 +119,7 @@
         MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
         HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
         LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
-
         CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-
         DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
         tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
         
@@ -152,6 +151,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//    [DataService sharedService].user = [[UserObject alloc] init];
+//    [DataService sharedService].theClass = [[ClassObject alloc] init];
+//    [DataService sharedService].user.userId = @"68";
+//    [DataService sharedService].user.studentId = @"68";
+//    [DataService sharedService].theClass.classId = @"42";
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.window.backgroundColor = [UIColor whiteColor];
@@ -234,7 +239,6 @@
 //    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
 //    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
 //    self.window.rootViewController = tabBarController;
-
 
     return YES;
 }

@@ -127,7 +127,7 @@
 }
 
 - (IBAction)cancelButtonClicked:(id)sender {
-    self.textView.text = @"";
+    self.presentWindow = nil;
 }
 
 

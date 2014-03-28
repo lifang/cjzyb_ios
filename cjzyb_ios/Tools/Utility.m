@@ -25,7 +25,7 @@
 
 ///分数转化成等级,满100升一级
 +(NSString*)formateLevelWithScore:(float)score{
-    return [NSString stringWithFormat:@"L%d",(int)score/100];
+    return [NSString stringWithFormat:@"LV%d",(int)score/100];
 }
 
 ///异步请求网络数据
@@ -1727,7 +1727,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     }
     return path;
 }
-//TODO:返回题目
+//TODO:返回答案
 +(NSMutableDictionary *)returnAnswerDictionaryWithName:(NSString *)name  andDate:(NSString *)timeString{
     NSFileManager *fileManage =[NSFileManager defaultManager];
     NSString *path = [Utility returnPath];
@@ -1791,7 +1791,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
     return type;
 }
-//TODO:保存题目
+//TODO:保存答案
 +(void)returnAnswerPathWithDictionary:(NSDictionary *)aDic andName:(NSString *)name andDate:(NSString *)timeString{
     
     NSString *str = [Utility returnTypeOfQuestionWithString:name];

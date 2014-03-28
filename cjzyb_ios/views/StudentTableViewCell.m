@@ -8,13 +8,6 @@
 
 #import "StudentTableViewCell.h"
 @interface StudentTableViewCell()
-
-@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *youyiLabel;
-@property (weak, nonatomic) IBOutlet UILabel *jinzhunLabel;
-@property (weak, nonatomic) IBOutlet UILabel *jiezuLabel;
-@property (weak, nonatomic) IBOutlet UILabel *xunsuLabel;
-
 @end
 @implementation StudentTableViewCell
 

@@ -25,7 +25,7 @@
 
 -(void)updateContentWithScore:(int)score{
     int value = score%100;
-    [self setProgressValue:value/100.0 withLevelName:[NSString stringWithFormat:@"L%d",score/100]];
+    [self setProgressValue:value/100.0 withLevelName:[NSString stringWithFormat:@"LV%d",score/100]];
 }
 
 -(void)setProgressValue:(float)progress withLevelName:(NSString*)levelName{

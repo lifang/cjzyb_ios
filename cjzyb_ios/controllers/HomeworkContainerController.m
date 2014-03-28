@@ -24,8 +24,7 @@
 @property (nonatomic,strong) NSTimer *timer;
 /////减时间
 //- (IBAction)reduceTimeButtonClicked:(id)sender;
-///退出作业
-- (IBAction)quitButtonClicked:(id)sender;
+
 
 @end
 
