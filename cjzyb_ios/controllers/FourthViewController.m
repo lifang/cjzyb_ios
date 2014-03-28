@@ -424,16 +424,6 @@
     return cell;
 }
 
-- (void)scrollToBottomAnimated:(BOOL)animated
-{
-    NSInteger rows = [self.fourthTable numberOfRowsInSection:self.tmpSection];
-    if(rows > 0) {
-        [self.fourthTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.tmpSection]
-                                atScrollPosition:UITableViewScrollPositionBottom
-                                        animated:animated];
-    }
-}
-
 -(void)initFooterView {
     UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 768, 50)];
     header.backgroundColor = [UIColor clearColor];
@@ -447,7 +437,7 @@
 //分页加载获取主消息
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView.contentOffset.y > 0) {
-        if (scrollView.contentOffset.y + self.fourthTable.frame.size.height <= scrollView.contentSize.height) {
+        if (scrollView.contentOffset.y + self.fourthTable.frame.size.height >= scrollView.contentSize.height) {
             MessageObject *message = (MessageObject *)[self.fourthArray lastObject];
             if (message.pageCountHeader>message.pageHeader) {
                 [self initFooterView];
@@ -533,7 +523,6 @@
                 [self.fourthTable reloadSections:[NSIndexSet indexSetWithIndex:header.aSection] withRowAnimation:UITableViewRowAnimationAutomatic];
                 [self.fourthTable endUpdates];
                 [self resetTableViewHeaderByIndex:header.aSection];
-                [self scrollToBottomAnimated:YES];
             }
         }else {
             [self resetTableViewHeaderByIndex:header.aSection];

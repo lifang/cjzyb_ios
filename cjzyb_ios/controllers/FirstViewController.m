@@ -373,16 +373,6 @@
     return cell;
 }
 
-- (void)scrollToBottomAnimated:(BOOL)animated
-{
-    NSInteger rows = [self.firstTable numberOfRowsInSection:self.tmpSection];
-    if(rows > 0) {
-        [self.firstTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.tmpSection]
-                                   atScrollPosition:UITableViewScrollPositionBottom
-                                           animated:animated];
-    }
-}
-
 -(void)initFooterView {
     UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 768, 50)];
     header.backgroundColor = [UIColor clearColor];
@@ -395,12 +385,12 @@
 //分页加载获取主消息
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView.contentOffset.y > 0) {
-        if (scrollView.contentOffset.y + self.firstTable.frame.size.height <= scrollView.contentSize.height) {
+        if (scrollView.contentOffset.y + self.firstTable.frame.size.height >= scrollView.contentSize.height) {
             MessageObject *message = (MessageObject *)[self.firstArray lastObject];
             if (message.pageCountHeader>message.pageHeader) {
                 [self initFooterView];
                 [self.firstTable setContentOffset:CGPointMake(0, scrollView.contentOffset.y+50)];
-                [self.pmessageInter getPageMessageInterfaceDelegateWithClassId:@"83" andUserId:@"73" andPage:message.pageHeader+1];
+                [self.pmessageInter getPageMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId andPage:message.pageHeader+1];
             }
         }
     }
@@ -483,7 +473,6 @@
                 [self.firstTable endUpdates];
                 
                 [self resetTableViewHeaderByIndex:header.aSection];
-                [self scrollToBottomAnimated:YES];
             }
         }else {
             [self resetTableViewHeaderByIndex:header.aSection];
@@ -766,6 +755,8 @@
             //用户
             NSDictionary *userDic = [result objectForKey:@"student"];
             [DataService sharedService].user = [UserObject userFromDictionary:userDic];
+            NSLog(@"name= %@",[userDic objectForKey:@"name"]);
+            NSLog(@"nickname= %@",[userDic objectForKey:@"nickname"]);
             //班级
             NSDictionary *classDic =[result objectForKey:@"class"];
             [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
@@ -840,7 +831,6 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             NSDictionary *aDic = [result objectForKey:@"reply_microposts"];
-            
             
             NSArray *array = [aDic objectForKey:@"reply_microposts"];
             MessageObject *message = (MessageObject *)[self.firstArray objectAtIndex:self.tmpSection];

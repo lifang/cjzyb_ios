@@ -68,7 +68,7 @@ typedef NSUInteger SVPullToRefreshState;
     if (timeStr) {
         lastUpdatedLabel.text = [NSString stringWithFormat:@"上次更新时间:%@",timeStr];
     }else {
-        lastUpdatedLabel.text = @"";
+        lastUpdatedLabel.text = @"上次更新时间:从未";
     }
     
     lastUpdatedLabel.font = [UIFont boldSystemFontOfSize:12];

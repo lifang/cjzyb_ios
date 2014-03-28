@@ -237,6 +237,10 @@
                     [fileManage removeItemAtPath:filename2 error:nil];
                 }
                 NSDictionary *studentDic = [result objectForKey:@"student"];
+                
+                NSLog(@"name= %@",[studentDic objectForKey:@"name"]);
+                NSLog(@"nickname= %@",[studentDic objectForKey:@"nickname"]);
+                
                 [DataService sharedService].user = [UserObject userFromDictionary:studentDic];
                 [NSKeyedArchiver archiveRootObject:studentDic toFile:filename2];
                 
