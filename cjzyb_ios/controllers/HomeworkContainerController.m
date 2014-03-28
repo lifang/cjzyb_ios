@@ -67,7 +67,7 @@
 {
     [super viewDidLoad];
 
-    self.spendSecond = 0;[DataService sharedService].number_reduceTime=3;[DataService sharedService].isHistory=NO;[DataService sharedService].number_correctAnswer=3;
+    self.spendSecond = 0;[DataService sharedService].number_reduceTime=3;[DataService sharedService].isHistory=YES;[DataService sharedService].number_correctAnswer=3;
 
 
     //TODO:判断做题历史 or  做题
@@ -100,10 +100,14 @@
             [self.readingController willMoveToParentViewController:self];
             self.readingController.view.frame = self.contentView.bounds;
             [self.appearCorrectButton setHidden:YES];
+            [self.quitHomeworkButton addTarget:self.readingController action:@selector(exithomeworkUI) forControlEvents:UIControlEventTouchUpInside];
+            [self.reduceTimeButton addTarget:self.readingController action:@selector(reduceTimeProBtClicked) forControlEvents:UIControlEventTouchUpInside];
             [self.checkHomeworkButton addTarget:self.readingController action:@selector(startBeginninghomework) forControlEvents:UIControlEventTouchUpInside];
             [self.contentView addSubview:self.readingController.view];
             [self addChildViewController:self.readingController];
             [self.readingController didMoveToParentViewController:self];
+            self.readingController.isPrePlay = YES;
+            self.readingController.isFirst = YES;
             break;
         }
         case HomeworkType_listeningAndWrite://听写

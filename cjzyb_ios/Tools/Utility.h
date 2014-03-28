@@ -74,6 +74,10 @@
  * @return networkStatus :ReachableViaWWAN：三G网络，ReachableViaWiFi：wifi网络，NotReachable：无网络
  */
 +(void)judgeNetWorkStatus:(void (^)(NSString*networkStatus))networkStatus;
+
+///格式化时间字符串
++(NSString*)formateDateStringWithDateString:(NSString*)dateString;
+
 + (NSString *)createMD5:(NSString *)params;
 + (NSDictionary *)initWithJSONFile:(NSString *)jsonPath;
 + (NSString *)getNowDateFromatAnDate;

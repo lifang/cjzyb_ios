@@ -41,9 +41,29 @@
     [view.layer setCornerRadius: (view.frame.size.height/2)];
     [view.layer setMasksToBounds:YES];
 }
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark notification 用户信息改变通知
+-(void)modifyUserNickNameNotification{
+    self.drNavigationBar.userNameLabel.text = [DataService sharedService].user.nickName;
+}
+
+-(void)changeGradeNtificationNotification{
+    AppDelegate *appDel = [AppDelegate shareIntance];
+    [appDel showRootView];
+
+}
+#pragma mark --
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(modifyUserNickNameNotification) name:kModifyUserNickNameNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeGradeNtificationNotification) name:kChangeGradeNotification object:nil];
     //设置左边栏
     NSArray *bundles = [[NSBundle mainBundle] loadNibNamed:@"LeftTabBarView" owner:self options:nil];
     self.leftTabBar = (LeftTabBarView*)[bundles objectAtIndex:0];
@@ -67,7 +87,7 @@
     [self roundView:self.drNavigationBar.userHeaderImage];
     [self.drNavigationBar.userHeaderImage setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://58.240.210.42:3004%@",[DataService sharedService].user.headUrl]] placeholderImage:[UIImage imageNamed:@""]];
     //用户名
-    self.drNavigationBar.userNameLabel.text = [DataService sharedService].user.name;
+    self.drNavigationBar.userNameLabel.text = [DataService sharedService].user.nickName;
     
     [self.drNavigationBar.imageButton addTarget:self action:@selector(selectedImage:) forControlEvents:UIControlEventTouchUpInside];
     [self.drNavigationBar.leftButtonItem addTarget:self action:@selector(navigationLeftItemClicked) forControlEvents:UIControlEventTouchUpInside];

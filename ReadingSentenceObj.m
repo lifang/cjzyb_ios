@@ -9,5 +9,10 @@
 #import "ReadingSentenceObj.h"
 
 @implementation ReadingSentenceObj
-
+-(NSMutableArray *)readingErrorWordArray{
+    if (!_readingErrorWordArray) {
+        _readingErrorWordArray = [NSMutableArray array];
+    }
+    return _readingErrorWordArray;
+}
 @end

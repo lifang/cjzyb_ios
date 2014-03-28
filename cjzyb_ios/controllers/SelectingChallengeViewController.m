@@ -579,7 +579,6 @@
                 self.optionTable.frame = (CGRect){38,317,650,400};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
-//                NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.comdosoft.com/images/ad.jpg"]];
                 NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.currentQuestion.seContentAttachment]];
                 [self.questionImageWebView loadRequest:request];
             
@@ -594,11 +593,6 @@
     });
 }
 
-//<<<<<<< HEAD
-////检查正确与否
-//-(void) checkAnswer{
-//    
-//=======
 //加载本题的历史回答情况
 -(void)refreshHistoryView{
     //1,下方显示

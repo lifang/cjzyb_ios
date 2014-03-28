@@ -56,80 +56,147 @@
     return nil;
 }
 
+
 //TODO:根据题目的json文件解析出朗读类型的数据
 +(void)parseQuestionJsonFile:(NSString*)jsonFilePath withReadingQuestionArray:( void(^)(NSArray *readingQuestionArr,NSInteger specifiedTime))questionArr withParseError:(void (^)(NSError *error))failure{
     if (!jsonFilePath || [jsonFilePath isEqualToString:@""]) {
         if (failure) {
-             failure([NSError errorWithDomain:@"" code:1000 userInfo:@{@"msg": @"指定文件路径不正确"}]);
+            failure([NSError errorWithDomain:@"" code:1000 userInfo:@{@"msg": @"指定文件路径不正确"}]);
         }
         return;
     }
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        NSError *jsonError = nil;
-        NSDictionary *questionData = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsonFilePath] options:NSJSONReadingMutableLeaves error:&jsonError];
-        if (jsonError || !questionData || ![questionData isKindOfClass:[NSDictionary class]]) {
-            if (failure) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    failure([NSError errorWithDomain:@"" code:1000 userInfo:@{@"msg": @"json文件错误"}]);
-                });
-            }
-            return;
+    NSError *jsonError = nil;
+    NSDictionary *questionData = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsonFilePath] options:NSJSONReadingMutableLeaves error:&jsonError];
+    if (jsonError || !questionData || ![questionData isKindOfClass:[NSDictionary class]]) {
+        if (failure) {
+             failure([NSError errorWithDomain:@"" code:1000 userInfo:@{@"msg": @"json文件错误"}]);
         }
-        NSDictionary *readingDic = [questionData objectForKey:@"reading"];
-        if (readingDic && readingDic.count > 0) {
-            NSInteger time = 0;
-            NSString *specifiedTime = [Utility filterValue:[readingDic objectForKey:@"specified_time"]];
-            if (specifiedTime) {
-                time = specifiedTime.intValue;
-            }
-            
-            NSArray *subQuestionArr = [readingDic objectForKey:@"questions"];
-            if (subQuestionArr && subQuestionArr.count > 0) {
-                NSMutableArray *readingHomeworkList = [NSMutableArray array];
-                for (NSDictionary *subDic in subQuestionArr) {
-                    ReadingHomeworkObj *homeworkObj = [[ReadingHomeworkObj alloc] init];
-                    homeworkObj.readingHomeworkID = [Utility filterValue:[subDic objectForKey:@"id"]];
-                    
-                    NSMutableArray *readingSentenceList = [NSMutableArray array];
-                    for (NSDictionary *subSentenceDic in [subDic objectForKey:@"branch_questions"]) {
-                        ReadingSentenceObj *sentence = [[ReadingSentenceObj alloc] init];
-                        sentence.readingSentenceID = [Utility filterValue:[subSentenceDic objectForKey:@"id"]];
-                        sentence.readingSentenceContent = [Utility filterValue:[subSentenceDic objectForKey:@"content"]];
-                        NSString *url = [Utility filterValue:[subSentenceDic objectForKey:@"resource_url"]];
-                        if (url) {
-                            sentence.readingSentenceResourceURL = [NSString stringWithFormat:@"%@%@",kHOST,url];
-                            sentence.readingSentenceLocalFileURL = [ParseQuestionJsonFileTool downloadFileWithFileName:sentence.readingSentenceID withFileURLString:sentence.readingSentenceResourceURL];
-                        }
-                        
-                        [readingSentenceList addObject:sentence];
-                    }
-                    homeworkObj.readingHomeworkSentenceObjArray = readingSentenceList;
-                    [readingHomeworkList addObject:homeworkObj];
-                }
-                if (questionArr) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                         questionArr(readingHomeworkList,time);
-                    });
-                }
-            }else{
-                if (failure) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                       failure([NSError errorWithDomain:@"" code:1002 userInfo:@{@"msg": @"没有朗读题目"}]);
-                    });
-                }
+        return;
+    }
+    NSDictionary *readingDic = [questionData objectForKey:@"reading"];
+    if (readingDic && readingDic.count > 0) {
+        NSInteger time = 0;
+        NSString *specifiedTime = [Utility filterValue:[readingDic objectForKey:@"specified_time"]];
+        if (specifiedTime) {
+            time = specifiedTime.intValue;
+        }
+        
+        NSArray *subQuestionArr = [readingDic objectForKey:@"questions"];
+        if (subQuestionArr && subQuestionArr.count > 0) {
+            NSMutableArray *readingHomeworkList = [NSMutableArray array];
+            for (NSDictionary *subDic in subQuestionArr) {
+                ReadingHomeworkObj *homeworkObj = [[ReadingHomeworkObj alloc] init];
+                homeworkObj.readingHomeworkID = [Utility filterValue:[subDic objectForKey:@"id"]];
                 
-                return;
+                NSMutableArray *readingSentenceList = [NSMutableArray array];
+                for (NSDictionary *subSentenceDic in [subDic objectForKey:@"branch_questions"]) {
+                    ReadingSentenceObj *sentence = [[ReadingSentenceObj alloc] init];
+                    sentence.readingSentenceID = [Utility filterValue:[subSentenceDic objectForKey:@"id"]];
+                    sentence.readingSentenceContent = [Utility filterValue:[subSentenceDic objectForKey:@"content"]];
+                    NSString *url = [Utility filterValue:[subSentenceDic objectForKey:@"resource_url"]];
+                    if (url) {
+                        sentence.readingSentenceResourceURL = [NSString stringWithFormat:@"%@%@",kHOST,url];
+                        sentence.readingSentenceLocalFileURL = [ParseQuestionJsonFileTool downloadFileWithFileName:sentence.readingSentenceID withFileURLString:sentence.readingSentenceResourceURL];
+                    }
+                    
+                    [readingSentenceList addObject:sentence];
+                }
+                homeworkObj.readingHomeworkSentenceObjArray = readingSentenceList;
+                [readingHomeworkList addObject:homeworkObj];
+            }
+            if (questionArr) {
+                questionArr(readingHomeworkList,time);
             }
         }else{
             if (failure) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    failure([NSError errorWithDomain:@"" code:1001 userInfo:@{@"msg": @"没有朗读题型"}]);
-                });
+                failure([NSError errorWithDomain:@"" code:1002 userInfo:@{@"msg": @"没有朗读题目"}]);
             }
+            
             return;
         }
-    });
+    }else{
+        if (failure) {
+             failure([NSError errorWithDomain:@"" code:1001 userInfo:@{@"msg": @"没有朗读题型"}]);
+        }
+        return;
+    }
 }
+
+
+////TODO:根据题目的json文件解析出朗读类型的数据
+//+(void)parseQuestionJsonFile:(NSString*)jsonFilePath withReadingQuestionArray:( void(^)(NSArray *readingQuestionArr,NSInteger specifiedTime))questionArr withParseError:(void (^)(NSError *error))failure{
+//    if (!jsonFilePath || [jsonFilePath isEqualToString:@""]) {
+//        if (failure) {
+//             failure([NSError errorWithDomain:@"" code:1000 userInfo:@{@"msg": @"指定文件路径不正确"}]);
+//        }
+//        return;
+//    }
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+//        NSError *jsonError = nil;
+//        NSDictionary *questionData = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsonFilePath] options:NSJSONReadingMutableLeaves error:&jsonError];
+//        if (jsonError || !questionData || ![questionData isKindOfClass:[NSDictionary class]]) {
+//            if (failure) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    failure([NSError errorWithDomain:@"" code:1000 userInfo:@{@"msg": @"json文件错误"}]);
+//                });
+//            }
+//            return;
+//        }
+//        NSDictionary *readingDic = [questionData objectForKey:@"reading"];
+//        if (readingDic && readingDic.count > 0) {
+//            NSInteger time = 0;
+//            NSString *specifiedTime = [Utility filterValue:[readingDic objectForKey:@"specified_time"]];
+//            if (specifiedTime) {
+//                time = specifiedTime.intValue;
+//            }
+//            
+//            NSArray *subQuestionArr = [readingDic objectForKey:@"questions"];
+//            if (subQuestionArr && subQuestionArr.count > 0) {
+//                NSMutableArray *readingHomeworkList = [NSMutableArray array];
+//                for (NSDictionary *subDic in subQuestionArr) {
+//                    ReadingHomeworkObj *homeworkObj = [[ReadingHomeworkObj alloc] init];
+//                    homeworkObj.readingHomeworkID = [Utility filterValue:[subDic objectForKey:@"id"]];
+//                    
+//                    NSMutableArray *readingSentenceList = [NSMutableArray array];
+//                    for (NSDictionary *subSentenceDic in [subDic objectForKey:@"branch_questions"]) {
+//                        ReadingSentenceObj *sentence = [[ReadingSentenceObj alloc] init];
+//                        sentence.readingSentenceID = [Utility filterValue:[subSentenceDic objectForKey:@"id"]];
+//                        sentence.readingSentenceContent = [Utility filterValue:[subSentenceDic objectForKey:@"content"]];
+//                        NSString *url = [Utility filterValue:[subSentenceDic objectForKey:@"resource_url"]];
+//                        if (url) {
+//                            sentence.readingSentenceResourceURL = [NSString stringWithFormat:@"%@%@",kHOST,url];
+//                            sentence.readingSentenceLocalFileURL = [ParseQuestionJsonFileTool downloadFileWithFileName:sentence.readingSentenceID withFileURLString:sentence.readingSentenceResourceURL];
+//                        }
+//                        
+//                        [readingSentenceList addObject:sentence];
+//                    }
+//                    homeworkObj.readingHomeworkSentenceObjArray = readingSentenceList;
+//                    [readingHomeworkList addObject:homeworkObj];
+//                }
+//                if (questionArr) {
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                         questionArr(readingHomeworkList,time);
+//                    });
+//                }
+//            }else{
+//                if (failure) {
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                       failure([NSError errorWithDomain:@"" code:1002 userInfo:@{@"msg": @"没有朗读题目"}]);
+//                    });
+//                }
+//                
+//                return;
+//            }
+//        }else{
+//            if (failure) {
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    failure([NSError errorWithDomain:@"" code:1001 userInfo:@{@"msg": @"没有朗读题型"}]);
+//                });
+//            }
+//            return;
+//        }
+//    });
+//}
 
 //TODO:根据题目的json文件解析出连线类型的数据
 +(void)parseQuestionJsonFile:(NSString*)jsonFilePath withLiningSubjectArray:( void(^)(NSArray *liningSubjectArr,NSInteger specifiedTime))questionArr withParseError:(void (^)(NSError *error))failure{

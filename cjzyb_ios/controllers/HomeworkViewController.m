@@ -9,6 +9,7 @@
 #import "HomeworkViewController.h"
 #import "HomeworkHistoryCollectionCell.h"
 #import "HomeworkDaoInterface.h"
+#import "HomeworkRankingViewController.h"
 //{"id": "181", "content": "This is! an aps!", "resource_url": "/question_packages/201402/questions_package_222/media_181.mp3"},
 @interface HomeworkViewController ()
 @property (nonatomic,strong) WYPopoverController *calendarPopController;
@@ -102,7 +103,7 @@
     __weak HomeworkViewController *weakSelf = self;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     DataService *data = [DataService sharedService];
-    [HomeworkDaoInterface downloadHistoryTaskWithUserId:data.user.userId withClassId:data.theClass.classId withCurrentTaskID:self.taskObj.taskID withSuccess:^(NSArray *taskObjArr) {
+    [HomeworkDaoInterface downloadHistoryTaskWithUserId:data.user.studentId withClassId:data.theClass.classId withCurrentTaskID:self.taskObj.taskID withSuccess:^(NSArray *taskObjArr) {
         HomeworkViewController *tempSelf= weakSelf;
         if (tempSelf) {
             tempSelf.allHistoryTaskArray = [NSMutableArray arrayWithArray:taskObjArr] ;
@@ -130,7 +131,7 @@
 
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         DataService *data = [DataService sharedService];
-        [HomeworkDaoInterface searchTaskWithUserId:data.user.userId withClassId:data.theClass.classId withSelectedDate:selectedDateArray.firstObject withSuccess:^(NSArray *taskObjArr) {
+        [HomeworkDaoInterface searchTaskWithUserId:data.user.studentId withClassId:data.theClass.classId withSelectedDate:selectedDateArray.firstObject withSuccess:^(NSArray *taskObjArr) {
             HomeworkViewController *tempSelf= weakSelf;
             if (tempSelf) {
                 tempSelf.allHistoryTaskArray = [NSMutableArray arrayWithArray:taskObjArr] ;
@@ -204,6 +205,17 @@
 #pragma mark HomeworkDailyCollectionViewControllerDelegate每一个题目类型cell代理
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller didSelectedAtIndexPath:(NSIndexPath *)path{
 
+}
+
+-(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller rankingButtonClickedAtIndexPath:(NSIndexPath *)path{
+    HomeworkRankingViewController *rankingController = [[HomeworkRankingViewController alloc] initWithNibName:@"HomeworkRankingViewController" bundle:nil];
+    rankingController.modalPresentationStyle = UIModalPresentationFormSheet;
+    rankingController.view.frame = (CGRect){0,0,514,450};
+    [self presentViewController:rankingController animated:YES completion:^{
+        
+    }];
+    HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
+    [rankingController reloadDataWithTaskId:controller.taskObj.taskID withHomeworkType:typeObj.homeworkType];
 }
 #pragma mark --
 

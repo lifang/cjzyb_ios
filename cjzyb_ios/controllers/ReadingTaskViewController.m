@@ -18,8 +18,11 @@
 #import "PreReadingTaskViewController.h"
 
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
-
+#define minRecoginCount 0
+#define minRecoginLevel 0.5
 @interface ReadingTaskViewController ()
+
+
 
 ///预听界面
 @property (nonatomic,strong) PreReadingTaskViewController *preReadingController;
@@ -34,10 +37,9 @@
 @property (nonatomic,strong) AVAudioPlayer *avPlayer;
 
 
-///是否在检查
-@property (nonatomic,assign) BOOL isChecking;
-///是否是预听
-@property (nonatomic,assign) BOOL isPrePlay;
+///读匹配次数
+@property (nonatomic,assign) int readingCount;
+
 
 ///是否在读内容
 @property (nonatomic,assign) BOOL isReading;
@@ -72,41 +74,52 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    if (self.isPrePlay) {
-        [parentVC.checkHomeworkButton setTitle:@"开始做题" forState:UIControlStateNormal];
-        [parentVC stopTimer];
-    }else{
-        self.isChecking = self.isChecking;
-    }
-}
+    if ([DataService sharedService].isHistory) {
+        [self.readingButton setHidden:YES];
+        [ParseAnswerJsonFileTool parseAnswerJsonFile:nil withReadingHistoryArray:^(NSArray *readingQuestionArr, int currentQuestionIndex, int currentQuestionItemIndex, int status, NSString *updateTime, NSString *userTime) {
+//            TaskObj *task = [DataService sharedService].taskObj;
+            parentVC.timeLabel.text = [NSString stringWithFormat:@"用时：%@",[Utility  formateDateStringWithSecond:userTime.intValue]];
+            
 
+        } withParseError:^(NSError *error) {
+            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+        }];;
+    }else{
+        [self.readingButton setHidden:NO];
+        int timeCount = [DataService sharedService].number_reduceTime;
+        if (timeCount <= 0) {
+            [parentVC.reduceTimeButton setEnabled:NO];
+        }else{
+            [parentVC.reduceTimeButton setEnabled:YES];
+        }
+        
+        if (self.isPrePlay) {
+            [parentVC.checkHomeworkButton setTitle:@"开始" forState:UIControlStateNormal];
+            [parentVC stopTimer];
+            [parentVC.reduceTimeButton setEnabled:NO];
+        }else{
+            
+        }
+    }
+    
+
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.isPrePlay = YES;
-    self.preReadingController = [[PreReadingTaskViewController alloc] initWithNibName:@"PreReadingTaskViewController" bundle:nil];
-    [self appearPrePlayControllerWithAnimation:YES];
-    
-    __weak ReadingTaskViewController *weakSelf = self;
-    //TODO:读question json文件
-    NSString * path = [[NSBundle mainBundle] pathForResource:@"questions_lastest" ofType:@"js"]; //测试
-    [ParseQuestionJsonFileTool parseQuestionJsonFile:path withReadingQuestionArray:^(NSArray *readingQuestionArr, NSInteger specifiedTime) {
-        ReadingTaskViewController *tempSelf = weakSelf;
-        if (tempSelf) {
-            tempSelf.readingHomeworksArr = readingQuestionArr;
-             [tempSelf.preReadingController startPreListeningHomeworkSentence:[readingQuestionArr firstObject] withPlayFinished:^(BOOL isSuccess) {
-                 [tempSelf hiddlePrePlayControllerWithAnimation:YES];
-             }];
-        }
-    } withParseError:^(NSError *error) {
-        ReadingTaskViewController *tempSelf = weakSelf;
-        if (tempSelf) {
-             [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-        }
-    }];
-   
-    self.readingTextView.text = @"Sure,Where are you flying today?";
+    if ([DataService sharedService].isHistory) {
+        
+    }else{
+        self.preReadingController = [[PreReadingTaskViewController alloc] initWithNibName:@"PreReadingTaskViewController" bundle:nil];
+        [self appearPrePlayControllerWithAnimation:YES];
+        [self updateFirstSentence];
+        [self.preReadingController startPreListeningHomeworkSentence:self.currentHomework withPlayFinished:^(BOOL isSuccess) {
+            
+        }];
+    }
+
+//    self.readingTextView.text = @"Sure,Where are you flying today?";
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
     
     //设置录音临时存放路径
@@ -153,7 +166,6 @@
         return;
     }
     self.currentSentence = currentSentence;
-    [self updateAllFrame];
     if (ani) {
         CATransition *animation = [CATransition animation];
         [animation setType:kCATransitionPush];
@@ -180,6 +192,47 @@
     }
 }
 
+//TODO:减时间道具
+-(void)reduceTimeProBtClicked{
+    int timeCount = [DataService sharedService].number_reduceTime;
+    if (timeCount <= 1) {
+        [parentVC.reduceTimeButton setEnabled:NO];
+    }
+    [DataService sharedService].number_reduceTime--;
+    __weak ReadingTaskViewController *weakSelf = self;
+    [ParseAnswerJsonFileTool writePropsToJsonFile:nil withQuestionId:[NSString stringWithFormat:@"%d",self.currentSentenceIndex] withPropsType:@"1" withSuccess:^{
+        ReadingTaskViewController *tempSelf = weakSelf ;
+        if (tempSelf) {
+        
+        }
+    } withFailure:^(NSError *error) {
+        ReadingTaskViewController *tempSelf = weakSelf ;
+        if (tempSelf) {
+            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+        }
+    }];
+}
+
+//TODO:退出作业界面
+-(void)exithomeworkUI{
+    __weak ReadingTaskViewController *weakSelf = self;
+    [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:nil withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
+        ReadingTaskViewController *tempSelf = weakSelf ;
+        if (tempSelf) {
+            
+        }
+    } withFailure:^(NSError *error) {
+        ReadingTaskViewController *tempSelf = weakSelf ;
+        if (tempSelf) {
+            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+        }
+    }];
+    
+    [parentVC dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
 //TODO:开始做题
 -(void)startBeginninghomework{
     if ([DataService sharedService].isHistory==YES) {
@@ -187,16 +240,43 @@
     }else{
         if (self.isPrePlay) {
             [self hiddlePrePlayControllerWithAnimation:YES];
-            self.isPrePlay = NO;
-            self.isChecking = NO;
         }else{
-            if (self.isChecking) {
-                self.isChecking = NO;
-                [self updateNextSentence];
+            if (self.currentSentence.readingSentenceRatio.floatValue >= minRecoginLevel || self.readingCount >= minRecoginCount) {
+                if (self.readingCount == 0) {
+                      __weak ReadingTaskViewController *weakSelf = self;
+                    [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:nil withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
+                        ReadingTaskViewController *tempSelf = weakSelf ;
+                        if (tempSelf) {
+                            
+                        }
+                    } withFailure:^(NSError *error) {
+                        ReadingTaskViewController *tempSelf = weakSelf ;
+                        if (tempSelf) {
+                            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+                        }
+                    }];
+                }
+                self.readingCount = 0;
+                [self.tipBackView setHidden:YES];
+                if (self.currentSentenceIndex+1 < self.currentHomework.readingHomeworkSentenceObjArray.count) {
+                    [ self updateNextSentence];
+                }else{//已经是最后一个句子
+                    if (self.currentHomeworkIndex+1 < self.readingHomeworksArr.count) {
+                        [self updateNextHomework];
+                        [self.preReadingController startPreListeningHomeworkSentence:self.currentHomework withPlayFinished:^(BOOL isSuccess) {
+                            [parentVC startTimer];
+                        }];
+                        [self appearPrePlayControllerWithAnimation:YES];
+                    }else{//TODO:挑战结束
+                        [parentVC stopTimer];
+                        [self showResultView];
+                    }
+                }
+                
             }else{
-                self.isChecking = YES;
-                //TODO:开始检查
-                [[AppDelegate shareIntance] loadTrueSound:2];
+                MBProgressHUD *alert = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                alert.labelText = @"读不够好哦，再试一次吧";
+                [alert hide:YES afterDelay:1];
             }
         }
     }
@@ -213,7 +293,8 @@
             self.currentSentence.isFinished = YES;
             [self setCurrentSentence:[self.currentHomework.readingHomeworkSentenceObjArray objectAtIndex:self.currentSentenceIndex] withAnimation:YES];
         }else{//已经是最后一个句子
-        
+            
+            
         }
     }else{//当前大题中没有句子
     
@@ -251,7 +332,7 @@
     }
 }
 
-///从json文件中加载题目数据
+//TODO:从json文件中加载题目数据
 -(void)loadHomeworkFromFile{
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"question.geojson" ofType:nil];
@@ -274,6 +355,10 @@
     [self.view addSubview:self.preReadingController.view];
     [self addChildViewController:self.preReadingController];
     [self.preReadingController didMoveToParentViewController:self];
+    [parentVC.checkHomeworkButton setTitle:@"开始" forState:UIControlStateNormal];
+    self.isPrePlay = YES;
+    [parentVC stopTimer];
+    [parentVC.reduceTimeButton setEnabled:NO];
 }
 
 -(void)hiddlePrePlayControllerWithAnimation:(BOOL)animation{
@@ -281,6 +366,10 @@
     [self.preReadingController.view removeFromSuperview];
     [self.preReadingController removeFromParentViewController];
     [self.preReadingController didMoveToParentViewController:nil];
+    [parentVC.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
+    self.isPrePlay = NO;
+    [parentVC startTimer];
+    [parentVC.reduceTimeButton setEnabled:YES];
 }
 
 #pragma mark --
@@ -296,6 +385,39 @@
     [self.view setUserInteractionEnabled:YES];
 }
 #pragma mark --
+
+
+//TODO:显示通关界面
+-(void)showResultView {
+    int count = 0;
+    float radio = 0.0 ;
+    for (ReadingHomeworkObj *homework in self.readingHomeworksArr) {
+        for (ReadingSentenceObj *sentence in homework.readingHomeworkSentenceObjArray) {
+            count++;
+            radio += sentence.readingSentenceRatio.floatValue;
+        }
+    }
+    NSArray *viewArray = [[NSBundle mainBundle] loadNibNamed:@"TenSecChallengeResultView" owner:self options:nil];
+    self.resultView = (TenSecChallengeResultView *)[viewArray objectAtIndex:0];
+    self.resultView.delegate = self;
+    self.resultView.timeCount = parentVC.spendSecond;
+    self.resultView.ratio = radio/count;
+    if (self.isFirst == YES) {
+        self.resultView.resultBgView.hidden=NO;
+        self.resultView.noneArchiveView.hidden=YES;
+        
+        self.resultView.timeLimit = self.specifiedSecond;
+        self.resultView.isEarly = [Utility compareTime];
+    }else {
+        self.resultView.noneArchiveView.hidden=NO;
+        self.resultView.resultBgView.hidden=YES;
+    }
+    
+    [self.resultView initView];
+    
+    [self.view addSubview: self.resultView];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -419,19 +541,22 @@
     NSURL *documentDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
     return [documentDirectory URLByAppendingPathComponent:fileName];
 }
-///更新所有的位置
+//TODO:更新所有的位置
 -(void)updateAllFrame{
     NSAttributedString *attributeString = self.readingTextView.attributedText;
+    NSAttributedString *attributeTip = self.tipTextView.attributedText;
     if (!attributeString) {
         return ;
     }
-    CGRect textRect = [attributeString boundingRectWithSize:(CGSize){CGRectGetWidth(self.readingTextView.frame),1024-350} options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading context:nil];
+    CGRect textRect = [attributeString boundingRectWithSize:(CGSize){CGRectGetWidth(self.readingTextView.frame),self.view.frame.size.height-350} options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading context:nil];
     self.readingTextView.frame = (CGRect){self.readingTextView.frame.origin,CGRectGetWidth(self.readingTextView.frame),textRect.size.height};
+    
+    float maxTipHeight = (self.view.frame.size.height-CGRectGetMaxY(self.readingTextView.frame)-30);
+    CGRect tipRect = [attributeTip boundingRectWithSize:(CGSize){CGRectGetWidth(self.tipBackView.frame), maxTipHeight<100 ?100:maxTipHeight} options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading context:nil];
     
     self.readingButton.frame = (CGRect){CGRectGetMinX(self.readingButton.frame),CGRectGetMaxY(self.readingButton.frame)+20,self.readingButton.frame.size};
     
-    self.tipBackView.frame = (CGRect){CGRectGetMinX(self.tipBackView.frame),CGRectGetMaxY(self.readingButton.frame) +30,self.tipBackView.frame.size};
-    
+    self.tipBackView.frame = (CGRect){CGRectGetMinX(self.tipBackView.frame),CGRectGetMaxY(self.readingButton.frame) +30,self.tipBackView.frame.size.width,tipRect.size.height+40};
 }
 
 ///标记颜色
@@ -460,6 +585,29 @@
 }
 #pragma mark --
 
+#pragma mark TenSecChallengeResultViewDelegate显示结果代理
+-(void)resultViewCommitButtonClicked {//确认完成
+    [self.resultView removeFromSuperview];
+    [parentVC dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+-(void)resultViewRestartButtonClicked {//再次挑战
+    [self.resultView removeFromSuperview];
+    
+    parentVC.checkHomeworkButton.enabled=YES;
+    parentVC.spendSecond = 0;
+    self.currentHomework = nil;
+    self.currentSentence = nil;
+    self.currentSentenceIndex = 0;
+    self.currentHomeworkIndex = 0;
+    self.readingHomeworksArr = nil;
+    [self updateFirstSentence];
+    self.isFirst = NO;
+    [self appearPrePlayControllerWithAnimation:YES];
+}
+#pragma mark --
+
 #pragma mark AVAudioPlayerDelegate 播放代理
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
     NSLog(@"audioPlayerDidFinishPlaying:%@",flag?@"YES":@"NO");
@@ -481,17 +629,27 @@
 #pragma mark --
 
 
-#pragma mark ISSpeechRecognitionDelegate
+#pragma mark ISSpeechRecognitionDelegate语音识别代理
 - (void)recognition:(ISSpeechRecognition *)speechRecognition didGetRecognitionResult:(ISSpeechRecognitionResult *)result {
 	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
 	NSLog(@"Result: %@", result.text);
-    [DRSentenceSpellMatch checkSentence:@"hello,hello" withSpellMatchSentence:result.text andSpellMatchAttributeString:^(NSAttributedString *spellAttriString, float matchScore) {
+    [DRSentenceSpellMatch checkSentence:self.currentSentence.readingSentenceContent withSpellMatchSentence:result.text andSpellMatchAttributeString:^(NSAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray) {
         self.readingTextView.attributedText = nil;
         self.readingTextView.attributedText = spellAttriString;
+        self.readingCount++;
+        self.currentSentence.readingErrorWordArray = [NSMutableArray arrayWithArray:errorWordArray];
+        self.currentSentence.readingSentenceRatio = [NSString stringWithFormat:@"%0.2f",matchScore];
+        [self.tipBackView setHidden:NO];
+        if (matchScore >= 0.5) {
+            self.tipTextView.text = @"你的发音真的很不错哦,让我们再来读读其它的句子吧！";
+        }else
+        {
+             self.tipTextView.text = @"看到橙色的这些词了吗,你的发音还不够标准哦,在来试试吧！";
+        }
+        [self updateAllFrame];
     } orSpellMatchFailure:^(NSError *error) {
         [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
     }];
-	self.readingTextView.text = result.text;
 }
 
 - (void)recognition:(ISSpeechRecognition *)speechRecognition didFailWithError:(NSError *)error {
@@ -514,15 +672,20 @@
 
 #pragma mark property
 
--(void)setIsChecking:(BOOL)isChecking{
-    if (isChecking) {
-         [parentVC.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
+-(void)setIsPrePlay:(BOOL)isPrePlay{
+    _isPrePlay = isPrePlay;
+    if (isPrePlay) {
+        [parentVC.reduceTimeButton setEnabled:NO];
     }else{
-        [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
+        int timeCount = [DataService sharedService].number_reduceTime;
+        if (timeCount <= 0) {
+            [parentVC.reduceTimeButton setEnabled:NO];
+        }else{
+            [parentVC.reduceTimeButton setEnabled:YES];
+        }
     }
-    
-    _isChecking = isChecking;
 }
+
 -(void)setIsReading:(BOOL)isReading{
     _isReading = isReading;
     if (!isReading) {
@@ -540,11 +703,28 @@
 -(void)setCurrentSentence:(ReadingSentenceObj *)currentSentence{
     _currentSentence = currentSentence;
     if (currentSentence) {
+        
+        if ([DataService sharedService].isHistory) {
+            NSMutableString *content = [NSMutableString stringWithFormat:@"需要多读的词"];
+            for (NSString *errorWord in currentSentence.readingErrorWordArray) {
+                [content appendString:@"\n"];
+                [content appendString:errorWord];
+            }
+            NSMutableAttributedString *attriString = [[NSMutableAttributedString alloc]initWithString:content];
+            [attriString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0, content.length)];
+            NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+            style.alignment = NSTextAlignmentCenter;
+            [attriString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, content.length)];
+            self.tipTextView.attributedText = attriString;
+            parentVC.rotioLabel.text = [NSString stringWithFormat:@"正确率：%0.0f",currentSentence.readingSentenceRatio.floatValue*100];
+        }
         NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:currentSentence.readingSentenceContent];
         [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0, attri.length)];
         [attri addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(0, attri.length)];
         self.readingTextView.attributedText = attri;
+         [self updateAllFrame];
     }
+   
 }
 #pragma mark --
 @end

@@ -28,7 +28,8 @@
 -(void)reloadClassmatesData{
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     __weak StudentListViewController *weakSelf = self;
-    [DownloadClassmatesInfo downloadClassmatesinfoWithUserId:@"74" withClassId:@"90" withSuccess:^(NSArray *classmatesArray) {
+    DataService *data = [DataService sharedService];
+    [DownloadClassmatesInfo downloadClassmatesinfoWithUserId:data.user.studentId withClassId:data.theClass.classId withSuccess:^(NSArray *classmatesArray) {
         DLog(@"%@",classmatesArray);
         if (weakSelf) {
             StudentListViewController *controller = weakSelf;

@@ -29,4 +29,10 @@
 ///同学列表界面使用
 @property (nonatomic,assign) BOOL isExtend;
 +(UserObject *)userFromDictionary:(NSDictionary *)aDic;
+
+///保存当前用户
+-(void)archiverUser;
+
+///删除当前本地用户
+-(void)unarchiverUser;
 @end

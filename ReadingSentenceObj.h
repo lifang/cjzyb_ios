@@ -26,4 +26,7 @@
 
 ///该句子正确率
 @property (strong,nonatomic) NSString *readingSentenceRatio;
+
+///读错单词的数组
+@property (strong,nonatomic) NSMutableArray *readingErrorWordArray;
 @end

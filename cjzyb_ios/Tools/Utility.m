@@ -397,6 +397,18 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     return timeString;
 }
 
+///格式化时间字符串
++(NSString*)formateDateStringWithDateString:(NSString*)dateString{
+    if (!dateString || [dateString isEqualToString:@""]) {
+        return @"";
+    }
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd'T'HH:mm:ss";
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"Asia/Shanghai"]];
+    NSDate *date = [dateFormatter dateFromString:dateString];
+    dateFormatter.dateFormat = @"yyyy/MM/dd HH:mm";
+    return [dateFormatter stringFromDate:date];
+}
 
 +(BOOL)requestFailure:(NSError*)error tipMessageBlock:(void(^)(NSString *tipMsg))msg{
     if (!error) {

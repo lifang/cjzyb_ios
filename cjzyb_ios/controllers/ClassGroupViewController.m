@@ -58,14 +58,16 @@
             [Utility errorAlert:@"班级验证码不能为空"];
             return ;
         }
-        [UserObjDaoInterface joinNewGradeWithUserId:[DataService sharedService].user.userId withIdentifyCode:inputString withSuccess:^(UserObject *userObj, ClassObject *gradeObj) {
+        [UserObjDaoInterface joinNewGradeWithUserId:data.user.studentId withIdentifyCode:inputString withSuccess:^(UserObject *userObj, ClassObject *gradeObj) {
             ClassGroupViewController *tempSelf = weakSelf;
             if (tempSelf) {
                 data.user = userObj;
                 data.theClass = gradeObj;
+                [data.theClass archiverClass];
                 //退回到主界面
-                [tempSelf.tableView reloadData];
+//                [tempSelf.tableView reloadData];
                 [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kChangeGradeNotification object:nil];
             }
         } withFailure:^(NSError *error) {
             ClassGroupViewController *tempSelf = weakSelf;
@@ -144,14 +146,17 @@
     }
     __weak ClassGroupViewController *weakSelf = self;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    [UserObjDaoInterface exchangeGradeWithUserId:data.user.userId withGradeId:grade.classId withSuccess:^(UserObject *userObj, ClassObject *gradeObj) {
+    [UserObjDaoInterface exchangeGradeWithUserId:data.user.studentId withGradeId:grade.classId withSuccess:^(UserObject *userObj, ClassObject *gradeObj) {
         ClassGroupViewController *tempSelf = weakSelf;
         if (tempSelf) {
             data.user = userObj;
             data.theClass = gradeObj;
+            [data.theClass archiverClass];
+            
             //退回到主界面
-            [tempSelf.tableView reloadData];
+//            [tempSelf.tableView reloadData];
             [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kChangeGradeNotification object:nil];
         }
     } withFailure:^(NSError *error) {
         ClassGroupViewController *tempSelf = weakSelf;

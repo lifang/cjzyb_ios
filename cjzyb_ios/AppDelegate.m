@@ -23,6 +23,7 @@
 #import "TenSecChallengeViewController.h"
 
 #import "PreReadingTaskViewController.h"
+
 @implementation AppDelegate
 -(void)loadTrueSound:(NSInteger)index {
     NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"trueMusic.wav"];
@@ -115,20 +116,40 @@
         [DataService sharedService].user = [UserObject userFromDictionary:userDic];
         
         MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-        main.view.frame = (CGRect){0,67,768,1024-67};
+//        main.view.frame = (CGRect){0,67,768,1024-67};
         HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-        homework.view.frame = (CGRect){0,67,768,1024-67};
+//        homework.view.frame = (CGRect){0,67,768,1024-67};
         LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
-        notificationView.view.frame = (CGRect){0,67,768,1024-67};
+//        notificationView.view.frame = (CGRect){0,67,768,1024-67};
         CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-        cardView.view.frame = (CGRect){0,67,768,1024-67};
+//        cardView.view.frame = (CGRect){0,67,768,1024-67};
         DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
         tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
         
         tabBarController.currentPage = self.notification_type;
         
         self.window.rootViewController = tabBarController;
+       
     }
+     [self.window makeKeyAndVisible];
+}
+
+
+//TODO:显示作业类型
+-(void)showDailyhomeworkType{
+    
+    TaskObj *task = [[TaskObj alloc] init];
+    NSMutableArray *homeworkType = [NSMutableArray array];
+    for (int i=0; i < 10; i++) {
+        HomeworkTypeObj *type = [[HomeworkTypeObj alloc] init];
+        type.homeworkType = HomeworkType_line;
+        [homeworkType addObject:type];
+    }
+    task.taskHomeworkTypeArray = homeworkType;
+    HomeworkDailyCollectionViewController *controller = [[HomeworkDailyCollectionViewController alloc] initWithNibName:@"HomeworkDailyCollectionViewController" bundle:nil];
+    controller.taskObj = task;
+    self.window.rootViewController = controller;
+     [self.window makeKeyAndVisible];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -142,7 +163,7 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+    
     [DataService sharedService].notificationPage=1;
     self.notification_type = 0;
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
@@ -209,15 +230,7 @@
             }
         }
     }
-//    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
-    
-    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
-    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
-    self.window.rootViewController = tabBarController;
+    [self showRootView];
 
     return YES;
 }

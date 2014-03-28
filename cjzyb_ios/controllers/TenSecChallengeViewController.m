@@ -508,6 +508,7 @@
         [self handleLabelFont:self.lowerOptionLabel];
         self.questionLabel.text = currentQuestion.tenQuestionContent;
         [self handleLabelFont:self.questionLabel];
+        
         if (self.isViewingHistory) {
             self.upperButton.enabled = NO;
             self.lowerButton.enabled = NO;

@@ -19,4 +19,9 @@
 @property (nonatomic, strong) NSString *tId;
 
 +(ClassObject *)classFromDictionary:(NSDictionary *)aDic;
+///保存当前用户班级
+-(void)archiverClass;
+
+///删除当前本地用户班级
+-(void)unarchiverClass;
 @end
