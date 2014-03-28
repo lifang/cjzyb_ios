@@ -147,7 +147,7 @@
                   symbolName = "-[ClassGroupViewController tableView:didSelectRowAtIndexPath:]"
                   moduleName = "cjzyb_ios"
                   urlString = "file:///Users/david/Desktop/%E9%A1%B9%E7%9B%AE%E6%96%87%E4%BB%B6%E5%A4%B9%E7%AE%A1%E7%90%86/%E8%B6%85%E7%BA%A7%E4%BD%9C%E4%B8%9A%E6%9C%AC/cjzyb_ios/cjzyb_ios/controllers/ClassGroupViewController.m"
-                  timestampString = "417606663.348084"
+                  timestampString = "417677587.468977"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "148"
@@ -161,7 +161,7 @@
                   symbolName = "-[ClassGroupViewController tableView:didSelectRowAtIndexPath:]"
                   moduleName = "cjzyb_ios"
                   urlString = "file:///Users/david/Desktop/%E9%A1%B9%E7%9B%AE%E6%96%87%E4%BB%B6%E5%A4%B9%E7%AE%A1%E7%90%86/%E8%B6%85%E7%BA%A7%E4%BD%9C%E4%B8%9A%E6%9C%AC/cjzyb_ios/cjzyb_ios/controllers/ClassGroupViewController.m"
-                  timestampString = "417606663.348336"
+                  timestampString = "417677587.469372"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "148"
@@ -273,22 +273,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "cjzyb_ios/AppDelegate.m"
-            timestampString = "417605364.489399"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "113"
-            endingLineNumber = "113"
-            landmarkName = "-showRootView"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "cjzyb_ios/Interface/UserObjDaoInterface.m"
             timestampString = "417606047.10747"
             startingColumnNumber = "9223372036854775807"
@@ -328,6 +312,54 @@
             startingLineNumber = "34"
             endingLineNumber = "34"
             landmarkName = "-archiverUser"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "cjzyb_ios/controllers/HomeworkViewController.m"
+            timestampString = "417676701.084625"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "-viewDidLoad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "cjzyb_ios/Interface/HomeworkDaoInterface.m"
+            timestampString = "417609093.852637"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
+            landmarkName = "+downloadCurrentTaskWithUserId:withClassId:withSuccess:withError:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "cjzyb_ios/controllers/HomeworkViewController.m"
+            timestampString = "417677510.783366"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "211"
+            endingLineNumber = "211"
+            landmarkName = "-homeworkDailyController:rankingButtonClickedAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

@@ -78,7 +78,7 @@
         });
     } withFailure:failure];
 }
-
+//TODO:作业类型转换
 +(HomeworkType)convertTypeFromInt:(int)type{
     switch (type) {
         case 0:
@@ -97,6 +97,29 @@
             return HomeworkType_sort;
         default:
             return HomeworkType_other;
+            break;
+    }
+}
+
+//TODO:作业类型转换
++(NSString*)convertStringFromType:(HomeworkType)type{
+    switch (type) {
+        case HomeworkType_listeningAndWrite:
+            return  @"0";
+        case HomeworkType_reading:
+            return @"1";
+        case HomeworkType_quick:
+            return @"2";
+        case HomeworkType_line:
+            return @"3";
+        case HomeworkType_fillInBlanks:
+            return @"4";
+        case HomeworkType_select:
+            return @"5";
+        case HomeworkType_sort:
+            return @"6";
+        default:
+            return @"7";
             break;
     }
 }
@@ -175,6 +198,56 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
                 success(taskList);
+            }
+        });
+    } withFailure:failure];
+}
+
+
+///获取排行数据
++(void)downloadHomeworkRankingWithTaskId:(NSString*)taskId withHomeworkType:(HomeworkType)homeworkType withSuccess:(void(^)(NSArray *rankingObjArr))success withError:(void (^)(NSError *error))failure{
+    if (!taskId) {
+        if (failure) {
+            failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"请求参数不能为空"}]);
+        }
+        return;
+    }
+    NSString *urlString = [NSString stringWithFormat:@"%@/api/students/get_rankings?types=%@&pub_id=%@",kHOST,[HomeworkDaoInterface convertStringFromType:homeworkType],taskId];
+    DLog(@"获得班级同学信息url:%@",urlString);
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlString]];
+    [request setRequestMethod:@"GET"];
+    [Utility requestDataWithASIRequest:request withSuccess:^(NSDictionary *dicData) {
+        NSArray *rankArr = [dicData objectForKey:@"record_details"];
+        if (!rankArr || rankArr.count <= 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"当前没有排行数据"}]);
+                }
+            });
+            return;
+        }
+        
+        NSMutableArray *rankList = [NSMutableArray array];
+        for (NSDictionary *rankDic in rankArr) {
+            RankingObject *rankObj = [[RankingObject alloc] init];
+            rankObj.rankingUserId = [Utility filterValue:[rankDic objectForKey:@"student_id"]];
+            rankObj.rankingScore = [Utility filterValue:[rankDic objectForKey:@"score"]];
+            rankObj.rankingName = [Utility filterValue:[rankDic objectForKey:@"name"]];
+            rankObj.rankingHeaderURL = [Utility filterValue:[rankDic objectForKey:@"avatar_url"]];
+            [rankList addObject:rankObj];
+        }
+        
+        if (rankList.count <= 0) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"当前没有排行数据"}]);
+                }
+            });
+            return;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (success) {
+                success(rankList);
             }
         });
     } withFailure:failure];

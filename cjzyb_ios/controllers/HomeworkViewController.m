@@ -9,6 +9,7 @@
 #import "HomeworkViewController.h"
 #import "HomeworkHistoryCollectionCell.h"
 #import "HomeworkDaoInterface.h"
+#import "HomeworkRankingViewController.h"
 //{"id": "181", "content": "This is! an aps!", "resource_url": "/question_packages/201402/questions_package_222/media_181.mp3"},
 @interface HomeworkViewController ()
 @property (nonatomic,strong) WYPopoverController *calendarPopController;
@@ -204,6 +205,17 @@
 #pragma mark HomeworkDailyCollectionViewControllerDelegate每一个题目类型cell代理
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller didSelectedAtIndexPath:(NSIndexPath *)path{
 
+}
+
+-(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller rankingButtonClickedAtIndexPath:(NSIndexPath *)path{
+    HomeworkRankingViewController *rankingController = [[HomeworkRankingViewController alloc] initWithNibName:@"HomeworkRankingViewController" bundle:nil];
+    rankingController.modalPresentationStyle = UIModalPresentationFormSheet;
+    rankingController.view.frame = (CGRect){0,0,514,450};
+    [self presentViewController:rankingController animated:YES completion:^{
+        
+    }];
+    HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
+    [rankingController reloadDataWithTaskId:controller.taskObj.taskID withHomeworkType:typeObj.homeworkType];
 }
 #pragma mark --
 

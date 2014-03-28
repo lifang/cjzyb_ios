@@ -342,6 +342,12 @@
 		636CF4B418BD8F3B0085C28E /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 636CF4B218BD8F3B0085C28E /* TestViewController.m */; };
 		636CF4B518BD8F3B0085C28E /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4B318BD8F3B0085C28E /* TestViewController.xib */; };
 		636CF4EB18BDD1030085C28E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 636CF4EA18BDD1030085C28E /* QuartzCore.framework */; };
+		638C04FA18E51D13009BFD40 /* HomeworkRankingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 638C04F818E51D13009BFD40 /* HomeworkRankingViewController.m */; };
+		638C04FB18E51D13009BFD40 /* HomeworkRankingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 638C04F918E51D13009BFD40 /* HomeworkRankingViewController.xib */; };
+		638C04FE18E51E1F009BFD40 /* close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 638C04FD18E51E1F009BFD40 /* close@2x.png */; };
+		638C050118E5204F009BFD40 /* HomeworkRankingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 638C050018E5204F009BFD40 /* HomeworkRankingTableViewCell.m */; };
+		638C050318E52063009BFD40 /* HomeworkRankingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 638C050218E52063009BFD40 /* HomeworkRankingTableViewCell.xib */; };
+		638C050618E52327009BFD40 /* RankingObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 638C050518E52327009BFD40 /* RankingObject.m */; };
 		6396576718C03664002F2A90 /* WYPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396576418C03664002F2A90 /* WYPopoverController.m */; };
 		6396576818C03664002F2A90 /* WYStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396576618C03664002F2A90 /* WYStoryboardPopoverSegue.m */; };
 		6396577418C036B1002F2A90 /* DRLeftTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396576A18C036B1002F2A90 /* DRLeftTabBarViewController.m */; };
@@ -366,6 +372,7 @@
 		6396583418C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396583218C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib */; };
 		6396583A18C07B37002F2A90 /* HomeworkTypeObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396583918C07B37002F2A90 /* HomeworkTypeObj.m */; };
 		6396583D18C083BF002F2A90 /* HomeworkHistoryCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396583C18C083BF002F2A90 /* HomeworkHistoryCollectionCell.m */; };
+		63AFA4CC18E510A200A30DB1 /* HomeworkTypeCollctionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396581318C04FA4002F2A90 /* HomeworkTypeCollctionCell.xib */; };
 		63B81C4F18CF05F900004745 /* HomeworkContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B81C4D18CF05F900004745 /* HomeworkContainerController.m */; };
 		63B81C5018CF05F900004745 /* HomeworkContainerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63B81C4E18CF05F900004745 /* HomeworkContainerController.xib */; };
 		63B8D26C18C84C7C004141E9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549118BC875800F2B78D /* Foundation.framework */; };
@@ -902,6 +909,15 @@
 		636CF4B218BD8F3B0085C28E /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		636CF4B318BD8F3B0085C28E /* TestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
 		636CF4EA18BDD1030085C28E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		638C04F718E51D13009BFD40 /* HomeworkRankingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkRankingViewController.h; sourceTree = "<group>"; };
+		638C04F818E51D13009BFD40 /* HomeworkRankingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkRankingViewController.m; sourceTree = "<group>"; };
+		638C04F918E51D13009BFD40 /* HomeworkRankingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeworkRankingViewController.xib; sourceTree = "<group>"; };
+		638C04FD18E51E1F009BFD40 /* close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close@2x.png"; sourceTree = "<group>"; };
+		638C04FF18E5204F009BFD40 /* HomeworkRankingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeworkRankingTableViewCell.h; sourceTree = "<group>"; };
+		638C050018E5204F009BFD40 /* HomeworkRankingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeworkRankingTableViewCell.m; sourceTree = "<group>"; };
+		638C050218E52063009BFD40 /* HomeworkRankingTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeworkRankingTableViewCell.xib; sourceTree = "<group>"; };
+		638C050418E52327009BFD40 /* RankingObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingObject.h; sourceTree = "<group>"; };
+		638C050518E52327009BFD40 /* RankingObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RankingObject.m; sourceTree = "<group>"; };
 		6396576318C03664002F2A90 /* WYPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYPopoverController.h; sourceTree = "<group>"; };
 		6396576418C03664002F2A90 /* WYPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WYPopoverController.m; sourceTree = "<group>"; };
 		6396576518C03664002F2A90 /* WYStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WYStoryboardPopoverSegue.h; sourceTree = "<group>"; };
@@ -1218,6 +1234,8 @@
 				0EEF4C2D18C5C6120058606A /* UserObject.m */,
 				0EEF4C2F18C5C8F00058606A /* ClassObject.h */,
 				0EEF4C3018C5C8F00058606A /* ClassObject.m */,
+				638C050418E52327009BFD40 /* RankingObject.h */,
+				638C050518E52327009BFD40 /* RankingObject.m */,
 			);
 			name = modelmodel;
 			sourceTree = "<group>";
@@ -1551,6 +1569,9 @@
 				181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */,
 				0EAABDB018D02E5100CD2DE7 /* 卡包 */,
 				6396580718C04D4A002F2A90 /* HomeworkViewController.h */,
+				638C04F718E51D13009BFD40 /* HomeworkRankingViewController.h */,
+				638C04F818E51D13009BFD40 /* HomeworkRankingViewController.m */,
+				638C04F918E51D13009BFD40 /* HomeworkRankingViewController.xib */,
 				6396580818C04D4A002F2A90 /* HomeworkViewController.m */,
 				6396580918C04D4A002F2A90 /* HomeworkViewController.xib */,
 				6396583018C06C9D002F2A90 /* HomeworkDailyCollectionViewController.h */,
@@ -1883,6 +1904,14 @@
 			name = test;
 			sourceTree = "<group>";
 		};
+		638C04FC18E51D85009BFD40 /* ranking */ = {
+			isa = PBXGroup;
+			children = (
+				638C04FD18E51E1F009BFD40 /* close@2x.png */,
+			);
+			name = ranking;
+			sourceTree = "<group>";
+		};
 		6396576218C0365B002F2A90 /* WYPopoverController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1931,6 +1960,7 @@
 		639657CF18C03886002F2A90 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				638C04FC18E51D85009BFD40 /* ranking */,
 				1867B53818D008A70042A95D /* notification */,
 				63289A2618C5956900C0083E /* reading */,
 				6396581518C0574A002F2A90 /* homework */,
@@ -1997,6 +2027,9 @@
 				6396583C18C083BF002F2A90 /* HomeworkHistoryCollectionCell.m */,
 				160A4D4018CBE09D0020848C /* SelectingChallengeOptionCell.h */,
 				160A4D4118CBE09D0020848C /* SelectingChallengeOptionCell.m */,
+				638C04FF18E5204F009BFD40 /* HomeworkRankingTableViewCell.h */,
+				638C050018E5204F009BFD40 /* HomeworkRankingTableViewCell.m */,
+				638C050218E52063009BFD40 /* HomeworkRankingTableViewCell.xib */,
 			);
 			name = homework;
 			sourceTree = "<group>";
@@ -2228,6 +2261,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63AFA4CC18E510A200A30DB1 /* HomeworkTypeCollctionCell.xib in Resources */,
 				186C021E18D9866000D77EEC /* SelectingChallengeViewController.xib in Resources */,
 				185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */,
 				188ED74318CDA6BA00D1210F /* answer-1.js in Resources */,
@@ -2362,6 +2396,7 @@
 				0EEF4C1618C5622F0058606A /* FirstViewController.xib in Resources */,
 				0E9C6E9918D1496000E807D1 /* SortViewController.xib in Resources */,
 				6396578518C0374C002F2A90 /* StudentSummaryCell.xib in Resources */,
+				638C04FB18E51D13009BFD40 /* HomeworkRankingViewController.xib in Resources */,
 				63289A2C18C595D300C0083E /* listening_stop@2x.png in Resources */,
 				630DBDCD18D15653009DA0EB /* DRNavigationBar.xib in Resources */,
 				630DBE0918D15BF4009DA0EB /* propOfTime@2x.png in Resources */,
@@ -2374,6 +2409,7 @@
 				0E92659E18BDE51F003ADEC3 /* deleteBtn@2x.png in Resources */,
 				187C4AC618D304AC0006461D /* 10_01@2x.png in Resources */,
 				630DBE1F18D15CB1009DA0EB /* homework_reading@2x.png in Resources */,
+				638C050318E52063009BFD40 /* HomeworkRankingTableViewCell.xib in Resources */,
 				0E93C9B118D834630094AD7B /* ios-stop@2x.png in Resources */,
 				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				630DBDE918D15A95009DA0EB /* addClass@2x.png in Resources */,
@@ -2391,6 +2427,7 @@
 				0E5D1C8718C9A13C008A13F2 /* logo@2x.png in Resources */,
 				0E9265A418BEEA01003ADEC3 /* send@2x.png in Resources */,
 				0E92657C18BDACDD003ADEC3 /* second@2x.png in Resources */,
+				638C04FE18E51E1F009BFD40 /* close@2x.png in Resources */,
 				0E92658618BDC528003ADEC3 /* focus@2x.png in Resources */,
 				0E9D688B18C9AA2900EACFA3 /* detail_info@2x.png in Resources */,
 				6396577A18C036B1002F2A90 /* StudentListViewController.xib in Resources */,
@@ -2445,6 +2482,7 @@
 				6329556918BC900600F2B78D /* SDWebImagePrefetcher.m in Sources */,
 				6329556118BC900600F2B78D /* MKAnnotationView+WebCache.m in Sources */,
 				6329552818BC8AA700F2B78D /* ASIS3Request.m in Sources */,
+				638C050618E52327009BFD40 /* RankingObject.m in Sources */,
 				63DD5C7918C9E9F60034512D /* ReadingTaskViewControllerView.m in Sources */,
 				6396577718C036B1002F2A90 /* ClassGroupViewController.m in Sources */,
 				6329553F18BC8D7C00F2B78D /* FMResultSet.m in Sources */,
@@ -2532,6 +2570,7 @@
 				0EEF4BF518C5618B0058606A /* NSDictionary+AllKeytoLowerCase.m in Sources */,
 				6396583318C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m in Sources */,
 				63B8D28418C87FAF004141E9 /* GoogleTTSAPI.m in Sources */,
+				638C050118E5204F009BFD40 /* HomeworkRankingTableViewCell.m in Sources */,
 				0E92655918BD9228003ADEC3 /* DAPagesContainerTopBar.m in Sources */,
 				6329551A18BC8AA700F2B78D /* ASICloudFilesContainer.m in Sources */,
 				6329551818BC8AA700F2B78D /* ASIWebPageRequest.m in Sources */,
@@ -2617,6 +2656,7 @@
 				0E9C6EA118D1A16300E807D1 /* ClozeView.m in Sources */,
 				6329549E18BC875800F2B78D /* main.m in Sources */,
 				6341536818C1C96C00DE4480 /* CalendarViewController.m in Sources */,
+				638C04FA18E51D13009BFD40 /* HomeworkRankingViewController.m in Sources */,
 				0E660F1D18E0249E0074454C /* PostImage.m in Sources */,
 				6329554018BC8D7C00F2B78D /* FMDatabaseQueue.m in Sources */,
 				18B4EB8418D29E0500986766 /* LHLDeleteMyNoticeInterface.m in Sources */,

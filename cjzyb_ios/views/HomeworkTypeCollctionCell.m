@@ -8,10 +8,10 @@
 
 #import "HomeworkTypeCollctionCell.h"
 @interface HomeworkTypeCollctionCell()
-@property (weak, nonatomic) IBOutlet UILabel *rankingLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *finishedFlagImageview;
 @property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *backImageView;
+- (IBAction)rankingButtonClicked:(id)sender;
 
 @end
 @implementation HomeworkTypeCollctionCell
@@ -94,9 +94,11 @@
     }
 }
 
--(void)setHomeWorkRankingName:(NSString *)homeWorkRankingName{
-    _homeWorkRankingName = homeWorkRankingName;
-    self.rankingLabel.text = homeWorkRankingName;
-}
 #pragma mark --
+
+- (IBAction)rankingButtonClicked:(id)sender {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(homeworkTypeCollctionCell:rankingButtonClickedAtIndexPath:)]) {
+        [self.delegate homeworkTypeCollctionCell:self rankingButtonClickedAtIndexPath:self.path];
+    }
+}
 @end
