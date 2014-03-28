@@ -54,10 +54,10 @@
 @property (nonatomic, strong) IBOutlet ComtomTxt *textViewFirst;
 @property (nonatomic, strong) IBOutlet UILabel *textCountLabel;
 @property (nonatomic, assign) int first;
-
+@property (nonatomic, assign) BOOL isLoading;//上拉加载
 
 @property (nonatomic, strong) UIActivityIndicatorView *indicView;
-@property (nonatomic, assign) BOOL isReloading;
+@property (nonatomic, assign) BOOL isReloading;//下拉刷新
 
 
 @end

@@ -8,8 +8,8 @@
 
 #import "LogInViewController.h"
 
-#define AppId @"101036106"
-#define Appkey @"be777eef6e2140ab8f4a729834234579"
+#define AppId @"101049069"
+#define Appkey @"5d1b7abdebfe75235ff57ffd6d4edb9d"
 
 @interface LogInViewController ()
 
@@ -73,10 +73,10 @@
 }
 #pragma mark - 登录
 -(IBAction)logWithQQ:(id)sender {
-    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+    if (self.appDel.isReachable==NO) {
         [Utility errorAlert:@"暂无网络!"];
     }else {
-        NSArray* permissions = [NSArray arrayWithObjects:kOPEN_PERMISSION_GET_SIMPLE_USER_INFO,nil];
+        NSArray* permissions = [NSArray arrayWithObjects:kOPEN_PERMISSION_GET_USER_INFO,nil];
         [_tencentOAuth authorize:permissions inSafari:NO];
     }
 }
@@ -243,6 +243,8 @@
                 
                 AppDelegate *appDel = [AppDelegate shareIntance];
                 [appDel showRootView];
+                
+                [_tencentOAuth logout:self];
             }else {
                 self.logView.hidden = YES;
                 self.detailView.hidden = NO;

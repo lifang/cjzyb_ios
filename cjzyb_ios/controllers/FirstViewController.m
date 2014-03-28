@@ -66,7 +66,7 @@
     [super viewDidLoad];
     [self.firstTable registerClass:[FirstViewHeader class] forHeaderFooterViewReuseIdentifier:FIRST_HEADER_IDENTIFIER];
 
-    self.isReloading = NO;
+    self.isReloading = NO;self.isLoading=NO;
     
     [self textBarInit];
     self.first = 0;
@@ -385,7 +385,8 @@
 //分页加载获取主消息
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView.contentOffset.y > 0) {
-        if (scrollView.contentOffset.y + self.firstTable.frame.size.height >= scrollView.contentSize.height) {
+        if (scrollView.contentOffset.y + self.firstTable.frame.size.height >= scrollView.contentSize.height  && self.isLoading==NO) {
+            self.isLoading=YES;
             MessageObject *message = (MessageObject *)[self.firstArray lastObject];
             if (message.pageCountHeader>message.pageHeader) {
                 [self initFooterView];
@@ -828,6 +829,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             self.firstTable.tableFooterView = nil;
+            self.isLoading=NO;
             //消息
             NSDictionary *messages = [result objectForKey:@"microposts"];
             NSArray *array = [messages objectForKey:@"details_microposts"];

@@ -21,10 +21,8 @@
 		0E5D1C7618C99F19008A13F2 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5D1C7418C99F19008A13F2 /* TencentOpenAPI.framework */; };
 		0E5D1C7A18C99F3A008A13F2 /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5D1C7818C99F3A008A13F2 /* LogInViewController.m */; };
 		0E5D1C7B18C99F3A008A13F2 /* LogInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D1C7918C99F3A008A13F2 /* LogInViewController.xib */; };
-		0E5D1C7D18C99FA7008A13F2 /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5D1C7C18C99FA7008A13F2 /* libc++.dylib */; };
 		0E5D1C7F18C99FAE008A13F2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5D1C7E18C99FAE008A13F2 /* Security.framework */; };
 		0E5D1C8118C99FBD008A13F2 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5D1C8018C99FBD008A13F2 /* CoreTelephony.framework */; };
-		0E5D1C8318C99FCB008A13F2 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5D1C8218C99FCB008A13F2 /* libiconv.dylib */; };
 		0E5D1C8518C9A0FE008A13F2 /* logIn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D1C8418C9A0FE008A13F2 /* logIn@2x.png */; };
 		0E5D1C8718C9A13C008A13F2 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D1C8618C9A13C008A13F2 /* logo@2x.png */; };
 		0E5D1C8918C9A18F008A13F2 /* QQLogIn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5D1C8818C9A18F008A13F2 /* QQLogIn@2x.png */; };
@@ -149,6 +147,8 @@
 		0EEF4C2B18C5C0490058606A /* SendMessageInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C2A18C5C0490058606A /* SendMessageInterface.m */; };
 		0EEF4C2E18C5C6120058606A /* UserObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C2D18C5C6120058606A /* UserObject.m */; };
 		0EEF4C3118C5C8F00058606A /* ClassObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4C3018C5C8F00058606A /* ClassObject.m */; };
+		0EFA490118E5886100E6C1A6 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFA490018E5886100E6C1A6 /* libstdc++.dylib */; };
+		0EFA490318E5886800E6C1A6 /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFA490218E5886800E6C1A6 /* libz.1.1.3.dylib */; };
 		160A4D4218CBE09D0020848C /* SelectingChallengeOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 160A4D4118CBE09D0020848C /* SelectingChallengeOptionCell.m */; };
 		1802DC3318C01E4A0016F110 /* LHLTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3218C01E4A0016F110 /* LHLTextView.m */; };
 		1802DC3818C065320016F110 /* NotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1802DC3718C065320016F110 /* NotificationObject.m */; };
@@ -306,7 +306,6 @@
 		6329552818BC8AA700F2B78D /* ASIS3Request.m in Sources */ = {isa = PBXBuildFile; fileRef = 6329550D18BC8AA700F2B78D /* ASIS3Request.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		6329552918BC8AA700F2B78D /* ASIS3ServiceRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6329550F18BC8AA700F2B78D /* ASIS3ServiceRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		6329552B18BC8B6A00F2B78D /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329552A18BC8B6A00F2B78D /* MobileCoreServices.framework */; };
-		6329552D18BC8B7D00F2B78D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329552C18BC8B7D00F2B78D /* libz.dylib */; };
 		6329552F18BC8B9300F2B78D /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329552E18BC8B9300F2B78D /* libxml2.dylib */; };
 		6329553118BC8CD700F2B78D /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329553018BC8CD700F2B78D /* libsqlite3.dylib */; };
 		6329553E18BC8D7C00F2B78D /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6329553418BC8D7C00F2B78D /* FMDatabase.m */; };
@@ -425,10 +424,8 @@
 		0E5D1C7718C99F3A008A13F2 /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
 		0E5D1C7818C99F3A008A13F2 /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
 		0E5D1C7918C99F3A008A13F2 /* LogInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogInViewController.xib; sourceTree = "<group>"; };
-		0E5D1C7C18C99FA7008A13F2 /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
 		0E5D1C7E18C99FAE008A13F2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0E5D1C8018C99FBD008A13F2 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		0E5D1C8218C99FCB008A13F2 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		0E5D1C8418C9A0FE008A13F2 /* logIn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logIn@2x.png"; sourceTree = "<group>"; };
 		0E5D1C8618C9A13C008A13F2 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		0E5D1C8818C9A18F008A13F2 /* QQLogIn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QQLogIn@2x.png"; sourceTree = "<group>"; };
@@ -615,6 +612,8 @@
 		0EEF4C2D18C5C6120058606A /* UserObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserObject.m; sourceTree = "<group>"; };
 		0EEF4C2F18C5C8F00058606A /* ClassObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClassObject.h; sourceTree = "<group>"; };
 		0EEF4C3018C5C8F00058606A /* ClassObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClassObject.m; sourceTree = "<group>"; };
+		0EFA490018E5886100E6C1A6 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
+		0EFA490218E5886800E6C1A6 /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = usr/lib/libz.1.1.3.dylib; sourceTree = SDKROOT; };
 		160A4D4018CBE09D0020848C /* SelectingChallengeOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectingChallengeOptionCell.h; sourceTree = "<group>"; };
 		160A4D4118CBE09D0020848C /* SelectingChallengeOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectingChallengeOptionCell.m; sourceTree = "<group>"; };
 		1802DC3118C01E4A0016F110 /* LHLTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLTextView.h; sourceTree = "<group>"; };
@@ -844,7 +843,6 @@
 		6329550E18BC8AA700F2B78D /* ASIS3ServiceRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIS3ServiceRequest.h; sourceTree = "<group>"; };
 		6329550F18BC8AA700F2B78D /* ASIS3ServiceRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIS3ServiceRequest.m; sourceTree = "<group>"; };
 		6329552A18BC8B6A00F2B78D /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		6329552C18BC8B7D00F2B78D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		6329552E18BC8B9300F2B78D /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		6329553018BC8CD700F2B78D /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		6329553318BC8D7C00F2B78D /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
@@ -1009,12 +1007,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EFA490318E5886800E6C1A6 /* libz.1.1.3.dylib in Frameworks */,
+				0EFA490118E5886100E6C1A6 /* libstdc++.dylib in Frameworks */,
 				0EAABD6218CEA35900CD2DE7 /* MediaPlayer.framework in Frameworks */,
-				0E5D1C8318C99FCB008A13F2 /* libiconv.dylib in Frameworks */,
 				0E5D1C8118C99FBD008A13F2 /* CoreTelephony.framework in Frameworks */,
 				0E5D1C7F18C99FAE008A13F2 /* Security.framework in Frameworks */,
 				0E97C9DA18E2BA7200890F60 /* libPushSDK.a in Frameworks */,
-				0E5D1C7D18C99FA7008A13F2 /* libc++.dylib in Frameworks */,
 				63B8D26C18C84C7C004141E9 /* Foundation.framework in Frameworks */,
 				6334F29418C6BA6500515A3F /* AVFoundation.framework in Frameworks */,
 				6334F29218C6BA4900515A3F /* AudioToolbox.framework in Frameworks */,
@@ -1022,7 +1020,6 @@
 				636CF4EB18BDD1030085C28E /* QuartzCore.framework in Frameworks */,
 				6329553118BC8CD700F2B78D /* libsqlite3.dylib in Frameworks */,
 				6329552F18BC8B9300F2B78D /* libxml2.dylib in Frameworks */,
-				6329552D18BC8B7D00F2B78D /* libz.dylib in Frameworks */,
 				6329552B18BC8B6A00F2B78D /* MobileCoreServices.framework in Frameworks */,
 				632954D118BC8A6000F2B78D /* SystemConfiguration.framework in Frameworks */,
 				632954CF18BC8A2C00F2B78D /* CFNetwork.framework in Frameworks */,
@@ -1453,11 +1450,11 @@
 		6329549018BC875800F2B78D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0EFA490218E5886800E6C1A6 /* libz.1.1.3.dylib */,
+				0EFA490018E5886100E6C1A6 /* libstdc++.dylib */,
 				0EAABD6118CEA35900CD2DE7 /* MediaPlayer.framework */,
-				0E5D1C8218C99FCB008A13F2 /* libiconv.dylib */,
 				0E5D1C8018C99FBD008A13F2 /* CoreTelephony.framework */,
 				0E5D1C7E18C99FAE008A13F2 /* Security.framework */,
-				0E5D1C7C18C99FA7008A13F2 /* libc++.dylib */,
 				0E5D1C7318C99F19008A13F2 /* TencentOpenApi_IOS_Bundle.bundle */,
 				0E5D1C7418C99F19008A13F2 /* TencentOpenAPI.framework */,
 				6334F29318C6BA6500515A3F /* AVFoundation.framework */,
@@ -1465,7 +1462,6 @@
 				636CF4EA18BDD1030085C28E /* QuartzCore.framework */,
 				6329553018BC8CD700F2B78D /* libsqlite3.dylib */,
 				6329552E18BC8B9300F2B78D /* libxml2.dylib */,
-				6329552C18BC8B7D00F2B78D /* libz.dylib */,
 				6329552A18BC8B6A00F2B78D /* MobileCoreServices.framework */,
 				632954D018BC8A6000F2B78D /* SystemConfiguration.framework */,
 				632954CE18BC8A2C00F2B78D /* CFNetwork.framework */,

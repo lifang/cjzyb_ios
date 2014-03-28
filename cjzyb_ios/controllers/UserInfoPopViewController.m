@@ -122,9 +122,10 @@
 - (IBAction)modifyUserNameButtonClicked:(id)sender {
     __weak UserInfoPopViewController *weakSelf = self;
     DataService *data = [DataService sharedService];
+    AppDelegate *appDel = [AppDelegate shareIntance];
     
     [ModelTypeViewController presentTypeViewWithTipString:@"请输入新名称：" withFinishedInput:^(NSString *inputString) {
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        [MBProgressHUD showHUDAddedTo:appDel.window animated:YES];
         [UserObjDaoInterface modifyUserNickNameAndHeaderImageWithUserId:data.user.studentId withUserName:data.user.name withUserNickName:inputString withHeaderData:nil withSuccess:^(NSString *msg) {
             UserInfoPopViewController *tempSelf = weakSelf;
             if (tempSelf) {
@@ -133,14 +134,14 @@
                 tempSelf.userNameLabel.text = data.user.nickName;
 //                [tempSelf updateViewContents];
                 [Utility errorAlert:msg];
-                [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+                [MBProgressHUD hideHUDForView:appDel.window animated:YES];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kModifyUserNickNameNotification object:nil];
             }
         } withFailure:^(NSError *error) {
             UserInfoPopViewController *tempSelf = weakSelf;
             if (tempSelf) {
                 [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-                [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
+                [MBProgressHUD hideHUDForView:appDel.window animated:YES];
             }
         }];
     } withCancel:nil];

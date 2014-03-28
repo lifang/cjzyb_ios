@@ -198,7 +198,7 @@
     self.isReachable = YES;
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if ([networkStatus isEqualToString:@"NotReachable"]) {
-            self.isReachable = NO;
+//            self.isReachable = NO;
         }
     }];
     //开启网络状况的监听

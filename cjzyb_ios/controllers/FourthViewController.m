@@ -44,7 +44,7 @@
 {
     [super viewDidLoad];
     self.fourth = 2;
-    self.isReloading = NO;
+    self.isReloading = NO;self.isLoading=NO;
     [self.fourthTable registerClass:[FirstViewHeader class] forHeaderFooterViewReuseIdentifier:FOURTH_HEADER_IDENTIFIER];
     [self textBarInit];
     
@@ -437,7 +437,8 @@
 //分页加载获取主消息
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView.contentOffset.y > 0) {
-        if (scrollView.contentOffset.y + self.fourthTable.frame.size.height >= scrollView.contentSize.height) {
+        if (scrollView.contentOffset.y + self.fourthTable.frame.size.height >= scrollView.contentSize.height  && self.isLoading==NO) {
+            self.isLoading=YES;
             MessageObject *message = (MessageObject *)[self.fourthArray lastObject];
             if (message.pageCountHeader>message.pageHeader) {
                 [self initFooterView];
@@ -850,9 +851,9 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
+            self.isLoading=NO;
             NSArray *array = [result objectForKey:@"microposts"];
             if (array.count>0) {
-                
                 if (self.isReloading == YES) {
                     self.fourthArray = nil;
                     self.isReloading = NO;
