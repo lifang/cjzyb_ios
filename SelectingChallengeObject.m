@@ -11,10 +11,14 @@
 @implementation SelectingChallengeObject
 +(NSArray *)parseSelectingChallengeFromQuestion{
     NSMutableArray *resultArray = [NSMutableArray array];
-    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-    //把path拼成真实文件路径
+//    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+//    //把path拼成真实文件路径
+//    
+//    path = [[NSBundle mainBundle] pathForResource:@"questions_lastest" ofType:@"js"]; //测试
     
-    path = [[NSBundle mainBundle] pathForResource:@"questions_lastest" ofType:@"js"]; //测试
+    NSString *path = [Utility returnPath];
+    path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate]; //日期对应的文件夹(task文件夹)
+    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"questions.json"]];
     
     NSData *data = [NSData dataWithContentsOfFile:path];
     if (!data) {

@@ -11,16 +11,21 @@
 @implementation TenSecChallengeObject
 + (NSArray *)parseTenSecQuestionsFromFile{
     NSMutableArray *resultArray = [NSMutableArray array];//返回值
-    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-    //把path拼成真实文件路径
+//    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+//    //把path拼成真实文件路径
+//    
+//    path = [[NSBundle mainBundle] pathForResource:@"questions_lastest" ofType:@"js"]; //测试
     
-    path = [[NSBundle mainBundle] pathForResource:@"questions_lastest" ofType:@"js"]; //测试
-    
+    NSString *path = [Utility returnPath];
+    path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate]; //日期对应的文件夹(task文件夹)
+    path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"questions.json"]];
     NSData *data = [NSData dataWithContentsOfFile:path];
     if (!data) {
         [Utility errorAlert:@"获取question文件失败!"];
+        return nil;
     }else{
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+        NSError *error;
+        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:&error];
         if (!dic || ![dic objectForKey:@"time_limit"]) {
             [Utility errorAlert:@"文件格式错误!"];
             return nil;
@@ -31,7 +36,7 @@
         }else{
             NSString *timeLimit = [dicc objectForKey:@"specified_time"];
             NSArray *questions = [dicc objectForKey:@"questions"];
-            NSDictionary *bigQuestion = questions[0];  //大题
+            NSDictionary *bigQuestion = questions[0];  //大题,十速挑战只有一道大题
             if (!(bigQuestion && [bigQuestion objectForKey:@"branch_questions"])) {
                 [Utility errorAlert:@"没有题目!"];
             }else{

@@ -370,7 +370,6 @@
 		63B81C5018CF05F900004745 /* HomeworkContainerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63B81C4E18CF05F900004745 /* HomeworkContainerController.xib */; };
 		63B8D26C18C84C7C004141E9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549118BC875800F2B78D /* Foundation.framework */; };
 		63B8D27318C860B6004141E9 /* CarnetResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B8D27118C860B6004141E9 /* CarnetResultViewController.m */; };
-		63B8D27418C860B6004141E9 /* CarnetResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 63B8D27218C860B6004141E9 /* CarnetResultViewController.xib */; };
 		63B8D28118C87FA0004141E9 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B8D28018C87FA0004141E9 /* Base64.m */; };
 		63B8D28418C87FAF004141E9 /* GoogleTTSAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 63B8D28318C87FAF004141E9 /* GoogleTTSAPI.m */; };
 		63CBCC1B18D2FA90006F7C3D /* UserObjDaoInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 63CBCC1A18D2FA90006F7C3D /* UserObjDaoInterface.m */; };
@@ -1422,6 +1421,7 @@
 				6329548F18BC875800F2B78D /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		6329548F18BC875800F2B78D /* Products */ = {
 			isa = PBXGroup;
@@ -2286,7 +2286,6 @@
 				0E2B517D18DC27110056859D /* falseMusic.wav in Resources */,
 				0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */,
 				0E9265A018BDE51F003ADEC3 /* focusBtn@2x.png in Resources */,
-				63B8D27418C860B6004141E9 /* CarnetResultViewController.xib in Resources */,
 				630DBDD918D15936009DA0EB /* userGroupItem@2x.png in Resources */,
 				0E92657918BDACDD003ADEC3 /* first_active@2x.png in Resources */,
 				630DBDDD18D1596F009DA0EB /* navigationBarLeftItem@2x.png in Resources */,
@@ -2308,7 +2307,6 @@
 				0E9D68BC18CD6C5500EACFA3 /* card_searchText@2x.png in Resources */,
 				0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */,
 				0E9265A018BDE51F003ADEC3 /* focusBtn@2x.png in Resources */,
-				63B8D27418C860B6004141E9 /* CarnetResultViewController.xib in Resources */,
 				0E92657918BDACDD003ADEC3 /* first_active@2x.png in Resources */,
 				0E92657E18BDACDD003ADEC3 /* third@2x.png in Resources */,
 				0E97C9DC18E2BABB00890F60 /* PushConfig.plist in Resources */,
@@ -2676,7 +2674,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2706,9 +2704,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
+				VALID_ARCHS = "armv7 armv7s armv64";
 			};
 			name = Debug;
 		};
@@ -2716,7 +2715,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2743,6 +2742,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 armv7s armv64";
 			};
 			name = Release;
 		};
