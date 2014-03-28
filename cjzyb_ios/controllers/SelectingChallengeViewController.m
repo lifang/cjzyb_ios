@@ -705,14 +705,14 @@
     //播放声音
     if (answerRatio) {
         [AppDelegate shareIntance].avPlayer = nil;
-        [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"right_sound" ofType:@"mp3"]] error:nil];
+        [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"trueMusic" ofType:@"wav"]] error:nil];
         [AppDelegate shareIntance].avPlayer.volume = 1;
         if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
             [[AppDelegate shareIntance].avPlayer play];
         }
     }else{
         [AppDelegate shareIntance].avPlayer = nil;
-        [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"right_sound" ofType:@"mp3"]] error:nil];
+        [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"falseMusic" ofType:@"wav"]] error:nil];
         [AppDelegate shareIntance].avPlayer.volume = 1;
         if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
             [[AppDelegate shareIntance].avPlayer play];

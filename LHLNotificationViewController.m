@@ -238,8 +238,11 @@
 
 #pragma mark -- action
 
-//处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
+//TODO: 此格式会不会改?  处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
 -(NSString *)handleApiResponseTimeString:(NSString *)str{
+    if (![str isKindOfClass:[NSString class]]) {
+        return @"";
+    }
     NSArray *array = [str componentsSeparatedByString:@"T"];
     NSString *date = [array firstObject];
     NSString *time = [array lastObject];
@@ -277,7 +280,7 @@
     header.backgroundColor = [UIColor clearColor];
     [header addSubview:self.indicView];
     UILabel *loadLab = [[UILabel alloc]initWithFrame:CGRectMake(self.indicView.frame.origin.x+30, 10, 200, 30)];
-    loadLab.text = @"正在努力加载中...";
+    loadLab.text = @"正在刷新中...";
     [header addSubview:loadLab];
     self.tableView.tableHeaderView = header;
 }
@@ -288,7 +291,8 @@
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
             //请求系统通知
-            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
+//            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
+            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",@"1",@"1",page];
             NSURL *url = [NSURL URLWithString:str];
             NSURLRequest *request = [NSURLRequest requestWithURL:url];
             [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
@@ -334,11 +338,12 @@
 }
 
 //请求接口,获取回复通知
--(void)requestMyNoticeWithUserID:(NSString *)studentID andClassID:(NSString *)classID andPage:(NSString *)page{
+-(void)requestMyNoticeWithUserID:(NSString *)userID andClassID:(NSString *)classID andPage:(NSString *)page{
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
             //请求回复通知
-            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
+//            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",userID,classID,page];
+            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",@"115",@"83",page];
             NSURL *url1 = [NSURL URLWithString:str1];
             NSURLRequest *request1 = [NSURLRequest requestWithURL:url1];
             [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];

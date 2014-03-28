@@ -230,7 +230,11 @@
             }
         }
     }
-    [self showRootView];
+    
+    LHLNotificationViewController *vc = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
+    self.window.rootViewController = vc;
+    [self.window makeKeyAndVisible];
+//    [self showRootView];
 
     return YES;
 }
