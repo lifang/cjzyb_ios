@@ -133,6 +133,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//    [DataService sharedService].user = [[UserObject alloc] init];
+//    [DataService sharedService].theClass = [[ClassObject alloc] init];
+//    [DataService sharedService].user.userId = @"68";
+//    [DataService sharedService].user.studentId = @"68";
+//    [DataService sharedService].theClass.classId = @"42";
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.window.backgroundColor = [UIColor whiteColor];

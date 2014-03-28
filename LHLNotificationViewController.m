@@ -317,8 +317,6 @@
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                     if (self.displayCategory == NotificationDisplayCategoryDefault) {
                         [self.tableView reloadData];
-//                        [self.refreshFooterView endRefreshing];
-//                        [self.refreshHeaderView endRefreshing];
                     }
                 });
             } withFailure:^(NSError *error) {
@@ -326,8 +324,6 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                 });
-//                [self.refreshFooterView endRefreshing];
-//                [self.refreshHeaderView endRefreshing];
                 if (self.displayCategory == NotificationDisplayCategoryDefault) {
                     NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                     [Utility errorAlert:errorMsg];
