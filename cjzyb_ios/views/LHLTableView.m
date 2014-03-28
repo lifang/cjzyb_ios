@@ -46,15 +46,19 @@
     }
     double distanceBetweenStartAndEnd = self.startPoint.x - self.endPoint.x;
     NSLog(@"%f",distanceBetweenStartAndEnd);
-    if (distanceBetweenStartAndEnd >= 100.0) {  //起点在终点右边,表示向左划
+    if (distanceBetweenStartAndEnd >= 80.0) {  //起点在终点右边,表示向左划
         if (self.delegateCustom && [self.delegateCustom respondsToSelector:@selector(dragMethod:)]) {
             [self.delegateCustom dragMethod:YES];
         }
-    }else if (distanceBetweenStartAndEnd <= -100.0){
+    }else if (distanceBetweenStartAndEnd <= -80.0){
         if (self.delegateCustom && [self.delegateCustom respondsToSelector:@selector(dragMethod:)]) {
             [self.delegateCustom dragMethod:NO];
         }
     }
+}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
+    
 }
 
 @end

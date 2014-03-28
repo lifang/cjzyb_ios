@@ -64,16 +64,6 @@
     }
 }
 
-//#pragma mark TextViewDelegate
-//
-//-(void)textViewDidChange:(UITextView *)textView{
-//    self.cellHeight = self.textView.contentSize.height + 28 + 20;
-//    [self setNeedsUpdateConstraints];
-//    if(self.delegate && [self.delegate respondsToSelector:@selector(refreshHeightForCell:)]){
-//        [self.delegate refreshHeightForCell:self];
-//    }
-//}
-
 
 - (void)coverButtonClicked:(id)sender {
     _isEditing = !_isEditing;

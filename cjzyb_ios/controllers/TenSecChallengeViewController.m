@@ -33,7 +33,8 @@
 @property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
 @property (strong,nonatomic) NSString *answerStatus;    //文件中记载的完成状态
 @property (assign,nonatomic) BOOL isReDoingChallenge; //是否为重新挑战
-@property (strong,nonatomic) NSMutableDictionary *reChallengeTimesLeft; //剩余挑战数
+//@property (strong,nonatomic) NSMutableDictionary *reChallengeTimesLeft; //剩余挑战数
+@property (strong,nonatomic) NSUserDefaults *userDefaults;
 @end
 
 @implementation TenSecChallengeViewController
@@ -53,19 +54,15 @@
     [super viewDidLoad];
     [self setupViews];
     
-    //载入question文件
-    self.questionArray = [NSMutableArray arrayWithArray:[TenSecChallengeObject parseTenSecQuestionsFromFile]];
-    
-    //载入answer文件
-    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit" andDate:[DataService sharedService].taskObj.taskStartDate]];
-    
+    [self setupData];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     
 }
 
-- (void)setupViews{  //控件初始设置
+///控件初始设置
+- (void)setupViews{
     self.upperOptionLabel.layer.cornerRadius = 8.0;
     
     [self.upperButton addTarget:self action:@selector(upperClicked:) forControlEvents:UIControlEventTouchDown];
@@ -81,8 +78,22 @@
     self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
 }
 
+///准备数据
+- (void)setupData{
+    //载入question文件
+    self.questionArray = [NSMutableArray arrayWithArray:[TenSecChallengeObject parseTenSecQuestionsFromFile]];
+    
+    //载入answer文件
+    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit" andDate:[DataService sharedService].taskObj.taskStartDate]];
+    
+    //重新挑战次数
+    if (![self.userDefaults stringForKey:@"reChallengeTimesLeft"]) {
+        [self.userDefaults setObject:@"3" forKey:@"reChallengeTimesLeft"];
+    }
+}
+
 #pragma mark -- 挑战的生命周期
-//判断本界面的行为方式,并做初始化
+///判断本界面的行为方式,并做初始化
 - (void)startChallenge{
     if (self.isViewingHistory) {  //浏览历史
         self.currentNO = 0;
@@ -102,16 +113,14 @@
             }
         }
         parentVC.rotioLabel.text = [NSString stringWithFormat:@"%d%@",ratio,@"%"];
+        
         NSInteger second = (NSInteger)parentVC.spendSecond;
         NSInteger minite = second / 60;
         second = second % 60;
         parentVC.timeLabel.text = [NSString stringWithFormat:@"%d'%d\"",minite,second];
     }else{
         if ([self.answerStatus isEqualToString:@"1"]) { //重新做题  ,此时应判断是否有重新做题的剩余次数
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-            NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
-            NSString *timesLeft = [self.reChallengeTimesLeft objectForKey:nowDate];
+            NSString * timesLeft = [self.userDefaults stringForKey:@"reChallengeTimesLeft"];
             if (timesLeft.integerValue < 1) {
                 [Utility errorAlert:@"今日挑战次数已经用完"];
                 self.upperButton.enabled = NO;
@@ -119,18 +128,16 @@
                 [parentVC stopTimer];
                 return;
             }else{
-                [self.reChallengeTimesLeft setObject:[NSString stringWithFormat:@"%d",timesLeft.integerValue - 1] forKey:nowDate];
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *path = [paths firstObject];
-                path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
-                NSString *filePath = [NSString stringWithFormat:@"%@/tenSecChallenge.plist",path];
-                [self.reChallengeTimesLeft writeToFile:filePath atomically:YES];
+                [self.userDefaults setObject:[NSString stringWithFormat:@"%d",timesLeft.integerValue - 1] forKey:@"reChallengeTimesLeft"];
+                [self.userDefaults synchronize];
             }
             parentVC.spendSecond = 0;
             self.isReDoingChallenge = YES;
             self.currentNO = 0;
             self.answerArray = [NSMutableArray array];
         }else{ //继续做题
+            [self.userDefaults setObject:@"3" forKey:@"reChallengeTimesLeft"];
+            [self.userDefaults synchronize];
             if (self.lastTimeCurrentNO > 1) {
                 self.currentNO = self.lastTimeCurrentNO;
             }
@@ -176,19 +183,11 @@
         NSInteger percentOfRightAnswers = numberOfRightAnswers * 10; //正确率
         self.resultView.ratio = percentOfRightAnswers;
         
-        self.resultView.timeCount = parentVC.spendSecond;
+        self.resultView.timeCount = (NSInteger)(parentVC.spendSecond);
         
         TenSecChallengeObject *question = [self.questionArray firstObject];
         
         self.resultView.timeLimit = question.tenTimeLimit.integerValue;
-        
-//        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-//        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-//        NSDate *homeworkFinishTime = [formatter dateFromString:self.homeworkFinishTime];
-//        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-//        NSUInteger unitFlag = NSSecondCalendarUnit;
-//        NSDateComponents *comps = [gregorian components:unitFlag fromDate:[NSDate date] toDate:homeworkFinishTime options:0];
-//        NSInteger seconds = [comps second];
         
         if ([Utility compareTime]) {
             self.resultView.isEarly = YES;
@@ -196,10 +195,7 @@
             self.resultView.isEarly = NO;
         }
         
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-        NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
-        self.resultView.challengeTimesLeft = [self.reChallengeTimesLeft objectForKey:nowDate];
+        self.resultView.challengeTimesLeft = [NSString stringWithFormat:@"%@",[self.userDefaults stringForKey:@"reChallengeTimesLeft"]];
         
         [self.resultView initView];
     }else{
@@ -225,7 +221,6 @@
         [questionDic setObject:anyQuestion.tenBigID forKey:@"id"];  //每个question中都含有大题号
             NSMutableArray *branches = [NSMutableArray array];
             for (int i = 0; i < self.answerArray.count; i ++) {
-//                TenSecChallengeObject *question = self.questionArray[i];
                 OrdinaryAnswerObject *answer = self.answerArray[i];
                 NSMutableDictionary *branchDic = [[NSMutableDictionary alloc] init];
                 [branchDic setObject:answer.answerID forKey:@"id"];
@@ -244,9 +239,9 @@
 }
 
 #pragma mark --按钮响应
-- (void)cancelButtonClicked:(id)sender{
-    
-}
+//- (void)cancelButtonClicked:(id)sender{
+//    
+//}
 
 - (void)upperClicked:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -355,7 +350,9 @@
 
 -(void)parseAnswerDic:(NSMutableDictionary *)dicc{
     self.answerArray = [NSMutableArray array];
-    
+    if (!dicc || ![dicc objectForKey:@"status"]) {
+        return;
+    }
     self.answerStatus = [dicc objectForKey:@"status"];  //解析状态,已答题时间,题号,答案
     parentVC.spendSecond = [(NSString *)[dicc objectForKey:@"use_time"] longLongValue];
     self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"branch_item"] integerValue];
@@ -448,35 +445,42 @@
     }
 }
 
-//把某个view向上移动97
+///把某个view向上移动97
 - (void)handleAnyView:(UIView *)view{
     view.center = (CGPoint){view.center.x,view.center.y - 97};
 }
 
 #pragma mark -- property
-//从文件中读取字典,否则新建一个包含字符串@"3"的值
-- (NSMutableDictionary *)reChallengeTimesLeft{
-    if (!_reChallengeTimesLeft) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *path = [paths firstObject];
-        path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
-        NSFileManager *manager = [NSFileManager defaultManager];
-        if (![manager fileExistsAtPath:path]) {
-            [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
-        }
-        NSString *filePath = [NSString stringWithFormat:@"%@/tenSecChallenge.plist",path];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-        NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
-        _reChallengeTimesLeft = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
-        //如果无文件,或文件中无今日记录,则新建dic
-        if (!_reChallengeTimesLeft || [_reChallengeTimesLeft objectForKey:nowDate] == nil) {
-            _reChallengeTimesLeft = [NSMutableDictionary dictionary];
-            [_reChallengeTimesLeft setObject:@"3" forKey:nowDate];
-        }
+- (NSUserDefaults *)userDefaults{
+    if (!_userDefaults) {
+        _userDefaults = [NSUserDefaults standardUserDefaults];
     }
-    return _reChallengeTimesLeft;
+    return _userDefaults;
 }
+
+////从文件中读取字典,否则新建一个包含字符串@"3"的值
+//- (NSMutableDictionary *)reChallengeTimesLeft{
+//    if (!_reChallengeTimesLeft) {
+//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//        NSString *path = [paths firstObject];
+//        path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
+//        NSFileManager *manager = [NSFileManager defaultManager];
+//        if (![manager fileExistsAtPath:path]) {
+//            [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+//        }
+//        NSString *filePath = [NSString stringWithFormat:@"%@/tenSecChallenge.plist",path];
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+//        NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
+//        _reChallengeTimesLeft = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
+//        //如果无文件,或文件中无今日记录,则新建dic
+//        if (!_reChallengeTimesLeft || [_reChallengeTimesLeft objectForKey:nowDate] == nil) {
+//            _reChallengeTimesLeft = [NSMutableDictionary dictionary];
+//            [_reChallengeTimesLeft setObject:@"3" forKey:nowDate];
+//        }
+//    }
+//    return _reChallengeTimesLeft;
+//}
 
 - (NSArray *)questionNumberImages{
     if (!_questionNumberImages || _questionNumberImages.count < 1) {
@@ -504,6 +508,7 @@
         [self handleLabelFont:self.lowerOptionLabel];
         self.questionLabel.text = currentQuestion.tenQuestionContent;
         [self handleLabelFont:self.questionLabel];
+        
         if (self.isViewingHistory) {
             self.upperButton.enabled = NO;
             self.lowerButton.enabled = NO;
@@ -525,7 +530,8 @@
 - (void)resultViewCommitButtonClicked{
     [self.resultView removeFromSuperview];
     self.resultView = nil;
-    [parentVC.navigationController popViewControllerAnimated:YES];
+//    [parentVC.navigationController popViewControllerAnimated:YES];
+    [parentVC quitButtonClicked:parentVC.quitHomeworkButton];
 }
 
 - (void)resultViewRestartButtonClicked{

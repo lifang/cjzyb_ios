@@ -151,6 +151,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//    [DataService sharedService].user = [[UserObject alloc] init];
+//    [DataService sharedService].theClass = [[ClassObject alloc] init];
+//    [DataService sharedService].user.userId = @"68";
+//    [DataService sharedService].user.studentId = @"68";
+//    [DataService sharedService].theClass.classId = @"42";
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.window.backgroundColor = [UIColor whiteColor];
@@ -222,32 +228,6 @@
         }
     }
     [self showRootView];
-    
-//    NSDictionary *classDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-//    [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
-//    filename = [path stringByAppendingPathComponent:@"student.plist"];
-//    NSDictionary *userDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-//    [DataService sharedService].user = [[UserObject alloc] init];
-//    [DataService sharedService].user = [UserObject userFromDictionary:userDic];
-//    [DataService sharedService].user.userId = @"68";
-//     [DataService sharedService].user.studentId = @"68";
-//    [DataService sharedService].user.nickName = @"sss";
-//    
-//    [DataService sharedService].theClass = [[ClassObject alloc] init];;
-//    [DataService sharedService].theClass.classId = @"42";
-//    [DataService sharedService].theClass.name =@"牛逼大学";
-//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-//    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-//    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
-//    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-//    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
-//    
-//    tabBarController.currentPage = self.notification_type;
-//    
-//    self.window.rootViewController = tabBarController;
-//    [self.window makeKeyAndVisible];
-
     return YES;
 }
 

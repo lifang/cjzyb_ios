@@ -32,14 +32,15 @@
 @property (strong,nonatomic) LHLGetSysNoticeInterface *getSysNoticeInterface;
 @property (strong,nonatomic) LHLDeleteMyNoticeInterface *deleteMyNoticeInterface;
 @property (strong,nonatomic) LHLDeleteSysNoticeInterface *deleteSysNoticeInterface;
-@property (strong,nonatomic) MJRefreshHeaderView *refreshHeaderView; //下拉刷新
+//@property (strong,nonatomic) MJRefreshHeaderView *refreshHeaderView; //下拉刷新
 //@property (strong,nonatomic) MJRefreshFooterView *refreshFooterView; //下拉加载
 @property (assign,nonatomic) BOOL isRefreshing; //YES刷新,NO分页加载
 @property (strong,nonatomic) NSMutableDictionary *bufferedImageDic; //头像缓冲
+@property (strong,nonatomic) UIActivityIndicatorView *indicView;
 
 @property (strong,nonatomic) NSIndexPath *editingReplyCellIndexPath;//存储正在编辑状态的格子位置
 @property (strong,nonatomic) NSIndexPath *editingNotiCellIndexPath;
-
+@property (assign,nonatomic) BOOL isLoading ;//正在加载某个接口
 @property (strong,nonatomic) id parentVC; //找到DRLeftTabBarVC
 @end
 
@@ -56,6 +57,11 @@
 
 - (void)viewDidLoad
 {
+//    [DataService sharedService].user = [[UserObject alloc] init];
+//    [DataService sharedService].user.userId = @"83";
+//    [DataService sharedService].theClass = [[ClassObject alloc] init];
+//    [DataService sharedService].theClass.classId = @"73";
+    
     [super viewDidLoad];
     
     if ([DataService sharedService].notificationPage == 1) {
@@ -73,11 +79,13 @@
     [self.tableView registerClass:[LHLReplyNotificationCell class] forCellReuseIdentifier:@"LHLReplyNotificationCell"];
     
 //    [self refreshFooterView];
-    [self refreshHeaderView];
+//    [self refreshHeaderView];
     
     [self initData];
     
     [self addNotificationOb];
+    
+    [self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 //获取数据
@@ -200,17 +208,18 @@
     }
 }
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    if (self.tableView.contentOffset.y >= self.tableView.contentSize.height + self.tableView.contentInset.bottom - self.tableView.frame.size.height - 20) {
-        //到达底部,分页加载
-        self.isRefreshing = NO;
-        if (self.displayCategory == NotificationDisplayCategoryDefault) {
-            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
-        }else{
-            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
-        }
-    }
-}
+//-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+//    if (self.tableView.contentOffset.y > self.tableView.contentSize.height + self.tableView.contentInset.bottom - self.tableView.frame.size.height) {
+//        //到达底部,分页加载
+//        self.isRefreshing = NO;
+//        if (self.displayCategory == NotificationDisplayCategoryDefault) {
+//            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
+//        }else{
+//            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
+//        }
+//    }
+//    
+//}
 
 //
 //-(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -229,8 +238,11 @@
 
 #pragma mark -- action
 
-//处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
+//TODO: 此格式会不会改?  处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
 -(NSString *)handleApiResponseTimeString:(NSString *)str{
+    if (![str isKindOfClass:[NSString class]]) {
+        return @"";
+    }
     NSArray *array = [str componentsSeparatedByString:@"T"];
     NSString *date = [array firstObject];
     NSString *time = [array lastObject];
@@ -253,17 +265,40 @@
     }
 }
 
+-(void)initFooterView {
+    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 768, 50)];
+    header.backgroundColor = [UIColor clearColor];
+    [header addSubview:self.indicView];
+    UILabel *loadLab = [[UILabel alloc]initWithFrame:CGRectMake(self.indicView.frame.origin.x+30, 10, 200, 30)];
+    loadLab.text = @"正在努力加载中...";
+    [header addSubview:loadLab];
+    self.tableView.tableFooterView = header;
+}
+
+-(void)initHeaderView {
+    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 768, 50)];
+    header.backgroundColor = [UIColor clearColor];
+    [header addSubview:self.indicView];
+    UILabel *loadLab = [[UILabel alloc]initWithFrame:CGRectMake(self.indicView.frame.origin.x+30, 10, 200, 30)];
+    loadLab.text = @"正在刷新中...";
+    [header addSubview:loadLab];
+    self.tableView.tableHeaderView = header;
+}
+
 #pragma mark -- 请求接口
 //请求接口,获取系统通知
 -(void)requestSysNoticeWithStudentID:(NSString *)studentID andClassID:(NSString *)classID andPage:(NSString *)page{
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
             //请求系统通知
-            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
+//            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
+            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",@"1",@"1",page];
             NSURL *url = [NSURL URLWithString:str];
             NSURLRequest *request = [NSURLRequest requestWithURL:url];
-            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+            [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
+            self.isLoading = YES;
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
+                self.isLoading = NO;
                 self.appDel.isReceiveNotificationSystem = NO;
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
                 if (self.isRefreshing) {
@@ -283,19 +318,16 @@
                     [self.notificationArray addObject:obj];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                     if (self.displayCategory == NotificationDisplayCategoryDefault) {
                         [self.tableView reloadData];
-//                        [self.refreshFooterView endRefreshing];
-                        [self.refreshHeaderView endRefreshing];
                     }
                 });
             } withFailure:^(NSError *error) {
+                self.isLoading = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                 });
-//                [self.refreshFooterView endRefreshing];
-                [self.refreshHeaderView endRefreshing];
                 if (self.displayCategory == NotificationDisplayCategoryDefault) {
                     NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                     [Utility errorAlert:errorMsg];
@@ -306,15 +338,18 @@
 }
 
 //请求接口,获取回复通知
--(void)requestMyNoticeWithUserID:(NSString *)studentID andClassID:(NSString *)classID andPage:(NSString *)page{
+-(void)requestMyNoticeWithUserID:(NSString *)userID andClassID:(NSString *)classID andPage:(NSString *)page{
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
             //请求回复通知
-            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
+//            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",userID,classID,page];
+            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",@"115",@"83",page];
             NSURL *url1 = [NSURL URLWithString:str1];
             NSURLRequest *request1 = [NSURLRequest requestWithURL:url1];
-            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+            [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
+            self.isLoading = YES;
             [Utility requestDataWithRequest:request1 withSuccess:^(NSDictionary *dicData) {
+                self.isLoading = NO;
                 self.appDel.isReceiveNotificationReply = NO;
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
                 if (self.isRefreshing) {
@@ -350,19 +385,20 @@
                     [self.replyNotificationArray addObject:obj];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                     if (self.displayCategory == NotificationDisplayCategoryReply) {
                         [self.tableView reloadData];
 //                        [self.refreshFooterView endRefreshing];
-                        [self.refreshHeaderView endRefreshing];
+//                        [self.refreshHeaderView endRefreshing];
                     }
                 });
             } withFailure:^(NSError *error) {
+                self.isLoading = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                 });
 //                [self.refreshFooterView endRefreshing];
-                [self.refreshHeaderView endRefreshing];
+//                [self.refreshHeaderView endRefreshing];
                 if (self.displayCategory == NotificationDisplayCategoryReply) {
                     NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                     [Utility errorAlert:errorMsg];
@@ -381,11 +417,13 @@
             NSURL *url = [NSURL URLWithString:str];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
             [request setHTTPMethod:@"POST"];
-            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+            [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
+            self.isLoading = YES;
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
+                self.isLoading = NO;
                 [self.notificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
                         self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
@@ -396,8 +434,9 @@
                     [Utility errorAlert:@"删除成功!"];
                 });
             } withFailure:^(NSError *error) {
+                self.isLoading = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                 });
                 NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                 [Utility errorAlert:errorMsg];
@@ -416,11 +455,13 @@
             NSURL *url = [NSURL URLWithString:str];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
             
-            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+            [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
+            self.isLoading = YES;
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
+                self.isLoading = NO;
                 [self.replyNotificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
                         self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
@@ -431,8 +472,9 @@
                     [Utility errorAlert:@"删除成功!"];
                 });
             } withFailure:^(NSError *error) {
+                self.isLoading = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                 });
                 NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                 [Utility errorAlert:errorMsg];
@@ -459,16 +501,16 @@
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
             [request setHTTPMethod:@"POST"];
             
-            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+            [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                     [self replyInputCancelButtonClicked:nil];
                     [Utility errorAlert:@"回复成功!"];
                 });
             } withFailure:^(NSError *error) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+                    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                 });
                 NSString *errorMsg = [error.userInfo objectForKey:@"msg"];
                 [Utility errorAlert:errorMsg];
@@ -478,6 +520,24 @@
 }
 
 #pragma mark -- property
+-(void)setIsLoading:(BOOL)isLoading{
+    //停止请求接口时,隐藏header和footer
+    if (isLoading == NO) {
+        self.tableView.tableHeaderView = nil;
+        self.tableView.tableFooterView = nil;
+    }
+    _isLoading = isLoading;
+}
+
+-(UIActivityIndicatorView *)indicView {
+    if (!_indicView) {
+        _indicView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(269, 10, 30, 30)];
+        _indicView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+        [_indicView startAnimating];
+    }
+    return _indicView;
+}
+
 -(id)parentVC{
     if (!_parentVC) {
         _parentVC = [self parentViewController];
@@ -541,14 +601,14 @@
 }
 
 
--(MJRefreshHeaderView *)refreshHeaderView{
-    if (!_refreshHeaderView) {
-        _refreshHeaderView = [MJRefreshHeaderView header];
-        _refreshHeaderView.scrollView = self.tableView;
-        _refreshHeaderView.delegate = self;
-    }
-    return _refreshHeaderView;
-}
+//-(MJRefreshHeaderView *)refreshHeaderView{
+//    if (!_refreshHeaderView) {
+//        _refreshHeaderView = [MJRefreshHeaderView header];
+//        _refreshHeaderView.scrollView = self.tableView;
+//        _refreshHeaderView.delegate = self;
+//    }
+//    return _refreshHeaderView;
+//}
 
 //-(MJRefreshFooterView *)refreshFooterView{
 //    if (!_refreshFooterView) {
@@ -589,6 +649,39 @@
         _deleteMyNoticeInterface.delegate = self;
     }
     return _deleteMyNoticeInterface;
+}
+
+#pragma mark -- KVO
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    if (self.isLoading) {
+        return;
+    }
+    NSValue *contentOffsetValue = [change objectForKey:@"new"];
+    CGPoint contentOffset;
+    [contentOffsetValue getValue:&contentOffset];
+    if (self.tableView.contentOffset.y >80 && self.tableView.contentOffset.y > self.tableView.contentSize.height + self.tableView.contentInset.bottom - self.tableView.frame.size.height + 80) {
+        //开始分页加载
+        self.isRefreshing = NO;
+        if (self.displayCategory == NotificationDisplayCategoryDefault) {
+            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
+        }else{
+            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
+        }
+        [self initFooterView];
+        DLog(@"开始分页加载...");
+    }else if(self.tableView.contentOffset.y < -80 - self.tableView.contentInset.top ){
+        //开始下拉刷新
+        self.isRefreshing = YES;
+        if (self.displayCategory == NotificationDisplayCategoryDefault) {
+            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+            self.pageOfNotification = 1;
+        }else{
+            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+            self.pageOfReplyNotification = 1;
+        }
+        DLog(@"开始刷新...");
+        [self initHeaderView];
+    }
 }
 
 #pragma mark -- keyBoard相关  ,通知回调等
@@ -813,25 +906,25 @@
 }
 
 #pragma mark -- MJRefreshDelegate
--(void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView{
-    if (self.refreshHeaderView == refreshView) { //刷新
-        self.isRefreshing = YES;
-        if (self.displayCategory == NotificationDisplayCategoryDefault) {
-            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
-            self.pageOfNotification = 1;
-        }else{
-            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
-            self.pageOfReplyNotification = 1;
-        }
-    }else{   //分页加载
-        self.isRefreshing = NO;
-        if (self.displayCategory == NotificationDisplayCategoryDefault) {
-            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
-        }else{
-            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
-        }
-    }
-}
+//-(void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView{
+//    if (self.refreshHeaderView == refreshView) { //刷新
+//        self.isRefreshing = YES;
+//        if (self.displayCategory == NotificationDisplayCategoryDefault) {
+//            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+//            self.pageOfNotification = 1;
+//        }else{
+//            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+//            self.pageOfReplyNotification = 1;
+//        }
+//    }else{   //分页加载
+//        self.isRefreshing = NO;
+//        if (self.displayCategory == NotificationDisplayCategoryDefault) {
+//            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
+//        }else{
+//            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
+//        }
+//    }
+//}
 
 #pragma mark -- getSysNoti Delegate
 -(void)getSysNoticeDidFinished:(NSDictionary *)result{
