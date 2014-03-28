@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "TaskObj.h"
+#import "RankingObject.h"
+#import "HomeworkTypeObj.h"
 /** HomeworkDaoInterface
  *
  * 作业和作业类型管理
@@ -36,7 +38,17 @@
  *
  * @param  userId 当前用户id，classID 用户所在班级
  *
- * @return taskObjArr 任务对象数组
+ * @return RankingObject 任务对象数组
  */
 +(void)searchTaskWithUserId:(NSString*)userId withClassId:(NSString*)classID withSelectedDate:(NSDate*)selectedDate withSuccess:(void(^)(NSArray *taskObjArr))success withError:(void (^)(NSError *error))failure;
+
+
+/**
+ * @brief 获取当前题型排名情况
+ *
+ * @param  taskId 任务id，homeworkTypeId 题型id
+ *
+ * @return taskObjArr 任务对象数组
+ */
++(void)downloadHomeworkRankingWithTaskId:(NSString*)taskId withHomeworkType:(HomeworkType)homeworkType withSuccess:(void(^)(NSArray *rankingObjArr))success withError:(void (^)(NSError *error))failure;
 @end

@@ -23,13 +23,6 @@
     }
     return self;
 }
--(void)uploadCollectionCell{
-    [self.collectionView registerNib:[UINib nibWithNibName:@"HomeworkTypeCollctionCell" bundle:nil] forCellWithReuseIdentifier:@"cell"];
-    [self.flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
-    [self resizeItemSize];
-    [self.collectionView setCollectionViewLayout:self.flowLayout];
-    [self.collectionView reloadData];
-}
 
 -(void)resizeItemSize{
     float itemWidth = CGRectGetWidth(self.view.frame)/3;
@@ -42,10 +35,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.collectionView registerNib:[UINib nibWithNibName:@"HomeworkTypeCollctionCell" bundle:nil] forCellWithReuseIdentifier:@"cell"];
+    [self.collectionView registerNib:[UINib nibWithNibName:@"HomeworkTypeCollctionCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"cell"];
     [self.flowLayout setScrollDirection:UICollectionViewScrollDirectionVertical];
     [self resizeItemSize];
     [self.collectionView setCollectionViewLayout:self.flowLayout];
+    [self.collectionView reloadData];
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -54,6 +48,15 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark HomeworkTypeCollctionCellDelegate
+-(void)homeworkTypeCollctionCell:(HomeworkTypeCollctionCell *)cell rankingButtonClickedAtIndexPath:(NSIndexPath *)path{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(homeworkDailyController:rankingButtonClickedAtIndexPath:)]) {
+        [self.delegate homeworkDailyController:self rankingButtonClickedAtIndexPath:path];
+    }
+}
+#pragma mark --
+
 
 #pragma mark UICollectionViewDelegate
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -69,7 +72,8 @@
     HomeworkTypeObj *obj = [self.taskObj.taskHomeworkTypeArray objectAtIndex:indexPath.item];
     cell.isFinished = obj.homeworkTypeIsFinished;
     cell.homeworkType = obj.homeworkType;
-    cell.homeWorkRankingName = obj.homeworkTypeRanking;
+    cell.path = indexPath;
+    cell.delegate = self;
     return cell;
 }
 
@@ -85,7 +89,7 @@
 #pragma mark property
 -(void)setTaskObj:(TaskObj *)taskObj{
     _taskObj = taskObj;
-//    [self.collectionView reloadData];
+    [self.collectionView reloadData];
 }
 
 #pragma mark --

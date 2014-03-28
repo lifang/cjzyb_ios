@@ -23,6 +23,7 @@
 #import "TenSecChallengeViewController.h"
 
 #import "PreReadingTaskViewController.h"
+
 @implementation AppDelegate
 -(void)loadTrueSound:(NSInteger)index {
     NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"trueMusic.wav"];
@@ -133,11 +134,30 @@
      [self.window makeKeyAndVisible];
 }
 
+
+//TODO:显示作业类型
+-(void)showDailyhomeworkType{
+    
+    TaskObj *task = [[TaskObj alloc] init];
+    NSMutableArray *homeworkType = [NSMutableArray array];
+    for (int i=0; i < 10; i++) {
+        HomeworkTypeObj *type = [[HomeworkTypeObj alloc] init];
+        type.homeworkType = HomeworkType_line;
+        [homeworkType addObject:type];
+    }
+    task.taskHomeworkTypeArray = homeworkType;
+    HomeworkDailyCollectionViewController *controller = [[HomeworkDailyCollectionViewController alloc] initWithNibName:@"HomeworkDailyCollectionViewController" bundle:nil];
+    controller.taskObj = task;
+    self.window.rootViewController = controller;
+     [self.window makeKeyAndVisible];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.window.backgroundColor = [UIColor whiteColor];
+    
     [DataService sharedService].notificationPage=1;
     self.notification_type = 0;
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];

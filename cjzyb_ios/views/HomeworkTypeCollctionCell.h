@@ -12,10 +12,19 @@
  *
  * 作业类型
  */
-
+@protocol HomeworkTypeCollctionCellDelegate;
 @interface HomeworkTypeCollctionCell : UICollectionViewCell
 ///作业任务是否完成
 @property (assign,nonatomic) BOOL isFinished;
+///排名按钮
+@property (weak, nonatomic) IBOutlet UIButton *rankingButton;
 @property (assign,nonatomic) HomeworkType homeworkType;
-@property (strong,nonatomic) NSString *homeWorkRankingName;
+@property (weak,nonatomic) id <HomeworkTypeCollctionCellDelegate> delegate;
+@property (nonatomic,strong) NSIndexPath *path;
+@end
+
+@protocol HomeworkTypeCollctionCellDelegate <NSObject>
+
+-(void)homeworkTypeCollctionCell:(HomeworkTypeCollctionCell*)cell rankingButtonClickedAtIndexPath:(NSIndexPath*)path;
+
 @end

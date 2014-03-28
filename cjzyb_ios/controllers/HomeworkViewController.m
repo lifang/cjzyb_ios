@@ -9,6 +9,7 @@
 #import "HomeworkViewController.h"
 #import "HomeworkHistoryCollectionCell.h"
 #import "HomeworkDaoInterface.h"
+#import "HomeworkRankingViewController.h"
 //{"id": "181", "content": "This is! an aps!", "resource_url": "/question_packages/201402/questions_package_222/media_181.mp3"},
 @interface HomeworkViewController ()
 @property (nonatomic,strong) WYPopoverController *calendarPopController;
@@ -205,6 +206,17 @@
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller didSelectedAtIndexPath:(NSIndexPath *)path{
 
 }
+
+-(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller rankingButtonClickedAtIndexPath:(NSIndexPath *)path{
+    HomeworkRankingViewController *rankingController = [[HomeworkRankingViewController alloc] initWithNibName:@"HomeworkRankingViewController" bundle:nil];
+    rankingController.modalPresentationStyle = UIModalPresentationFormSheet;
+    rankingController.view.frame = (CGRect){0,0,514,450};
+    [self presentViewController:rankingController animated:YES completion:^{
+        
+    }];
+    HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
+    [rankingController reloadDataWithTaskId:controller.taskObj.taskID withHomeworkType:typeObj.homeworkType];
+}
 #pragma mark --
 
 #pragma mark UICollectionViewDelegate
@@ -216,10 +228,11 @@
 #pragma mark UICollectionViewDataSource
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     HomeworkHistoryCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    cell.dailyCollectionViewController = nil;
-    cell.dailyCollectionViewController.view.frame = (CGRect){10,0,cell.bounds.size.width-20,cell.bounds.size.height};
-    [cell.dailyCollectionViewController resizeItemSize];
-    [cell addSubview:cell.dailyCollectionViewController.view];
+    if (![cell.subviews containsObject:cell.dailyCollectionViewController.view]) {
+        cell.dailyCollectionViewController.view.frame = (CGRect){10,0,cell.bounds.size.width-20,cell.bounds.size.height};
+        [cell.dailyCollectionViewController resizeItemSize];
+        [cell addSubview:cell.dailyCollectionViewController.view];
+    }
     cell.dailyCollectionViewController.delegate = self;
     if (self.isShowHistory) {
         TaskObj *task = [self.allHistoryTaskArray objectAtIndex:indexPath.item];
