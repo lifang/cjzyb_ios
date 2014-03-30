@@ -230,15 +230,16 @@
         }
     }
 
-    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
+//    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
     
 //    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
 //    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-//    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
 //    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
 //    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
 //    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
-//    self.window.rootViewController = tabBarController;
+    self.window.rootViewController = notificationView;
+    [self.window makeKeyAndVisible];
 
     return YES;
 }

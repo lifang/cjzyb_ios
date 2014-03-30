@@ -180,6 +180,7 @@
         cell.indexPath = indexPath;
         if (indexPath.row % 2 == 1) {
             cell.contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
+        }else{
             cell.contentBgView.backgroundColor = [UIColor whiteColor];
         }
         return cell;
@@ -772,7 +773,14 @@
         NSString *urlString = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",address];
         NSURL *url = [NSURL URLWithString:urlString];
         imgData = [NSData dataWithContentsOfURL:url];
-        [self.bufferedImageDic setObject:imgData forKey:address];
+        if (imgData == nil) {
+            [self.bufferedImageDic setObject:[NSNull null] forKey:address];
+        }else{
+            [self.bufferedImageDic setObject:imgData forKey:address];
+        }
+    }
+    if (!imgData || [imgData isKindOfClass:[NSNull class]]) {
+        return [UIImage imageNamed:@"systemMessage.png"];
     }
     return [UIImage imageWithData:imgData];
 }
