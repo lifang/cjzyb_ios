@@ -209,7 +209,11 @@
     NSDictionary *pushDict = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
     NSDictionary *apsInfo = [pushDict objectForKey:@"aps"];
     if (apsInfo) {
+        
         int typeValue = [[apsInfo objectForKey:@"sound"]integerValue];
+        UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:[NSString stringWithFormat:@"%d",typeValue] delegate:nil cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [view show];
+        
         if (typeValue == 2) {
             self.notification_type = 1;
         }else {
@@ -238,8 +242,7 @@
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application

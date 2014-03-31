@@ -582,9 +582,8 @@
                 self.optionTable.frame = (CGRect){38,317,650,400};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
-//                NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.currentQuestion.seContentAttachment]];
-//                [self.questionImageView loadRequest:request];
-            
+                NSData *imageData = [NSData dataWithContentsOfFile:[[DataService sharedService].taskObj.taskFolderPath stringByAppendingString:self.currentQuestion.seContentAttachment]];
+                self.questionImageView.image = [UIImage imageWithData:imageData];
             }
                 break;
                 

@@ -383,6 +383,7 @@
                     obj.replyerName = [noticeDic objectForKey:@"sender_name"];
                     obj.replyTargetName = name;
                     
+                    
                     [self.replyNotificationArray addObject:obj];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -422,6 +423,7 @@
             self.isLoading = YES;
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 self.isLoading = NO;
+                self.editingNotiCellIndexPath = nil;
                 [self.notificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
@@ -461,6 +463,7 @@
             self.isLoading = YES;
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 self.isLoading = NO;
+                self.editingReplyCellIndexPath = nil;
                 [self.replyNotificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
@@ -603,25 +606,6 @@
     return _replyInputTextView;
 }
 
-
-//-(MJRefreshHeaderView *)refreshHeaderView{
-//    if (!_refreshHeaderView) {
-//        _refreshHeaderView = [MJRefreshHeaderView header];
-//        _refreshHeaderView.scrollView = self.tableView;
-//        _refreshHeaderView.delegate = self;
-//    }
-//    return _refreshHeaderView;
-//}
-
-//-(MJRefreshFooterView *)refreshFooterView{
-//    if (!_refreshFooterView) {
-//        _refreshFooterView = [MJRefreshFooterView footer];
-//        _refreshFooterView.scrollView = self.tableView;
-//        _refreshFooterView.delegate = self;
-//    }
-//    return _refreshFooterView;
-//}
-
 -(LHLGetSysNoticeInterface *)getSysNoticeInterface{
     if (!_getSysNoticeInterface) {
         _getSysNoticeInterface = [LHLGetSysNoticeInterface new];
@@ -716,6 +700,7 @@
     self.replyingIndexPath = nil;
 }
 
+
 -(void)replyInputCommitButtonClicked:(id)sender{
     if (self.replyInputTextView.text.length < 1) {
         [Utility errorAlert:@"回复内容不能为空"];
@@ -727,6 +712,19 @@
     ReplyNotificationObject *notice = self.replyNotificationArray[self.replyingIndexPath.row];
     [self replyMessageWithSenderID:[DataService sharedService].user.studentId andSenderType:@"1" andContent:self.replyInputTextView.text andClassID:[DataService sharedService].theClass.classId andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
 }
+
+//-(void)replyInputCommitButtonClicked:(id)sender{
+//    if (self.replyInputTextView.text.length < 1) {
+//        [Utility errorAlert:@"回复内容不能为空"];
+//        return;
+//    }else if(self.replyInputTextView.text.length > 500){
+//        [Utility errorAlert:@"回复内容不能超过500个字符"];
+//        return;
+//    }
+//    ReplyNotificationObject *notice = self.replyNotificationArray[self.replyingIndexPath.row];
+//    [self replyMessageWithSenderID:[DataService sharedService].user.studentId andSenderType:@"1" andContent:self.replyInputTextView.text andClassID:[DataService sharedService].theClass.classId andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
+//}
+
 
 #pragma mark -- LHLNotificationCellDelegate
 -(void)cell:(LHLNotificationCell *)cell deleteButtonClicked:(id)sender{
@@ -915,26 +913,6 @@
     }
 }
 
-#pragma mark -- MJRefreshDelegate
-//-(void)refreshViewBeginRefreshing:(MJRefreshBaseView *)refreshView{
-//    if (self.refreshHeaderView == refreshView) { //刷新
-//        self.isRefreshing = YES;
-//        if (self.displayCategory == NotificationDisplayCategoryDefault) {
-//            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
-//            self.pageOfNotification = 1;
-//        }else{
-//            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
-//            self.pageOfReplyNotification = 1;
-//        }
-//    }else{   //分页加载
-//        self.isRefreshing = NO;
-//        if (self.displayCategory == NotificationDisplayCategoryDefault) {
-//            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
-//        }else{
-//            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
-//        }
-//    }
-//}
 
 #pragma mark -- getSysNoti Delegate
 -(void)getSysNoticeDidFinished:(NSDictionary *)result{

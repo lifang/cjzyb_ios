@@ -209,6 +209,7 @@
 		18B4EB7E18D29D9F00986766 /* LHLGetSysNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB7D18D29D9F00986766 /* LHLGetSysNoticeInterface.m */; };
 		18B4EB8118D29DD800986766 /* LHLDeleteSysNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB8018D29DD800986766 /* LHLDeleteSysNoticeInterface.m */; };
 		18B4EB8418D29E0500986766 /* LHLDeleteMyNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB8318D29E0500986766 /* LHLDeleteMyNoticeInterface.m */; };
+		18CF139218E93B61001E3448 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92654E18BD9016003ADEC3 /* MainViewController.xib */; };
 		18DF865D18E2AAEA009BEB58 /* LHLButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DF865C18E2AAEA009BEB58 /* LHLButton.m */; };
 		18DF866018E2C697009BEB58 /* LHLTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DF865F18E2C697009BEB58 /* LHLTableView.m */; };
 		18E01DA518CDB70B0016FA7D /* yourChoice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18E01DA418CDB70B0016FA7D /* yourChoice@2x.png */; };
@@ -2242,6 +2243,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18CF139218E93B61001E3448 /* MainViewController.xib in Resources */,
 				63AFA4CC18E510A200A30DB1 /* HomeworkTypeCollctionCell.xib in Resources */,
 				186C021E18D9866000D77EEC /* SelectingChallengeViewController.xib in Resources */,
 				185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */,

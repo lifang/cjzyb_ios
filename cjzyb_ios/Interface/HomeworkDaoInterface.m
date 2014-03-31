@@ -53,7 +53,7 @@
         taskObj.taskEndDate = [Utility filterValue:[taskDic objectForKey:@"end_time"]];
         taskObj.taskFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"question_packages_url"]];
         taskObj.taskAnswerFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"answer_url"]];
-        
+        taskObj.taskFolderPath = [[Utility returnPath] stringByAppendingPathComponent:taskObj.taskStartDate];
         NSMutableArray *homeworkTypeList = [NSMutableArray array];
         NSArray *undoTypeArr = [taskDic objectForKey:@"question_types"];
         for (int index = 0; undoTypeArr && index < undoTypeArr.count; index++) {
@@ -166,7 +166,7 @@
             taskObj.taskEndDate = [Utility filterValue:[taskDic objectForKey:@"end_time"]];
             taskObj.taskFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"question_packages_url"]];
             taskObj.taskAnswerFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"answer_url"]];
-            
+             taskObj.taskFolderPath = [[Utility returnPath] stringByAppendingPathComponent:taskObj.taskStartDate];
             NSMutableArray *homeworkTypeList = [NSMutableArray array];
             NSArray *undoTypeArr = [taskDic objectForKey:@"question_types"];
             for (int index = 0; undoTypeArr && index < undoTypeArr.count; index++) {
@@ -301,7 +301,7 @@
             taskObj.taskEndDate = [Utility filterValue:[taskDic objectForKey:@"end_time"]];
             taskObj.taskFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"question_packages_url"]];
             taskObj.taskAnswerFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"answer_url"]];
-            
+             taskObj.taskFolderPath = [[Utility returnPath] stringByAppendingPathComponent:taskObj.taskStartDate];
             NSMutableArray *homeworkTypeList = [NSMutableArray array];
             NSArray *undoTypeArr = [taskDic objectForKey:@"question_types"];
             for (int index = 0; undoTypeArr && index < undoTypeArr.count; index++) {
