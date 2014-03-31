@@ -30,7 +30,7 @@
 @property (assign,nonatomic) id<TenSecChallengeResultViewDelegate> delegate;
 //以下为界面需传入的参数
 @property (assign,nonatomic) NSInteger ratio; //正确率0-100
-@property (assign,nonatomic) NSInteger timeCount; //用时(秒)
+@property (assign,nonatomic) long long timeCount; //用时(秒)
 @property (assign,nonatomic) NSInteger timeLimit; //时限(秒)
 @property (assign,nonatomic) BOOL isEarly;   //是否提前两小时完成挑战
 @property (strong,nonatomic) NSString *challengeTimesLeft;  //剩余挑战次数(十速挑战专用)

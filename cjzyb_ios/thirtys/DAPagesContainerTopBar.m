@@ -60,7 +60,12 @@ CGFloat const DAPagesContainerTopBarItemsOffset = 124.4;
         NSMutableArray *mutableItemViews = [NSMutableArray arrayWithCapacity:itemTitles.count];
         for (NSUInteger i = 0; i < itemTitles.count; i++) {
             UIButton *itemView = [self addItemView];
-            [itemView setImage:[UIImage imageNamed:[itemTitles objectAtIndex:i]] forState:UIControlStateNormal];
+            NSString *title_str = [NSString stringWithFormat:@"%@",[itemTitles objectAtIndex:i]];
+            if ([title_str isEqualToString:@"回复通知"] || [title_str isEqualToString:@"系统通知"]) {
+                [itemView setTitle:itemTitles[i] forState:UIControlStateNormal];
+            }else {
+                [itemView setImage:[UIImage imageNamed:[itemTitles objectAtIndex:i]] forState:UIControlStateNormal];
+            }
             [mutableItemViews addObject:itemView];
         }
         self.itemViews = [NSArray arrayWithArray:mutableItemViews];

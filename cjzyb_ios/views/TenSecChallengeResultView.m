@@ -32,7 +32,7 @@
     self.noneRestartButton.layer.cornerRadius = 4.0;
     self.correctPersent.text = [NSString stringWithFormat:@"正确率: %i%%",self.ratio];
     self.noneCorrectPersent.text = self.correctPersent.text;
-    self.timeLabel.text = [NSString stringWithFormat:@"用时: %@",[Utility formateDateStringWithSecond:self.timeCount]];
+    self.timeLabel.text = [NSString stringWithFormat:@"用时: %@",[Utility formateDateStringWithSecond:(NSInteger)self.timeCount]];
     self.noneTimeLabel.text = self.timeLabel.text;
     
     if (self.ratio < 100) {//精准成就
