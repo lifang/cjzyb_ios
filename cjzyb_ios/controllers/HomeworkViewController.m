@@ -216,7 +216,7 @@
             progress.labelText = @"正在下载作业包，请稍后...";
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 ;
-                NSDictionary *dicData = [Utility downloadQuestionWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                NSDictionary *dicData = [Utility downloadQuestionWithAddress:task.taskFileDownloadURL andStartDate:task.taskStartDate];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (!dicData || dicData.count <= 0) {
                         [MBProgressHUD hideHUDForView:app.window animated:YES];
