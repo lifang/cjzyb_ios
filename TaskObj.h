@@ -17,6 +17,8 @@
 @property (strong,nonatomic) NSString *taskName;
 @property (strong,nonatomic) NSString *taskStartDate;
 @property (strong,nonatomic) NSString *taskEndDate;
+///answer json文件最后更新时间
+@property (strong,nonatomic) NSString *taskAnswerFileUpdateDate;
 ///题包下载路径
 @property (strong,nonatomic) NSString *taskFileDownloadURL;//question.json
 ///历史记录中答案的json文件下载路径
