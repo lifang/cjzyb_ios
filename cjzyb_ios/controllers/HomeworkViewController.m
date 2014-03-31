@@ -207,7 +207,6 @@
 
 #pragma mark UIAlertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    __weak HomeworkViewController *weakSelf = self;
     __block TaskObj *task = [DataService sharedService].taskObj;
     if (alertView.tag == 1000) {
         if (buttonIndex == 0) {//下载作业包
@@ -275,10 +274,13 @@
     HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
     TaskObj *task = controller.taskObj;
     [DataService sharedService].taskObj = task;
+    [DataService sharedService].number_reduceTime = task.taskReduceTimeCount;
+    [DataService sharedService].number_correctAnswer=task.taskTipCorrectAnswer;
+    
     __block HomeworkContainerController *homeworkContainer = [[HomeworkContainerController alloc ] initWithNibName:@"HomeworkContainerController" bundle:nil];
     homeworkContainer.homeworkType = typeObj.homeworkType;
     self.homeworkContainer = homeworkContainer;
-    
+    homeworkContainer.spendSecond = 0;
     if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {
         if (typeObj.homeworkTypeIsFinished) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];

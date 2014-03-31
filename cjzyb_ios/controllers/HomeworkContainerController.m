@@ -65,10 +65,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.spendSecond = 0;[DataService sharedService].number_reduceTime=3;[DataService sharedService].isHistory=YES;[DataService sharedService].number_correctAnswer=3;
-
-
     //TODO:判断做题历史 or  做题
     if ([DataService sharedService].isHistory==YES) {
         self.timeImg.hidden=YES; self.timerLabel.hidden=YES;
@@ -78,7 +74,7 @@
         self.label1.hidden=YES;self.label2.hidden=YES;self.rotioLabel.hidden=YES;self.timeLabel.hidden=YES;
     }
     [self startTimer];
-    self.homeworkType = HomeworkType_reading;
+//    self.homeworkType = HomeworkType_reading;
     switch (self.homeworkType) {
         case HomeworkType_line://连线
         {
