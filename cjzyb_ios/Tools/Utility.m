@@ -1610,13 +1610,13 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSData *answerData;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
-    if (![manager fileExistsAtPath:answerPath] || [[formatter dateFromString:[((NSDictionary *)[NSData dataWithContentsOfFile:answerPath]) objectForKey:@"update"]] compare:[formatter dateFromString:[DataService sharedService].taskObj.taskStartDate]] == NSOrderedAscending) {  //如果文件不存在或文件里的update更早
+//    if (![manager fileExistsAtPath:answerPath] || [[formatter dateFromString:[((NSDictionary *)[NSData dataWithContentsOfFile:answerPath]) objectForKey:@"update"]] compare:[formatter dateFromString:[DataService sharedService].taskObj.taskStartDate]] == NSOrderedAscending) {  //如果文件不存在或文件里的update更早
         //下载文件
         answerData = [NSData dataWithContentsOfURL:[NSURL URLWithString:address] options:NSDataReadingMappedIfSafe error:&error];
         if (!error) {
             //此处认为下载的answerXXX.js自带update字段,故不必添加该字段
             [answerData writeToFile:answerPath atomically:YES];
-        }
+//        }
     }else{
         answerData = [NSData dataWithContentsOfFile:answerPath options:NSDataReadingMappedIfSafe error:&error];
     }

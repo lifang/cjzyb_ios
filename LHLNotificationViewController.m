@@ -373,6 +373,8 @@
                     NSString *realContent = [content substringFromIndex:range.location + range.length];
                     
                     ReplyNotificationObject *obj = [ReplyNotificationObject new];
+                    id replyId = [noticeDic objectForKey:@"id"];
+                    NSLog(@"%@",[replyId class]);
                     obj.replyId = [noticeDic objectForKey:@"id"];
                     obj.replyTime = [self handleApiResponseTimeString:[noticeDic objectForKey:@"created_at"]];
                     obj.replyContent = realContent;
@@ -382,6 +384,7 @@
                     obj.replyerImageAddress = [noticeDic objectForKey:@"sender_avatar_url"];
                     obj.replyerName = [noticeDic objectForKey:@"sender_name"];
                     obj.replyTargetName = name;
+                    
                     
                     [self.replyNotificationArray addObject:obj];
                 }
@@ -422,6 +425,7 @@
             self.isLoading = YES;
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 self.isLoading = NO;
+                self.editingNotiCellIndexPath = nil;
                 [self.notificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
@@ -461,6 +465,7 @@
             self.isLoading = YES;
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 self.isLoading = NO;
+                self.editingReplyCellIndexPath = nil;
                 [self.replyNotificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
@@ -716,17 +721,17 @@
     self.replyingIndexPath = nil;
 }
 
--(void)replyInputCommitButtonClicked:(id)sender{
-    if (self.replyInputTextView.text.length < 1) {
-        [Utility errorAlert:@"回复内容不能为空"];
-        return;
-    }else if(self.replyInputTextView.text.length > 500){
-        [Utility errorAlert:@"回复内容不能超过500个字符"];
-        return;
-    }
-    ReplyNotificationObject *notice = self.replyNotificationArray[self.replyingIndexPath.row];
-    [self replyMessageWithSenderID:[DataService sharedService].user.studentId andSenderType:@"1" andContent:self.replyInputTextView.text andClassID:[DataService sharedService].theClass.classId andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
-}
+//-(void)replyInputCommitButtonClicked:(id)sender{
+//    if (self.replyInputTextView.text.length < 1) {
+//        [Utility errorAlert:@"回复内容不能为空"];
+//        return;
+//    }else if(self.replyInputTextView.text.length > 500){
+//        [Utility errorAlert:@"回复内容不能超过500个字符"];
+//        return;
+//    }
+//    ReplyNotificationObject *notice = self.replyNotificationArray[self.replyingIndexPath.row];
+//    [self replyMessageWithSenderID:[DataService sharedService].user.studentId andSenderType:@"1" andContent:self.replyInputTextView.text andClassID:[DataService sharedService].theClass.classId andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
+//}
 
 #pragma mark -- LHLNotificationCellDelegate
 -(void)cell:(LHLNotificationCell *)cell deleteButtonClicked:(id)sender{
