@@ -373,8 +373,6 @@
                     NSString *realContent = [content substringFromIndex:range.location + range.length];
                     
                     ReplyNotificationObject *obj = [ReplyNotificationObject new];
-                    id replyId = [noticeDic objectForKey:@"id"];
-                    NSLog(@"%@",[replyId class]);
                     obj.replyId = [noticeDic objectForKey:@"id"];
                     obj.replyTime = [self handleApiResponseTimeString:[noticeDic objectForKey:@"created_at"]];
                     obj.replyContent = realContent;

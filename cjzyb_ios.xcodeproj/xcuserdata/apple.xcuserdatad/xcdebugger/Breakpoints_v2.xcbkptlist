@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LHLNotificationViewController.m"
-            timestampString = "417937375.22765"
+            timestampString = "417939185.349207"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "752"
-            endingLineNumber = "752"
+            startingLineNumber = "750"
+            endingLineNumber = "750"
             landmarkName = "-cell:setIsEditing:"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LHLNotificationViewController.m"
-            timestampString = "417937375.22765"
+            timestampString = "417939185.349207"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "884"
-            endingLineNumber = "884"
+            startingLineNumber = "882"
+            endingLineNumber = "882"
             landmarkName = "-textView:shouldChangeTextInRange:replacementText:"
             landmarkType = "5">
          </BreakpointContent>
@@ -41,13 +41,45 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "LHLNotificationViewController.m"
-            timestampString = "417937357.557399"
+            filePath = "cjzyb_ios/Interface/SendMessageInterface.m"
+            timestampString = "417939793.420311"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "378"
-            endingLineNumber = "378"
-            landmarkName = "-requestMyNoticeWithUserID:andClassID:andPage:"
+            startingLineNumber = "34"
+            endingLineNumber = "34"
+            landmarkName = "-getSendDelegateWithSendId:andSendType:andClassId:andReceiverId:andReceiverType:andmessageId:andContent:andType:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "cjzyb_ios/controllers/FirstViewController.m"
+            timestampString = "417939955.805746"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "747"
+            endingLineNumber = "747"
+            landmarkName = "-textView:shouldChangeTextInRange:replacementText:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "cjzyb_ios/Tools/Utility.m"
+            timestampString = "417940453.695594"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1530"
+            endingLineNumber = "1530"
+            landmarkName = "+getTodayNewestQuestionPackage"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
