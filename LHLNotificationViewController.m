@@ -427,7 +427,8 @@
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
-                        self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
+//                        self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
+                        self.tableView.alpha = self.tableView.alpha == 1.0 ? 0.99 : 1.0;
                     } completion:^(BOOL finished) {
                         [self.tableView reloadData];
                     }];
@@ -465,7 +466,8 @@
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
-                        self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
+//                        self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
+                        self.tableView.alpha = self.tableView.alpha == 1.0 ? 0.99 : 1.0;
                     } completion:^(BOOL finished) {
                         [self.tableView reloadData];
                     }];

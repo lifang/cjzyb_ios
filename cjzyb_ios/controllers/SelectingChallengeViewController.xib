@@ -11,7 +11,7 @@
                 <outlet property="historyView" destination="hKQ-mL-mRc" id="mbs-Ol-JRH"/>
                 <outlet property="historyYourChoiceLabel" destination="Ldj-gd-iY7" id="rGd-WJ-qab"/>
                 <outlet property="optionTable" destination="E2g-0U-oE1" id="D9O-sZ-XGN"/>
-                <outlet property="questionImageWebView" destination="VYM-02-zjb" id="hhD-Gj-fnK"/>
+                <outlet property="questionImageView" destination="JkM-aj-79g" id="RO3-Q0-1OD"/>
                 <outlet property="questionPlayButton" destination="g58-1V-7lI" id="Nm6-Uc-LlJ"/>
                 <outlet property="questionTextView" destination="qIn-bj-ZE8" id="Eyk-gP-tDw"/>
                 <outlet property="view" destination="2" id="3"/>
@@ -54,11 +54,10 @@
                                 <outlet property="delegate" destination="-1" id="kMa-nq-XvD"/>
                             </connections>
                         </tableView>
-                        <webView userInteractionEnabled="NO" contentMode="scaleToFill" scalesPageToFit="YES" id="VYM-02-zjb">
-                            <rect key="frame" x="281" y="237" width="240" height="128"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="JkM-aj-79g">
+                            <rect key="frame" x="287" y="116" width="240" height="128"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        </webView>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" red="0.89710003396739135" green="0.89710003396739135" blue="0.89710003396739135" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
