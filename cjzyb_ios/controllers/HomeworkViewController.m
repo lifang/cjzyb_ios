@@ -207,7 +207,6 @@
 
 #pragma mark UIAlertViewDelegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    __weak HomeworkViewController *weakSelf = self;
     __block TaskObj *task = [DataService sharedService].taskObj;
     if (alertView.tag == 1000) {
         if (buttonIndex == 0) {//下载作业包
@@ -216,7 +215,7 @@
             progress.labelText = @"正在下载作业包，请稍后...";
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 ;
-                NSDictionary *dicData = [Utility downloadQuestionWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                NSDictionary *dicData = [Utility downloadQuestionWithAddress:task.taskFileDownloadURL andStartDate:task.taskStartDate];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (!dicData || dicData.count <= 0) {
                         [MBProgressHUD hideHUDForView:app.window animated:YES];
@@ -275,10 +274,13 @@
     HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
     TaskObj *task = controller.taskObj;
     [DataService sharedService].taskObj = task;
+    [DataService sharedService].number_reduceTime = task.taskReduceTimeCount;
+    [DataService sharedService].number_correctAnswer=task.taskTipCorrectAnswer;
+    
     __block HomeworkContainerController *homeworkContainer = [[HomeworkContainerController alloc ] initWithNibName:@"HomeworkContainerController" bundle:nil];
     homeworkContainer.homeworkType = typeObj.homeworkType;
     self.homeworkContainer = homeworkContainer;
-    
+    homeworkContainer.spendSecond = 0;
     if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {
         if (typeObj.homeworkTypeIsFinished) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];

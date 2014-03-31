@@ -71,6 +71,19 @@
             [homeworkTypeList addObject:type];
         }
         taskObj.taskHomeworkTypeArray = homeworkTypeList;
+        
+        //道具
+        NSArray *propsArr = [dicData objectForKey:@"props"];
+        for (NSDictionary *propsDic in propsArr) {
+            NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
+            NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
+            if ([type isEqualToString:@"0"]) {
+                taskObj.taskTipCorrectAnswer = number ?number.intValue:0;
+            }else if ([type isEqualToString:@"1"]){
+                taskObj.taskReduceTimeCount = number ?number.intValue:0;
+            }
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
                 success(taskObj);
@@ -184,6 +197,19 @@
                 [homeworkTypeList addObject:type];
             }
             taskObj.taskHomeworkTypeArray = homeworkTypeList;
+            
+            //道具
+            NSArray *propsArr = [dicData objectForKey:@"props"];
+            for (NSDictionary *propsDic in propsArr) {
+                NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
+                NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
+                if ([type isEqualToString:@"0"]) {
+                    taskObj.taskTipCorrectAnswer = number ?number.intValue:0;
+                }else if ([type isEqualToString:@"1"]){
+                    taskObj.taskReduceTimeCount = number ?number.intValue:0;
+                }
+            }
+            
             [taskList addObject:taskObj];
         }
         
@@ -195,6 +221,7 @@
             });
             return;
         }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
                 success(taskList);
@@ -319,6 +346,19 @@
                 [homeworkTypeList addObject:type];
             }
             taskObj.taskHomeworkTypeArray = homeworkTypeList;
+            
+            //道具
+            NSArray *propsArr = [dicData objectForKey:@"props"];
+            for (NSDictionary *propsDic in propsArr) {
+                NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
+                NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
+                if ([type isEqualToString:@"0"]) {
+                    taskObj.taskTipCorrectAnswer = number ?number.intValue:0;
+                }else if ([type isEqualToString:@"1"]){
+                    taskObj.taskReduceTimeCount = number ?number.intValue:0;
+                }
+            }
+            
             [taskList addObject:taskObj];
         }
         

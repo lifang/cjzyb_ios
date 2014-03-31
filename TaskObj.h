@@ -31,5 +31,9 @@
 ///一个task理论上对应的文件夹
 @property (nonatomic,strong) NSString *taskFolderPath;
 
+///减少时间次数
+@property (assign,nonatomic) int taskReduceTimeCount;
+///提示正确答案次数
+@property (assign,nonatomic) int taskTipCorrectAnswer;
 +(TaskObj *)taskFromDictionary:(NSDictionary *)aDic;
 @end
