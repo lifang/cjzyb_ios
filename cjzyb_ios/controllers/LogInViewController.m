@@ -8,8 +8,8 @@
 
 #import "LogInViewController.h"
 
-#define AppId @"101036106"
-#define Appkey @"be777eef6e2140ab8f4a729834234579"
+#define AppId @"101049069"
+#define Appkey @"5d1b7abdebfe75235ff57ffd6d4edb9d"
 
 @interface LogInViewController ()
 
@@ -73,10 +73,10 @@
 }
 #pragma mark - 登录
 -(IBAction)logWithQQ:(id)sender {
-    if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+    if (self.appDel.isReachable==NO) {
         [Utility errorAlert:@"暂无网络!"];
     }else {
-        NSArray* permissions = [NSArray arrayWithObjects:kOPEN_PERMISSION_GET_SIMPLE_USER_INFO,nil];
+        NSArray* permissions = [NSArray arrayWithObjects:kOPEN_PERMISSION_GET_USER_INFO,nil];
         [_tencentOAuth authorize:permissions inSafari:NO];
     }
 }
@@ -237,11 +237,14 @@
                     [fileManage removeItemAtPath:filename2 error:nil];
                 }
                 NSDictionary *studentDic = [result objectForKey:@"student"];
+                
                 [DataService sharedService].user = [UserObject userFromDictionary:studentDic];
                 [NSKeyedArchiver archiveRootObject:studentDic toFile:filename2];
                 
                 AppDelegate *appDel = [AppDelegate shareIntance];
                 [appDel showRootView];
+                
+                [_tencentOAuth logout:self];
             }else {
                 self.logView.hidden = YES;
                 self.detailView.hidden = NO;
@@ -257,7 +260,7 @@
 #pragma mark
 #pragma mark - PersonInterfaceDelegate
 
--(void) :(NSDictionary *)result {
+-(void)getPersonInfoDidFinished:(NSDictionary *)result {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -270,7 +273,6 @@
             NSDictionary *classDic = [result objectForKey:@"class"];
             [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
             [NSKeyedArchiver archiveRootObject:classDic toFile:filename];
-            
             
             NSString *filename2 = [Path stringByAppendingPathComponent:@"student.plist"];
             if ([fileManage fileExistsAtPath:filename2]) {

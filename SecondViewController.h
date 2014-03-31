@@ -45,9 +45,9 @@
 @property (nonatomic, assign) NSInteger type;//1:回复的是header       0:回复的是cell
 
 @property (nonatomic, strong) UIActivityIndicatorView *indicView;
-@property (nonatomic, assign) BOOL isReloading;
+@property (nonatomic, assign) BOOL isReloading;//下拉刷新
 
-
+@property (nonatomic, assign) BOOL isLoading;//上拉加载
 
 @property (nonatomic, strong) IBOutlet UIView *textBar;
 @property (nonatomic, strong) IBOutlet ComtomTxt *textView;

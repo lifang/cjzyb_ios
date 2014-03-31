@@ -136,7 +136,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.2156367474" green="0.24674093320000001" blue="0.29466278699999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <connections>
                                 <outlet property="backImageView" destination="TTm-83-slZ" id="rad-4l-RhC"/>
                                 <outlet property="levelLabel" destination="QtG-fC-g8y" id="goO-nU-eqF"/>
@@ -182,7 +182,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.2156367474" green="0.24674093320000001" blue="0.29466278699999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <connections>
                                 <outlet property="backImageView" destination="dwC-74-nkN" id="aB4-eR-xMi"/>
                                 <outlet property="levelLabel" destination="9ad-ly-L9H" id="2p4-iU-D30"/>
@@ -228,7 +228,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.2156367474" green="0.24674093320000001" blue="0.29466278699999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <connections>
                                 <outlet property="backImageView" destination="Dfg-os-n5y" id="7PW-SX-MRY"/>
                                 <outlet property="levelLabel" destination="gvS-50-yUO" id="Ir0-Pi-idT"/>
@@ -274,7 +274,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <color key="backgroundColor" red="0.2156367474" green="0.24674093320000001" blue="0.29466278699999998" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <connections>
                                 <outlet property="backImageView" destination="cwK-qF-k6F" id="ioX-3K-dGK"/>
                                 <outlet property="levelLabel" destination="Vnk-xY-H5h" id="BMc-Dk-k0X"/>

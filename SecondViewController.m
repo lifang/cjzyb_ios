@@ -41,7 +41,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.isReloading = NO;
+    self.isReloading = NO;self.isLoading=NO;
     [self.secondTable registerClass:[FirstViewHeader class] forHeaderFooterViewReuseIdentifier:SECOND_HEADER_IDENTIFIER];
     [self textBarInit];
     self.second = 1;
@@ -446,16 +446,6 @@
     return cell;
 }
 
-- (void)scrollToBottomAnimated:(BOOL)animated
-{
-    NSInteger rows = [self.secondTable numberOfRowsInSection:self.tmpSection];
-    if(rows > 0) {
-        [self.secondTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:self.tmpSection]
-                               atScrollPosition:UITableViewScrollPositionBottom
-                                       animated:animated];
-    }
-}
-
 -(void)initFooterView {
     UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 768, 50)];
     header.backgroundColor = [UIColor clearColor];
@@ -469,7 +459,8 @@
 //分页加载获取主消息
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (scrollView.contentOffset.y > 0){
-        if (scrollView.contentOffset.y + self.secondTable.frame.size.height <= scrollView.contentSize.height) {
+        if (scrollView.contentOffset.y + self.secondTable.frame.size.height >= scrollView.contentSize.height  && self.isLoading==NO) {
+            self.isLoading=YES;
             MessageObject *message = (MessageObject *)[self.secondArray lastObject];
             if (message.pageCountHeader>message.pageHeader) {
                 [self initFooterView];
@@ -478,6 +469,28 @@
                 [self.mMessageInter getMyMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.userId andPage:message.pageHeader+1];
             }
         }
+    }
+}
+//调整位置
+-(void)setContentOfsetWithSection:(int)aSection {
+    NSInteger rows = [self.secondTable numberOfRowsInSection:aSection];
+    if(rows > 0) {
+        MessageObject *message = (MessageObject *)[self.secondArray objectAtIndex:aSection];
+        
+        int row = 0;
+        int replyMsgCount = message.replyMessageArray.count;
+        if (replyMsgCount>10) {
+            int left = replyMsgCount%10;
+            if (left==0) {
+                row = replyMsgCount-10;
+            }else {
+                row = replyMsgCount-left;
+            }
+        }
+        
+        [self.secondTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:aSection]
+                               atScrollPosition:UITableViewScrollPositionTop
+                                       animated:YES];
     }
 }
 #pragma mark
@@ -547,15 +560,13 @@
                     [Utility errorAlert:@"暂无网络!"];
                 }else {
                     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                    message.pageHeader = 1;
-                    [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
+                    [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:1];
                 }
             }else {
                 [self.secondTable beginUpdates];
                 [self.secondTable reloadSections:[NSIndexSet indexSetWithIndex:header.aSection] withRowAnimation:UITableViewRowAnimationAutomatic];
                 [self.secondTable endUpdates];
                 [self resetTableViewHeaderByIndex:header.aSection];
-                [self scrollToBottomAnimated:YES];
             }
         }else {
             [self resetTableViewHeaderByIndex:header.aSection];
@@ -674,11 +685,15 @@
     }else {
         //获取子消息
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        if ([message.replyCount integerValue]<=10) {
-            message.pageHeader = 1;
-        }else
-            message.pageHeader += 1;
-        [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:message.pageHeader];
+
+        int page = 1;
+        int replyCount = [message.replyCount integerValue];
+        int replyMsgCount = message.replyMessageArray.count;
+        int left_number = replyCount-replyMsgCount;
+        if (left_number>0) {
+            page += replyMsgCount/10;
+        }
+        [self.rmessageInter getReplyMessageInterfaceDelegateWithMessageId:message.messageId andPage:page];
     }
     
 }
@@ -711,6 +726,8 @@
             }
             [self.headerArray removeAllObjects];
             [self resetTableViewHeaderByIndex:self.tmpSection];
+            
+            [self setContentOfsetWithSection:self.tmpSection];
         });
     });
 }
@@ -862,8 +879,9 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
-            NSArray *array = [result objectForKey:@"details_microposts"];
+            self.isLoading=NO;
             
+            NSArray *array = [result objectForKey:@"details_microposts"];
             if (array.count>0) {
                 if (self.isReloading == YES) {
                     self.secondArray = nil;

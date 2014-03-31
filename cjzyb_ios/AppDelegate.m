@@ -200,10 +200,12 @@
     }
     
     //网络
-    if ([[Utility isExistenceNetwork]isEqualToString:@"NotReachable"]) {
-        self.isReachable = NO;
-    }else
-        self.isReachable = YES;
+    self.isReachable = YES;
+    [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
+        if ([networkStatus isEqualToString:@"NotReachable"]) {
+//            self.isReachable = NO;
+        }
+    }];
     //开启网络状况的监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
     self.hostReach = [Reachability reachabilityWithHostName:@"www.baidu.com"] ;
@@ -227,7 +229,17 @@
             }
         }
     }
-    [self showRootView];
+
+    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
+    
+//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
+//    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
+//    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+//    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
+//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
+//    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
+//    self.window.rootViewController = tabBarController;
+
     return YES;
 }
 
