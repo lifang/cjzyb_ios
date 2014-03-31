@@ -9,7 +9,8 @@
 #import "LHLReplyNotificationCell.h"
 
 #define LHLTEXT_PADDING 5
-#define LHLFONT [UIFont systemFontOfSize:21.0]
+#define LHLFONT [UIFont systemFontOfSize:18.0]
+#define LHLFONT_FOR_CONTENT [UIFont systemFontOfSize:20.0]
 #define LHLCELL_WIDTH self.bounds.size.width
 #define LHLCELL_HEIGHT self.bounds.size.height
 
@@ -99,7 +100,7 @@
         //回复内容
         self.textView = [[LHLTextView alloc] init];
         _textView.backgroundColor = [UIColor clearColor];
-        _textView.font = LHLFONT;
+        _textView.font = LHLFONT_FOR_CONTENT;
         _textView.textColor = [UIColor darkGrayColor];
         [_textView setUserInteractionEnabled:NO];
         [_contentBgView addSubview:_textView];
@@ -136,12 +137,12 @@
         size = [Utility getTextSizeWithString:@"回复" withFont:LHLFONT];
         _unnamedLabel.frame = (CGRect){CGRectGetMaxX(_replyerNameLabel.frame) + LHLTEXT_PADDING,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
         
-        size = [Utility getTextSizeWithString:@"我" withFont:LHLFONT];
+        size = [Utility getTextSizeWithString:self.replyObject.replyTargetName withFont:LHLFONT];
         _myNameLabel.frame = (CGRect){CGRectGetMaxX(_unnamedLabel.frame) + LHLTEXT_PADDING,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
         
         _timeLabel.frame = (CGRect){CGRectGetMaxX(_myNameLabel.frame) + LHLTEXT_PADDING * 2,0,titleBgFrame.size.width - (CGRectGetMaxX(_myNameLabel.frame) + LHLTEXT_PADDING),titleBgFrame.size.height};
         
-        size = [Utility getTextSizeWithString:_textView.text withFont: LHLFONT withWidth:510];
+        size = [Utility getTextSizeWithString:_textView.text withFont: LHLFONT_FOR_CONTENT withWidth:510];
         _textView.frame = (CGRect){titleBgFrame.origin.x - 5,CGRectGetMaxY(titleBgFrame) - 7,510,size.height + 20};
         
         _coverButton.frame = (CGRect){0,0,self.bounds.size};
@@ -153,14 +154,18 @@
 -(void)setInfomations:(ReplyNotificationObject *)reply{
     if (reply != nil) {
         self.replyObject = reply;
-        _imgView.image = [self.delegate replyCell:self bufferedImageForAddress:reply.replyerImageAddress];
+//        _imgView.image = [self.delegate replyCell:self bufferedImageForAddress:reply.replyerImageAddress];
+        NSString *urlString = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",reply.replyerImageAddress];
+        NSURL *url = [NSURL URLWithString:urlString];
+        [_imgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"systemMessage.png"]];
         _replyerNameLabel.text = reply.replyerName;
-        _myNameLabel.text = @"我";
+//        _myNameLabel.text = @"我";
+        _myNameLabel.text = reply.replyTargetName;
         _textView.text = reply.replyContent;
         _timeLabel.text = reply.replyTime;
         self.isEditing = reply.isEditing;
         
-        [self layoutIfNeeded];
+        [self layoutItems];
     }else{
         [Utility errorAlert:@"赋予的reply对象为nil!"];
     }
@@ -173,14 +178,14 @@
     // Configure the view for the selected state
 }
 
-//图像缓冲
-- (UIImage *)bufferedImageForAddress:(NSString *)address{
-    
-    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://58.240.210.42:3004%@",address]]];
-    NSMutableDictionary *tempImageDic = [NSMutableDictionary dictionary];
-    [tempImageDic setObject:imageData forKey:address];
-    return nil;
-}
+////图像缓冲
+//- (UIImage *)bufferedImageForAddress:(NSString *)address{
+//    
+//    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://58.240.210.42:3004%@",address]]];
+//    NSMutableDictionary *tempImageDic = [NSMutableDictionary dictionary];
+//    [tempImageDic setObject:imageData forKey:address];
+//    return nil;
+//}
 
 #pragma mark -- 按钮响应方法
 //- (void) coverButtonTouchDragInside:(id)sender{

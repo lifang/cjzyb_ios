@@ -57,29 +57,19 @@
 
 - (void)viewDidLoad
 {
-//    [DataService sharedService].user = [[UserObject alloc] init];
-//    [DataService sharedService].user.userId = @"83";
-//    [DataService sharedService].theClass = [[ClassObject alloc] init];
-//    [DataService sharedService].theClass.classId = @"73";
-    
     [super viewDidLoad];
     
     if ([DataService sharedService].notificationPage == 1) {
-        self.displayCategory = NotificationDisplayCategoryDefault;
+        [self.topBar replyButtonClicked:self.topBar.replyButton];
     }else{
-        self.displayCategory = NotificationDisplayCategoryReply;
+        [self.topBar noticeButtonClicked:self.topBar.noticeButton];
     }
-    
     
     UINib *nib = [UINib nibWithNibName:@"LHLNotificationCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"LHLNotificationCell"];
-//    [self.tableView registerClass:[LHLNotificationHeader class] forHeaderFooterViewReuseIdentifier:@"LHLNotificationHeader"];
     [self.topBar initHeader];
     self.topBar.delegate = self;
     [self.tableView registerClass:[LHLReplyNotificationCell class] forCellReuseIdentifier:@"LHLReplyNotificationCell"];
-    
-//    [self refreshFooterView];
-//    [self refreshHeaderView];
     
     [self initData];
     
@@ -154,14 +144,14 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (self.displayCategory == NotificationDisplayCategoryDefault) {
         NotificationObject *noti = self.notificationArray[indexPath.row];
-        CGSize size = [Utility getTextSizeWithString:noti.notiContent withFont:[UIFont systemFontOfSize:21.0] withWidth:510];
+        CGSize size = [Utility getTextSizeWithString:noti.notiContent withFont:[UIFont systemFontOfSize:20.0] withWidth:510];
         if (size.height + 50 + 20 + 10 > 192) { //上沿坐标,textView高度加值,下方高度
             return size.height + 50 + 20 + 10;
         }
         return 192;
     }else if (self.displayCategory == NotificationDisplayCategoryReply){
         ReplyNotificationObject *reply = self.replyNotificationArray[indexPath.row];
-        CGSize size = [Utility getTextSizeWithString:reply.replyContent withFont:[UIFont systemFontOfSize:21.0] withWidth:510];
+        CGSize size = [Utility getTextSizeWithString:reply.replyContent withFont:[UIFont systemFontOfSize:20.0] withWidth:510];
         if (size.height + 51 + 20 + 10  > 192) {  //上沿坐标,textView高度加值,下方高度
             return size.height + 51 + 20 + 10;
         }
@@ -674,7 +664,6 @@
             [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
         }
         [self initFooterView];
-        DLog(@"开始分页加载...");
     }else if(self.tableView.contentOffset.y < -80 - self.tableView.contentInset.top ){
         //开始下拉刷新
         self.isRefreshing = YES;
@@ -772,23 +761,23 @@
 }
 
 #pragma mark -- LHLReplyNotificationCellDelegate
--(UIImage *)replyCell:(LHLReplyNotificationCell *)cell bufferedImageForAddress:(NSString *)address{
-    NSData *imgData = [self.bufferedImageDic objectForKey:address];
-    if (imgData == nil) {
-        NSString *urlString = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",address];
-        NSURL *url = [NSURL URLWithString:urlString];
-        imgData = [NSData dataWithContentsOfURL:url];
-        if (imgData == nil) {
-            [self.bufferedImageDic setObject:[NSNull null] forKey:address];
-        }else{
-            [self.bufferedImageDic setObject:imgData forKey:address];
-        }
-    }
-    if (!imgData || [imgData isKindOfClass:[NSNull class]]) {
-        return [UIImage imageNamed:@"systemMessage.png"];
-    }
-    return [UIImage imageWithData:imgData];
-}
+//-(UIImage *)replyCell:(LHLReplyNotificationCell *)cell bufferedImageForAddress:(NSString *)address{
+//    NSData *imgData = [self.bufferedImageDic objectForKey:address];
+//    if (imgData == nil) {
+//        NSString *urlString = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",address];
+//        NSURL *url = [NSURL URLWithString:urlString];
+//        imgData = [NSData dataWithContentsOfURL:url];
+//        if (imgData == nil) {
+//            [self.bufferedImageDic setObject:[NSNull null] forKey:address];
+//        }else{
+//            [self.bufferedImageDic setObject:imgData forKey:address];
+//        }
+//    }
+//    if (!imgData || [imgData isKindOfClass:[NSNull class]]) {
+//        return [UIImage imageNamed:@"systemMessage.png"];
+//    }
+//    return [UIImage imageWithData:imgData];
+//}
 
 -(void) replyCell:(LHLReplyNotificationCell *)cell replyButtonClicked:(id)sender{
     if ([self.replyInputTextView isFirstResponder]) {

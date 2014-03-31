@@ -27,5 +27,5 @@
 -(void) replyCell:(LHLReplyNotificationCell *)cell deleteButtonClicked:(id)sender;
 -(void) replyCell:(LHLReplyNotificationCell *)cell setIsEditing:(BOOL)editing;
 -(void) replyCell:(LHLReplyNotificationCell *)cell dragToLeft: (BOOL) toLeft;
--(UIImage *) replyCell:(LHLReplyNotificationCell *)cell bufferedImageForAddress:(NSString *)address;
+//-(UIImage *) replyCell:(LHLReplyNotificationCell *)cell bufferedImageForAddress:(NSString *)address;
 @end
