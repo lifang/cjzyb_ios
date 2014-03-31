@@ -22,8 +22,8 @@
 @property (nonatomic,strong) UILabel *myNameLabel;   //我的名字
 @property (nonatomic,strong) UILabel *replyerNameLabel;  //回复者的名字
 @property (nonatomic,strong) UILabel *timeLabel;   //时间
-@property (nonatomic,strong) LHLTextView *textView;   //内容
-@property (nonatomic,strong) LHLButton *coverButton;  //覆盖CELL的按钮
+@property (nonatomic,strong) UITextView *textView;   //内容
+@property (nonatomic,strong) UIButton *coverButton;  //覆盖CELL的按钮
 @property (nonatomic,strong) UIButton *replyButton;   //回复消息按钮
 @property (nonatomic,strong) UIButton *deleteButton;  //删除消息按钮
 @end
@@ -98,7 +98,7 @@
         [_titleBgView addSubview:_timeLabel];
         
         //回复内容
-        self.textView = [[LHLTextView alloc] init];
+        self.textView = [[UITextView alloc] init];
         _textView.backgroundColor = [UIColor clearColor];
         _textView.font = LHLFONT_FOR_CONTENT;
         _textView.textColor = [UIColor darkGrayColor];
@@ -106,9 +106,9 @@
         [_contentBgView addSubview:_textView];
         
         //覆盖按钮
-        self.coverButton = [LHLButton buttonWithType:UIButtonTypeCustom];
+        self.coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _coverButton.backgroundColor = [UIColor clearColor];
-        _coverButton.delegate = self;
+        [_coverButton addTarget:self action:@selector(coverButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [_contentBgView addSubview:_coverButton];
     }
     [self layoutItems];
@@ -214,11 +214,6 @@
     }
 }
 
-- (void) coverButtonDraged:(BOOL)toLeft{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(replyCell:dragToLeft:)]) {
-        [self.delegate replyCell:self dragToLeft:toLeft];
-    }
-}
 
 - (void) rreplyButtonClicked:(UIButton *)sender{
     if (self.delegate && [self.delegate respondsToSelector:@selector(replyCell:replyButtonClicked:)]) {

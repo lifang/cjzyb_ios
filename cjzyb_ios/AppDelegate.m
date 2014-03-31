@@ -12,7 +12,7 @@
 #import "DRLeftTabBarViewController.h"
 #import "HomeworkDailyCollectionViewController.h"
 #import "HomeworkViewController.h"//作业
-#import "LHLNotificationViewController.h"//通知
+#import "LHLNotificationContainerVC.h" //通知
 #import "LogInViewController.h" //登录
 
 #import "ReadingTaskViewController.h"
@@ -117,7 +117,7 @@
         
         MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
         HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-        LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+        LHLNotificationContainerVC *notificationView = [[LHLNotificationContainerVC alloc]initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
         CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
         DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
         tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];

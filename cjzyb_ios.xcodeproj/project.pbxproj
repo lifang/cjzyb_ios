@@ -210,6 +210,10 @@
 		18B4EB8118D29DD800986766 /* LHLDeleteSysNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB8018D29DD800986766 /* LHLDeleteSysNoticeInterface.m */; };
 		18B4EB8418D29E0500986766 /* LHLDeleteMyNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB8318D29E0500986766 /* LHLDeleteMyNoticeInterface.m */; };
 		18CF139218E93B61001E3448 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92654E18BD9016003ADEC3 /* MainViewController.xib */; };
+		18CF139618E961CB001E3448 /* LHLNotificationContainerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CF139418E961CB001E3448 /* LHLNotificationContainerVC.m */; };
+		18CF139718E961CB001E3448 /* LHLNotificationContainerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18CF139518E961CB001E3448 /* LHLNotificationContainerVC.xib */; };
+		18CF139B18E96402001E3448 /* LHLReplyNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CF139918E96402001E3448 /* LHLReplyNotificationViewController.m */; };
+		18CF139C18E96402001E3448 /* LHLReplyNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18CF139A18E96402001E3448 /* LHLReplyNotificationViewController.xib */; };
 		18DF865D18E2AAEA009BEB58 /* LHLButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DF865C18E2AAEA009BEB58 /* LHLButton.m */; };
 		18DF866018E2C697009BEB58 /* LHLTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18DF865F18E2C697009BEB58 /* LHLTableView.m */; };
 		18E01DA518CDB70B0016FA7D /* yourChoice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18E01DA418CDB70B0016FA7D /* yourChoice@2x.png */; };
@@ -694,6 +698,12 @@
 		18B4EB8018D29DD800986766 /* LHLDeleteSysNoticeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLDeleteSysNoticeInterface.m; sourceTree = "<group>"; };
 		18B4EB8218D29E0500986766 /* LHLDeleteMyNoticeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLDeleteMyNoticeInterface.h; sourceTree = "<group>"; };
 		18B4EB8318D29E0500986766 /* LHLDeleteMyNoticeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLDeleteMyNoticeInterface.m; sourceTree = "<group>"; };
+		18CF139318E961CB001E3448 /* LHLNotificationContainerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationContainerVC.h; sourceTree = "<group>"; };
+		18CF139418E961CB001E3448 /* LHLNotificationContainerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationContainerVC.m; sourceTree = "<group>"; };
+		18CF139518E961CB001E3448 /* LHLNotificationContainerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationContainerVC.xib; sourceTree = "<group>"; };
+		18CF139818E96402001E3448 /* LHLReplyNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLReplyNotificationViewController.h; sourceTree = "<group>"; };
+		18CF139918E96402001E3448 /* LHLReplyNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLReplyNotificationViewController.m; sourceTree = "<group>"; };
+		18CF139A18E96402001E3448 /* LHLReplyNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLReplyNotificationViewController.xib; sourceTree = "<group>"; };
 		18DF865B18E2AAEA009BEB58 /* LHLButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLButton.h; sourceTree = "<group>"; };
 		18DF865C18E2AAEA009BEB58 /* LHLButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLButton.m; sourceTree = "<group>"; };
 		18DF865E18E2C697009BEB58 /* LHLTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLTableView.h; sourceTree = "<group>"; };
@@ -1543,9 +1553,15 @@
 				6396577118C036B1002F2A90 /* StudentListViewController.h */,
 				6396577318C036B1002F2A90 /* StudentListViewController.xib */,
 				6396577218C036B1002F2A90 /* StudentListViewController.m */,
+				18CF139318E961CB001E3448 /* LHLNotificationContainerVC.h */,
+				18CF139418E961CB001E3448 /* LHLNotificationContainerVC.m */,
+				18CF139518E961CB001E3448 /* LHLNotificationContainerVC.xib */,
 				189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */,
 				189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */,
 				189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */,
+				18CF139818E96402001E3448 /* LHLReplyNotificationViewController.h */,
+				18CF139918E96402001E3448 /* LHLReplyNotificationViewController.m */,
+				18CF139A18E96402001E3448 /* LHLReplyNotificationViewController.xib */,
 				636CF4B618BD90350085C28E /* test */,
 				181A786318C4206700D288D3 /* TenSecChallengeViewController.h */,
 				181A786418C4206700D288D3 /* TenSecChallengeViewController.m */,
@@ -2246,6 +2262,7 @@
 				18CF139218E93B61001E3448 /* MainViewController.xib in Resources */,
 				63AFA4CC18E510A200A30DB1 /* HomeworkTypeCollctionCell.xib in Resources */,
 				186C021E18D9866000D77EEC /* SelectingChallengeViewController.xib in Resources */,
+				18CF139718E961CB001E3448 /* LHLNotificationContainerVC.xib in Resources */,
 				185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */,
 				188ED74318CDA6BA00D1210F /* answer-1.js in Resources */,
 				182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */,
@@ -2349,6 +2366,7 @@
 				630DBDFB18D15AFB009DA0EB /* back@2x.png in Resources */,
 				0E93C9B618D842480094AD7B /* alertEffect.wav in Resources */,
 				0E9D68AA18CD685100EACFA3 /* card_back_selected@2x.png in Resources */,
+				18CF139C18E96402001E3448 /* LHLReplyNotificationViewController.xib in Resources */,
 				63289A2E18C595D300C0083E /* reading_stop@2x.png in Resources */,
 				630DBDD718D15936009DA0EB /* notificationTabBarItem@2x.png in Resources */,
 				0E92656418BD92A0003ADEC3 /* SecondViewController.xib in Resources */,
@@ -2471,6 +2489,7 @@
 				181A786618C4206700D288D3 /* TenSecChallengeViewController.m in Sources */,
 				6396580A18C04D4A002F2A90 /* HomeworkViewController.m in Sources */,
 				63DB91BC18CD64B800157D74 /* LineDualSentenceObj.m in Sources */,
+				18CF139618E961CB001E3448 /* LHLNotificationContainerVC.m in Sources */,
 				0EEF4BD818C561570058606A /* CardFirstView.m in Sources */,
 				6396578218C0374C002F2A90 /* StudentTableViewCell.m in Sources */,
 				0E9D689D18CD670E00EACFA3 /* CardpackageViewController.m in Sources */,
@@ -2509,6 +2528,7 @@
 				18B4EB7E18D29D9F00986766 /* LHLGetSysNoticeInterface.m in Sources */,
 				0E9D68A118CD671F00EACFA3 /* CardObject.m in Sources */,
 				186F216718D6D5BA0089A329 /* MJRefreshBaseView.m in Sources */,
+				18CF139B18E96402001E3448 /* LHLReplyNotificationViewController.m in Sources */,
 				0EEF4C2818C5BAFD0058606A /* DeleteMessage.m in Sources */,
 				6329556618BC900600F2B78D /* SDWebImageDownloader.m in Sources */,
 				6396581218C04F68002F2A90 /* HomeworkTypeCollctionCell.m in Sources */,

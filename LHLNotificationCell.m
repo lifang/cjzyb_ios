@@ -28,6 +28,8 @@
 
 - (void)initCell{
     [self.imgView.layer setCornerRadius:3.0];
+    
+    [self.coverButton addTarget:self action:@selector(coverButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 
 //    self.textView.delegate = self;
     
@@ -84,12 +86,6 @@
         } completion:^(BOOL finished) {
             
         }];
-    }
-}
-
-- (void)coverButtonDraged:(BOOL)toLeft{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(cell:dragToLeft:)]) {
-        [self.delegate cell:self dragToLeft:toLeft];
     }
 }
 
