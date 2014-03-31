@@ -7,6 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E0E800E18E912BF0022AC57 /* StudentListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396577318C036B1002F2A90 /* StudentListViewController.xib */; };
+		0E0E800F18E912BF0022AC57 /* focusBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659C18BDE51F003ADEC3 /* focusBtn@2x.png */; };
+		0E0E801018E912BF0022AC57 /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4B318BD8F3B0085C28E /* TestViewController.xib */; };
+		0E0E801118E912BF0022AC57 /* focus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92658518BDC528003ADEC3 /* focus@2x.png */; };
+		0E0E801218E912BF0022AC57 /* comment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92658718BDC546003ADEC3 /* comment@2x.png */; };
+		0E0E801318E912BF0022AC57 /* arrowImg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9265A518BF008C003ADEC3 /* arrowImg@2x.png */; };
+		0E0E801418E912BF0022AC57 /* third_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657718BDACDD003ADEC3 /* third_active@2x.png */; };
+		0E0E801518E912BF0022AC57 /* question.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2F18C5B11E00C0083E /* question.geojson */; };
+		0E0E801618E912BF0022AC57 /* StudentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396577E18C0374C002F2A90 /* StudentTableViewCell.xib */; };
+		0E0E801718E912BF0022AC57 /* focusBtn_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659B18BDE51F003ADEC3 /* focusBtn_active@2x.png */; };
+		0E0E801818E912BF0022AC57 /* deleteBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659A18BDE51F003ADEC3 /* deleteBtn@2x.png */; };
+		0E0E801918E912BF0022AC57 /* third@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657818BDACDD003ADEC3 /* third@2x.png */; };
+		0E0E801A18E912BF0022AC57 /* first_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657318BDACDD003ADEC3 /* first_active@2x.png */; };
+		0E0E801B18E912BF0022AC57 /* commentBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659918BDE51F003ADEC3 /* commentBtn@2x.png */; };
+		0E0E801C18E912BF0022AC57 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6329549A18BC875800F2B78D /* InfoPlist.strings */; };
+		0E0E801D18E912BF0022AC57 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657618BDACDD003ADEC3 /* second@2x.png */; };
+		0E0E801E18E912BF0022AC57 /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657418BDACDD003ADEC3 /* first@2x.png */; };
+		0E0E801F18E912BF0022AC57 /* send@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9265A318BEEA01003ADEC3 /* send@2x.png */; };
+		0E0E802018E912BF0022AC57 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 632954A318BC875800F2B78D /* Images.xcassets */; };
+		0E0E802118E912BF0022AC57 /* second_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657518BDACDD003ADEC3 /* second_active@2x.png */; };
 		0E2B517918DC138A0056859D /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5D1C7418C99F19008A13F2 /* TencentOpenAPI.framework */; };
 		0E2B517C18DC27110056859D /* trueMusic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0E2B517A18DC27110056859D /* trueMusic.wav */; };
 		0E2B517D18DC27110056859D /* falseMusic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0E2B517B18DC27110056859D /* falseMusic.wav */; };
@@ -40,20 +60,6 @@
 		0E92656418BD92A0003ADEC3 /* SecondViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92656218BD92A0003ADEC3 /* SecondViewController.xib */; };
 		0E92656818BD92B0003ADEC3 /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92656618BD92B0003ADEC3 /* ThirdViewController.m */; };
 		0E92656918BD92B0003ADEC3 /* ThirdViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92656718BD92B0003ADEC3 /* ThirdViewController.xib */; };
-		0E92657918BDACDD003ADEC3 /* first_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657318BDACDD003ADEC3 /* first_active@2x.png */; };
-		0E92657A18BDACDD003ADEC3 /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657418BDACDD003ADEC3 /* first@2x.png */; };
-		0E92657B18BDACDD003ADEC3 /* second_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657518BDACDD003ADEC3 /* second_active@2x.png */; };
-		0E92657C18BDACDD003ADEC3 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657618BDACDD003ADEC3 /* second@2x.png */; };
-		0E92657D18BDACDD003ADEC3 /* third_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657718BDACDD003ADEC3 /* third_active@2x.png */; };
-		0E92657E18BDACDD003ADEC3 /* third@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92657818BDACDD003ADEC3 /* third@2x.png */; };
-		0E92658618BDC528003ADEC3 /* focus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92658518BDC528003ADEC3 /* focus@2x.png */; };
-		0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92658718BDC546003ADEC3 /* comment@2x.png */; };
-		0E92659D18BDE51F003ADEC3 /* commentBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659918BDE51F003ADEC3 /* commentBtn@2x.png */; };
-		0E92659E18BDE51F003ADEC3 /* deleteBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659A18BDE51F003ADEC3 /* deleteBtn@2x.png */; };
-		0E92659F18BDE51F003ADEC3 /* focusBtn_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659B18BDE51F003ADEC3 /* focusBtn_active@2x.png */; };
-		0E9265A018BDE51F003ADEC3 /* focusBtn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E92659C18BDE51F003ADEC3 /* focusBtn@2x.png */; };
-		0E9265A418BEEA01003ADEC3 /* send@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9265A318BEEA01003ADEC3 /* send@2x.png */; };
-		0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9265A518BF008C003ADEC3 /* arrowImg@2x.png */; };
 		0E9265BF18C028A9003ADEC3 /* ComtomTxt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9265BE18C028A9003ADEC3 /* ComtomTxt.m */; };
 		0E92ECDF18D2B03600B6806C /* ClozeAnswerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E92ECDD18D2B03600B6806C /* ClozeAnswerViewController.m */; };
 		0E92ECE018D2B03600B6806C /* ClozeAnswerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92ECDE18D2B03600B6806C /* ClozeAnswerViewController.xib */; };
@@ -68,7 +74,6 @@
 		0E93C9D618DAE7C30094AD7B /* CustomLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9D518DAE7C30094AD7B /* CustomLabel.m */; };
 		0E97C9CC18E2A17500890F60 /* logOut@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9CB18E2A17500890F60 /* logOut@2x.png */; };
 		0E97C9CE18E2A81700890F60 /* contact_message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9CD18E2A81700890F60 /* contact_message@2x.png */; };
-		0E97C9DA18E2BA7200890F60 /* libPushSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E97C9D918E2BA7200890F60 /* libPushSDK.a */; };
 		0E97C9DC18E2BABB00890F60 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9DB18E2BABB00890F60 /* PushConfig.plist */; };
 		0E9C6E9818D1496000E807D1 /* SortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9C6E9618D1496000E807D1 /* SortViewController.m */; };
 		0E9C6E9918D1496000E807D1 /* SortViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9C6E9718D1496000E807D1 /* SortViewController.xib */; };
@@ -263,16 +268,13 @@
 		63289A2C18C595D300C0083E /* listening_stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2818C595D300C0083E /* listening_stop@2x.png */; };
 		63289A2D18C595D300C0083E /* reading_start@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2918C595D300C0083E /* reading_start@2x.png */; };
 		63289A2E18C595D300C0083E /* reading_stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2A18C595D300C0083E /* reading_stop@2x.png */; };
-		63289A3018C5B11E00C0083E /* question.geojson in Resources */ = {isa = PBXBuildFile; fileRef = 63289A2F18C5B11E00C0083E /* question.geojson */; };
 		63289A3418C5B2AC00C0083E /* ReadingHomeworkObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 63289A3318C5B2AC00C0083E /* ReadingHomeworkObj.m */; };
 		63289A3A18C5B46400C0083E /* ReadingSentenceObj.m in Sources */ = {isa = PBXBuildFile; fileRef = 63289A3918C5B46400C0083E /* ReadingSentenceObj.m */; };
 		63289A3D18C5B74600C0083E /* ParseQuestionJsonFileTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 63289A3C18C5B74600C0083E /* ParseQuestionJsonFileTool.m */; };
 		6329549418BC875800F2B78D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549318BC875800F2B78D /* CoreGraphics.framework */; };
 		6329549618BC875800F2B78D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549518BC875800F2B78D /* UIKit.framework */; };
-		6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6329549A18BC875800F2B78D /* InfoPlist.strings */; };
 		6329549E18BC875800F2B78D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6329549D18BC875800F2B78D /* main.m */; };
 		632954A218BC875800F2B78D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 632954A118BC875800F2B78D /* AppDelegate.m */; };
-		632954A418BC875800F2B78D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 632954A318BC875800F2B78D /* Images.xcassets */; };
 		632954AB18BC875800F2B78D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 632954AA18BC875800F2B78D /* XCTest.framework */; };
 		632954AC18BC875800F2B78D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549118BC875800F2B78D /* Foundation.framework */; };
 		632954AD18BC875800F2B78D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6329549518BC875800F2B78D /* UIKit.framework */; };
@@ -338,7 +340,6 @@
 		6341536918C1C96C00DE4480 /* CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6341536718C1C96C00DE4480 /* CalendarViewController.xib */; };
 		636CF4AB18BD848E0085C28E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 636CF4AA18BD848E0085C28E /* MBProgressHUD.m */; };
 		636CF4B418BD8F3B0085C28E /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 636CF4B218BD8F3B0085C28E /* TestViewController.m */; };
-		636CF4B518BD8F3B0085C28E /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 636CF4B318BD8F3B0085C28E /* TestViewController.xib */; };
 		636CF4EB18BDD1030085C28E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 636CF4EA18BDD1030085C28E /* QuartzCore.framework */; };
 		638C04FA18E51D13009BFD40 /* HomeworkRankingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 638C04F818E51D13009BFD40 /* HomeworkRankingViewController.m */; };
 		638C04FB18E51D13009BFD40 /* HomeworkRankingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 638C04F918E51D13009BFD40 /* HomeworkRankingViewController.xib */; };
@@ -354,9 +355,7 @@
 		6396577718C036B1002F2A90 /* ClassGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396576F18C036B1002F2A90 /* ClassGroupViewController.m */; };
 		6396577818C036B1002F2A90 /* ClassGroupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396577018C036B1002F2A90 /* ClassGroupViewController.xib */; };
 		6396577918C036B1002F2A90 /* StudentListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396577218C036B1002F2A90 /* StudentListViewController.m */; };
-		6396577A18C036B1002F2A90 /* StudentListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396577318C036B1002F2A90 /* StudentListViewController.xib */; };
 		6396578218C0374C002F2A90 /* StudentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396577D18C0374C002F2A90 /* StudentTableViewCell.m */; };
-		6396578318C0374C002F2A90 /* StudentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396577E18C0374C002F2A90 /* StudentTableViewCell.xib */; };
 		6396578418C0374C002F2A90 /* StudentSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396578018C0374C002F2A90 /* StudentSummaryCell.m */; };
 		6396578518C0374C002F2A90 /* StudentSummaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6396578118C0374C002F2A90 /* StudentSummaryCell.xib */; };
 		6396579018C03766002F2A90 /* LeftTabBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6396578A18C03766002F2A90 /* LeftTabBarView.m */; };
@@ -486,8 +485,6 @@
 		0E93C9D518DAE7C30094AD7B /* CustomLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLabel.m; sourceTree = "<group>"; };
 		0E97C9CB18E2A17500890F60 /* logOut@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logOut@2x.png"; sourceTree = "<group>"; };
 		0E97C9CD18E2A81700890F60 /* contact_message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact_message@2x.png"; sourceTree = "<group>"; };
-		0E97C9D818E2BA7200890F60 /* APService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APService.h; sourceTree = "<group>"; };
-		0E97C9D918E2BA7200890F60 /* libPushSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libPushSDK.a; sourceTree = "<group>"; };
 		0E97C9DB18E2BABB00890F60 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
 		0E9C6E9518D1496000E807D1 /* SortViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortViewController.h; sourceTree = "<group>"; };
 		0E9C6E9618D1496000E807D1 /* SortViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortViewController.m; sourceTree = "<group>"; };
@@ -1010,7 +1007,6 @@
 				0EAABD6218CEA35900CD2DE7 /* MediaPlayer.framework in Frameworks */,
 				0E5D1C8118C99FBD008A13F2 /* CoreTelephony.framework in Frameworks */,
 				0E5D1C7F18C99FAE008A13F2 /* Security.framework in Frameworks */,
-				0E97C9DA18E2BA7200890F60 /* libPushSDK.a in Frameworks */,
 				63B8D26C18C84C7C004141E9 /* Foundation.framework in Frameworks */,
 				6334F29418C6BA6500515A3F /* AVFoundation.framework in Frameworks */,
 				6334F29218C6BA4900515A3F /* AudioToolbox.framework in Frameworks */,
@@ -1111,15 +1107,6 @@
 			name = images;
 			sourceTree = "<group>";
 		};
-		0E97C9D718E2BA7200890F60 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				0E97C9D818E2BA7200890F60 /* APService.h */,
-				0E97C9D918E2BA7200890F60 /* libPushSDK.a */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
 		0E9D689418CD4DEC00EACFA3 /* SVPullToRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -1164,8 +1151,8 @@
 				0E92656118BD92A0003ADEC3 /* SecondViewController.m */,
 				0E92656218BD92A0003ADEC3 /* SecondViewController.xib */,
 				0E92656518BD92B0003ADEC3 /* ThirdViewController.h */,
-				0E92656618BD92B0003ADEC3 /* ThirdViewController.m */,
 				0E92656718BD92B0003ADEC3 /* ThirdViewController.xib */,
+				0E92656618BD92B0003ADEC3 /* ThirdViewController.m */,
 				0E5D1C6418C85FD5008A13F2 /* FourthViewController.h */,
 				0E5D1C6518C85FD5008A13F2 /* FourthViewController.m */,
 				0E5D1C6618C85FD5008A13F2 /* FourthViewController.xib */,
@@ -1637,7 +1624,6 @@
 		632954C318BC879B00F2B78D /* thirtys */ = {
 			isa = PBXGroup;
 			children = (
-				0E97C9D718E2BA7200890F60 /* lib */,
 				182BEE4218E12F8100FC0AA0 /* ZipArchiever */,
 				0E660F1E18E0277D0074454C /* upLoadImage */,
 				0E9D68C218CD965B00EACFA3 /* 搜索算法 */,
@@ -2222,7 +2208,7 @@
 		6329548618BC875800F2B78D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = david;
 				TargetAttributes = {
 					6329548D18BC875800F2B78D = {
@@ -2268,7 +2254,7 @@
 				0E9D689818CD4E0D00EACFA3 /* SVPullToRefresh.bundle in Resources */,
 				63289A2D18C595D300C0083E /* reading_start@2x.png in Resources */,
 				187C4AC918D304AC0006461D /* 10_04@2x.png in Resources */,
-				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
+				0E0E801C18E912BF0022AC57 /* InfoPlist.strings in Resources */,
 				630DBDFE18D15AFB009DA0EB /* xunsu_yellow@2x.png in Resources */,
 				6396579118C03766002F2A90 /* LeftTabBarView.xib in Resources */,
 				186F216618D6D5BA0089A329 /* MJRefresh.bundle in Resources */,
@@ -2284,7 +2270,7 @@
 				6396577618C036B1002F2A90 /* UserInfoPopViewController.xib in Resources */,
 				18AA80B818BEFFFD00EC08CE /* bg@2x.png in Resources */,
 				1867B53C18D00D710042A95D /* replyMessage@2x.png in Resources */,
-				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
+				0E0E802018E912BF0022AC57 /* Images.xcassets in Resources */,
 				630DBE1E18D15CB1009DA0EB /* homework_quik@2x.png in Resources */,
 				1818F6A618C561ED00DC6207 /* TenSecChallengeResultView.xib in Resources */,
 				630DBDD618D15936009DA0EB /* mainTabBarItem@2x.png in Resources */,
@@ -2301,42 +2287,30 @@
 				630DBE0818D15BF4009DA0EB /* propOfAnswer@2x.png in Resources */,
 				187C4AC718D304AC0006461D /* 10_02@2x.png in Resources */,
 				630DBDFC18D15AFB009DA0EB /* jiezu_yellow@2x.png in Resources */,
-				0E92657A18BDACDD003ADEC3 /* first@2x.png in Resources */,
+				0E0E801E18E912BF0022AC57 /* first@2x.png in Resources */,
 				0E2B517C18DC27110056859D /* trueMusic.wav in Resources */,
 				630DBDF318D15A95009DA0EB /* youxiu@2x.png in Resources */,
-				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				187C4ACB18D304AC0006461D /* 10_06@2x.png in Resources */,
 				630DBE1D18D15CB1009DA0EB /* homework_line@2x.png in Resources */,
 				0E93C9B018D834630094AD7B /* ios-playing@2x.png in Resources */,
-				6396578318C0374C002F2A90 /* StudentTableViewCell.xib in Resources */,
-				0E92659D18BDE51F003ADEC3 /* commentBtn@2x.png in Resources */,
+				0E0E801618E912BF0022AC57 /* StudentTableViewCell.xib in Resources */,
+				0E0E801B18E912BF0022AC57 /* commentBtn@2x.png in Resources */,
 				63B81C5018CF05F900004745 /* HomeworkContainerController.xib in Resources */,
 				630DBDD818D15936009DA0EB /* tabBarItemBack@2x.png in Resources */,
 				0E2B517D18DC27110056859D /* falseMusic.wav in Resources */,
-				0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */,
-				0E9265A018BDE51F003ADEC3 /* focusBtn@2x.png in Resources */,
+				0E0E801218E912BF0022AC57 /* comment@2x.png in Resources */,
+				0E0E800F18E912BF0022AC57 /* focusBtn@2x.png in Resources */,
 				630DBDD918D15936009DA0EB /* userGroupItem@2x.png in Resources */,
-				0E92657918BDACDD003ADEC3 /* first_active@2x.png in Resources */,
+				0E0E801A18E912BF0022AC57 /* first_active@2x.png in Resources */,
 				630DBDDD18D1596F009DA0EB /* navigationBarLeftItem@2x.png in Resources */,
-				0E92657E18BDACDD003ADEC3 /* third@2x.png in Resources */,
-				0E92657A18BDACDD003ADEC3 /* first@2x.png in Resources */,
+				0E0E801918E912BF0022AC57 /* third@2x.png in Resources */,
 				0E9D688D18C9AB6D00EACFA3 /* detail_sure@2x.png in Resources */,
-				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
-				6396578318C0374C002F2A90 /* StudentTableViewCell.xib in Resources */,
 				0E5D1C7218C96B45008A13F2 /* fourth@2x.png in Resources */,
 				0E5D1C7B18C99F3A008A13F2 /* LogInViewController.xib in Resources */,
-				0E92659D18BDE51F003ADEC3 /* commentBtn@2x.png in Resources */,
-				0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */,
 				0E5D1C8918C9A18F008A13F2 /* QQLogIn@2x.png in Resources */,
 				630E063718E16C760044F819 /* PreReadingTaskViewController.xib in Resources */,
-				0E9265A018BDE51F003ADEC3 /* focusBtn@2x.png in Resources */,
-				0E92657918BDACDD003ADEC3 /* first_active@2x.png in Resources */,
 				0E9D68BB18CD6C5500EACFA3 /* card_searchBtn@2x.png in Resources */,
 				0E9D68BC18CD6C5500EACFA3 /* card_searchText@2x.png in Resources */,
-				0E92658818BDC546003ADEC3 /* comment@2x.png in Resources */,
-				0E9265A018BDE51F003ADEC3 /* focusBtn@2x.png in Resources */,
-				0E92657918BDACDD003ADEC3 /* first_active@2x.png in Resources */,
-				0E92657E18BDACDD003ADEC3 /* third@2x.png in Resources */,
 				0E97C9DC18E2BABB00890F60 /* PushConfig.plist in Resources */,
 				0E5D1C6818C85FD5008A13F2 /* FourthViewController.xib in Resources */,
 				188ED74218CD850700D1210F /* wrong_sound.mp3 in Resources */,
@@ -2349,9 +2323,8 @@
 				630DBE1C18D15CB1009DA0EB /* homework_left@2x.png in Resources */,
 				0E92656918BD92B0003ADEC3 /* ThirdViewController.xib in Resources */,
 				630DBDFA18D15AFB009DA0EB /* arrowBack@2x.png in Resources */,
-				0E92657D18BDACDD003ADEC3 /* third_active@2x.png in Resources */,
+				0E0E801418E912BF0022AC57 /* third_active@2x.png in Resources */,
 				0E9D689E18CD670E00EACFA3 /* CardpackageViewController.xib in Resources */,
-				0E92657D18BDACDD003ADEC3 /* third_active@2x.png in Resources */,
 				0E9D68DC18CDC45400EACFA3 /* card_highted@2x.png in Resources */,
 				0E9D68A518CD680700EACFA3 /* card_deleteBtn@2x.png in Resources */,
 				0E9D688918C9A96C00EACFA3 /* detail_logIn@2x.png in Resources */,
@@ -2359,7 +2332,6 @@
 				187C4ACF18D304AC0006461D /* 10_10@2x.png in Resources */,
 				6396577818C036B1002F2A90 /* ClassGroupViewController.xib in Resources */,
 				630DBE2118D15CB1009DA0EB /* homework_select@2x.png in Resources */,
-				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
 				18E01DA518CDB70B0016FA7D /* yourChoice@2x.png in Resources */,
 				1867B53718D006AB0042A95D /* systemMessage@2x.png in Resources */,
 				1833276B18CEB38000638107 /* smallTriangle@2x.png in Resources */,
@@ -2378,11 +2350,10 @@
 				63289A2E18C595D300C0083E /* reading_stop@2x.png in Resources */,
 				630DBDD718D15936009DA0EB /* notificationTabBarItem@2x.png in Resources */,
 				0E92656418BD92A0003ADEC3 /* SecondViewController.xib in Resources */,
-				0E92657B18BDACDD003ADEC3 /* second_active@2x.png in Resources */,
+				0E0E802118E912BF0022AC57 /* second_active@2x.png in Resources */,
 				187C4ACD18D304AC0006461D /* 10_08@2x.png in Resources */,
 				630DBE1A18D15CB1009DA0EB /* homework_finishedFalg@2x.png in Resources */,
 				0EAABD7F18CF15C900CD2DE7 /* card_noselected@2x.png in Resources */,
-				0E92657B18BDACDD003ADEC3 /* second_active@2x.png in Resources */,
 				0E5D1C7118C96B45008A13F2 /* fourth_active@2x.png in Resources */,
 				0EEF4C1618C5622F0058606A /* FirstViewController.xib in Resources */,
 				0E9C6E9918D1496000E807D1 /* SortViewController.xib in Resources */,
@@ -2391,57 +2362,43 @@
 				63289A2C18C595D300C0083E /* listening_stop@2x.png in Resources */,
 				630DBDCD18D15653009DA0EB /* DRNavigationBar.xib in Resources */,
 				630DBE0918D15BF4009DA0EB /* propOfTime@2x.png in Resources */,
-				0E9265A418BEEA01003ADEC3 /* send@2x.png in Resources */,
-				0E92657C18BDACDD003ADEC3 /* second@2x.png in Resources */,
-				0E92658618BDC528003ADEC3 /* focus@2x.png in Resources */,
-				6396577A18C036B1002F2A90 /* StudentListViewController.xib in Resources */,
+				0E0E801F18E912BF0022AC57 /* send@2x.png in Resources */,
+				0E0E801D18E912BF0022AC57 /* second@2x.png in Resources */,
+				0E0E801118E912BF0022AC57 /* focus@2x.png in Resources */,
+				0E0E800E18E912BF0022AC57 /* StudentListViewController.xib in Resources */,
 				630DBDEE18D15A95009DA0EB /* progressBack@2x.png in Resources */,
 				630DBDD418D15936009DA0EB /* carBarItem@2x.png in Resources */,
-				0E92659E18BDE51F003ADEC3 /* deleteBtn@2x.png in Resources */,
+				0E0E801818E912BF0022AC57 /* deleteBtn@2x.png in Resources */,
 				187C4AC618D304AC0006461D /* 10_01@2x.png in Resources */,
 				630DBE1F18D15CB1009DA0EB /* homework_reading@2x.png in Resources */,
 				638C050318E52063009BFD40 /* HomeworkRankingTableViewCell.xib in Resources */,
 				0E93C9B118D834630094AD7B /* ios-stop@2x.png in Resources */,
-				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
 				630DBDE918D15A95009DA0EB /* addClass@2x.png in Resources */,
 				630DBDED18D15A95009DA0EB /* point@2x.png in Resources */,
 				630DBE1B18D15CB1009DA0EB /* homework_history@2x.png in Resources */,
-				636CF4B518BD8F3B0085C28E /* TestViewController.xib in Resources */,
+				0E0E801018E912BF0022AC57 /* TestViewController.xib in Resources */,
 				630DBDFF18D15AFB009DA0EB /* youxiu_yellow@2x.png in Resources */,
 				630DBDEC18D15A95009DA0EB /* line@2x.png in Resources */,
-				0E92659F18BDE51F003ADEC3 /* focusBtn_active@2x.png in Resources */,
-				63289A3018C5B11E00C0083E /* question.geojson in Resources */,
+				0E0E801718E912BF0022AC57 /* focusBtn_active@2x.png in Resources */,
+				0E0E801518E912BF0022AC57 /* question.geojson in Resources */,
 				187C4AC818D304AC0006461D /* 10_03@2x.png in Resources */,
-				0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */,
+				0E0E801318E912BF0022AC57 /* arrowImg@2x.png in Resources */,
 				0E9C6E9E18D1977E00E807D1 /* SelectedViewController.xib in Resources */,
 				0EAABDBF18D0416E00CD2DE7 /* listen_back@2x.png in Resources */,
 				0E5D1C8718C9A13C008A13F2 /* logo@2x.png in Resources */,
-				0E9265A418BEEA01003ADEC3 /* send@2x.png in Resources */,
-				0E92657C18BDACDD003ADEC3 /* second@2x.png in Resources */,
 				638C04FE18E51E1F009BFD40 /* close@2x.png in Resources */,
-				0E92658618BDC528003ADEC3 /* focus@2x.png in Resources */,
 				0E9D688B18C9AA2900EACFA3 /* detail_info@2x.png in Resources */,
-				6396577A18C036B1002F2A90 /* StudentListViewController.xib in Resources */,
 				0E9D68A618CD680700EACFA3 /* card_voiceBtn@2x.png in Resources */,
 				0E9D68A718CD680700EACFA3 /* txtBtn@2x.png in Resources */,
-				0E92659E18BDE51F003ADEC3 /* deleteBtn@2x.png in Resources */,
-				0E92659E18BDE51F003ADEC3 /* deleteBtn@2x.png in Resources */,
-				6329549C18BC875800F2B78D /* InfoPlist.strings in Resources */,
-				636CF4B518BD8F3B0085C28E /* TestViewController.xib in Resources */,
 				0E9D68CA18CD972600EACFA3 /* multipy_unicode.dat in Resources */,
 				0E660F2618E02FC30074454C /* ImageSelectedViewController.xib in Resources */,
-				0E92659F18BDE51F003ADEC3 /* focusBtn_active@2x.png in Resources */,
 				0E5D1C8518C9A0FE008A13F2 /* logIn@2x.png in Resources */,
 				0E92ECE018D2B03600B6806C /* ClozeAnswerViewController.xib in Resources */,
 				0EAABD8218CF17B400CD2DE7 /* card_tg@2x.png in Resources */,
-				63289A3018C5B11E00C0083E /* question.geojson in Resources */,
 				187C4ACE18D304AC0006461D /* 10_09@2x.png in Resources */,
-				0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */,
-				0E9265A618BF008C003ADEC3 /* arrowImg@2x.png in Resources */,
 				63289A2B18C595D300C0083E /* listening_start@2x.png in Resources */,
 				0E5E020818E16F0800E55DD0 /* TextViewController.xib in Resources */,
 				6396580B18C04D4A002F2A90 /* HomeworkViewController.xib in Resources */,
-				632954A418BC875800F2B78D /* Images.xcassets in Resources */,
 				630DBDEA18D15A95009DA0EB /* jiezu@2x.png in Resources */,
 				630DBDF218D15A95009DA0EB /* xunsu@2x.png in Resources */,
 				630DBE1918D15CB1009DA0EB /* homework_calendar@2x.png in Resources */,
@@ -2707,7 +2664,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2737,7 +2693,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv7s armv64";
@@ -2748,7 +2704,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2782,7 +2737,6 @@
 		632954BB18BC875800F2B78D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Sen Ye (FE46ZS29LM)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sen Ye (FE46ZS29LM)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2815,7 +2769,6 @@
 		632954BC18BC875800F2B78D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Sen Ye (63FVWL9TD6)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2847,7 +2800,6 @@
 		632954BE18BC875800F2B78D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/cjzyb_ios.app/cjzyb_ios";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -2871,7 +2823,6 @@
 		632954BF18BC875800F2B78D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/cjzyb_ios.app/cjzyb_ios";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

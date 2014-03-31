@@ -720,8 +720,8 @@
     if (self.replyInputTextView.text.length < 1) {
         [Utility errorAlert:@"回复内容不能为空"];
         return;
-    }else if(self.replyInputTextView.text.length > 500){
-        [Utility errorAlert:@"回复内容不能超过500个字符"];
+    }else if(self.replyInputTextView.text.length > 60){
+        [Utility errorAlert:@"回复内容不能超过60个字符"];
         return;
     }
     ReplyNotificationObject *notice = self.replyNotificationArray[self.replyingIndexPath.row];

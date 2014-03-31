@@ -757,7 +757,7 @@ static int numberOfMusic =0;
     }else{
         self.homeControl.spendSecond = 0;
     }
-    self.homeControl.timerLabel.text = [Utility formateDateStringWithSecond:self.homeControl.spendSecond];
+    self.homeControl.timerLabel.text = [Utility formateDateStringWithSecond:(NSInteger)self.homeControl.spendSecond];
     
     UILabel *label = [[UILabel alloc] initWithFrame:(CGRect){self.view.frame.size.width/2,120,70,50}];
     [label setFont:[UIFont systemFontOfSize:50]];

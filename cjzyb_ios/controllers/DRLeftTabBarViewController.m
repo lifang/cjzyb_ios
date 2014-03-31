@@ -394,6 +394,13 @@
         [UserObjDaoInterface modifyUserNickNameAndHeaderImageWithUserId:data.user.studentId withUserName:data.user.name withUserNickName:data.user.nickName withHeaderData:UIImagePNGRepresentation(editedImage) withSuccess:^(NSString *msg) {
             DRLeftTabBarViewController *tempSelf = weakSelf;
             if (tempSelf) {
+//                [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadFirstArrayByImage" object:nil];
+//                
+//                NSString *second = [NSString stringWithFormat:@"%d",1];
+//                if ([[DataService sharedService].numberOfViewArray containsObject:second]) {
+//                    [[NSNotificationCenter defaultCenter]postNotificationName:@"reloadSecondArrayByImage" object:nil];
+//                }
+                
                 [Utility errorAlert:@"修改头像成功"];
                 [MBProgressHUD hideHUDForView:tempSelf.view animated:YES];
             }
