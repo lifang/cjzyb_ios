@@ -410,6 +410,17 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     return [dateFormatter stringFromDate:date];
 }
 
+
+///判断question文件是否已经下载
++(BOOL)judgeQuestionJsonFileIsExistForTaskObj:(TaskObj*)task{
+    NSString *path = [NSString stringWithFormat:@""];
+    NSFileManager *manager = [NSFileManager defaultManager];
+    if ([manager fileExistsAtPath:path isDirectory:NO]) {
+        return YES;
+    }
+    return NO;
+}
+
 +(BOOL)requestFailure:(NSError*)error tipMessageBlock:(void(^)(NSString *tipMsg))msg{
     if (!error) {
         msg(@"无法连接服务器");

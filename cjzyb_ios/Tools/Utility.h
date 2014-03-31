@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "ASIHTTPRequest.h"
 #import "ZipArchive.h"
+#import "TaskObj.h"
 @interface Utility : NSObject
 
 @property (nonatomic, assign) int firstpoint;
@@ -77,6 +78,9 @@
 
 ///格式化时间字符串
 +(NSString*)formateDateStringWithDateString:(NSString*)dateString;
+
+///判断question文件是否已经下载
++(BOOL)judgeQuestionJsonFileIsExistForTaskObj:(TaskObj*)task;
 
 + (NSString *)createMD5:(NSString *)params;
 + (NSDictionary *)initWithJSONFile:(NSString *)jsonPath;
