@@ -238,7 +238,8 @@
 //    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
 //    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
 //    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
-//    self.window.rootViewController = tabBarController;
+//    self.window.rootViewController = notificationView;
+//    [self.window makeKeyAndVisible];
 
     return YES;
 }

@@ -26,6 +26,8 @@
 ///这个任务包含的作业类型HomeworkTypeObj
 @property (strong,nonatomic) NSArray *taskHomeworkTypeArray;
 @property (nonatomic, strong) NSMutableArray *finish_types;//
+///一个task理论上对应的文件夹
+@property (nonatomic,strong) NSString *taskFolderPath;
 
 +(TaskObj *)taskFromDictionary:(NSDictionary *)aDic;
 @end

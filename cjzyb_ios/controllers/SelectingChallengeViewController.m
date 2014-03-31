@@ -17,7 +17,8 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *questionPlayButton;  //声音按钮
 - (IBAction)questionPlayButtonClicked:(id)sender;
-@property (weak, nonatomic) IBOutlet UIWebView *questionImageWebView;   //图片
+///图片
+@property (weak, nonatomic) IBOutlet UIImageView *questionImageView;
 @property (weak, nonatomic) IBOutlet UITextView *questionTextView;          //问题题面
 @property (weak, nonatomic) IBOutlet UITableView *optionTable;  //选项table
 //@property (weak, nonatomic) IBOutlet UIButton *nextButton;  //下一个/检查 按钮
@@ -466,7 +467,9 @@
 
 - (NSData *)currentAudioData{
     if (!_currentAudioData) {
-        _currentAudioData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.currentQuestion.seContentAttachment]];
+//        _currentAudioData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.currentQuestion.seContentAttachment]];
+        
+        _currentAudioData = [NSData dataWithContentsOfFile:[[DataService sharedService].taskObj.taskFolderPath stringByAppendingPathComponent:self.currentQuestion.seContentAttachment]];
     }
     return _currentAudioData;
 }
@@ -546,7 +549,7 @@
         switch (self.selectingType) {
             case SelectingTypeDefault:
             {
-                self.questionImageWebView.hidden = YES;
+                self.questionImageView.hidden = YES;
                 self.questionPlayButton.hidden = YES;
                 self.questionTextView.hidden = NO;
                 
@@ -559,7 +562,7 @@
                 
             case SelectingTypeListening:
             {
-                self.questionImageWebView.hidden = YES;
+                self.questionImageView.hidden = YES;
                 self.questionPlayButton.hidden = NO;
                 self.questionTextView.hidden = YES;
                 
@@ -570,17 +573,17 @@
                 
             case SelectingTypeWatching:
             {
-                self.questionImageWebView.hidden = NO;
+                self.questionImageView.hidden = NO;
                 self.questionPlayButton.hidden = YES;
                 self.questionTextView.hidden = NO;
                 
-                self.questionImageWebView.frame = (CGRect){38,17,250,265};
+                self.questionImageView.frame = (CGRect){38,17,250,265};
                 self.questionTextView.frame = (CGRect){290,17,430,265};
                 self.optionTable.frame = (CGRect){38,317,650,400};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
-                NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.currentQuestion.seContentAttachment]];
-                [self.questionImageWebView loadRequest:request];
+//                NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:self.currentQuestion.seContentAttachment]];
+//                [self.questionImageView loadRequest:request];
             
             }
                 break;

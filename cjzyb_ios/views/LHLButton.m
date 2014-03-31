@@ -43,21 +43,7 @@
         self.endPoint = [touch locationInView:self];
     }
     double distanceBetweenStartAndEnd = sqrt(pow((self.startPoint.x - self.endPoint.x), 2.0) + pow((self.startPoint.y - self.endPoint.y), 2.0));
-    NSLog(@"%f",distanceBetweenStartAndEnd);
-    if (distanceBetweenStartAndEnd >= 100.0) {
-        double xMoved = self.startPoint.x - self.endPoint.x;
-        if (xMoved >= 80) {
-            //向左划
-            if (self.delegate && [self.delegate respondsToSelector:@selector(coverButtonDraged:)]) {
-                [self.delegate coverButtonDraged:YES];
-            }
-        }else if(xMoved <= -80){
-            //向右划
-            if (self.delegate && [self.delegate respondsToSelector:@selector(coverButtonDraged:)]) {
-                [self.delegate coverButtonDraged:NO];
-            }
-        }
-    }else{
+    if (distanceBetweenStartAndEnd < 10.) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(coverButtonClicked:)]) {
             [self.delegate coverButtonClicked:self];
         }
@@ -69,7 +55,21 @@
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    
+    for (UITouch *touch in event.allTouches) {
+        self.endPoint = [touch locationInView:self];
+    }
+    CGFloat xMoved = self.startPoint.x - self.endPoint.x;
+    if (xMoved >= 80) {
+        //向左划
+        if (self.delegate && [self.delegate respondsToSelector:@selector(coverButtonDraged:)]) {
+            [self.delegate coverButtonDraged:YES];
+        }
+    }else if(xMoved <= -80){
+        //向右划
+        if (self.delegate && [self.delegate respondsToSelector:@selector(coverButtonDraged:)]) {
+            [self.delegate coverButtonDraged:NO];
+        }
+    }
 }
 
 @end

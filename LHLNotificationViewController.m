@@ -180,6 +180,7 @@
         cell.indexPath = indexPath;
         if (indexPath.row % 2 == 1) {
             cell.contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
+        }else{
             cell.contentBgView.backgroundColor = [UIColor whiteColor];
         }
         return cell;
@@ -426,7 +427,8 @@
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
-                        self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
+//                        self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
+                        self.tableView.alpha = self.tableView.alpha == 1.0 ? 0.99 : 1.0;
                     } completion:^(BOOL finished) {
                         [self.tableView reloadData];
                     }];
@@ -464,7 +466,8 @@
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
-                        self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
+//                        self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
+                        self.tableView.alpha = self.tableView.alpha == 1.0 ? 0.99 : 1.0;
                     } completion:^(BOOL finished) {
                         [self.tableView reloadData];
                     }];
@@ -772,7 +775,14 @@
         NSString *urlString = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",address];
         NSURL *url = [NSURL URLWithString:urlString];
         imgData = [NSData dataWithContentsOfURL:url];
-        [self.bufferedImageDic setObject:imgData forKey:address];
+        if (imgData == nil) {
+            [self.bufferedImageDic setObject:[NSNull null] forKey:address];
+        }else{
+            [self.bufferedImageDic setObject:imgData forKey:address];
+        }
+    }
+    if (!imgData || [imgData isKindOfClass:[NSNull class]]) {
+        return [UIImage imageNamed:@"systemMessage.png"];
     }
     return [UIImage imageWithData:imgData];
 }

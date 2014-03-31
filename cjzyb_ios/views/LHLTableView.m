@@ -39,13 +39,29 @@
     }
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+//- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
+//    [super touchesEnded:touches withEvent:event];
+//    for(UITouch *touch in event.allTouches){
+//        self.endPoint = [touch locationInView:self];
+//    }
+//    CGFloat distanceBetweenStartAndEnd = self.startPoint.x - self.endPoint.x;
+//    if (distanceBetweenStartAndEnd >= 80.0) {  //起点在终点右边,表示向左划
+//        if (self.delegateCustom && [self.delegateCustom respondsToSelector:@selector(dragMethod:)]) {
+//            [self.delegateCustom dragMethod:YES];
+//        }
+//    }else if (distanceBetweenStartAndEnd <= -80.0){
+//        if (self.delegateCustom && [self.delegateCustom respondsToSelector:@selector(dragMethod:)]) {
+//            [self.delegateCustom dragMethod:NO];
+//        }
+//    }
+//}
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
     [super touchesEnded:touches withEvent:event];
     for(UITouch *touch in event.allTouches){
         self.endPoint = [touch locationInView:self];
     }
-    double distanceBetweenStartAndEnd = self.startPoint.x - self.endPoint.x;
-    NSLog(@"%f",distanceBetweenStartAndEnd);
+    CGFloat distanceBetweenStartAndEnd = self.startPoint.x - self.endPoint.x;
     if (distanceBetweenStartAndEnd >= 80.0) {  //起点在终点右边,表示向左划
         if (self.delegateCustom && [self.delegateCustom respondsToSelector:@selector(dragMethod:)]) {
             [self.delegateCustom dragMethod:YES];
@@ -55,10 +71,6 @@
             [self.delegateCustom dragMethod:NO];
         }
     }
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-    
 }
 
 @end
