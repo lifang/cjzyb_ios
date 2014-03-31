@@ -410,6 +410,36 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     return [dateFormatter stringFromDate:date];
 }
 
+
+///判断answer json文件是否是最新的版本
++(BOOL)judgeAnswerJsonFileIsLastVersionForTaskObj:(TaskObj*)task withUserId:(NSString*)userId{
+    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,userId?:@""];
+    NSFileManager *manager = [NSFileManager defaultManager];
+    if ([manager fileExistsAtPath:path isDirectory:NO]) {
+        NSError *jsonParsingError = nil;
+        
+        NSDictionary *dataObject = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:path] options:0 error:&jsonParsingError];
+        NSString *updateDate = [dataObject objectForKey:@"update"];
+        NSDate *taskUpdteDate = [Utility getDateFromDateString:task.taskAnswerFileUpdateDate];
+        NSDate *fileUpDate = [Utility getDateFromDateString:updateDate];
+        if ([taskUpdteDate compare:fileUpDate] == NSOrderedSame) {
+            return YES;
+        }
+        return NO;
+    }
+    return NO;
+}
+
+///判断question文件是否已经下载
++(BOOL)judgeQuestionJsonFileIsExistForTaskObj:(TaskObj*)task{
+    NSString *path = [NSString stringWithFormat:@"%@/questions.json",task.taskFolderPath];
+    NSFileManager *manager = [NSFileManager defaultManager];
+    if ([manager fileExistsAtPath:path isDirectory:NO]) {
+        return YES;
+    }
+    return NO;
+}
+
 +(BOOL)requestFailure:(NSError*)error tipMessageBlock:(void(^)(NSString *tipMsg))msg{
     if (!error) {
         msg(@"无法连接服务器");

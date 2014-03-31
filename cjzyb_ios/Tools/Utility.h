@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import "ASIHTTPRequest.h"
 #import "ZipArchive.h"
+#import "TaskObj.h"
 @interface Utility : NSObject
 
 @property (nonatomic, assign) int firstpoint;
@@ -48,6 +49,12 @@
 ///分数转化成等级,满100升一级
 +(NSString*)formateLevelWithScore:(float)score;
 
+//TODO:下载某天的questionJSON.js ,下载当天的可使用单例中的参数
++ (NSDictionary *)downloadQuestionWithAddress:(NSString *)address andStartDate:(NSString *)date;
+
+//TODO:下载某天的answerJSON.js ,下载当天的可使用单例中的参数
++ (NSDictionary *)downloadAnswerWithAddress:(NSString *)address andStartDate:(NSString *)date;
+
 ///异步请求网络数据
 +(void)requestDataWithRequest:(NSURLRequest*)request withSuccess:(void (^)(NSDictionary *dicData))success withFailure:(void (^)(NSError *error))failure;
 
@@ -77,6 +84,12 @@
 
 ///格式化时间字符串
 +(NSString*)formateDateStringWithDateString:(NSString*)dateString;
+
+///判断answer json文件是否是最新的版本
++(BOOL)judgeAnswerJsonFileIsLastVersionForTaskObj:(TaskObj*)task withUserId:(NSString*)userId;
+
+///判断question文件是否已经下载
++(BOOL)judgeQuestionJsonFileIsExistForTaskObj:(TaskObj*)task;
 
 + (NSString *)createMD5:(NSString *)params;
 + (NSDictionary *)initWithJSONFile:(NSString *)jsonPath;

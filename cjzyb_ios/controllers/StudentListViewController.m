@@ -32,8 +32,10 @@
     DataService *data = [DataService sharedService];
     [DownloadClassmatesInfo downloadClassmatesinfoWithUserId:data.user.studentId withClassId:data.theClass.classId withSuccess:^(NSArray *classmatesArray) {
         DLog(@"%@",classmatesArray);
-        if (weakSelf) {
-            StudentListViewController *controller = weakSelf;
+        StudentListViewController *controller = weakSelf;
+        if (controller) {
+            controller.teacherArray = nil;
+            controller.studentArray = nil;
             for (UserObject *user in classmatesArray) {
                 if (user.isTeacher) {
                     [controller.teacherArray addObject:user];

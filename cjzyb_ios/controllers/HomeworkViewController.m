@@ -10,9 +10,12 @@
 #import "HomeworkHistoryCollectionCell.h"
 #import "HomeworkDaoInterface.h"
 #import "HomeworkRankingViewController.h"
+#import "HomeworkContainerController.h"
 //{"id": "181", "content": "This is! an aps!", "resource_url": "/question_packages/201402/questions_package_222/media_181.mp3"},
 @interface HomeworkViewController ()
 @property (nonatomic,strong) WYPopoverController *calendarPopController;
+@property (nonatomic,strong) HomeworkContainerController *homeworkContainer;
+
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 
 ///顶部显示当前任务时显示
@@ -202,10 +205,97 @@
     }
 }
 
+#pragma mark UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    __weak HomeworkViewController *weakSelf = self;
+    __block TaskObj *task = [DataService sharedService].taskObj;
+    if (alertView.tag == 1000) {
+        if (buttonIndex == 0) {//下载作业包
+            AppDelegate *app = [AppDelegate shareIntance];
+            __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
+            progress.labelText = @"正在下载作业包，请稍后...";
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                ;
+                NSDictionary *dicData = [Utility downloadQuestionWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (!dicData || dicData.count <= 0) {
+                        [MBProgressHUD hideHUDForView:app.window animated:YES];
+                        [Utility errorAlert:@"下载作业数据包失败"];
+                    }else{
+                        progress.labelText = @"作业包下载成功";
+                        [progress hide:YES afterDelay:1];
+                    }
+                });
+            });
+
+        }
+    }else
+    if (alertView.tag == 1001) {
+        if (buttonIndex == 0) {//查看历史记录
+            [DataService sharedService].isHistory = YES;
+            if ([Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task withUserId:[DataService sharedService].user.userId]) {
+                [self presentViewController:self.homeworkContainer animated:YES completion:^{
+                    
+                }];
+            }else{
+                AppDelegate *app = [AppDelegate shareIntance];
+                __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
+                progress.labelText = @"正在更新历史记录包，请稍后...";
+                __weak HomeworkViewController *weakSelf = self;
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (!dicData || dicData.count <= 0) {
+                            [Utility errorAlert:@"下载历史记录包失败"];
+                        }else{
+                            HomeworkViewController *tempSelf = weakSelf;
+                            if (tempSelf) {
+                                [tempSelf presentViewController:self.homeworkContainer animated:YES completion:^{
+                                    
+                                }];
+                            }
+                        }
+                        [MBProgressHUD hideHUDForView:app.window animated:YES];
+                    });
+                });
+            }
+        }else
+        if (buttonIndex == 1) {//重新答题
+            [DataService sharedService].isHistory = NO;
+            [self presentViewController:self.homeworkContainer animated:YES completion:^{
+                
+            }];
+        }
+    }
+}
+#pragma mark --
+
 #pragma mark HomeworkDailyCollectionViewControllerDelegate每一个题目类型cell代理
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller didSelectedAtIndexPath:(NSIndexPath *)path{
     HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
+    TaskObj *task = controller.taskObj;
+    [DataService sharedService].taskObj = task;
+    __block HomeworkContainerController *homeworkContainer = [[HomeworkContainerController alloc ] initWithNibName:@"HomeworkContainerController" bundle:nil];
+    homeworkContainer.homeworkType = typeObj.homeworkType;
+    self.homeworkContainer = homeworkContainer;
     
+    if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {
+        if (typeObj.homeworkTypeIsFinished) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
+            alert.tag = 1001;
+            [alert show];
+        }else{
+            [DataService sharedService].isHistory = NO;
+            [self presentViewController:homeworkContainer animated:YES completion:^{
+                
+            }];
+        }
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"下载作业包才能开始答题" delegate:self cancelButtonTitle:nil otherButtonTitles:@"下载作业包",@"取消下载" ,nil];
+        alert.tag = 1000;
+        [alert show];
+    }
+
 }
 
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller rankingButtonClickedAtIndexPath:(NSIndexPath *)path{
@@ -221,11 +311,11 @@
 }
 #pragma mark --
 
-#pragma mark UICollectionViewDelegate
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    
-}
-#pragma mark --
+//#pragma mark UICollectionViewDelegate
+//-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//}
+//#pragma mark --
 
 #pragma mark UICollectionViewDataSource
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
