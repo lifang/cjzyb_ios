@@ -1729,6 +1729,8 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     }
     return YES;
 }
+
+///返回document文件夹的路径
 +(NSString *)returnPath {
     NSString *path;
     if (platform>5.0) {

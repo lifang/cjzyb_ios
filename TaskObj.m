@@ -22,6 +22,9 @@
     [task setFinish_types:[NSMutableArray arrayWithArray:[aDic objectForKey:@"finish_types"]]];
     [task setTaskAnswerFileDownloadURL:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"answer_url"]]];
     
+    if (task.taskStartDate.length > 0) {
+        [task setTaskFolderPath:[[Utility returnPath] stringByAppendingPathComponent:task.taskStartDate]];
+    }
     return task;
 }
 
