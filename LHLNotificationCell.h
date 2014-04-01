@@ -9,15 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "LHLTextView.h"
 #import "NotificationObject.h"
-#import "LHLButton.h"
 
 @protocol LHLNotificationCellDelegate;
-@interface LHLNotificationCell : UITableViewCell<UITextViewDelegate,LHLButtonDelegate>
+@interface LHLNotificationCell : UITableViewCell<UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet LHLTextView *textView;
 @property (weak, nonatomic) IBOutlet UIView *contentBgView;
-@property (weak, nonatomic) IBOutlet LHLButton *coverButton;
+@property (weak, nonatomic) IBOutlet UIButton *coverButton;
 
 @property (strong,nonatomic) NotificationObject *notification;
 
@@ -33,13 +32,13 @@
 - (void) initCell;  //由tableView调用
 - (void) makeSideButtons;  //选中后创建右侧view和按钮
 - (void) setNotificationObject:(NotificationObject *)noti;
+- (void) coverButtonClicked:(id)sender;
 @end
 @protocol LHLNotificationCellDelegate <NSObject>
 
 @required
 -(void)cell:(LHLNotificationCell *)cell deleteButtonClicked:(id)sender;
 -(void)cell:(LHLNotificationCell *)cell setIsEditing:(BOOL)editing;
--(void)cell:(LHLNotificationCell *)cell dragToLeft:(BOOL) toLeft;
 @optional
 -(void)refreshHeightForCell:(LHLNotificationCell *)cell;
 @end

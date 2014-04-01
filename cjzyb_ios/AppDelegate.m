@@ -12,7 +12,7 @@
 #import "DRLeftTabBarViewController.h"
 #import "HomeworkDailyCollectionViewController.h"
 #import "HomeworkViewController.h"//作业
-#import "LHLNotificationViewController.h"//通知
+#import "LHLNotificationContainerVC.h" //通知
 #import "LogInViewController.h" //登录
 
 #import "ReadingTaskViewController.h"
@@ -117,7 +117,7 @@
         
         MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
         HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-        LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+        LHLNotificationContainerVC *notificationView = [[LHLNotificationContainerVC alloc]initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
         CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
         DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
         tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
@@ -227,6 +227,9 @@
     }
 
     [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
+//    LHLNotificationContainerVC *container = [[LHLNotificationContainerVC alloc] initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
+//    self.window.rootViewController = container;
+//    [self.window makeKeyAndVisible];
     
 //    [DataService sharedService].user = [[UserObject alloc]init];
 //    [DataService sharedService].user.nickName = @"大小姐";
@@ -244,6 +247,12 @@
 //    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
 //    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
 //    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+//    UserObject *user = [[UserObject alloc] init];
+//    ClassObject *class = [[ClassObject alloc] init];
+//    user.userId = @"string";
+//    [DataService sharedService].user = user;
+//    [DataService sharedService].theClass = class;
+    
 //    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
 //    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
 //    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
