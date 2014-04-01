@@ -55,7 +55,7 @@
                     <rect key="frame" x="31" y="382" width="707" height="126"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="qmr-C7-qje">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="listen_back.png" id="qmr-C7-qje">
                             <rect key="frame" x="0.0" y="0.0" width="707" height="126"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         </imageView>
@@ -92,6 +92,7 @@
         </view>
     </objects>
     <resources>
+        <image name="listen_back.png" width="537" height="234"/>
         <image name="listening_start.png" width="63" height="63"/>
         <image name="reading_start.png" width="194" height="194"/>
     </resources>

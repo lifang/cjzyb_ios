@@ -88,7 +88,9 @@
                 [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:obj.range];
             }else{
                 unMatch++;
-                [errorWordArr addObject:obj.originText];
+                if (obj.originText) {
+                    [errorWordArr addObject:obj.originText];
+                }
             }
         }
         float score = 1;

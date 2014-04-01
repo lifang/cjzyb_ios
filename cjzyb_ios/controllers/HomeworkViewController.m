@@ -13,6 +13,9 @@
 #import "HomeworkContainerController.h"
 //{"id": "181", "content": "This is! an aps!", "resource_url": "/question_packages/201402/questions_package_222/media_181.mp3"},
 @interface HomeworkViewController ()
+///选择的任务
+@property (nonatomic,strong) HomeworkDailyCollectionViewController *selectedDailyController;
+
 @property (nonatomic,strong) WYPopoverController *calendarPopController;
 @property (nonatomic,strong) HomeworkContainerController *homeworkContainer;
 
@@ -216,6 +219,7 @@
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 ;
                 NSDictionary *dicData = [Utility downloadQuestionWithAddress:task.taskFileDownloadURL andStartDate:task.taskStartDate];
+                [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (!dicData || dicData.count <= 0) {
                         [MBProgressHUD hideHUDForView:app.window animated:YES];
@@ -232,37 +236,14 @@
     if (alertView.tag == 1001) {
         if (buttonIndex == 0) {//查看历史记录
             [DataService sharedService].isHistory = YES;
-            if ([Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task withUserId:[DataService sharedService].user.userId]) {
-                [self presentViewController:self.homeworkContainer animated:YES completion:^{
-                    
-                }];
-            }else{
-                AppDelegate *app = [AppDelegate shareIntance];
-                __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
-                progress.labelText = @"正在更新历史记录包，请稍后...";
-                __weak HomeworkViewController *weakSelf = self;
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                    NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (!dicData || dicData.count <= 0) {
-                            [Utility errorAlert:@"下载历史记录包失败"];
-                        }else{
-                            HomeworkViewController *tempSelf = weakSelf;
-                            if (tempSelf) {
-                                [tempSelf presentViewController:self.homeworkContainer animated:YES completion:^{
-                                    
-                                }];
-                            }
-                        }
-                        [MBProgressHUD hideHUDForView:app.window animated:YES];
-                    });
-                });
-            }
+            [self presentViewController:self.homeworkContainer animated:YES completion:^{
+                [self.selectedDailyController.collectionView reloadData];
+            }];
         }else
         if (buttonIndex == 1) {//重新答题
             [DataService sharedService].isHistory = NO;
             [self presentViewController:self.homeworkContainer animated:YES completion:^{
-                
+                [self.selectedDailyController.collectionView reloadData];
             }];
         }
     }
@@ -276,19 +257,40 @@
     [DataService sharedService].taskObj = task;
     [DataService sharedService].number_reduceTime = task.taskReduceTimeCount;
     [DataService sharedService].number_correctAnswer=task.taskTipCorrectAnswer;
-    
+    self.selectedDailyController = controller;
     HomeworkContainerController *homeworkContainer = [[HomeworkContainerController alloc ] initWithNibName:@"HomeworkContainerController" bundle:nil];
     homeworkContainer.homeworkType = typeObj.homeworkType;
     self.homeworkContainer = homeworkContainer;
     homeworkContainer.spendSecond = 0;
+    
+    
+    
     if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {
-        if (typeObj.homeworkTypeIsFinished) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
-            alert.tag = 1001;
-            [alert show];
-        }else{
-            [DataService sharedService].isHistory = NO;
-            [self presentViewController:homeworkContainer animated:YES completion:nil];
+        
+        if (![Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task withUserId:[DataService sharedService].user.userId]) {
+            AppDelegate *app = [AppDelegate shareIntance];
+            __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
+            progress.labelText = @"正在更新历史记录包，请稍后...";
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (!dicData || dicData.count <= 0) {
+                        [Utility errorAlert:@"下载历史记录包失败"];
+                    }else{
+                        if (typeObj.homeworkTypeIsFinished) {
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
+                            alert.tag = 1001;
+                            [alert show];
+                        }else{
+                            [DataService sharedService].isHistory = NO;
+                            [self presentViewController:homeworkContainer animated:YES completion:^{
+                                [self.selectedDailyController.collectionView reloadData];
+                            }];
+                        }
+                    }
+                    [MBProgressHUD hideHUDForView:app.window animated:YES];
+                });
+            });
         }
     }else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"下载作业包才能开始答题" delegate:self cancelButtonTitle:nil otherButtonTitles:@"下载作业包",@"取消下载" ,nil];

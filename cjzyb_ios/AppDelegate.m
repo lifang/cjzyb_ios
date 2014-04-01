@@ -23,6 +23,7 @@
 
 #import "PreReadingTaskViewController.h"
 
+#import "DRSentenceSpellMatch.h"
 @implementation AppDelegate
 -(void)loadTrueSound:(NSInteger)index {
     NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"trueMusic.wav"];
@@ -153,6 +154,15 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    
+//    [DRSentenceSpellMatch checkSentence:@"look,there is ok" withSpellMatchSentence:@"look,that is ok" andSpellMatchAttributeString:^(NSAttributedString *spellAttriString, float matchScore, NSArray *errorWordArray) {
+//        DLog(@"%@",spellAttriString.string);
+//        DLog(@"%@",errorWordArray);
+//    } orSpellMatchFailure:^(NSError *error) {
+//        [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+//    }];
+//    
     
     [DataService sharedService].notificationPage=1;
     self.notification_type = 0;
