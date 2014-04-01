@@ -13,8 +13,8 @@
 
 @interface LHLReplyNotificationViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong,nonatomic) UIView *replyInputBgView;//回复消息时,输入框的背景
-@property (strong,nonatomic) UITextView *replyInputTextView;  //回复消息时,输入框
+@property (strong,nonatomic) IBOutlet UIView *replyInputBgView;//回复消息时,输入框的背景
+@property (strong,nonatomic) IBOutlet UITextView *replyInputTextView;  //回复消息时,输入框
 @property (strong,nonatomic) UILabel *characterCountLabel; //显示输入字数的label
 
 @property (strong,nonatomic) NSMutableArray *replyNotificationArray;  //回复通知数组
@@ -51,7 +51,8 @@
     
     [self initData];
     
-    [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+    //输入框
+    [self makeReplyInputTextView];
     
     [self addNotificationOb];
     
@@ -72,6 +73,7 @@
     self.replyNotificationArray = [NSMutableArray array];
     self.pageOfReplyNotification = 1;
     self.isRefreshing = YES;
+    [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
 }
 
 - (void)addNotificationOb{
@@ -83,10 +85,6 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    //    [[NSNotificationCenter defaultCenter] addObserver:self
-    //                                             selector:@selector(keyboardWillChangeFrame:)
-    //                                                 name:UIKeyboardWillChangeFrameNotification
-    //                                               object:nil];
 }
 
 - (void)dealloc{
@@ -117,12 +115,13 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    ReplyNotificationObject *reply = self.replyNotificationArray[indexPath.row];
-    CGSize size = [Utility getTextSizeWithString:reply.replyContent withFont:[UIFont systemFontOfSize:20.0] withWidth:510];
-    if (size.height + 51 + 20 + 10  > 192) {  //上沿坐标,textView高度加值,下方高度
-        return size.height + 51 + 20 + 10;
-    }
-    return 192;
+//    ReplyNotificationObject *reply = self.replyNotificationArray[indexPath.row];
+//    CGSize size = [Utility getTextSizeWithString:reply.replyContent withFont:[UIFont systemFontOfSize:20.0] withWidth:510];
+//    if (size.height + 51 + 20 + 10  > 192) {  //上沿坐标,textView高度加值,下方高度
+//        return size.height + 51 + 20 + 10;
+//    }
+//    return 192;
+    return 160;
 }
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -233,7 +232,7 @@
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
             //请求回复通知
-            //            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",userID,classID,page];
+//            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",userID,classID,page];
             NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",@"115",@"83",page];
             NSURL *url1 = [NSURL URLWithString:str1];
             NSURLRequest *request1 = [NSURLRequest requestWithURL:url1];
@@ -311,12 +310,12 @@
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 self.isLoading = NO;
                 self.editingReplyCellIndexPath = nil;
+                [self.replyInputTextView resignFirstResponder];
                 [self.replyNotificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
-                        //                        self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
                         self.tableView.alpha = self.tableView.alpha == 1.0 ? 0.99 : 1.0;
                     } completion:^(BOOL finished) {
                         [self.tableView reloadData];
@@ -377,8 +376,10 @@
     //停止请求接口时,隐藏header和footer
     if (isLoading == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.tableView.tableHeaderView = nil;
-            self.tableView.tableFooterView = nil;
+            if (self.tableView.tableFooterView) {
+                self.tableView.tableFooterView = nil;
+                self.tableView.contentOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + 50);
+            }
         });
     }
     _isLoading = isLoading;
@@ -397,6 +398,7 @@
     if (!_parentVC) {
         _parentVC = [self parentViewController];
         for (int i = 0; i < 5; i ++) {
+            NSLog(@"%@",[_parentVC class]);
             if ([_parentVC isKindOfClass:[DRLeftTabBarViewController class]]) {
                 return _parentVC;
             }
@@ -414,34 +416,41 @@
     return _appDel;
 }
 
--(UIView *)replyInputBgView{
-    if (!_replyInputBgView) {
-        _replyInputBgView = [[UIView alloc] initWithFrame:(CGRect){0,self.view.bounds.size.height + 1,768,50}];
-        _replyInputBgView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
-        [self.view addSubview:_replyInputBgView];
-        if (!_characterCountLabel) {
-            _characterCountLabel = [[UILabel alloc] initWithFrame:(CGRect){710,4,50,40}];
-            _characterCountLabel.textColor = [UIColor grayColor];
-            _characterCountLabel.textAlignment = NSTextAlignmentRight;
-            _characterCountLabel.text = @"0/60";
-            _characterCountLabel.font = [UIFont systemFontOfSize:18.0];
-            [_replyInputBgView addSubview:_characterCountLabel];
-        }
-    }
-    return _replyInputBgView;
-}
+//-(UIView *)replyInputBgView{
+//    _replyInputBgView.frame = (CGRect){0,self.view.bounds.size.height + 1,768,50};
+//    _replyInputBgView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
+//    if (!_characterCountLabel) {
+//        _characterCountLabel = [[UILabel alloc] initWithFrame:(CGRect){710,4,50,40}];
+//        _characterCountLabel.textColor = [UIColor grayColor];
+//        _characterCountLabel.textAlignment = NSTextAlignmentRight;
+//        _characterCountLabel.text = @"0/60";
+//        _characterCountLabel.font = [UIFont systemFontOfSize:18.0];
+//        [_replyInputBgView addSubview:_characterCountLabel];
+//    }
+//    return _replyInputBgView;
+//    
+//    
+//}
 
--(UITextView *)replyInputTextView{
-    if (!_replyInputTextView) {
-        _replyInputTextView = [[UITextView alloc] initWithFrame:(CGRect){20,4,688,40}];
-        _replyInputTextView.font = [UIFont systemFontOfSize:25.0];
-        _replyInputTextView.layer.cornerRadius = 6.0;
-        _replyInputTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-        _replyInputTextView.layer.borderWidth = 1.0;
-        _replyInputTextView.returnKeyType = UIReturnKeySend;
-        _replyInputTextView.delegate = self;
-        [self.replyInputBgView addSubview:_replyInputTextView];
+-(UITextView *)makeReplyInputTextView{
+    _replyInputBgView.frame = (CGRect){0,self.view.bounds.size.height + 1,768,50};
+    _replyInputBgView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
+    if (!_characterCountLabel) {
+        _characterCountLabel = [[UILabel alloc] initWithFrame:(CGRect){710,4,50,40}];
+        _characterCountLabel.textColor = [UIColor grayColor];
+        _characterCountLabel.textAlignment = NSTextAlignmentRight;
+        _characterCountLabel.text = @"0/60";
+        _characterCountLabel.font = [UIFont systemFontOfSize:18.0];
+        [_replyInputBgView addSubview:_characterCountLabel];
     }
+    [self.view addSubview:_replyInputBgView];
+    [_replyInputTextView setFrame:(CGRect){20,4,688,40}];
+    _replyInputTextView.font = [UIFont systemFontOfSize:25.0];
+    _replyInputTextView.layer.cornerRadius = 6.0;
+    _replyInputTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    _replyInputTextView.layer.borderWidth = 1.0;
+    _replyInputTextView.returnKeyType = UIReturnKeySend;
+    _replyInputTextView.delegate = self;
     return _replyInputTextView;
 }
 
@@ -470,7 +479,7 @@
     NSTimeInterval duration;
     [durationValue getValue:&duration];
     [UIView animateWithDuration:duration animations:^{
-        self.replyInputBgView.center = (CGPoint){self.replyInputBgView.center.x,frame.origin.y - self.replyInputBgView.frame.size.height / 2 - 67}; //67为本VC的view在屏幕的偏移量
+        self.replyInputBgView.center = (CGPoint){self.replyInputBgView.center.x,self.view.frame.size.height - (frame.size.height + self.replyInputBgView.frame.size.height / 2)};
     }];
 }
 
@@ -480,7 +489,7 @@
     NSTimeInterval duration;
     [durationValue getValue:&duration];
     [UIView animateWithDuration:duration animations:^{
-        self.replyInputBgView.center = (CGPoint){self.replyInputBgView.center.x,self.view.bounds.size.height + 1 + self.replyInputBgView.frame.size.height / 2};
+        self.replyInputBgView.center = (CGPoint){self.replyInputBgView.center.x,self.view.frame.size.height + 1 + self.replyInputBgView.frame.size.height / 2};
     }];
 }
 
@@ -491,17 +500,17 @@
 }
 
 
--(void)replyInputCommitButtonClicked:(id)sender{
-    if (self.replyInputTextView.text.length < 1) {
-        [Utility errorAlert:@"回复内容不能为空"];
-        return;
-    }else if(self.replyInputTextView.text.length > 60){
-        [Utility errorAlert:@"回复内容不能超过60个字符"];
-        return;
-    }
-    ReplyNotificationObject *notice = self.replyNotificationArray[self.replyingIndexPath.row];
-    [self replyMessageWithSenderID:[DataService sharedService].user.studentId andSenderType:@"1" andContent:self.replyInputTextView.text andClassID:[DataService sharedService].theClass.classId andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
-}
+//-(void)replyInputCommitButtonClicked:(id)sender{
+//    if (self.replyInputTextView.text.length < 1) {
+//        [Utility errorAlert:@"回复内容不能为空"];
+//        return;
+//    }else if(self.replyInputTextView.text.length > 60){
+//        [Utility errorAlert:@"回复内容不能超过60个字符"];
+//        return;
+//    }
+//    ReplyNotificationObject *notice = self.replyNotificationArray[self.replyingIndexPath.row];
+//    [self replyMessageWithSenderID:[DataService sharedService].user.studentId andSenderType:@"1" andContent:self.replyInputTextView.text andClassID:[DataService sharedService].theClass.classId andMicropostID:notice.replyMicropostId andReciverID:notice.replyReciverID andReciverType:notice.replyReciverType];
+//}
 
 //-(void)replyInputCommitButtonClicked:(id)sender{
 //    if (self.replyInputTextView.text.length < 1) {
@@ -623,17 +632,12 @@
     return ceil(number);
 }
 
+///计算字数并更新显示
 - (void)calculateTextLength
 {
     NSString *string = self.replyInputTextView.text;
     int wordcount = [self textLength:string];
-    
-	NSInteger count  = 60 - wordcount;
-    if (count<0) {
-        [self.characterCountLabel setText:[NSString stringWithFormat:@"%i/60",60]];
-    }else {
-        [self.characterCountLabel setText:[NSString stringWithFormat:@"%i/60",wordcount]];
-    }
+    [self.characterCountLabel setText:[NSString stringWithFormat:@"%i/60",wordcount]];
 }
 
 @end

@@ -226,10 +226,10 @@
         }
     }
 
-    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
-//    LHLNotificationContainerVC *container = [[LHLNotificationContainerVC alloc] initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
-//    self.window.rootViewController = container;
-//    [self.window makeKeyAndVisible];
+//    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
+    LHLNotificationContainerVC *container = [[LHLNotificationContainerVC alloc] initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
+    self.window.rootViewController = container;
+    [self.window makeKeyAndVisible];
     
 //    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
 //    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];

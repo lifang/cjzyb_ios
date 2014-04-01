@@ -69,7 +69,10 @@
         
         //头像
         self.imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"smile.png"]];
-        _imgView.layer.cornerRadius = 3.0;
+        _imgView.layer.cornerRadius = 13.0;
+        _imgView.clipsToBounds = YES;
+//        _imgView.layer.borderColor = [UIColor redColor].CGColor;
+//        _imgView.layer.borderWidth = 1.0;
         [_contentBgView addSubview:_imgView];
         
         //回复者名字
@@ -125,9 +128,9 @@
         
         _contentBgView.frame = (CGRect){0,0,self.bounds.size};
         
-        _imgView.frame = (CGRect){53,50,103,103};
+        _imgView.frame = (CGRect){53,34,103,103};
         
-        CGRect titleBgFrame = (CGRect){CGRectGetMaxX(_imgView.frame) + 20,50,510,30};
+        CGRect titleBgFrame = (CGRect){CGRectGetMaxX(_imgView.frame) + 20,34,510,30};
         _titleBgView.frame = titleBgFrame;
         
         
