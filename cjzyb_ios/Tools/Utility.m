@@ -1600,7 +1600,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     if (![manager fileExistsAtPath:questionPath]) {
         //在此下载并解压缩
         NSString *resourcePath = [path stringByAppendingPathComponent:@"resourse.zip"];
-        NSString *fullAdress = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",address];
+        NSString *fullAdress = [NSString stringWithFormat:@"%@%@",kHOST,address];
         NSData *packageData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:fullAdress]];
         NSError *error;
         [packageData writeToFile:resourcePath options:0 error:&error];

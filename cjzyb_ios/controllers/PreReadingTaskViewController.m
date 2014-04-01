@@ -83,7 +83,7 @@
     self.currentSentence = sentence;
     [self.allAttriSentenceString  addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:[self getSentenceRange:self.currentSentence withHomework:self.currentHomework]];
     self.sentenceTextView.attributedText = self.allAttriSentenceString;
-    if (self.currentSentence.readingSentenceResourceURL) {
+    if (self.currentSentence.readingSentenceLocalFileURL) {
         if (self.avPlayer.isPlaying) {
             [self.avPlayer stop];
         }

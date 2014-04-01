@@ -52,6 +52,7 @@
         taskObj.taskStartDate = [Utility filterValue:[taskDic objectForKey:@"start_time"]];
         taskObj.taskEndDate = [Utility filterValue:[taskDic objectForKey:@"end_time"]];
         taskObj.taskFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"question_packages_url"]];
+//        taskObj.taskFileDownloadURL = [NSString stringWithFormat:@"%@%@",kHOST,[Utility filterValue:[taskDic objectForKey:@"question_packages_url"]]];
         taskObj.taskAnswerFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"answer_url"]];
         taskObj.taskFolderPath = [[Utility returnPath] stringByAppendingPathComponent:taskObj.taskStartDate];
         NSMutableArray *homeworkTypeList = [NSMutableArray array];
@@ -178,6 +179,7 @@
             taskObj.taskStartDate = [Utility filterValue:[taskDic objectForKey:@"start_time"]];
             taskObj.taskEndDate = [Utility filterValue:[taskDic objectForKey:@"end_time"]];
             taskObj.taskFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"question_packages_url"]];
+//            taskObj.taskFileDownloadURL = [NSString stringWithFormat:@"%@%@",kHOST,[Utility filterValue:[taskDic objectForKey:@"question_packages_url"]]];
             taskObj.taskAnswerFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"answer_url"]];
              taskObj.taskFolderPath = [[Utility returnPath] stringByAppendingPathComponent:taskObj.taskStartDate];
             NSMutableArray *homeworkTypeList = [NSMutableArray array];
@@ -327,6 +329,7 @@
             taskObj.taskStartDate = [Utility filterValue:[taskDic objectForKey:@"start_time"]];
             taskObj.taskEndDate = [Utility filterValue:[taskDic objectForKey:@"end_time"]];
             taskObj.taskFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"question_packages_url"]];
+//            taskObj.taskFileDownloadURL = [NSString stringWithFormat:@"%@%@",kHOST,[Utility filterValue:[taskDic objectForKey:@"question_packages_url"]]];
             taskObj.taskAnswerFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"answer_url"]];
              taskObj.taskFolderPath = [[Utility returnPath] stringByAppendingPathComponent:taskObj.taskStartDate];
             NSMutableArray *homeworkTypeList = [NSMutableArray array];
