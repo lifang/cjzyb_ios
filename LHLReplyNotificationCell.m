@@ -69,7 +69,8 @@
         
         //头像
         self.imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"smile.png"]];
-        _imgView.layer.cornerRadius = 3.0;
+        [_imgView.layer setCornerRadius:8.0f];
+        [_imgView.layer setMasksToBounds:YES];
         [_contentBgView addSubview:_imgView];
         
         //回复者名字
@@ -125,9 +126,9 @@
         
         _contentBgView.frame = (CGRect){0,0,self.bounds.size};
         
-        _imgView.frame = (CGRect){53,50,103,103};
+        _imgView.frame = (CGRect){53,30,103,103};
         
-        CGRect titleBgFrame = (CGRect){CGRectGetMaxX(_imgView.frame) + 20,50,510,30};
+        CGRect titleBgFrame = (CGRect){CGRectGetMaxX(_imgView.frame) + 20,30,510,30};
         _titleBgView.frame = titleBgFrame;
         
         
@@ -154,12 +155,10 @@
 -(void)setInfomations:(ReplyNotificationObject *)reply{
     if (reply != nil) {
         self.replyObject = reply;
-//        _imgView.image = [self.delegate replyCell:self bufferedImageForAddress:reply.replyerImageAddress];
         NSString *urlString = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",reply.replyerImageAddress];
         NSURL *url = [NSURL URLWithString:urlString];
         [_imgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"systemMessage.png"]];
         _replyerNameLabel.text = reply.replyerName;
-//        _myNameLabel.text = @"我";
         _myNameLabel.text = reply.replyTargetName;
         _textView.text = reply.replyContent;
         _timeLabel.text = reply.replyTime;

@@ -55,7 +55,7 @@
     [self.pagesContainer.topBar setDAPagesContainerTopBarItemsOffset:3.1415926];
     [self.pagesContainer.topBar setDAPagesContainerTopBarItemViewWidth:self.pagesContainer.view.frame.size.width / 3];
     
-    [self.pagesContainer setSelectedIndex:1];
+    [self.pagesContainer setSelectedIndex:[DataService sharedService].notificationPage];
     
     [self.pagesContainer.topBar layoutSubviews];
 }

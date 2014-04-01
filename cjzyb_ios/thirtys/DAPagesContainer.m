@@ -114,8 +114,7 @@
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL)animated
 {
-    NSString *indexString = [NSString stringWithFormat:@"%d",selectedIndex];
-    
+
     UIButton *previosSelectdItem = self.topBar.itemViews[self.selectedIndex];
     UIButton *nextSelectdItem = self.topBar.itemViews[selectedIndex];
     
@@ -125,18 +124,17 @@
     int number = 0;
     if ([previosImg isEqualToString:@"回复通知"] || [previosImg isEqualToString:@"系统通知"]) {
         number=1;
-        if ([previosImg isEqualToString:@"回复通知"]){
-            indexString = [NSString stringWithFormat:@"%d",4];
-        }
     }else {
         number=0;
+        NSString *indexString = [NSString stringWithFormat:@"%d",selectedIndex];
+        if ([[DataService sharedService].numberOfViewArray containsObject:indexString]) {
+            int index = [[DataService sharedService].numberOfViewArray indexOfObject:indexString];
+            [[DataService sharedService].numberOfViewArray removeObjectAtIndex:index];
+        }
+        [[DataService sharedService].numberOfViewArray addObject:indexString];
     }
     
-    if ([[DataService sharedService].numberOfViewArray containsObject:indexString]) {
-        int index = [[DataService sharedService].numberOfViewArray indexOfObject:indexString];
-        [[DataService sharedService].numberOfViewArray removeObjectAtIndex:index];
-    }
-    [[DataService sharedService].numberOfViewArray addObject:indexString];
+    
     
     
     if (abs(self.selectedIndex - selectedIndex) <= 1) {

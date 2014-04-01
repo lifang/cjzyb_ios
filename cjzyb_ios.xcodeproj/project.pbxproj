@@ -1048,6 +1048,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E47F25918EA8BE800918143 /* 通知 */ = {
+			isa = PBXGroup;
+			children = (
+				18CF139318E961CB001E3448 /* LHLNotificationContainerVC.h */,
+				18CF139418E961CB001E3448 /* LHLNotificationContainerVC.m */,
+				18CF139518E961CB001E3448 /* LHLNotificationContainerVC.xib */,
+				189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */,
+				189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */,
+				189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */,
+				18CF139818E96402001E3448 /* LHLReplyNotificationViewController.h */,
+				18CF139918E96402001E3448 /* LHLReplyNotificationViewController.m */,
+				18CF139A18E96402001E3448 /* LHLReplyNotificationViewController.xib */,
+			);
+			name = "通知";
+			sourceTree = "<group>";
+		};
 		0E660F1E18E0277D0074454C /* upLoadImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1553,15 +1569,7 @@
 				6396577118C036B1002F2A90 /* StudentListViewController.h */,
 				6396577318C036B1002F2A90 /* StudentListViewController.xib */,
 				6396577218C036B1002F2A90 /* StudentListViewController.m */,
-				18CF139318E961CB001E3448 /* LHLNotificationContainerVC.h */,
-				18CF139418E961CB001E3448 /* LHLNotificationContainerVC.m */,
-				18CF139518E961CB001E3448 /* LHLNotificationContainerVC.xib */,
-				189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */,
-				189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */,
-				189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */,
-				18CF139818E96402001E3448 /* LHLReplyNotificationViewController.h */,
-				18CF139918E96402001E3448 /* LHLReplyNotificationViewController.m */,
-				18CF139A18E96402001E3448 /* LHLReplyNotificationViewController.xib */,
+				0E47F25918EA8BE800918143 /* 通知 */,
 				636CF4B618BD90350085C28E /* test */,
 				181A786318C4206700D288D3 /* TenSecChallengeViewController.h */,
 				181A786418C4206700D288D3 /* TenSecChallengeViewController.m */,

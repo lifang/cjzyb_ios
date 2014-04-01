@@ -97,12 +97,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NotificationObject *noti = self.notificationArray[indexPath.row];
-    CGSize size = [Utility getTextSizeWithString:noti.notiContent withFont:[UIFont systemFontOfSize:20.0] withWidth:510];
-    if (size.height + 50 + 20 + 10 > 192) { //上沿坐标,textView高度加值,下方高度
-        return size.height + 50 + 20 + 10;
-    }
-    return 192;
+    return 160;
 }
 
 -(UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
