@@ -33,6 +33,7 @@
 @property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
 @property (strong,nonatomic) NSString *answerStatus;    //文件中记载的完成状态
 @property (assign,nonatomic) BOOL isReDoingChallenge; //是否为重新挑战
+@property (assign,nonatomic) BOOL haveUploadedJSON; //是否已上传JSON
 //@property (strong,nonatomic) NSMutableDictionary *reChallengeTimesLeft; //剩余挑战数
 @property (strong,nonatomic) NSUserDefaults *userDefaults;
 @end
@@ -45,6 +46,7 @@
     if (self) {
         self.isViewingHistory = NO;
         self.isReDoingChallenge = NO;
+        self.haveUploadedJSON = NO;
     }
     return self;
 }
@@ -153,10 +155,6 @@
 }
 
 - (void)finishChallenge{
-    //终止计时
-    [parentVC stopTimer];
-    //计算成绩
-    //保存挑战数据
     //显示结果界面
     [self.view addSubview:self.resultView];
     if (self.isReDoingChallenge) {
@@ -167,6 +165,7 @@
         self.resultView.noneArchiveView.hidden = YES;
     }
     [self makeResult];
+    
     self.answerStatus = @"1";
 }
 
@@ -203,6 +202,18 @@
     }
 }
 
+///保存挑战数据(上传JSON) ,成功则显示结果
+- (void)uploadJSON{
+    NSString *answerJSONPath = [[DataService sharedService].taskObj.taskFolderPath stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
+    [parentVC uploadAnswerJsonFileWithPath:answerJSONPath withSuccess:^(NSString *success) {
+        self.haveUploadedJSON = YES;
+        [self finishChallenge];
+    } withFailure:^(NSString *error) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"上传未成功" message:@"无法提交成绩,重试?" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"重试", nil];
+        [alert show];
+    }];
+}
+
 - (NSDictionary *)makeAnswerJSON{
     //按照answer.js的格式制作一个字典,并保存
     NSMutableDictionary *answerDic = [[NSMutableDictionary alloc] init];
@@ -226,6 +237,9 @@
                 [branchDic setObject:answer.answerID forKey:@"id"];
                 [branchDic setObject:answer.answerAnswer forKey:@"answer"];
                 [branchDic setObject:answer.answerRatio forKey:@"ratio"]; //正确:对-100  错-0
+                if ([answer.answerRatio isEqualToString:@"0"]) {
+                    [DataService sharedService].cardsCount ++;
+                }
                 [branches addObject:branchDic];
             }
     
@@ -235,6 +249,7 @@
     
     //保存JSON
     [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"time_limit" andDate:[DataService sharedService].taskObj.taskStartDate];
+
     return [NSDictionary dictionaryWithDictionary:answerDic];
 }
 
@@ -264,7 +279,15 @@
             self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
             self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
             if (self.isLastQuestion) {
-                [self finishChallenge];
+                //终止计时
+                [parentVC stopTimer];
+                
+                if (self.isReDoingChallenge) {
+                    [self finishChallenge];
+                }else{
+                    [self uploadJSON];
+                }
+                
                 self.currentNO = self.questionArray.count + 1; //标志答题结束
             }else{
                 [self showNextQuestion];
@@ -294,13 +317,29 @@
             self.upperOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
             self.lowerOptionLabel.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
             if (self.isLastQuestion) {
-                [self finishChallenge];
+                //终止计时
+                [parentVC stopTimer];
+                
+                if (self.isReDoingChallenge) {
+                    [self finishChallenge];
+                }else{
+                    [self uploadJSON];
+                }
                 self.currentNO = self.questionArray.count + 1; //标志答题结束
             }else{
                 [self showNextQuestion];
             }
         }];
     });
+}
+
+///点击parentVC的退出按钮触发
+-(void)tenQuitButtonClicked:(id)sender{
+    if (self.haveUploadedJSON) {
+        [parentVC.navigationController popViewControllerAnimated:YES];
+    }else{
+        [self uploadJSON];
+    }
 }
 
 #pragma mark -- action
@@ -530,8 +569,7 @@
 - (void)resultViewCommitButtonClicked{
     [self.resultView removeFromSuperview];
     self.resultView = nil;
-//    [parentVC.navigationController popViewControllerAnimated:YES];
-    [parentVC quitButtonClicked:parentVC.quitHomeworkButton];
+    [self tenQuitButtonClicked:nil];
 }
 
 - (void)resultViewRestartButtonClicked{
@@ -540,7 +578,18 @@
     self.resultView = nil;
 }
 
-
+#pragma mark AlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([title isEqualToString:@"放弃"]) {
+        [parentVC.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+    if ([title isEqualToString:@"重试"]) {
+        [self uploadJSON];
+        return;
+    }
+}
 
 - (void)didReceiveMemoryWarning
 {
