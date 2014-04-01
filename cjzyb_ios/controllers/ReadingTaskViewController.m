@@ -18,12 +18,9 @@
 #import "PreReadingTaskViewController.h"
 
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
-#define minRecoginCount 0
+#define minRecoginCount 4
 #define minRecoginLevel 0.5
 @interface ReadingTaskViewController ()
-
-
-
 ///预听界面
 @property (nonatomic,strong) PreReadingTaskViewController *preReadingController;
 
@@ -76,14 +73,19 @@
     [super viewDidAppear:animated];
     if ([DataService sharedService].isHistory) {
         [self.readingButton setHidden:YES];
-        [ParseAnswerJsonFileTool parseAnswerJsonFile:nil withReadingHistoryArray:^(NSArray *readingQuestionArr, int currentQuestionIndex, int currentQuestionItemIndex, int status, NSString *updateTime, NSString *userTime) {
-//            TaskObj *task = [DataService sharedService].taskObj;
+        TaskObj *task = [DataService sharedService].taskObj;
+        __weak ReadingTaskViewController *weakSelf = self;
+        NSString *filePath = [NSString stringWithFormat:@"%@/questions.json",task.taskFolderPath];
+        [ParseAnswerJsonFileTool parseAnswerJsonFile:filePath withReadingHistoryArray:^(NSArray *readingQuestionArr, int currentQuestionIndex, int currentQuestionItemIndex, int status, NSString *updateTime, NSString *userTime, float ratio){
             parentVC.timeLabel.text = [NSString stringWithFormat:@"用时：%@",[Utility  formateDateStringWithSecond:userTime.intValue]];
-            
-
+            parentVC.rotioLabel.text = [NSString stringWithFormat:@"正确率：%0.0f",ratio];
+            ReadingTaskViewController *tempSelf = weakSelf;
+            if (tempSelf) {
+                
+            }
         } withParseError:^(NSError *error) {
             [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-        }];;
+        }];
     }else{
         [self.readingButton setHidden:NO];
         int timeCount = [DataService sharedService].number_reduceTime;
@@ -183,8 +185,7 @@
     if (!self.currentSentence) {
         [self updateFirstHomework];
     }
-    [self setCurrentSentence:[self.currentHomework.readingHomeworkSentenceObjArray firstObject] withAnimation:YES];
-    self.currentSentenceIndex = 0;
+    [self setCurrentSentence:[self.currentHomework.readingHomeworkSentenceObjArray objectAtIndex:self.currentSentenceIndex] withAnimation:YES];
     if (self.currentSentence) {
         
     }else{//当前大题中没有句子
@@ -200,7 +201,9 @@
     }
     [DataService sharedService].number_reduceTime--;
     __weak ReadingTaskViewController *weakSelf = self;
-    [ParseAnswerJsonFileTool writePropsToJsonFile:nil withQuestionId:[NSString stringWithFormat:@"%d",self.currentSentenceIndex] withPropsType:@"1" withSuccess:^{
+    TaskObj *task = [DataService sharedService].taskObj;
+    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
+    [ParseAnswerJsonFileTool writePropsToJsonFile:path withQuestionId:[NSString stringWithFormat:@"%d",self.currentSentenceIndex] withPropsType:@"1" withSuccess:^{
         ReadingTaskViewController *tempSelf = weakSelf ;
         if (tempSelf) {
         
@@ -216,7 +219,9 @@
 //TODO:退出作业界面
 -(void)exithomeworkUI{
     __weak ReadingTaskViewController *weakSelf = self;
-    [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:nil withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
+    TaskObj *task = [DataService sharedService].taskObj;
+    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
+    [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
         ReadingTaskViewController *tempSelf = weakSelf ;
         if (tempSelf) {
             
@@ -228,8 +233,13 @@
         }
     }];
     
-    [parentVC dismissViewControllerAnimated:YES completion:^{
-        
+    [parentVC  uploadAnswerJsonFileWithPath:path withSuccess:^(NSString *success) {
+        [Utility errorAlert:success];
+        [parentVC dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    } withFailure:^(NSString *error) {
+        [Utility errorAlert:error];
     }];
 }
 
@@ -241,10 +251,13 @@
         if (self.isPrePlay) {
             [self hiddlePrePlayControllerWithAnimation:YES];
         }else{
+            TaskObj *task = [DataService sharedService].taskObj;
+            NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
             if (self.currentSentence.readingSentenceRatio.floatValue >= minRecoginLevel || self.readingCount >= minRecoginCount) {
                 if (self.readingCount == 0) {
                       __weak ReadingTaskViewController *weakSelf = self;
-                    [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:nil withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
+                    
+                    [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
                         ReadingTaskViewController *tempSelf = weakSelf ;
                         if (tempSelf) {
                             
@@ -269,7 +282,12 @@
                         [self appearPrePlayControllerWithAnimation:YES];
                     }else{//TODO:挑战结束
                         [parentVC stopTimer];
-                        [self showResultView];
+                        [parentVC  uploadAnswerJsonFileWithPath:path withSuccess:^(NSString *success) {
+                            [self showResultView];
+                        } withFailure:^(NSString *error) {
+                            [Utility errorAlert:error];
+                        }];
+                        
                     }
                 }
                 
@@ -307,11 +325,10 @@
         [self loadHomeworkFromFile];
     }
     if (self.readingHomeworksArr && self.readingHomeworksArr.count > 0) {
-        self.currentHomework = [self.readingHomeworksArr firstObject];
+        self.currentHomework = [self.readingHomeworksArr objectAtIndex:self.currentHomeworkIndex];
     }else{//json文件中没有朗读的题目
         
     }
-    self.currentHomeworkIndex = 0;
 }
 
 ///切换到下一题
@@ -334,16 +351,34 @@
 
 //TODO:从json文件中加载题目数据
 -(void)loadHomeworkFromFile{
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"question.geojson" ofType:nil];
-    [ParseQuestionJsonFileTool parseQuestionJsonFile:filePath withReadingQuestionArray:^(NSArray *readingQuestionArr, NSInteger specifiedTime) {
-        NSLog(@"%@,time:%d",readingQuestionArr,specifiedTime);
-        self.readingHomeworksArr = readingQuestionArr;
-        self.specifiedSecond = specifiedTime;
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+//    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    TaskObj *task = [DataService sharedService].taskObj;
+//    NSString *filePath = [NSString stringWithFormat:@"%@/questions.json",task.taskFolderPath];
+//    [ParseQuestionJsonFileTool parseQuestionJsonFile:filePath withReadingQuestionArray:^(NSArray *readingQuestionArr, NSInteger specifiedTime) {
+//        NSLog(@"%@,time:%d",readingQuestionArr,specifiedTime);
+//        self.readingHomeworksArr = readingQuestionArr;
+//        self.specifiedSecond = specifiedTime;
+//        [MBProgressHUD hideHUDForView:self.view animated:YES];
+//    } withParseError:^(NSError *error) {
+//        [MBProgressHUD hideHUDForView:self.view animated:YES];
+//        NSLog(@"error:%@",error);
+//    }];
+    
+    TaskObj *task = [DataService sharedService].taskObj;
+    __weak ReadingTaskViewController *weakSelf = self;
+    [ParseAnswerJsonFileTool parseAnswerJsonFileWithUserId:[DataService sharedService].user.userId withTask:task withReadingHistoryArray:^(NSArray *readingQuestionArr, int currentQuestionIndex, int currentQuestionItemIndex, int status, NSString *updateTime, NSString *userTime, int specifyTime){
+        ReadingTaskViewController *tempSelf = weakSelf;
+        if (tempSelf) {
+            HomeworkContainerController *container = (HomeworkContainerController*)tempSelf.parentViewController;
+//            container.timeLabel.text = [NSString stringWithFormat:@"用时：%@",[Utility  formateDateStringWithSecond:userTime.intValue]];
+            container.spendSecond = userTime?userTime.intValue:0;
+            tempSelf.currentHomeworkIndex = currentQuestionIndex < 0 ?0:currentQuestionIndex;
+            tempSelf.currentSentenceIndex = currentQuestionItemIndex < 0 ?0:currentQuestionItemIndex;
+            tempSelf.readingHomeworksArr = readingQuestionArr;
+            tempSelf.specifiedSecond = specifyTime;
+        }
     } withParseError:^(NSError *error) {
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        NSLog(@"error:%@",error);
+        [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
     }];
 }
 #pragma mark --
@@ -470,7 +505,7 @@
             [self.avPlayer stop];
         }
     }else{
-        if (self.currentSentence.readingSentenceResourceURL) {
+        if (self.currentSentence.readingSentenceLocalFileURL) {
             if (self.avPlayer.isPlaying) {
                 [self.avPlayer stop];
             }
@@ -633,6 +668,7 @@
 - (void)recognition:(ISSpeechRecognition *)speechRecognition didGetRecognitionResult:(ISSpeechRecognitionResult *)result {
 	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
 	NSLog(@"Result: %@", result.text);
+    [parentVC stopTimer];
     [DRSentenceSpellMatch checkSentence:self.currentSentence.readingSentenceContent withSpellMatchSentence:result.text andSpellMatchAttributeString:^(NSAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray) {
         self.readingTextView.attributedText = nil;
         self.readingTextView.attributedText = spellAttriString;
@@ -647,26 +683,32 @@
              self.tipTextView.text = @"看到橙色的这些词了吗,你的发音还不够标准哦,在来试试吧！";
         }
         [self updateAllFrame];
+        [parentVC startTimer];
     } orSpellMatchFailure:^(NSError *error) {
         [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+        [parentVC startTimer];
     }];
 }
 
 - (void)recognition:(ISSpeechRecognition *)speechRecognition didFailWithError:(NSError *)error {
 	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
 	NSLog(@"Error: %@", error);
+     [parentVC startTimer];
 }
 
 - (void)recognitionCancelledByUser:(ISSpeechRecognition *)speechRecognition {
 	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
+    [parentVC startTimer];
 }
 
 - (void)recognitionDidBeginRecording:(ISSpeechRecognition *)speechRecognition {
 	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
+    
 }
 
 - (void)recognitionDidFinishRecording:(ISSpeechRecognition *)speechRecognition {
 	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
+    [parentVC stopTimer];
 }
 #pragma mark --
 

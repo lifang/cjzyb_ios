@@ -699,6 +699,7 @@ static int numberOfMusic =0;
     self.checkHomeworkButton.enabled=NO;
 
     if (self.isFirst==YES) {
+        self.postNumber = 0;
         if (self.appDel.isReachable == NO) {
             [Utility errorAlert:@"暂无网络!"];
         }else {
@@ -722,7 +723,14 @@ static int numberOfMusic =0;
             NSString *timeStr = [result objectForKey:@""];
             [Utility returnAnswerPAthWithString:timeStr];
             
-            [self showResultView];
+            if (self.postNumber==0) {
+                [self showResultView];
+            }else {
+                [self.homeControl dismissViewControllerAnimated:YES completion:^{
+                    
+                }];
+            }
+            
         });
     });
 }
@@ -794,5 +802,33 @@ static int numberOfMusic =0;
 -(void)getCardFullInfoDidFailed:(NSString *)errorMsg {
     [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
     [Utility errorAlert:errorMsg];
+}
+
+
+-(void)exitListenView {
+    if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
+        //完成整个题型
+    }else {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+        [alert show];
+    }
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    if (buttonIndex==0) {
+        if (self.isFirst==YES) {
+            self.postNumber = 1;
+            if (self.appDel.isReachable == NO) {
+                [Utility errorAlert:@"暂无网络!"];
+            }else {
+                [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                self.postInter = [[BasePostInterface alloc]init];
+                self.postInter.delegate = self;
+                [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
+            }
+        }else {
+            [self.homeControl dismissViewControllerAnimated:YES completion:nil];
+        }
+    }
 }
 @end

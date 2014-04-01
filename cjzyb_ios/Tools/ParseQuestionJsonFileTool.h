@@ -35,4 +35,8 @@
  *
  */
 +(void)parseQuestionJsonFile:(NSString*)jsonFilePath withLiningSubjectArray:( void(^)(NSArray *liningSubjectArr,NSInteger specifiedTime))questionArr withParseError:(void (^)(NSError *error))failure;
+
+///获取有做题记录的朗读题目
++(void)parseQuestionFromLastAnswerUpdateVersionJsonFileWithUserId:(NSString*)userId withTask:(TaskObj*)task withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex,int status,NSString *updateTime,NSString *userTime,int specifyTime))questionArr withParseError:(void (^)(NSError *error))failure;
+
 @end

@@ -115,12 +115,6 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    ReplyNotificationObject *reply = self.replyNotificationArray[indexPath.row];
-//    CGSize size = [Utility getTextSizeWithString:reply.replyContent withFont:[UIFont systemFontOfSize:20.0] withWidth:510];
-//    if (size.height + 51 + 20 + 10  > 192) {  //上沿坐标,textView高度加值,下方高度
-//        return size.height + 51 + 20 + 10;
-//    }
-//    return 192;
     return 160;
 }
 
@@ -148,34 +142,6 @@
     }
 }
 
-//-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-//    if (self.tableView.contentOffset.y > self.tableView.contentSize.height + self.tableView.contentInset.bottom - self.tableView.frame.size.height) {
-//        //到达底部,分页加载
-//        self.isRefreshing = NO;
-//        if (self.displayCategory == NotificationDisplayCategoryDefault) {
-//            [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfNotification + 1]];
-//        }else{
-//            [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
-//        }
-//    }
-//
-//}
-
-//
-//-(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-//    return 90;
-//}
-//
-//-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-//    if (self.header) {  //防止被reload
-//        return self.header;
-//    }
-//    LHLNotificationHeader *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"LHLNotificationHeader"];
-//    header.delegate = self;
-//    self.header = header;
-//    return header;
-//}
-
 #pragma mark -- action
 
 //TODO: 此格式会不会改?  处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
@@ -192,19 +158,6 @@
     return [NSString stringWithFormat:@"%@ %@",date,time];
 }
 
-//-(void)dragMethod:(BOOL) toLeft{
-//    if (toLeft) {
-//        //手指向左划
-//        if (self.displayCategory == NotificationDisplayCategoryReply) {
-//            [self.topBar noticeButtonClicked:self.topBar.noticeButton];
-//        }
-//    }else{
-//        if (self.displayCategory == NotificationDisplayCategoryDefault) {
-//            [self.topBar replyButtonClicked:self.topBar.replyButton];
-//        }
-//    }
-//}
-
 -(void)initFooterView {
     UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 768, 50)];
     header.backgroundColor = [UIColor clearColor];
@@ -215,15 +168,6 @@
     self.tableView.tableFooterView = header;
 }
 
-//-(void)initHeaderView {
-//    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 768, 50)];
-//    header.backgroundColor = [UIColor clearColor];
-//    [header addSubview:self.indicView];
-//    UILabel *loadLab = [[UILabel alloc]initWithFrame:CGRectMake(self.indicView.frame.origin.x+30, 10, 200, 30)];
-//    loadLab.text = @"正在刷新中...";
-//    [header addSubview:loadLab];
-//    self.tableView.tableHeaderView = header;
-//}
 
 #pragma mark -- 请求接口
 

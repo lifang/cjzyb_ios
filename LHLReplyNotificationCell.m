@@ -70,9 +70,7 @@
         //头像
         self.imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"smile.png"]];
         _imgView.layer.cornerRadius = 13.0;
-        _imgView.clipsToBounds = YES;
-//        _imgView.layer.borderColor = [UIColor redColor].CGColor;
-//        _imgView.layer.borderWidth = 1.0;
+        [_imgView.layer setMasksToBounds:YES];
         [_contentBgView addSubview:_imgView];
         
         //回复者名字
@@ -157,12 +155,10 @@
 -(void)setInfomations:(ReplyNotificationObject *)reply{
     if (reply != nil) {
         self.replyObject = reply;
-//        _imgView.image = [self.delegate replyCell:self bufferedImageForAddress:reply.replyerImageAddress];
         NSString *urlString = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",reply.replyerImageAddress];
         NSURL *url = [NSURL URLWithString:urlString];
         [_imgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"systemMessage.png"]];
         _replyerNameLabel.text = reply.replyerName;
-//        _myNameLabel.text = @"我";
         _myNameLabel.text = reply.replyTargetName;
         _textView.text = reply.replyContent;
         _timeLabel.text = reply.replyTime;

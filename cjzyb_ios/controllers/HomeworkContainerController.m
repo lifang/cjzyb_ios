@@ -19,7 +19,10 @@
 @property (nonatomic,strong) TenSecChallengeViewController *tenSecViewController;///十速挑战
 @property (nonatomic,strong) SelectingChallengeViewController *selectingChallengeViewController; ///选择挑战
 
-
+///上传answer文件
+@property (nonatomic,strong) BasePostInterface *postAnswerInterface;
+@property (nonatomic,strong) void (^successBlock)(NSString *success);
+@property (nonatomic,strong) void (^failureBlock)(NSString *error);
 ///计时器
 @property (nonatomic,strong) NSTimer *timer;
 /////减时间
@@ -62,6 +65,15 @@
     }
 }
 
+//TODO:上传answer文件
+-(void)uploadAnswerJsonFileWithPath:(NSString*)answerPath withSuccess:(void (^)(NSString *success))success withFailure:(void (^)(NSString *error ))failure{
+    MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    progress.labelText = @"正在上传做题结果，请稍后...";
+    self.successBlock = success;
+    self.failureBlock = failure;
+    [self.postAnswerInterface postAnswerFileWith:answerPath];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -74,7 +86,6 @@
         self.label1.hidden=YES;self.label2.hidden=YES;self.rotioLabel.hidden=YES;self.timeLabel.hidden=YES;
     }
     [self startTimer];
-//    self.homeworkType = HomeworkType_reading;
     switch (self.homeworkType) {
         case HomeworkType_line://连线
         {
@@ -83,6 +94,7 @@
             self.liningView.view.frame = self.contentView.bounds;
             [self.appearCorrectButton addTarget:self.liningView action:@selector(showLiningCorrectAnswer) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.liningView action:@selector(liningViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+            [self.quitHomeworkButton addTarget:self.readingController action:@selector(exitLiningView) forControlEvents:UIControlEventTouchUpInside];
             self.liningView.checkHomeworkButton = self.checkHomeworkButton;
             [self.contentView addSubview:self.liningView.view];
             [self addChildViewController:self.liningView];
@@ -112,6 +124,7 @@
             self.listenView.view.frame = self.contentView.bounds;
             [self.appearCorrectButton setHidden:YES];
             self.listenView.checkHomeworkButton = self.checkHomeworkButton;
+            [self.quitHomeworkButton addTarget:self.readingController action:@selector(exitListenView) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.listenView action:@selector(listenViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
             [self.contentView addSubview:self.listenView.view];
             [self addChildViewController:self.listenView];
@@ -125,7 +138,7 @@
             self.selectedView.view.frame = self.contentView.bounds;
             [self.appearCorrectButton addTarget:self.selectedView action:@selector(showClozeCorrectAnswer) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.selectedView action:@selector(clozeViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-            
+            [self.quitHomeworkButton addTarget:self.readingController action:@selector(exitClozeView) forControlEvents:UIControlEventTouchUpInside];
             self.selectedView.checkHomeworkButton = self.checkHomeworkButton;
             [self.contentView addSubview:self.selectedView.view];
             [self addChildViewController:self.selectedView];
@@ -137,6 +150,7 @@
             self.sortView = [[SortViewController alloc]initWithNibName:@"SortViewController" bundle:nil];
             [self.sortView willMoveToParentViewController:self];
             self.sortView.view.frame = self.contentView.bounds;
+            [self.quitHomeworkButton addTarget:self.readingController action:@selector(exitSortView) forControlEvents:UIControlEventTouchUpInside];
             [self.appearCorrectButton addTarget:self.sortView action:@selector(showSortCorrectAnswer) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.sortView action:@selector(sortViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
             self.sortView.checkHomeworkButton = self.checkHomeworkButton;
@@ -200,7 +214,35 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark PostDelegate上传answer文件代理
+-(void)getPostInfoDidFinished:(NSDictionary *)result{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (self.successBlock) {
+            self.successBlock(@"上传成功");
+        }
+    });
+}
+
+-(void)getPostInfoDidFailed:(NSString *)errorMsg{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (self.failureBlock) {
+            self.failureBlock(errorMsg);
+        }
+    });
+}
+#pragma mark --
+
+
 #pragma mark -- property
+-(BasePostInterface *)postAnswerInterface{
+    if (!_postAnswerInterface) {
+        _postAnswerInterface = [[BasePostInterface alloc] init];
+        _postAnswerInterface.delegate = self;
+    }
+    return _postAnswerInterface;
+}
 
 -(void)setSpendSecond:(long long)spendSecond{
     _spendSecond = spendSecond;

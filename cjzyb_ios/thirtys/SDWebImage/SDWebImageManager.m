@@ -75,7 +75,6 @@
         url = [NSURL URLWithString:(NSString *)url];
     }
 
-    // Prevents app crashing on argument type error like sending NSNull instead of NSURL
     if (![url isKindOfClass:NSURL.class]) {
         url = nil;
     }

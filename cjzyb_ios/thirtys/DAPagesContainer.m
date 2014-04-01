@@ -114,14 +114,7 @@
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL)animated
 {
-    NSString *indexString = [NSString stringWithFormat:@"%d",selectedIndex];
-    
-    if ([[DataService sharedService].numberOfViewArray containsObject:indexString]) {
-        int index = [[DataService sharedService].numberOfViewArray indexOfObject:indexString];
-        [[DataService sharedService].numberOfViewArray removeObjectAtIndex:index];
-    }
-    [[DataService sharedService].numberOfViewArray addObject:indexString];
-    
+
     UIButton *previosSelectdItem = self.topBar.itemViews[self.selectedIndex];
     UIButton *nextSelectdItem = self.topBar.itemViews[selectedIndex];
     
@@ -133,7 +126,16 @@
         number=1;
     }else {
         number=0;
+        NSString *indexString = [NSString stringWithFormat:@"%d",selectedIndex];
+        if ([[DataService sharedService].numberOfViewArray containsObject:indexString]) {
+            int index = [[DataService sharedService].numberOfViewArray indexOfObject:indexString];
+            [[DataService sharedService].numberOfViewArray removeObjectAtIndex:index];
+        }
+        [[DataService sharedService].numberOfViewArray addObject:indexString];
     }
+    
+    
+    
     
     if (abs(self.selectedIndex - selectedIndex) <= 1) {
         [self.scrollView setContentOffset:CGPointMake(selectedIndex * self.scrollWidth, 0) animated:animated];

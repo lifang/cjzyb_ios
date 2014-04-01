@@ -7,6 +7,7 @@
 //
 
 #import "ParseQuestionJsonFileTool.h"
+#import "ParseAnswerJsonFileTool.h"
 #define koutOfCacheDate  (60*60*24*7)
 @interface ParseQuestionJsonFileTool ()
 +(id)defaultParseQuestionJsonFileTool;
@@ -93,10 +94,10 @@
                     ReadingSentenceObj *sentence = [[ReadingSentenceObj alloc] init];
                     sentence.readingSentenceID = [Utility filterValue:[subSentenceDic objectForKey:@"id"]];
                     sentence.readingSentenceContent = [Utility filterValue:[subSentenceDic objectForKey:@"content"]];
-                    NSString *url = [Utility filterValue:[subSentenceDic objectForKey:@"resource_url"]];
-                    if (url) {
-                        sentence.readingSentenceResourceURL = [NSString stringWithFormat:@"%@%@",kHOST,url];
-                        sentence.readingSentenceLocalFileURL = [ParseQuestionJsonFileTool downloadFileWithFileName:sentence.readingSentenceID withFileURLString:sentence.readingSentenceResourceURL];
+                    NSString *fileName = [Utility filterValue:[subSentenceDic objectForKey:@"resource_url"]];
+                    if (fileName) {
+                        NSString *path = [[jsonFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:fileName];
+                        sentence.readingSentenceLocalFileURL = path;
                     }
                     
                     [readingSentenceList addObject:sentence];
@@ -270,5 +271,48 @@
             return;
         }
     });
+}
+
+
+//TODO:获取有做题记录的朗读题目
++(void)parseQuestionFromLastAnswerUpdateVersionJsonFileWithUserId:(NSString*)userId withTask:(TaskObj*)task withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex,int status,NSString *updateTime,NSString *userTime,int specifyTime))questionArr withParseError:(void (^)(NSError *error))failure{
+    int status = 0;
+    NSString *updateTime = nil;
+    NSString *useTime = @"0";
+    int questionIndex = 0;
+    int questionItemIndex = 0;
+    NSDictionary *readingDic = [Utility returnAnswerDictionaryWithName:@"reading" andDate:task.taskStartDate];
+    if (readingDic && readingDic.count > 0) {
+         status = [Utility filterValue:[readingDic objectForKey:@"status"]].intValue;
+        updateTime = [Utility filterValue:[readingDic objectForKey:@"update_time"]];
+        useTime = [Utility filterValue:[readingDic objectForKey:@"use_time"]];
+        questionIndex = [Utility filterValue:[readingDic objectForKey:@"questions_item"]].intValue;
+        questionItemIndex = [Utility filterValue:[readingDic objectForKey:@"branch_item"]].intValue;
+    }
+    
+    NSString *filePath = [NSString stringWithFormat:@"%@/questions.json",task.taskFolderPath];
+    [ParseQuestionJsonFileTool parseQuestionJsonFile:filePath withReadingQuestionArray:^(NSArray *readingQuestionArr, NSInteger specifiedTime) {
+        if (readingDic && readingDic.count > 0) {
+            NSArray *readingArr = [readingDic objectForKey:@"questions"];
+            for (int index = 0; index < readingArr.count && index < readingQuestionArr.count; index++) {
+                NSDictionary *questionDic = [readingArr objectAtIndex:index];
+                NSArray *questionArr = [questionDic objectForKey:@"branch_questions"];
+                ReadingHomeworkObj *reading = [readingQuestionArr objectAtIndex:index];
+                for (int i = 0; i < reading.readingHomeworkSentenceObjArray.count && i < questionArr.count; i++) {
+                    NSDictionary *sentenceDic = [questionArr objectAtIndex:i];
+                    ReadingSentenceObj *sentence = [reading.readingHomeworkSentenceObjArray objectAtIndex:i];
+                    sentence.readingSentenceRatio = [Utility filterValue:[sentenceDic objectForKey:@"ratio"]];
+                    sentence.readingErrorWordArray = [ParseAnswerJsonFileTool getErrorWordArrayFromString:[sentenceDic objectForKey:@"answer"]];
+                }
+            }
+        }
+        if (questionArr) {
+            questionArr(readingQuestionArr,questionIndex,questionItemIndex,status,updateTime,useTime,specifiedTime);
+        }
+    } withParseError:^(NSError *error) {
+        if (failure) {
+            failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"没有发现作业包"}]);
+        }
+    }];
 }
 @end

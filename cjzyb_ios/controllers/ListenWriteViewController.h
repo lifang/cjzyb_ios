@@ -15,7 +15,7 @@
 /**
  *  听写
  */
-@interface ListenWriteViewController : UIViewController<UITextFieldDelegate,TenSecChallengeResultViewDelegate,PostDelegate,AVAudioPlayerDelegate,CardFullInterfaceDelegate>
+@interface ListenWriteViewController : UIViewController<UITextFieldDelegate,TenSecChallengeResultViewDelegate,PostDelegate,AVAudioPlayerDelegate,CardFullInterfaceDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIView *listenMusicView;
 @property (nonatomic, strong) IBOutlet UIButton *listenBtn;
@@ -70,4 +70,7 @@
 @property (nonatomic, strong) NSDictionary *history_questionDic;
 @property (nonatomic, strong) NSMutableArray *history_branchQuestionArray;
 @property (nonatomic, strong) NSDictionary *history_branchQuestionDic;
+
+-(void)exitListenView;
+@property (nonatomic, assign) NSInteger postNumber;
 @end
