@@ -15,14 +15,14 @@
 #import "LininggViewController.h"
 #import "SelectingChallengeViewController.h"//选择挑战
 #import "TenSecChallengeViewController.h" //十速挑战
-
+#import "BasePostInterface.h"
 
 
 /** HomeworkContainerController
  *
  * 所有题目类型的container，子类放置是每个题型的controller
  */
-@interface HomeworkContainerController : UIViewController
+@interface HomeworkContainerController : UIViewController<PostDelegate>
 
 ///作业类型
 @property (assign,nonatomic) HomeworkType homeworkType;
@@ -53,6 +53,8 @@
 ///停止计时
 -(void)stopTimer;
 
+///上传answer文件
+-(void)uploadAnswerJsonFileWithPath:(NSString*)answerPath withSuccess:(void (^)(NSString *success))success withFailure:(void (^)(NSString *error ))failure;
 
 @property (strong, nonatomic) IBOutlet UIImageView *timeImg;
 

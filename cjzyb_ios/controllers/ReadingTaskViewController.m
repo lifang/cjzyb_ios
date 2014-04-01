@@ -21,9 +21,6 @@
 #define minRecoginCount 4
 #define minRecoginLevel 0.5
 @interface ReadingTaskViewController ()
-
-
-
 ///预听界面
 @property (nonatomic,strong) PreReadingTaskViewController *preReadingController;
 
@@ -236,8 +233,13 @@
         }
     }];
     
-    [parentVC dismissViewControllerAnimated:YES completion:^{
-        
+    [parentVC  uploadAnswerJsonFileWithPath:path withSuccess:^(NSString *success) {
+        [Utility errorAlert:success];
+        [parentVC dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    } withFailure:^(NSString *error) {
+        [Utility errorAlert:error];
     }];
 }
 
@@ -249,11 +251,12 @@
         if (self.isPrePlay) {
             [self hiddlePrePlayControllerWithAnimation:YES];
         }else{
+            TaskObj *task = [DataService sharedService].taskObj;
+            NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
             if (self.currentSentence.readingSentenceRatio.floatValue >= minRecoginLevel || self.readingCount >= minRecoginCount) {
                 if (self.readingCount == 0) {
                       __weak ReadingTaskViewController *weakSelf = self;
-                    TaskObj *task = [DataService sharedService].taskObj;
-                    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
+                    
                     [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
                         ReadingTaskViewController *tempSelf = weakSelf ;
                         if (tempSelf) {
@@ -279,7 +282,12 @@
                         [self appearPrePlayControllerWithAnimation:YES];
                     }else{//TODO:挑战结束
                         [parentVC stopTimer];
-                        [self showResultView];
+                        [parentVC  uploadAnswerJsonFileWithPath:path withSuccess:^(NSString *success) {
+                            [self showResultView];
+                        } withFailure:^(NSString *error) {
+                            [Utility errorAlert:error];
+                        }];
+                        
                     }
                 }
                 

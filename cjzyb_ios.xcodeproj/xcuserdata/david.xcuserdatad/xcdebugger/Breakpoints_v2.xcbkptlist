@@ -340,11 +340,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cjzyb_ios/controllers/ReadingTaskViewController.m"
-            timestampString = "418016056.536425"
+            timestampString = "418027140.644361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "668"
-            endingLineNumber = "668"
+            startingLineNumber = "669"
+            endingLineNumber = "669"
             landmarkName = "-recognition:didGetRecognitionResult:"
             landmarkType = "5">
          </BreakpointContent>
@@ -356,11 +356,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cjzyb_ios/controllers/ReadingTaskViewController.m"
-            timestampString = "418016060.321904"
+            timestampString = "418027140.644361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "664"
-            endingLineNumber = "664"
+            startingLineNumber = "665"
+            endingLineNumber = "665"
             landmarkName = "-recognition:didGetRecognitionResult:"
             landmarkType = "5">
          </BreakpointContent>
@@ -372,11 +372,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cjzyb_ios/controllers/ReadingTaskViewController.m"
-            timestampString = "418016063.006317"
+            timestampString = "418027140.644361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "678"
-            endingLineNumber = "678"
+            startingLineNumber = "680"
+            endingLineNumber = "680"
             landmarkName = "-recognition:didGetRecognitionResult:"
             landmarkType = "5">
          </BreakpointContent>

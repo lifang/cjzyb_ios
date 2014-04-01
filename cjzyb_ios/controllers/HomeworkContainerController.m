@@ -19,7 +19,10 @@
 @property (nonatomic,strong) TenSecChallengeViewController *tenSecViewController;///十速挑战
 @property (nonatomic,strong) SelectingChallengeViewController *selectingChallengeViewController; ///选择挑战
 
-
+///上传answer文件
+@property (nonatomic,strong) BasePostInterface *postAnswerInterface;
+@property (nonatomic,strong) void (^successBlock)(NSString *success);
+@property (nonatomic,strong) void (^failureBlock)(NSString *error);
 ///计时器
 @property (nonatomic,strong) NSTimer *timer;
 /////减时间
@@ -60,6 +63,15 @@
         [self.timer invalidate];
         self.timer = nil;
     }
+}
+
+//TODO:上传answer文件
+-(void)uploadAnswerJsonFileWithPath:(NSString*)answerPath withSuccess:(void (^)(NSString *success))success withFailure:(void (^)(NSString *error ))failure{
+    MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    progress.labelText = @"正在上传做题结果，请稍后...";
+    self.successBlock = success;
+    self.failureBlock = failure;
+    [self.postAnswerInterface postAnswerFileWith:answerPath];
 }
 
 - (void)viewDidLoad
@@ -202,7 +214,35 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark PostDelegate上传answer文件代理
+-(void)getPostInfoDidFinished:(NSDictionary *)result{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (self.successBlock) {
+            self.successBlock(@"上传成功");
+        }
+    });
+}
+
+-(void)getPostInfoDidFailed:(NSString *)errorMsg{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        if (self.failureBlock) {
+            self.failureBlock(errorMsg);
+        }
+    });
+}
+#pragma mark --
+
+
 #pragma mark -- property
+-(BasePostInterface *)postAnswerInterface{
+    if (!_postAnswerInterface) {
+        _postAnswerInterface = [[BasePostInterface alloc] init];
+        _postAnswerInterface.delegate = self;
+    }
+    return _postAnswerInterface;
+}
 
 -(void)setSpendSecond:(long long)spendSecond{
     _spendSecond = spendSecond;

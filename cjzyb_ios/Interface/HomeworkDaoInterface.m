@@ -94,6 +94,7 @@
 }
 //TODO:作业类型转换
 +(HomeworkType)convertTypeFromInt:(int)type{
+    //TYPES_NAME = {0 => "听力", 1 => "朗读",  2 => "十速挑战", 3 => "选择", 4 => "连线", 5 => "完型填空", 6 => "排序"
     switch (type) {
         case 0:
             return  HomeworkType_listeningAndWrite;
@@ -102,11 +103,11 @@
         case 2:
             return HomeworkType_quick;
         case 3:
-            return HomeworkType_line;
-        case 4:
-            return HomeworkType_fillInBlanks;
-        case 5:
             return HomeworkType_select;
+        case 4:
+            return HomeworkType_line;
+        case 5:
+            return HomeworkType_fillInBlanks;
         case 6:
             return HomeworkType_sort;
         default:
@@ -117,6 +118,7 @@
 
 //TODO:作业类型转换
 +(NSString*)convertStringFromType:(HomeworkType)type{
+    //TYPES_NAME = {0 => "听力", 1 => "朗读",  2 => "十速挑战", 3 => "选择", 4 => "连线", 5 => "完型填空", 6 => "排序"
     switch (type) {
         case HomeworkType_listeningAndWrite:
             return  @"0";
@@ -124,11 +126,11 @@
             return @"1";
         case HomeworkType_quick:
             return @"2";
-        case HomeworkType_line:
-            return @"3";
-        case HomeworkType_fillInBlanks:
-            return @"4";
         case HomeworkType_select:
+            return @"3";
+        case HomeworkType_line:
+            return @"4";
+        case HomeworkType_fillInBlanks:
             return @"5";
         case HomeworkType_sort:
             return @"6";
