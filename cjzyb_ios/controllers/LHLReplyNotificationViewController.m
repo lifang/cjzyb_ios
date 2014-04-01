@@ -22,7 +22,6 @@
 @property (strong,nonatomic) NSIndexPath *deletingIndexPath;  //正在被删除的cell的indexPath(在请求接口的过程中有效)
 @property (strong,nonatomic) NSIndexPath *replyingIndexPath; //正在编辑回复的cell的indexPath
 @property (assign,nonatomic) BOOL isRefreshing; //YES刷新,NO分页加载
-@property (strong,nonatomic) NSMutableDictionary *bufferedImageDic; //头像缓冲
 @property (strong,nonatomic) UIActivityIndicatorView *indicView;
 
 @property (strong,nonatomic) NSIndexPath *editingReplyCellIndexPath;//存储正在编辑状态的格子位置
@@ -57,6 +56,15 @@
     [self addNotificationOb];
     
     [self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
+    
+    //下拉刷新
+    __block LHLReplyNotificationViewController *replyVC = self;
+    __block UITableView *tableView = self.tableView;
+    [_tableView addPullToRefreshWithActionHandler:^{
+        replyVC.isRefreshing = YES;
+        [replyVC requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+        [tableView.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
+    }];
 }
 
 //获取数据
@@ -83,12 +91,6 @@
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    if (_bufferedImageDic && _bufferedImageDic.count > 0) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *path = [paths firstObject];
-        NSString *filePath = [NSString stringWithFormat:@"%@/tempImages.plist",path];
-        [_bufferedImageDic writeToFile:filePath atomically:YES];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -214,15 +216,15 @@
     self.tableView.tableFooterView = header;
 }
 
--(void)initHeaderView {
-    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 768, 50)];
-    header.backgroundColor = [UIColor clearColor];
-    [header addSubview:self.indicView];
-    UILabel *loadLab = [[UILabel alloc]initWithFrame:CGRectMake(self.indicView.frame.origin.x+30, 10, 200, 30)];
-    loadLab.text = @"正在刷新中...";
-    [header addSubview:loadLab];
-    self.tableView.tableHeaderView = header;
-}
+//-(void)initHeaderView {
+//    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 768, 50)];
+//    header.backgroundColor = [UIColor clearColor];
+//    [header addSubview:self.indicView];
+//    UILabel *loadLab = [[UILabel alloc]initWithFrame:CGRectMake(self.indicView.frame.origin.x+30, 10, 200, 30)];
+//    loadLab.text = @"正在刷新中...";
+//    [header addSubview:loadLab];
+//    self.tableView.tableHeaderView = header;
+//}
 
 #pragma mark -- 请求接口
 
@@ -235,7 +237,10 @@
             NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",@"115",@"83",page];
             NSURL *url1 = [NSURL URLWithString:str1];
             NSURLRequest *request1 = [NSURLRequest requestWithURL:url1];
-            [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
+            if (page.integerValue == 1) {
+                //只有在刷新时才有菊花
+                [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
+            }
             self.isLoading = YES;
             [Utility requestDataWithRequest:request1 withSuccess:^(NSDictionary *dicData) {
                 self.isLoading = NO;
@@ -243,6 +248,7 @@
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
                 if (self.isRefreshing) {
                     self.replyNotificationArray = [NSMutableArray array];
+                    self.pageOfReplyNotification = 1;
                 }else{
                     self.pageOfReplyNotification ++;
                 }
@@ -370,8 +376,10 @@
 -(void)setIsLoading:(BOOL)isLoading{
     //停止请求接口时,隐藏header和footer
     if (isLoading == NO) {
-        self.tableView.tableHeaderView = nil;
-        self.tableView.tableFooterView = nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.tableView.tableHeaderView = nil;
+            self.tableView.tableFooterView = nil;
+        });
     }
     _isLoading = isLoading;
 }
@@ -404,16 +412,6 @@
         _appDel = [AppDelegate shareIntance];
     }
     return _appDel;
-}
-
--(NSMutableDictionary *)bufferedImageDic{
-    if (!_bufferedImageDic) {
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-        NSString *path = [paths firstObject];
-        NSString *filePath = [NSString stringWithFormat:@"%@/tempImages.plist",path];
-        _bufferedImageDic = [NSMutableDictionary dictionaryWithContentsOfFile:filePath] ? :[NSMutableDictionary dictionary];
-    }
-    return _bufferedImageDic;
 }
 
 -(UIView *)replyInputBgView{
@@ -460,12 +458,6 @@
         self.isRefreshing = NO;
         [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:[NSString stringWithFormat:@"%d",self.pageOfReplyNotification + 1]];
         [self initFooterView];
-    }else if(self.tableView.contentOffset.y < -80 - self.tableView.contentInset.top ){
-        //开始下拉刷新
-        self.isRefreshing = YES;
-        [self requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
-        self.pageOfReplyNotification = 1;
-        [self initHeaderView];
     }
 }
 

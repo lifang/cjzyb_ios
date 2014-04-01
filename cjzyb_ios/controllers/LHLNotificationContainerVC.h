@@ -13,4 +13,6 @@
 
 @interface LHLNotificationContainerVC : UIViewController
 @property (nonatomic,strong) DAPagesContainer *pagesContainer; //主页面
+
+- (void)setSelectedIndex:(NSUInteger )index animated:(BOOL)animated; //选择页面,从左到右 0 - 1
 @end

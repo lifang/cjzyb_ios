@@ -28,6 +28,8 @@
     [super viewDidLoad];
     
     [self tabBarInit];
+    
+    [self setSelectedIndex:[DataService sharedService].notificationPage animated:NO];
 }
 
 - (void)tabBarInit{
@@ -40,15 +42,28 @@
     self.pagesContainer.topBarBackgroundColor = [UIColor colorWithRed:0.8235 green:0.8275 blue:0.8314 alpha:1];
     
     //加入子页面
-    LHLNotificationViewController *notiVC = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
-    notiVC.title = @"系统通知";
-    notiVC.view.frame = (CGRect){0, self.pagesContainer.topBarHeight, 768, 1024-67-self.pagesContainer.topBarHeight};
-    
     LHLReplyNotificationViewController *replyVC = [[LHLReplyNotificationViewController alloc] initWithNibName:@"LHLReplyNotificationViewController" bundle:nil];
     replyVC.title = @"回复通知";
     replyVC.view.frame = (CGRect){0, self.pagesContainer.topBarHeight, 768, 1024-67-self.pagesContainer.topBarHeight};
     
-    self.pagesContainer.viewControllers = [NSArray arrayWithObjects:notiVC,replyVC,nil];
+    LHLNotificationViewController *notiVC = [[LHLNotificationViewController alloc] initWithNibName:@"LHLNotificationViewController" bundle:nil];
+    notiVC.title = @"系统通知";
+    notiVC.view.frame = (CGRect){0, self.pagesContainer.topBarHeight, 768, 1024-67-self.pagesContainer.topBarHeight};
+    
+    self.pagesContainer.viewControllers = [NSArray arrayWithObjects:replyVC,notiVC,nil];
+    
+    [self.pagesContainer.topBar setDAPagesContainerTopBarItemsOffset:3.1415926];
+    [self.pagesContainer.topBar setDAPagesContainerTopBarItemViewWidth:self.pagesContainer.view.frame.size.width / 3];
+    
+    [self.pagesContainer setSelectedIndex:1];
+    
+    [self.pagesContainer.topBar layoutSubviews];
+}
+
+- (void)setSelectedIndex:(NSUInteger)index animated:(BOOL)animated{
+    if (self.pagesContainer) {
+        [self.pagesContainer setSelectedIndex:index animated:animated];
+    }
 }
 
 - (void)didReceiveMemoryWarning

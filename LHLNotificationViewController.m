@@ -51,6 +51,15 @@
     [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
         
     [self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
+    
+    //下拉刷新
+    __block LHLNotificationViewController *notiVC = self;
+    __block UITableView *tableView = self.tableView;
+    [_tableView addPullToRefreshWithActionHandler:^{
+        notiVC.isRefreshing = YES;
+        [notiVC requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+        [tableView.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
+    }];
 }
 
 //获取数据
@@ -166,7 +175,10 @@
             NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",@"1",@"1",page];
             NSURL *url = [NSURL URLWithString:str];
             NSURLRequest *request = [NSURLRequest requestWithURL:url];
-            [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
+            if (page.integerValue == 1) {
+                //分页加载时,无菊花
+                [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
+            }
             self.isLoading = YES;
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 self.isLoading = NO;
@@ -174,6 +186,7 @@
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
                 if (self.isRefreshing) {
                     self.notificationArray = [NSMutableArray array];
+                    self.pageOfNotification = 1;
                 }else{
                     self.pageOfNotification ++;
                 }
@@ -223,7 +236,6 @@
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
-//                        self.tableView.frame = self.tableView.frame.origin.y == 0 ? (CGRect){0,1,self.tableView.frame.size} : (CGRect){0,0,self.tableView.frame.size};
                         self.tableView.alpha = self.tableView.alpha == 1.0 ? 0.99 : 1.0;
                     } completion:^(BOOL finished) {
                         [self.tableView reloadData];
@@ -248,8 +260,10 @@
 -(void)setIsLoading:(BOOL)isLoading{
     //停止请求接口时,隐藏header和footer
     if (isLoading == NO) {
-        self.tableView.tableHeaderView = nil;
-        self.tableView.tableFooterView = nil;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.tableView.tableHeaderView = nil;
+            self.tableView.tableFooterView = nil;
+        });
     }
     _isLoading = isLoading;
 }

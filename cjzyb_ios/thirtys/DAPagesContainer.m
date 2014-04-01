@@ -8,13 +8,12 @@
 
 #import "DAPagesContainer.h"
 
-#import "DAPagesContainerTopBar.h"
 #import "DAPageIndicatorView.h"
 
 #import "FirstViewController.h"
 @interface DAPagesContainer () <DAPagesContainerTopBarDelegate, UIScrollViewDelegate>
 
-@property (strong, nonatomic) DAPagesContainerTopBar *topBar;
+
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (weak,   nonatomic) UIScrollView *observingScrollView;
 @property (strong, nonatomic) DAPageIndicatorView *pageIndicatorView;
@@ -154,7 +153,7 @@
                  [previosSelectdItem setImage:[UIImage imageNamed:previosImg] forState:UIControlStateNormal];
                  [nextSelectdItem setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_active",nextImg]] forState:UIControlStateNormal];
              }else {
-                 [previosSelectdItem setTitleColor:[UIColor colorWithWhite:0.6 alpha:1.] forState:UIControlStateNormal];
+                 [previosSelectdItem setTitleColor:[UIColor colorWithWhite:0.1 alpha:1.] forState:UIControlStateNormal];
                  [nextSelectdItem setTitleColor:[UIColor colorWithWhite:1. alpha:1.] forState:UIControlStateNormal];
              }
          } completion:nil];
@@ -192,7 +191,7 @@
                 [previosSelectdItem setImage:[UIImage imageNamed:previosImg] forState:UIControlStateNormal];
                 [nextSelectdItem setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_active",nextImg]] forState:UIControlStateNormal];
             }else {
-                [previosSelectdItem setTitleColor:[UIColor colorWithWhite:0.6 alpha:1.] forState:UIControlStateNormal];
+                [previosSelectdItem setTitleColor:[UIColor colorWithWhite:0.1 alpha:1.] forState:UIControlStateNormal];
                 [nextSelectdItem setTitleColor:[UIColor colorWithWhite:1. alpha:1.] forState:UIControlStateNormal];
             }
             
