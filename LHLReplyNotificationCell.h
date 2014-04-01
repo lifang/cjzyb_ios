@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LHLTextView.h"
-#import "LHLButton.h"
 #import "ReplyNotificationObject.h"
 @protocol LHLReplyNotificationCellDelegate;
-@interface LHLReplyNotificationCell : UITableViewCell<LHLButtonDelegate>
+@interface LHLReplyNotificationCell : UITableViewCell
 @property (strong,nonatomic) id<LHLReplyNotificationCellDelegate> delegate;
 @property (strong,nonatomic) NSIndexPath *indexPath;
 @property (strong,nonatomic) ReplyNotificationObject *replyObject;
@@ -26,6 +24,6 @@
 -(void) replyCell:(LHLReplyNotificationCell *)cell replyButtonClicked:(id)sender;
 -(void) replyCell:(LHLReplyNotificationCell *)cell deleteButtonClicked:(id)sender;
 -(void) replyCell:(LHLReplyNotificationCell *)cell setIsEditing:(BOOL)editing;
--(void) replyCell:(LHLReplyNotificationCell *)cell dragToLeft: (BOOL) toLeft;
--(UIImage *) replyCell:(LHLReplyNotificationCell *)cell bufferedImageForAddress:(NSString *)address;
+//-(void) replyCell:(LHLReplyNotificationCell *)cell dragToLeft: (BOOL) toLeft;
+//-(UIImage *) replyCell:(LHLReplyNotificationCell *)cell bufferedImageForAddress:(NSString *)address;
 @end

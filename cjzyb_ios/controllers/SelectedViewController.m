@@ -378,6 +378,7 @@
     self.checkHomeworkButton.enabled=NO;
 
     if (self.isFirst==YES) {
+        self.postNumber = 0;
         if (self.appDel.isReachable == NO) {
             [Utility errorAlert:@"暂无网络!"];
         }else {
@@ -401,7 +402,14 @@
             //上传answer.json文件之后返回的更新时间
             NSString *timeStr = [result objectForKey:@""];
             [Utility returnAnswerPAthWithString:timeStr];
-            [self showResultView];
+            
+            if (self.postNumber==0) {
+                [self showResultView];
+            }else {
+                [self.homeControl dismissViewControllerAnimated:YES completion:^{
+                    
+                }];
+            }
         });
     });
 }
@@ -463,7 +471,7 @@
     }else{
         self.homeControl.spendSecond = 0;
     }
-    self.homeControl.timerLabel.text = [Utility formateDateStringWithSecond:self.homeControl.spendSecond];
+    self.homeControl.timerLabel.text = [Utility formateDateStringWithSecond:(NSInteger)self.homeControl.spendSecond];
     
     UILabel *label = [[UILabel alloc] initWithFrame:(CGRect){self.view.frame.size.width/2,120,70,50}];
     [label setFont:[UIFont systemFontOfSize:50]];
@@ -503,5 +511,32 @@
 -(void)getCardFullInfoDidFailed:(NSString *)errorMsg {
     [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
     [Utility errorAlert:errorMsg];
+}
+
+-(void)exitClozeView {
+    if (self.number == self.questionArray.count-1) {
+        
+    }else {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+        [alert show];
+    }
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    if (buttonIndex==0) {
+        if (self.isFirst==YES) {
+            self.postNumber = 1;
+            if (self.appDel.isReachable == NO) {
+                [Utility errorAlert:@"暂无网络!"];
+            }else {
+                [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                self.postInter = [[BasePostInterface alloc]init];
+                self.postInter.delegate = self;
+                [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
+            }
+        }else {
+            [self.homeControl dismissViewControllerAnimated:YES completion:nil];
+        }
+    }
 }
 @end

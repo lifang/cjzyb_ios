@@ -48,7 +48,8 @@
     //问答之后更新界面
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSecondArrayByThirdView:) name:@"reloadSecondArrayByThirdView" object:nil];
     
-    
+    //修改头像之后更新界面
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSecondArrayByImage:) name:@"reloadSecondArrayByImage" object:nil];
     //下拉刷新
     __block SecondViewController *secondView = self;
     __block UITableView *table = self.secondTable;
@@ -59,6 +60,11 @@
     }];
 
 }
+- (void)reloadSecondArrayByImage:(NSNotification *)notification {
+    [self.secondTable reloadData];
+}
+
+
 - (void)reloadSecondArrayByThirdView:(NSNotification *)notification {
     MessageObject *message = [notification object];
     

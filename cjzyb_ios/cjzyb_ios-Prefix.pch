@@ -16,6 +16,7 @@
     #import <Foundation/Foundation.h>
 #import "AppDelegate.h"
 #import "Const.h"
+#import "SDImageCache.h"
 #import "UIImageView+WebCache.h"
 #import "MBProgressHUD.h"
 #import "Utility.h"

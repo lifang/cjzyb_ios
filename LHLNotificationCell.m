@@ -28,6 +28,8 @@
 
 - (void)initCell{
     [self.imgView.layer setCornerRadius:3.0];
+    
+    [self.coverButton addTarget:self action:@selector(coverButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 
 //    self.textView.delegate = self;
     
@@ -71,14 +73,12 @@
         [self.delegate cell:self setIsEditing:_isEditing];
     }
     if (self.contentBgView.frame.origin.x < -1) {
-//        self.contentBgView.backgroundColor = [UIColor whiteColor];
         [UIView animateWithDuration:0.25 animations:^{
             self.contentBgView.frame = self.bounds;
         } completion:^(BOOL finished) {
             
         }];
     }else{
-//        self.contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
         [UIView animateWithDuration:0.25 animations:^{
             self.contentBgView.frame = (CGRect){-103,0,self.bounds.size};
         } completion:^(BOOL finished) {
@@ -87,20 +87,12 @@
     }
 }
 
-- (void)coverButtonDraged:(BOOL)toLeft{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(cell:dragToLeft:)]) {
-        [self.delegate cell:self dragToLeft:toLeft];
-    }
-}
-
 #pragma mark property
 -(void) setIsEditing:(BOOL)isEditing{
     _isEditing = isEditing;
     if (isEditing) {
-//        self.contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
         self.contentBgView.frame = (CGRect){-103,0,self.bounds.size};
     }else{
-//        self.contentBgView.backgroundColor = [UIColor whiteColor];
         self.contentBgView.frame = self.bounds;
     }
 }

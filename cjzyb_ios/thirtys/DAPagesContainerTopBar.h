@@ -19,6 +19,10 @@
 
 
 @interface DAPagesContainerTopBar : UIView
+{
+    CGFloat DAPagesContainerTopBarItemViewWidth;
+    CGFloat DAPagesContainerTopBarItemsOffset;
+}
 
 @property (strong, nonatomic) NSArray *itemTitles;
 @property (readonly, strong, nonatomic) NSArray *itemViews;
@@ -26,5 +30,8 @@
 
 - (CGPoint)centerForSelectedItemAtIndex:(NSUInteger)index;
 - (CGPoint)contentOffsetForSelectedItemAtIndex:(NSUInteger)index;
+
+- (void)setDAPagesContainerTopBarItemViewWidth:(CGFloat)value;
+- (void)setDAPagesContainerTopBarItemsOffset:(CGFloat)value;
 
 @end

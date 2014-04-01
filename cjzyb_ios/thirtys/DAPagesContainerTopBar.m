@@ -20,13 +20,15 @@
 
 @implementation DAPagesContainerTopBar
 
-CGFloat const DAPagesContainerTopBarItemViewWidth = 36.5;
-CGFloat const DAPagesContainerTopBarItemsOffset = 124.4;
+//CGFloat const
+//CGFloat const
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
+        DAPagesContainerTopBarItemViewWidth = 36.5;
+        DAPagesContainerTopBarItemsOffset = 124.4;
     }
     return self;
 }
@@ -60,7 +62,12 @@ CGFloat const DAPagesContainerTopBarItemsOffset = 124.4;
         NSMutableArray *mutableItemViews = [NSMutableArray arrayWithCapacity:itemTitles.count];
         for (NSUInteger i = 0; i < itemTitles.count; i++) {
             UIButton *itemView = [self addItemView];
-            [itemView setImage:[UIImage imageNamed:[itemTitles objectAtIndex:i]] forState:UIControlStateNormal];
+            NSString *title_str = [NSString stringWithFormat:@"%@",[itemTitles objectAtIndex:i]];
+            if ([title_str isEqualToString:@"回复通知"] || [title_str isEqualToString:@"系统通知"]) {
+                [itemView setTitle:itemTitles[i] forState:UIControlStateNormal];
+            }else {
+                [itemView setImage:[UIImage imageNamed:[itemTitles objectAtIndex:i]] forState:UIControlStateNormal];
+            }
             [mutableItemViews addObject:itemView];
         }
         self.itemViews = [NSArray arrayWithArray:mutableItemViews];
@@ -77,6 +84,7 @@ CGFloat const DAPagesContainerTopBarItemsOffset = 124.4;
     UIButton *itemView = [[UIButton alloc] initWithFrame:frame];
     [itemView addTarget:self action:@selector(itemViewTapped:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:itemView];
+    itemView.titleLabel.font = [UIFont systemFontOfSize:22.0];
     return itemView;
 }
 
@@ -88,6 +96,15 @@ CGFloat const DAPagesContainerTopBarItemsOffset = 124.4;
 - (void)layoutItemViews
 {
     CGFloat x = DAPagesContainerTopBarItemsOffset;
+    if (x - 3.1415926 < 0.00000001) {
+        x = 768. / 6.;
+        for (NSUInteger i = 0; i < 2; i++) {
+            UIView *itemView = self.itemViews[i];
+            itemView.frame = CGRectMake(x, 33, DAPagesContainerTopBarItemViewWidth, 30.5);
+            x += DAPagesContainerTopBarItemViewWidth;
+        }
+        return;
+    }
     for (NSUInteger i = 0; i < self.itemViews.count; i++) {
         UIView *itemView = self.itemViews[i];
         itemView.frame = CGRectMake(x, 33, DAPagesContainerTopBarItemViewWidth, 30.5);
@@ -99,6 +116,15 @@ CGFloat const DAPagesContainerTopBarItemsOffset = 124.4;
 {
     [super layoutSubviews];
     [self layoutItemViews];
+}
+
+#pragma 额外setter
+- (void)setDAPagesContainerTopBarItemsOffset:(CGFloat)value{
+    DAPagesContainerTopBarItemsOffset = value;
+}
+
+- (void)setDAPagesContainerTopBarItemViewWidth:(CGFloat)value{
+    DAPagesContainerTopBarItemViewWidth = value;
 }
 
 @end

@@ -8,13 +8,12 @@
 
 #import "DAPagesContainer.h"
 
-#import "DAPagesContainerTopBar.h"
 #import "DAPageIndicatorView.h"
 
 #import "FirstViewController.h"
 @interface DAPagesContainer () <DAPagesContainerTopBarDelegate, UIScrollViewDelegate>
 
-@property (strong, nonatomic) DAPagesContainerTopBar *topBar;
+
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (weak,   nonatomic) UIScrollView *observingScrollView;
 @property (strong, nonatomic) DAPageIndicatorView *pageIndicatorView;
@@ -115,20 +114,29 @@
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL)animated
 {
-    NSString *indexString = [NSString stringWithFormat:@"%d",selectedIndex];
-    
-    if ([[DataService sharedService].numberOfViewArray containsObject:indexString]) {
-        int index = [[DataService sharedService].numberOfViewArray indexOfObject:indexString];
-        [[DataService sharedService].numberOfViewArray removeObjectAtIndex:index];
-    }
-    [[DataService sharedService].numberOfViewArray addObject:indexString];
-    
+
     UIButton *previosSelectdItem = self.topBar.itemViews[self.selectedIndex];
     UIButton *nextSelectdItem = self.topBar.itemViews[selectedIndex];
     
     NSString *previosImg = [self.viewControllers[self.selectedIndex] valueForKey:@"title"];
     NSString *nextImg = [self.viewControllers[selectedIndex] valueForKey:@"title"];
 
+    int number = 0;
+    if ([previosImg isEqualToString:@"回复通知"] || [previosImg isEqualToString:@"系统通知"]) {
+        number=1;
+    }else {
+        number=0;
+        NSString *indexString = [NSString stringWithFormat:@"%d",selectedIndex];
+        if ([[DataService sharedService].numberOfViewArray containsObject:indexString]) {
+            int index = [[DataService sharedService].numberOfViewArray indexOfObject:indexString];
+            [[DataService sharedService].numberOfViewArray removeObjectAtIndex:index];
+        }
+        [[DataService sharedService].numberOfViewArray addObject:indexString];
+    }
+    
+    
+    
+    
     if (abs(self.selectedIndex - selectedIndex) <= 1) {
         [self.scrollView setContentOffset:CGPointMake(selectedIndex * self.scrollWidth, 0) animated:animated];
         if (selectedIndex == _selectedIndex) {
@@ -137,14 +145,19 @@
         }
         [UIView animateWithDuration:(animated) ? 0.3 : 0. delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^
          {
-             UIViewController *viewControl = [self.viewControllers objectAtIndex:self.selectedIndex];
-             [viewControl viewWillDisappear:YES];
-             UIViewController *viewControl2 = [self.viewControllers objectAtIndex:selectedIndex];
-             [viewControl2 viewWillAppear:YES];
-             
-             
-             [previosSelectdItem setImage:[UIImage imageNamed:previosImg] forState:UIControlStateNormal];
-             [nextSelectdItem setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_active",nextImg]] forState:UIControlStateNormal];
+             if (number==0) {
+                 UIViewController *viewControl = [self.viewControllers objectAtIndex:self.selectedIndex];
+                 [viewControl viewWillDisappear:YES];
+                 UIViewController *viewControl2 = [self.viewControllers objectAtIndex:selectedIndex];
+                 [viewControl2 viewWillAppear:YES];
+                 
+                 
+                 [previosSelectdItem setImage:[UIImage imageNamed:previosImg] forState:UIControlStateNormal];
+                 [nextSelectdItem setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_active",nextImg]] forState:UIControlStateNormal];
+             }else {
+                 [previosSelectdItem setTitleColor:[UIColor colorWithWhite:0.1 alpha:1.] forState:UIControlStateNormal];
+                 [nextSelectdItem setTitleColor:[UIColor colorWithWhite:1. alpha:1.] forState:UIControlStateNormal];
+             }
          } completion:nil];
     } else {
         // This means we should "jump" over at least one view controller
@@ -170,14 +183,20 @@
             self.pageIndicatorView.center = CGPointMake([self.topBar centerForSelectedItemAtIndex:selectedIndex].x,
                                                         self.pageIndicatorView.center.y);
             
-            UIViewController *viewControl = [self.viewControllers objectAtIndex:self.selectedIndex];
-            [viewControl viewWillDisappear:YES];
-            UIViewController *viewControl2 = [self.viewControllers objectAtIndex:selectedIndex];
-            [viewControl2 viewWillAppear:YES];
-
+            if (number==0) {
+                UIViewController *viewControl = [self.viewControllers objectAtIndex:self.selectedIndex];
+                [viewControl viewWillDisappear:YES];
+                UIViewController *viewControl2 = [self.viewControllers objectAtIndex:selectedIndex];
+                [viewControl2 viewWillAppear:YES];
+                
+                
+                [previosSelectdItem setImage:[UIImage imageNamed:previosImg] forState:UIControlStateNormal];
+                [nextSelectdItem setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_active",nextImg]] forState:UIControlStateNormal];
+            }else {
+                [previosSelectdItem setTitleColor:[UIColor colorWithWhite:0.1 alpha:1.] forState:UIControlStateNormal];
+                [nextSelectdItem setTitleColor:[UIColor colorWithWhite:1. alpha:1.] forState:UIControlStateNormal];
+            }
             
-            [previosSelectdItem setImage:[UIImage imageNamed:previosImg] forState:UIControlStateNormal];
-            [nextSelectdItem setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@_active",nextImg]] forState:UIControlStateNormal];
         } completion:^(BOOL finished) {
             for (NSUInteger i = 0; i < self.viewControllers.count; i++) {
                 UIViewController *viewController = self.viewControllers[i];

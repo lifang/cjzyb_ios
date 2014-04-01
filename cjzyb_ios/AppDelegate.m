@@ -8,12 +8,11 @@
 
 #import "AppDelegate.h"
 #import "MainViewController.h"//主页
-#import "APService.h"//极光推送
 #import "TestViewController.h"
 #import "DRLeftTabBarViewController.h"
 #import "HomeworkDailyCollectionViewController.h"
 #import "HomeworkViewController.h"//作业
-#import "LHLNotificationViewController.h"//通知
+#import "LHLNotificationContainerVC.h" //通知
 #import "LogInViewController.h" //登录
 
 #import "ReadingTaskViewController.h"
@@ -118,7 +117,7 @@
         
         MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
         HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-        LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+        LHLNotificationContainerVC *notificationView = [[LHLNotificationContainerVC alloc]initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
         CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
         DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
         tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
@@ -151,12 +150,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//    [DataService sharedService].user = [[UserObject alloc] init];
-//    [DataService sharedService].theClass = [[ClassObject alloc] init];
-//    [DataService sharedService].user.userId = @"68";
-//    [DataService sharedService].user.studentId = @"68";
-//    [DataService sharedService].theClass.classId = @"42";
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.window.backgroundColor = [UIColor whiteColor];
@@ -165,10 +158,8 @@
     self.notification_type = 0;
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
     //推送
-    [APService registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
-                                                   UIRemoteNotificationTypeSound |
-                                                   UIRemoteNotificationTypeAlert)];
-    [APService setupWithOption:launchOptions];
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     
     //表示app是登录状态
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -216,8 +207,13 @@
 
     //点击推送进入App
     NSDictionary *pushDict = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
-    if (pushDict) {
-        int typeValue = [[pushDict objectForKey:@"type"]integerValue];
+    NSDictionary *apsInfo = [pushDict objectForKey:@"aps"];
+    if (apsInfo) {
+        
+        int typeValue = [[apsInfo objectForKey:@"sound"]integerValue];
+        UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:[NSString stringWithFormat:@"%d",typeValue] delegate:nil cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
+        [view show];
+        
         if (typeValue == 2) {
             self.notification_type = 1;
         }else {
@@ -231,23 +227,44 @@
     }
 
     [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
+//    LHLNotificationContainerVC *container = [[LHLNotificationContainerVC alloc] initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
+//    self.window.rootViewController = container;
+//    [self.window makeKeyAndVisible];
     
+//    [DataService sharedService].user = [[UserObject alloc]init];
+//    [DataService sharedService].user.nickName = @"大小姐";
+//    [DataService sharedService].user.name = @"多少分";
+//    [DataService sharedService].user.headUrl = @"/avatars/students/2014-03/student_91";
+//    [DataService sharedService].user.userId = @"156";
+//    [DataService sharedService].user.studentId = @"91";
+//    
+//    [DataService sharedService].theClass = [[ClassObject alloc]init];
+//    [DataService sharedService].theClass.classId = @"90";
+//    [DataService sharedService].theClass.name = @"大结局";
+//    [DataService sharedService].theClass.tId = @"68";
+//    [DataService sharedService].theClass.tName = @"黄河";
+//    
 //    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
 //    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
 //    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+//    UserObject *user = [[UserObject alloc] init];
+//    ClassObject *class = [[ClassObject alloc] init];
+//    user.userId = @"string";
+//    [DataService sharedService].user = user;
+//    [DataService sharedService].theClass = class;
+    
 //    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
 //    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
 //    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
-//    self.window.rootViewController = notificationView;
-//    [self.window makeKeyAndVisible];
+//    self.window.rootViewController = tabBarController;
+    [self.window makeKeyAndVisible];
 
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -298,36 +315,40 @@
     return [TencentOAuth HandleOpenURL:url];
 }
 #pragma mark - 推送
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken {
+    NSString *deviceStr=[deviceToken description];
     
-    [APService registerDeviceToken:deviceToken];
+    NSString *tempStr1=[deviceStr stringByReplacingOccurrencesOfString:@"<" withString:@""];
+    NSString *tempStr2=[tempStr1 stringByReplacingOccurrencesOfString:@">" withString:@""];
+    _pushstr=[tempStr2 stringByReplacingOccurrencesOfString:@" " withString:@""];
 }
-#ifdef __IPHONE_7_0
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    [APService handleRemoteNotification:userInfo];
-    
-    //接收到push  会震动
-	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    
-    self.isReceiveTask=NO;
-    self.isReceiveNotificationSystem=NO;
-    self.isReceiveNotificationReply=NO;
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+    _pushstr=@"";
+}
+
+-(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
     NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
     
     NSString *badge = [apsInfo objectForKey:@"badge"];
 	if (badge != nil) {
         [UIApplication sharedApplication].applicationIconBadgeNumber = [badge intValue];
     }
+    //接收到push  会震动
+	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     
-    if (![[userInfo objectForKey:@"type"]isKindOfClass:[NSNull class]] && [userInfo objectForKey:@"type"]!=nil) {
-        int type = [[userInfo objectForKey:@"type"] intValue];
-        if (type == 2) {
-            self.isReceiveTask = YES;
-        }else if (type == 1){
-            self.isReceiveNotificationReply=YES;
-        }else if (type==0){
-            self.isReceiveNotificationSystem=YES;
-        }
+    self.isReceiveTask=NO;
+    self.isReceiveNotificationSystem=NO;
+    self.isReceiveNotificationReply=NO;
+
+    int type = [[apsInfo objectForKey:@"sound"] intValue];
+    if (type == 2) {
+        self.isReceiveTask = YES;
+    }else if (type == 1){
+        self.isReceiveNotificationReply=YES;
+    }else if (type==0){
+        self.isReceiveNotificationSystem=YES;
     }
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -354,7 +375,74 @@
             if (taskType == 2) {
                 self.isReceiveTask=YES;
             }
+            
+            [fileManage removeItemAtPath:filename error:nil];
+        }
+        
+        NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
+        
+        NSString *notificationSystemType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationSystem];
+        [tmpArray addObject:notificationSystemType];
+        NSString *notificationReplyType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationReply];
+        [tmpArray addObject:notificationReplyType];
+        NSString *taskType = [NSString stringWithFormat:@"%d",self.isReceiveTask];
+        [tmpArray addObject:taskType];
+        
+        [NSKeyedArchiver archiveRootObject:tmpArray toFile:filename];
+    }
+}
 
+
+#ifdef __IPHONE_7_0
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    
+    NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
+    
+    NSString *badge = [apsInfo objectForKey:@"badge"];
+	if (badge != nil) {
+        [UIApplication sharedApplication].applicationIconBadgeNumber = [badge intValue];
+    }
+    //接收到push  会震动
+	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    
+    self.isReceiveTask=NO;
+    self.isReceiveNotificationSystem=NO;
+    self.isReceiveNotificationReply=NO;
+    
+    int type = [[apsInfo objectForKey:@"sound"] intValue];
+    if (type == 2) {
+        self.isReceiveTask = YES;
+    }else if (type == 1){
+        self.isReceiveNotificationReply=YES;
+    }else if (type==0){
+        self.isReceiveNotificationSystem=YES;
+    }
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *isOn = [defaults objectForKey:@"isOn"];
+    if ([isOn intValue] == 1) {//app登录
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
+    }else {
+        NSFileManager *fileManage = [NSFileManager defaultManager];
+        NSString *path = [Utility returnPath];
+        NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
+        if (![fileManage fileExistsAtPath:filename]) {
+        }else {
+            NSArray *typeArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
+            
+            int notificationTypeSystem = [[typeArray objectAtIndex:0]integerValue];
+            if (notificationTypeSystem == 0) {
+                self.isReceiveNotificationSystem=YES;
+            }
+            int notificationTypeReply = [[typeArray objectAtIndex:1]integerValue];
+            if (notificationTypeReply == 1) {
+                self.isReceiveNotificationReply=YES;
+            }
+            int taskType = [[typeArray objectAtIndex:2]integerValue];
+            if (taskType == 2) {
+                self.isReceiveTask=YES;
+            }
+            
             [fileManage removeItemAtPath:filename error:nil];
         }
         
@@ -373,73 +461,6 @@
     completionHandler(UIBackgroundFetchResultNoData);
 }
 #endif
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    [APService handleRemoteNotification:userInfo];
-    
-    //接收到push  会震动
-	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-    self.isReceiveTask=NO;
-    self.isReceiveNotificationSystem=NO;
-    self.isReceiveNotificationReply=NO;
-    NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
-    
-    NSString *badge = [apsInfo objectForKey:@"badge"];
-	if (badge != nil) {
-        [UIApplication sharedApplication].applicationIconBadgeNumber = [badge intValue];
-    }
-    
-    if (![[userInfo objectForKey:@"type"]isKindOfClass:[NSNull class]] && [userInfo objectForKey:@"type"]!=nil) {
-        int type = [[userInfo objectForKey:@"type"] intValue];
-        if (type == 2) {
-            self.isReceiveTask = YES;
-        }else if (type == 1){
-            self.isReceiveNotificationReply=YES;
-        }else if (type==0){
-            self.isReceiveNotificationSystem=YES;
-        }
-    }
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *isOn = [defaults objectForKey:@"isOn"];
-    if ([isOn intValue] == 1) {//app登录
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
-    }else {
-        NSFileManager *fileManage = [NSFileManager defaultManager];
-        NSString *path = [Utility returnPath];
-        NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
-        if (![fileManage fileExistsAtPath:filename]) {
-        }else {
-            NSArray *typeArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-            
-            int notificationTypeSystem = [[typeArray objectAtIndex:0]integerValue];
-            if (notificationTypeSystem == 0) {
-                self.isReceiveNotificationSystem=YES;
-            }
-            int notificationTypeReply = [[typeArray objectAtIndex:1]integerValue];
-            if (notificationTypeReply == 1) {
-                self.isReceiveNotificationReply=YES;
-            }
-            int taskType = [[typeArray objectAtIndex:2]integerValue];
-            if (taskType == 2) {
-                self.isReceiveTask=YES;
-            }
-            
-            [fileManage removeItemAtPath:filename error:nil];
-        }
-        
-        NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
-        
-        NSString *notificationSystemType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationSystem];
-        [tmpArray addObject:notificationSystemType];
-        NSString *notificationReplyType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationReply];
-        [tmpArray addObject:notificationReplyType];
-        NSString *taskType = [NSString stringWithFormat:@"%d",self.isReceiveTask];
-        [tmpArray addObject:taskType];
-        
-        [NSKeyedArchiver archiveRootObject:tmpArray toFile:filename];
-    }
-}
-
 
 //连接改变
 -(void)reachabilityChanged:(NSNotification *)note

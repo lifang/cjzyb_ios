@@ -13,7 +13,7 @@
 /**
  *  排序
  */
-@interface SortViewController : UIViewController<TenSecChallengeResultViewDelegate,PostDelegate,CardFullInterfaceDelegate>
+@interface SortViewController : UIViewController<TenSecChallengeResultViewDelegate,PostDelegate,CardFullInterfaceDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) BasePostInterface *postInter;
@@ -62,4 +62,7 @@
 @property (nonatomic, strong) NSDictionary *history_questionDic;
 @property (nonatomic, strong) NSMutableArray *history_branchQuestionArray;
 @property (nonatomic, strong) NSDictionary *history_branchQuestionDic;
+
+-(void)exitSortView;
+@property (nonatomic, assign) NSInteger postNumber;
 @end

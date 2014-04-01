@@ -90,6 +90,12 @@
         [firstView getMessageData];
         [table.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];
+    
+    //修改头像之后更新界面
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadFirstArrayByImage:) name:@"reloadFirstArrayByImage" object:nil];
+}
+- (void)reloadFirstArrayByImage:(NSNotification *)notification {
+    [self.firstTable reloadData];
 }
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

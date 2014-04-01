@@ -56,6 +56,7 @@
         [fourthView getMyfocusData];
         [table.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];
+
 }
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];

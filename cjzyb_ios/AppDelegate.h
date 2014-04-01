@@ -16,6 +16,7 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
+
 //网络监听所用
 @property (retain, nonatomic) Reachability *hostReach;
 //网络是否连接

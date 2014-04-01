@@ -8,14 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LHLNotificationCell.h"
-#import "LHLReplyNotificationCell.h"
-#import "LHLNotificationHeader.h"
-#import "LHLGetSysNoticeInterface.h"
-#import "LHLGetMyNoticeInterface.h"
-#import "LHLDeleteMyNoticeInterface.h"
-#import "LHLDeleteSysNoticeInterface.h"
-#import "LHLTableView.h"
 
-@interface LHLNotificationViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,LHLNotificationCellDelegate,LHLNotificationHeaderDelegate,LHLReplyNotificationCellDelegate,LHLGetMyNoticeInterfaceDelegate,LHLGetSysNoticeInterfaceDelegate,LHLDeleteSysNoticeInterfaceDelegate,LHLDeleteMyNoticeInterfaceDelegate,LHLTableViewDelegate,UITextViewDelegate>
+@interface LHLNotificationViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,LHLNotificationCellDelegate,UITextViewDelegate>
 @property (strong,nonatomic) AppDelegate *appDel;
 @end

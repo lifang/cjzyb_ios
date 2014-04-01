@@ -16,7 +16,10 @@
 -(void)getLogInterfaceDelegateWithQQ:(NSString *)qq {
     NSMutableDictionary *reqheaders = [[NSMutableDictionary alloc] init];
     
+    AppDelegate *appDel = [AppDelegate shareIntance];
+    
     [reqheaders setValue:[NSString stringWithFormat:@"%@",qq] forKey:@"open_id"];
+    [reqheaders setValue:[NSString stringWithFormat:@"%@",appDel.pushstr] forKey:@"token"];
 
     self.interfaceUrl = @"http://58.240.210.42:3004/api/students/login";
 
