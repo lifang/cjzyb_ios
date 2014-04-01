@@ -13,7 +13,7 @@
 #import "TenSecChallengeResultView.h"
 #import "OrdinaryAnswerObject.h"
 
-@interface TenSecChallengeViewController : UIViewController<TenSecChallengeResultViewDelegate>
+@interface TenSecChallengeViewController : UIViewController<TenSecChallengeResultViewDelegate,UIAlertViewDelegate>
 @property (nonatomic,strong) NSMutableArray *questionArray;  //十个问题
 @property (nonatomic,strong) TenSecChallengeResultView *resultView; //结果view
 @property (nonatomic,assign) BOOL isViewingHistory; //是否浏览历史
@@ -21,4 +21,6 @@
 @property (weak, nonatomic) IBOutlet UIView *contentBgView;
 -(void)startChallenge;//外部调用.  如需浏览历史,先设置isViewingHistory属性为YES
 -(void)showNextQuestion;
+
+-(void)tenQuitButtonClicked:(id)sender;
 @end

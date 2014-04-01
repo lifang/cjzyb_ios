@@ -1534,11 +1534,9 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSURL *url = [NSURL URLWithString:str];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
-//        NSNumber *cards_count = [dicData objectForKey:@"knowledges_cards_count"];
-//        if (cards_count.integerValue > 20) {
-//            returnMsg = @"先清卡包";
-//            return;
-//        }
+        NSNumber *cards_count = [dicData objectForKey:@"knowledges_cards_count"];
+        [DataService sharedService].cardsCount = cards_count.integerValue >= 0 ? : 0;
+
         NSArray *taskArray = [dicData objectForKey:@"tasks"];
         if (taskArray.count < 1) {
             returnMsg = @"暂未发布今日作业";

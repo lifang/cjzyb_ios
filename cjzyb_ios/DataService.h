@@ -24,6 +24,8 @@
 @property (nonatomic,assign) NSInteger number_reduceTime,number_correctAnswer;
 ///判断是否是历史作业
 @property (nonatomic,assign) BOOL isHistory;
+///剩余卡片的数量
+@property (nonatomic,assign) NSInteger cardsCount;
 
 + (DataService *)sharedService;
 

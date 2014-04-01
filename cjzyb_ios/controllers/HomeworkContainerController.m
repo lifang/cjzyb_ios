@@ -183,6 +183,7 @@
             [self.tenSecViewController didMoveToParentViewController:self];
             self.tenSecViewController.isViewingHistory = [DataService sharedService].isHistory;
             [self.tenSecViewController startChallenge];
+            [self.quitHomeworkButton addTarget:self.tenSecViewController action:@selector(tenQuitButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             if (![DataService sharedService].isHistory) {
                 [self.checkBgView setHidden:YES];
             }else{
