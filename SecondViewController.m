@@ -61,28 +61,6 @@
 
 }
 - (void)reloadSecondArrayByImage:(NSNotification *)notification {
-    NSString *resource_url = [notification object];
-    for (int i=0; i<self.secondArray.count; i++) {
-        BOOL isChange = NO;
-        MessageObject *message = (MessageObject *)[self.secondArray objectAtIndex:i];
-        if (message.replyMessageArray.count>0) {
-            for (int k=0; k<message.replyMessageArray.count; k++) {
-                ReplyMessageObject *replyMessage = (ReplyMessageObject *)[message.replyMessageArray objectAtIndex:k];
-                if ([replyMessage.sender_id integerValue] == [[DataService sharedService].user.userId integerValue]) {
-                    isChange = YES;
-                    replyMessage.sender_avatar_url= resource_url;
-                    [message.replyMessageArray replaceObjectAtIndex:k withObject:replyMessage];
-                }
-            }
-        }
-        if ([message.userId integerValue] == [[DataService sharedService].user.userId integerValue]) {
-            isChange = YES;
-            message.headUrl = resource_url;
-        }
-        if (isChange==YES) {
-            [self.secondArray replaceObjectAtIndex:i withObject:message];
-        }
-    }
     [self.secondTable reloadData];
 }
 

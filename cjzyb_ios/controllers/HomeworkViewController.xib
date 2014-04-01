@@ -44,7 +44,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="twA-3M-bMC" userLabel="historyButton">
-                            <rect key="frame" x="599.99999869402166" y="0.0" width="148" height="85"/>
+                            <rect key="frame" x="600" y="0.0" width="148" height="85"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>

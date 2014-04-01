@@ -372,8 +372,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
     NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:jsonPath];
-    NSString *filePath = [documentDirectory stringByAppendingPathComponent:@"question.json"];
-//    NSString *filePath = [[NSBundle mainBundle] pathForResource:jsonPath ofType:@"json"];
+    NSString *filePath = [documentDirectory stringByAppendingPathComponent:@"questions.json"];
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:0 error:&jsonParsingError];
     return dataObject;
 }
@@ -1907,7 +1906,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     Class JSONSerialization = [Utility JSONParserClass];
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
     NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
-    [answerDic setObject:str forKey:@"update"];
+//    [answerDic setObject:str forKey:@"update"];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
     [jsonData writeToFile:jsPath atomically:YES];
 }

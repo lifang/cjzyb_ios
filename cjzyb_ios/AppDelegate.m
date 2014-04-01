@@ -228,14 +228,27 @@
 
     [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
     
+//    [DataService sharedService].user = [[UserObject alloc]init];
+//    [DataService sharedService].user.nickName = @"大小姐";
+//    [DataService sharedService].user.name = @"多少分";
+//    [DataService sharedService].user.headUrl = @"/avatars/students/2014-03/student_91";
+//    [DataService sharedService].user.userId = @"156";
+//    [DataService sharedService].user.studentId = @"91";
+//    
+//    [DataService sharedService].theClass = [[ClassObject alloc]init];
+//    [DataService sharedService].theClass.classId = @"90";
+//    [DataService sharedService].theClass.name = @"大结局";
+//    [DataService sharedService].theClass.tId = @"68";
+//    [DataService sharedService].theClass.tName = @"黄河";
+//    
 //    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
 //    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
 //    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
 //    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
 //    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
 //    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
-//    self.window.rootViewController = notificationView;
-//    [self.window makeKeyAndVisible];
+//    self.window.rootViewController = tabBarController;
+    [self.window makeKeyAndVisible];
 
     return YES;
 }
@@ -320,7 +333,7 @@
     self.isReceiveNotificationSystem=NO;
     self.isReceiveNotificationReply=NO;
 
-    int type = [[userInfo objectForKey:@"sound"] intValue];
+    int type = [[apsInfo objectForKey:@"sound"] intValue];
     if (type == 2) {
         self.isReceiveTask = YES;
     }else if (type == 1){
@@ -387,7 +400,7 @@
     self.isReceiveNotificationSystem=NO;
     self.isReceiveNotificationReply=NO;
     
-    int type = [[userInfo objectForKey:@"sound"] intValue];
+    int type = [[apsInfo objectForKey:@"sound"] intValue];
     if (type == 2) {
         self.isReceiveTask = YES;
     }else if (type == 1){

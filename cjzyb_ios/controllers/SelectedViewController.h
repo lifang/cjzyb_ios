@@ -15,7 +15,7 @@
 /**
  *  完形填空
  */
-@interface SelectedViewController : UIViewController<ClozeViewDelegate,TenSecChallengeResultViewDelegate,PostDelegate,CardFullInterfaceDelegate>
+@interface SelectedViewController : UIViewController<ClozeViewDelegate,TenSecChallengeResultViewDelegate,PostDelegate,CardFullInterfaceDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) BasePostInterface *postInter;
@@ -60,4 +60,6 @@
 @property (nonatomic, strong) NSMutableArray *history_questionArray;
 @property (nonatomic, strong) NSDictionary *history_questionDic;
 
+-(void)exitClozeView;
+@property (nonatomic, assign) NSInteger postNumber;
 @end

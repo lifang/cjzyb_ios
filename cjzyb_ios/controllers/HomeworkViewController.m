@@ -277,7 +277,7 @@
     [DataService sharedService].number_reduceTime = task.taskReduceTimeCount;
     [DataService sharedService].number_correctAnswer=task.taskTipCorrectAnswer;
     
-    __block HomeworkContainerController *homeworkContainer = [[HomeworkContainerController alloc ] initWithNibName:@"HomeworkContainerController" bundle:nil];
+    HomeworkContainerController *homeworkContainer = [[HomeworkContainerController alloc ] initWithNibName:@"HomeworkContainerController" bundle:nil];
     homeworkContainer.homeworkType = typeObj.homeworkType;
     self.homeworkContainer = homeworkContainer;
     homeworkContainer.spendSecond = 0;
@@ -288,9 +288,7 @@
             [alert show];
         }else{
             [DataService sharedService].isHistory = NO;
-            [self presentViewController:homeworkContainer animated:YES completion:^{
-                
-            }];
+            [self presentViewController:homeworkContainer animated:YES completion:nil];
         }
     }else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"下载作业包才能开始答题" delegate:self cancelButtonTitle:nil otherButtonTitles:@"下载作业包",@"取消下载" ,nil];
