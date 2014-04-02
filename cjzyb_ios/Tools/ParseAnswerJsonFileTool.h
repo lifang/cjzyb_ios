@@ -29,7 +29,7 @@
  *@param  task 任务对象
  * @return readingQuestionArr：ReadingHomeworkObj对象数组,error:错误 消息,currentQuestionIndex 当前大题所在位置,currentQuestionItemIndex 当前大题下小题位置，值可以没有,status 完成状态，0没有完成，1已经完成, updateTime 更新所用时间，userTime 已经使用的时间,specifyTime 指定时间
  */
-+(void)parseAnswerJsonFileWithUserId:(NSString*)userId withTask:(TaskObj*)task withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex,int status,NSString *updateTime,NSString *userTime,int specifyTime))questionArr withParseError:(void (^)(NSError *error))failure;
++(void)parseAnswerJsonFileWithUserId:(NSString*)userId withTask:(TaskObj*)task withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex,int status,NSString *updateTime,NSString *userTime,int specifyTime,float ratio))questionArr withParseError:(void (^)(NSError *error))failure;
 
 /**
  * @brief 将已经完成的朗读题写入json文件

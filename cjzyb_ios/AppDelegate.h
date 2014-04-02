@@ -29,7 +29,10 @@
 
 @property (nonatomic, strong) AVAudioPlayer *truePlayer;
 @property (nonatomic, strong) AVAudioPlayer *falsePlayer;
+
+@property (nonatomic, strong) NSMutableDictionary *notification_dic;
 @property (nonatomic, assign) NSInteger notification_type;//0:系统，1：回复，2：作业
+@property (nonatomic, assign) NSInteger the_class_id;
 - (void)showRootView;
 +(AppDelegate *)shareIntance;
 

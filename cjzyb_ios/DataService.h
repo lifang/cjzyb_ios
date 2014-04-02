@@ -28,5 +28,4 @@
 @property (nonatomic,assign) NSInteger cardsCount;
 
 + (DataService *)sharedService;
-
 @end

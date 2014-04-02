@@ -12,17 +12,15 @@
 
 #import "LiningDrawLinesView.h"
 #import "LineObj.h"
-#import "CardFullInterface.h"
 
 /**
 *  连线
 */
 
-@interface LininggViewController : UIViewController<TenSecChallengeResultViewDelegate,PostDelegate,CardFullInterfaceDelegate,UIAlertViewDelegate>
+@interface LininggViewController : UIViewController<TenSecChallengeResultViewDelegate,PostDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) BasePostInterface *postInter;
-@property (nonatomic, strong) CardFullInterface *cardFullInter;
 
 @property (nonatomic, strong) LiningDrawLinesView *wordsContainerView;
 
@@ -46,6 +44,7 @@
 
 @property (nonatomic, strong) HomeworkContainerController *homeControl;
 @property (strong, nonatomic) UIButton *checkHomeworkButton;
+
 @property (nonatomic, strong) NSMutableDictionary *answerDic;
 
 @property (nonatomic, assign) BOOL isFirst;

@@ -8,6 +8,8 @@
 
 #import "LininggViewController.h"
 
+static BOOL isCanUpLoad = NO;
+
 @interface LininggViewController ()
 @property (nonatomic, strong) TenSecChallengeResultView *resultView;
 @property (nonatomic, assign) int prop_number;
@@ -20,13 +22,7 @@
 
 @implementation LininggViewController
 
--(CardFullInterface *)cardFullInter {
-    if (!_cardFullInter) {
-        _cardFullInter = [[CardFullInterface alloc]init];
-        _cardFullInter.delegate = self;
-    }
-    return _cardFullInter;
-}
+
 
 -(UIButton *)returnUIButton {
     UIButton *btn = [[UIButton alloc]init];
@@ -282,6 +278,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSDictionary *sortDic = [dic objectForKey:@"lining"];
     self.questionArray = [NSMutableArray arrayWithArray:[sortDic objectForKey:@"questions"]];
@@ -312,30 +309,37 @@
         if (status == 1) {
             
         }else {
-            self.isFirst= YES;
-            if ([DataService sharedService].number_reduceTime>0) {
-                self.homeControl.reduceTimeButton.enabled = YES;
-            }
-            if ([DataService sharedService].number_correctAnswer>0) {
-                self.homeControl.appearCorrectButton.enabled=YES;
-            }
-            
-            
-            int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
-            
-            if (number_question>=0) {
-                NSDictionary *dic = [self.questionArray objectAtIndex:number_question];
-                NSArray *array = [dic objectForKey:@"branch_questions"];
-                if (number_branch_question == array.count-1) {
-                    self.number = +1;self.branchNumber = 0;
-                }else {
-                    self.number = number_question;self.branchNumber = number_branch_question+1;
+            //判断卡包
+            if ([DataService sharedService].cardsCount >20) {
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+                alert.tag = 999;
+                [alert show];
+            }else {
+                self.isFirst= YES;
+                if ([DataService sharedService].number_reduceTime>0) {
+                    self.homeControl.reduceTimeButton.enabled = YES;
+                }
+                if ([DataService sharedService].number_correctAnswer>0) {
+                    self.homeControl.appearCorrectButton.enabled=YES;
                 }
                 
-                int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
-                self.homeControl.spendSecond = useTime;
-                NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
-                self.homeControl.timerLabel.text = timeStr;
+                
+                int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
+                
+                if (number_question>=0) {
+                    NSDictionary *dic = [self.questionArray objectAtIndex:number_question];
+                    NSArray *array = [dic objectForKey:@"branch_questions"];
+                    if (number_branch_question == array.count-1) {
+                        self.number = +1;self.branchNumber = 0;
+                    }else {
+                        self.number = number_question;self.branchNumber = number_branch_question+1;
+                    }
+                    
+                    int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
+                    self.homeControl.spendSecond = useTime;
+                    NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
+                    self.homeControl.timerLabel.text = timeStr;
+                }
             }
         }
         [self getQuestionData];
@@ -381,6 +385,9 @@
             if (range.location == NSNotFound) {
                 leftBtn.backgroundColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
                 rightBtn.backgroundColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
+                if (self.isFirst==YES) {
+                [DataService sharedService].cardsCount += 1;
+                }
             }else {
                 self.branchScore++;
             }
@@ -419,6 +426,7 @@
     }
 }
 -(void)writeToAnswerJsonWithString:(NSString *)string {
+    isCanUpLoad = YES;
     if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
         [self.answerDic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"status"];
     }
@@ -709,8 +717,8 @@
 }
 //结果
 -(void)showResultView {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentDirectory = [paths objectAtIndex:0];
+    NSString *path = [Utility returnPath];
+    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     
     NSError *error = nil;
@@ -983,45 +991,37 @@
     [Utility errorAlert:errorMsg];
 }
 
-#pragma mark
-#pragma mark - 判断卡包是否已满
--(void)getCardFullInfoDidFinished:(NSDictionary *)result {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
-            
-        });
-    });
-}
--(void)getCardFullInfoDidFailed:(NSString *)errorMsg {
-    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
-    [Utility errorAlert:errorMsg];
-}
 
 -(void)exitLiningView {
     if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
-        
+        [self.homeControl dismissViewControllerAnimated:YES completion:nil];
     }else {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+        alert.tag = 100;
         [alert show];
     }
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-    if (buttonIndex==0) {
-        if (self.isFirst==YES) {
-            self.postNumber = 1;
-            if (self.appDel.isReachable == NO) {
-                [Utility errorAlert:@"暂无网络!"];
+    
+    if (alertView.tag == 100) {
+        if (buttonIndex==0) {
+            if (self.isFirst==YES && isCanUpLoad==YES) {
+                self.postNumber = 1;
+                if (self.appDel.isReachable == NO) {
+                    [Utility errorAlert:@"暂无网络!"];
+                }else {
+                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    self.postInter = [[BasePostInterface alloc]init];
+                    self.postInter.delegate = self;
+                    [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
+                }
             }else {
-                [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-                self.postInter = [[BasePostInterface alloc]init];
-                self.postInter.delegate = self;
-                [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
+                [self.homeControl dismissViewControllerAnimated:YES completion:nil];
             }
-        }else {
-            [self.homeControl dismissViewControllerAnimated:YES completion:nil];
         }
+    }else {
+        [self.homeControl dismissViewControllerAnimated:YES completion:nil];
     }
 }
 @end

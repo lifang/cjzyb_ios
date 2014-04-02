@@ -23,6 +23,7 @@
 
 #import "PreReadingTaskViewController.h"
 
+#import "DRSentenceSpellMatch.h"
 @implementation AppDelegate
 -(void)loadTrueSound:(NSInteger)index {
     NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"trueMusic.wav"];
@@ -111,6 +112,10 @@
     }else {
         NSDictionary *classDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
+        
+        if (self.the_class_id>0) {
+            [DataService sharedService].theClass.classId = [NSString stringWithFormat:@"%d",self.the_class_id];
+        }
         filename = [path stringByAppendingPathComponent:@"student.plist"];
         NSDictionary *userDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         [DataService sharedService].user = [UserObject userFromDictionary:userDic];
@@ -153,7 +158,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.window.backgroundColor = [UIColor whiteColor];
-    
+
+    self.the_class_id = -1;
+
     [DataService sharedService].notificationPage=1;
     self.notification_type = 0;
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
@@ -167,27 +174,14 @@
     [defaults synchronize];
     
     //判断作业＋通知右上角红点点～～
-    self.isReceiveTask=NO;
-    self.isReceiveNotificationReply=NO;
-    self.isReceiveNotificationSystem=NO;
     NSFileManager *fileManage = [NSFileManager defaultManager];
     NSString *path = [Utility returnPath];
     NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
     if (![fileManage fileExistsAtPath:filename]) {
+        self.notification_dic = [[NSMutableDictionary alloc]init];
     }else {
-        NSArray *typeArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-        int notificationTypeSystem = [[typeArray objectAtIndex:0]integerValue];
-        if (notificationTypeSystem == 0) {
-            self.isReceiveNotificationSystem=YES;
-        }
-        int notificationTypeReply = [[typeArray objectAtIndex:1]integerValue];
-        if (notificationTypeReply == 1) {
-            self.isReceiveNotificationReply=YES;
-        }
-        int taskType = [[typeArray objectAtIndex:2]integerValue];
-        if (taskType == 2) {
-            self.isReceiveTask=YES;
-        }
+        NSDictionary *dic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
+        self.notification_dic = [[NSMutableDictionary alloc]initWithDictionary:dic];
     }
     
     //网络
@@ -207,13 +201,9 @@
 
     //点击推送进入App
     NSDictionary *pushDict = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
-    NSDictionary *apsInfo = [pushDict objectForKey:@"aps"];
-    if (apsInfo) {
-        
-        int typeValue = [[apsInfo objectForKey:@"sound"]integerValue];
-        UIAlertView *view = [[UIAlertView alloc]initWithTitle:@"" message:[NSString stringWithFormat:@"%d",typeValue] delegate:nil cancelButtonTitle:@"YES" otherButtonTitles:nil, nil];
-        [view show];
-        
+    if (pushDict) {
+        int typeValue = [[pushDict objectForKey:@"type"]integerValue];
+        self.the_class_id = [[pushDict objectForKey:@"class_id"]integerValue];
         if (typeValue == 2) {
             self.notification_type = 1;
         }else {
@@ -227,16 +217,14 @@
     }
 
     [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
-//    LHLNotificationContainerVC *container = [[LHLNotificationContainerVC alloc] initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
-//    self.window.rootViewController = container;
-//    [self.window makeKeyAndVisible];
+
     
 //    [DataService sharedService].user = [[UserObject alloc]init];
 //    [DataService sharedService].user.nickName = @"大小姐";
 //    [DataService sharedService].user.name = @"多少分";
 //    [DataService sharedService].user.headUrl = @"/avatars/students/2014-03/student_91";
-//    [DataService sharedService].user.userId = @"156";
-//    [DataService sharedService].user.studentId = @"91";
+//    [DataService sharedService].user.userId = @"150";
+//    [DataService sharedService].user.studentId = @"89";
 //    
 //    [DataService sharedService].theClass = [[ClassObject alloc]init];
 //    [DataService sharedService].theClass.classId = @"90";
@@ -246,13 +234,7 @@
 //    
 //    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
 //    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-//    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
-//    UserObject *user = [[UserObject alloc] init];
-//    ClassObject *class = [[ClassObject alloc] init];
-//    user.userId = @"string";
-//    [DataService sharedService].user = user;
-//    [DataService sharedService].theClass = class;
-    
+//    LHLNotificationContainerVC *notificationView = [[LHLNotificationContainerVC alloc]initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
 //    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
 //    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
 //    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
@@ -270,11 +252,20 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [application setApplicationIconBadgeNumber:0];
+    //记录作业＋通知右上角红点点～～
+    NSFileManager *fileManage = [NSFileManager defaultManager];
+    NSString *path = [Utility returnPath];
+    NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
+    if ([fileManage fileExistsAtPath:filename]) {
+        [fileManage removeItemAtPath:filename error:nil];
+    }
+    
+    [NSKeyedArchiver archiveRootObject:self.notification_dic toFile:filename];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -296,15 +287,8 @@
     if ([fileManage fileExistsAtPath:filename]) {
         [fileManage removeItemAtPath:filename error:nil];
     }
-    NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
-    NSString *notificationSystemType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationSystem];
-    [tmpArray addObject:notificationSystemType];
-    NSString *notificationReplyType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationReply];
-    [tmpArray addObject:notificationReplyType];
-    NSString *taskType = [NSString stringWithFormat:@"%d",self.isReceiveTask];
-    [tmpArray addObject:taskType];
-    
-    [NSKeyedArchiver archiveRootObject:tmpArray toFile:filename];
+
+    [NSKeyedArchiver archiveRootObject:self.notification_dic toFile:filename];
 }
 
 #pragma mark - QQ
@@ -337,58 +321,32 @@
     }
     //接收到push  会震动
 	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    int type = [[userInfo objectForKey:@"type"] intValue];//推送类型
+    NSString * classId = [userInfo objectForKey:@"class_id"];//推送班级
     
-    self.isReceiveTask=NO;
-    self.isReceiveNotificationSystem=NO;
-    self.isReceiveNotificationReply=NO;
-
-    int type = [[apsInfo objectForKey:@"sound"] intValue];
-    if (type == 2) {
-        self.isReceiveTask = YES;
-    }else if (type == 1){
-        self.isReceiveNotificationReply=YES;
-    }else if (type==0){
-        self.isReceiveNotificationSystem=YES;
+    NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
+    for (int i=0; i<3; i++) {
+        if (i==type) {
+            [mutableArray addObject:[NSString stringWithFormat:@"%d",1]];
+        }else {
+            [mutableArray addObject:[NSString stringWithFormat:@"%d",0]];
+        }
     }
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *isOn = [defaults objectForKey:@"isOn"];
     if ([isOn intValue] == 1) {//app登录
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
-    }else {
-        NSFileManager *fileManage = [NSFileManager defaultManager];
-        NSString *path = [Utility returnPath];
-        NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
-        if (![fileManage fileExistsAtPath:filename]) {
+        if (![[self.notification_dic objectForKey:classId]isKindOfClass:[NSNull class]]) {
+            NSMutableArray *mutableArr = [[NSMutableArray alloc]initWithArray:[self.notification_dic objectForKey:classId]];
+            [mutableArr replaceObjectAtIndex:type withObject:@"1"];
+            [self.notification_dic setObject:mutableArr forKey:classId];
         }else {
-            NSArray *typeArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-            
-            int notificationTypeSystem = [[typeArray objectAtIndex:0]integerValue];
-            if (notificationTypeSystem == 0) {
-                self.isReceiveNotificationSystem=YES;
-            }
-            int notificationTypeReply = [[typeArray objectAtIndex:1]integerValue];
-            if (notificationTypeReply == 1) {
-                self.isReceiveNotificationReply=YES;
-            }
-            int taskType = [[typeArray objectAtIndex:2]integerValue];
-            if (taskType == 2) {
-                self.isReceiveTask=YES;
-            }
-            
-            [fileManage removeItemAtPath:filename error:nil];
+            [self.notification_dic setObject:mutableArray forKey:classId];
         }
         
-        NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
-        
-        NSString *notificationSystemType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationSystem];
-        [tmpArray addObject:notificationSystemType];
-        NSString *notificationReplyType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationReply];
-        [tmpArray addObject:notificationReplyType];
-        NSString *taskType = [NSString stringWithFormat:@"%d",self.isReceiveTask];
-        [tmpArray addObject:taskType];
-        
-        [NSKeyedArchiver archiveRootObject:tmpArray toFile:filename];
+        if ([classId integerValue] == [[DataService sharedService].theClass.classId integerValue]) {//班级相同
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:[self.notification_dic objectForKey:classId]];
+        }
     }
 }
 
@@ -404,60 +362,33 @@
     }
     //接收到push  会震动
 	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    int type = [[userInfo objectForKey:@"type"] intValue];//推送类型
+    NSString * classId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"class_id"]];//推送班级
     
-    self.isReceiveTask=NO;
-    self.isReceiveNotificationSystem=NO;
-    self.isReceiveNotificationReply=NO;
-    
-    int type = [[apsInfo objectForKey:@"sound"] intValue];
-    if (type == 2) {
-        self.isReceiveTask = YES;
-    }else if (type == 1){
-        self.isReceiveNotificationReply=YES;
-    }else if (type==0){
-        self.isReceiveNotificationSystem=YES;
+    NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
+    for (int i=0; i<3; i++) {
+        if (i==type) {
+            [mutableArray addObject:[NSString stringWithFormat:@"%d",1]];
+        }else {
+            [mutableArray addObject:[NSString stringWithFormat:@"%d",0]];
+        }
     }
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *isOn = [defaults objectForKey:@"isOn"];
     if ([isOn intValue] == 1) {//app登录
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
-    }else {
-        NSFileManager *fileManage = [NSFileManager defaultManager];
-        NSString *path = [Utility returnPath];
-        NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
-        if (![fileManage fileExistsAtPath:filename]) {
+        if (![[self.notification_dic objectForKey:classId]isKindOfClass:[NSNull class]]) {
+            NSMutableArray *mutableArr = [[NSMutableArray alloc]initWithArray:[self.notification_dic objectForKey:classId]];
+            [mutableArr replaceObjectAtIndex:type withObject:@"1"];
+            [self.notification_dic setObject:mutableArr forKey:classId];
         }else {
-            NSArray *typeArray = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-            
-            int notificationTypeSystem = [[typeArray objectAtIndex:0]integerValue];
-            if (notificationTypeSystem == 0) {
-                self.isReceiveNotificationSystem=YES;
-            }
-            int notificationTypeReply = [[typeArray objectAtIndex:1]integerValue];
-            if (notificationTypeReply == 1) {
-                self.isReceiveNotificationReply=YES;
-            }
-            int taskType = [[typeArray objectAtIndex:2]integerValue];
-            if (taskType == 2) {
-                self.isReceiveTask=YES;
-            }
-            
-            [fileManage removeItemAtPath:filename error:nil];
+            [self.notification_dic setObject:mutableArray forKey:classId];
         }
         
-        NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
-        
-        NSString *notificationSystemType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationSystem];
-        [tmpArray addObject:notificationSystemType];
-        NSString *notificationReplyType = [NSString stringWithFormat:@"%d",self.isReceiveNotificationReply];
-        [tmpArray addObject:notificationReplyType];
-        NSString *taskType = [NSString stringWithFormat:@"%d",self.isReceiveTask];
-        [tmpArray addObject:taskType];
-        
-        [NSKeyedArchiver archiveRootObject:tmpArray toFile:filename];
+        if ([classId integerValue] == [[DataService sharedService].theClass.classId integerValue]) {//班级相同
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:[self.notification_dic objectForKey:classId]];
+        }
     }
-    
     completionHandler(UIBackgroundFetchResultNoData);
 }
 #endif

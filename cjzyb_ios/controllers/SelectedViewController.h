@@ -11,15 +11,14 @@
 #import "UnderLineLabel.h"
 #import "HomeworkContainerController.h"
 #import "BasePostInterface.h"
-#import "CardFullInterface.h"
+
 /**
  *  完形填空
  */
-@interface SelectedViewController : UIViewController<ClozeViewDelegate,TenSecChallengeResultViewDelegate,PostDelegate,CardFullInterfaceDelegate,UIAlertViewDelegate>
+@interface SelectedViewController : UIViewController<ClozeViewDelegate,TenSecChallengeResultViewDelegate,PostDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) BasePostInterface *postInter;
-@property (nonatomic, strong) CardFullInterface *cardFullInter;
 
 @property (nonatomic, strong) ClozeView *clozeVV;
 
@@ -38,6 +37,7 @@
 @property (nonatomic, assign) int specified_time;//规定时间
 
 @property (strong, nonatomic) UIButton *checkHomeworkButton;
+
 @property (nonatomic, assign) NSInteger branchScore;
 @property (nonatomic, assign) BOOL isFirst;
 @property (nonatomic, strong) HomeworkContainerController *homeControl;

@@ -11,6 +11,8 @@
 #import "ClozeAnswerViewController.h"
 #define UnderLab_tag 1234567
 
+static BOOL isCanUpLoad = NO;
+
 @interface SelectedViewController ()
 @property (nonatomic, strong) TenSecChallengeResultView *resultView;
 @property (nonatomic, strong) WYPopoverController *poprController;
@@ -19,13 +21,6 @@
 
 @implementation SelectedViewController
 
--(CardFullInterface *)cardFullInter {
-    if (!_cardFullInter) {
-        _cardFullInter = [[CardFullInterface alloc]init];
-        _cardFullInter.delegate = self;
-    }
-    return _cardFullInter;
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -58,7 +53,7 @@
     
     self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 20, 768, 400)];
     self.clozeVV.delegate = self;
-    [self.clozeVV setText:[self.questionDic objectForKey:@"content"]];
+    [self.clozeVV setText:[self.questionDic objectForKey:@"full_text"]];
     self.clozeVV.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.clozeVV];
     
@@ -85,7 +80,7 @@
     
     self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 20, 768, 400)];
     self.clozeVV.delegate = self;
-    [self.clozeVV setText:[self.questionDic objectForKey:@"content"]];
+    [self.clozeVV setText:[self.questionDic objectForKey:@"full_text"]];
     self.clozeVV.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.clozeVV];
     
@@ -198,19 +193,26 @@
         if (status == 1) {
             
         }else {
-            self.isFirst= YES;
-            if ([DataService sharedService].number_reduceTime>0) {
-                self.homeControl.reduceTimeButton.enabled = YES;
+            //判断卡包
+            if ([DataService sharedService].cardsCount >20) {
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+                alert.tag = 999;
+                [alert show];
+            }else {
+                self.isFirst= YES;
+                if ([DataService sharedService].number_reduceTime>0) {
+                    self.homeControl.reduceTimeButton.enabled = YES;
+                }
+                if ([DataService sharedService].number_correctAnswer>0) {
+                    self.homeControl.appearCorrectButton.enabled=YES;
+                }
+                
+                self.number = number_question+1;
+                int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
+                self.homeControl.spendSecond = useTime;
+                NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
+                self.homeControl.timerLabel.text = timeStr;
             }
-            if ([DataService sharedService].number_correctAnswer>0) {
-                self.homeControl.appearCorrectButton.enabled=YES;
-            }
-            
-            self.number = number_question+1;
-            int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
-            self.homeControl.spendSecond = useTime;
-            NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
-            self.homeControl.timerLabel.text = timeStr;
         }
         [self getQuestionData];
     }
@@ -251,6 +253,9 @@
                 self.branchScore++;
             }else {
                 label.textColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
+                if (self.isFirst==YES) {
+                [DataService sharedService].cardsCount += 1;
+                }
             }
         }
         if (self.number == self.questionArray.count-1) {
@@ -275,6 +280,8 @@
         if (number_question >= self.number) {
             //表示已经做过这道题
         }else {
+            isCanUpLoad = YES;
+            
             if (self.number == self.questionArray.count-1) {
                 [self.answerDic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"status"];
             }
@@ -326,8 +333,8 @@
 }
 //结果
 -(void)showResultView {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentDirectory = [paths objectAtIndex:0];
+    NSString *path = [Utility returnPath];
+    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     
     NSError *error = nil;
@@ -498,45 +505,35 @@
     [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 
-#pragma mark
-#pragma mark - 判断卡包是否已满
--(void)getCardFullInfoDidFinished:(NSDictionary *)result {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
-            
-        });
-    });
-}
--(void)getCardFullInfoDidFailed:(NSString *)errorMsg {
-    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
-    [Utility errorAlert:errorMsg];
-}
-
 -(void)exitClozeView {
     if (self.number == self.questionArray.count-1) {
-        
+        [self.homeControl dismissViewControllerAnimated:YES completion:nil];
     }else {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+        alert.tag = 100;
         [alert show];
     }
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-    if (buttonIndex==0) {
-        if (self.isFirst==YES) {
-            self.postNumber = 1;
-            if (self.appDel.isReachable == NO) {
-                [Utility errorAlert:@"暂无网络!"];
+    if (alertView.tag == 100) {
+        if (buttonIndex==0) {
+            if (self.isFirst==YES && isCanUpLoad==YES) {
+                self.postNumber = 1;
+                if (self.appDel.isReachable == NO) {
+                    [Utility errorAlert:@"暂无网络!"];
+                }else {
+                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    self.postInter = [[BasePostInterface alloc]init];
+                    self.postInter.delegate = self;
+                    [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
+                }
             }else {
-                [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-                self.postInter = [[BasePostInterface alloc]init];
-                self.postInter.delegate = self;
-                [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
+                [self.homeControl dismissViewControllerAnimated:YES completion:nil];
             }
-        }else {
-            [self.homeControl dismissViewControllerAnimated:YES completion:nil];
         }
+    }else {
+        [self.homeControl dismissViewControllerAnimated:YES completion:nil];
     }
 }
 @end
