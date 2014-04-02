@@ -53,7 +53,7 @@ static BOOL isCanUpLoad = NO;
     
     self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 20, 768, 400)];
     self.clozeVV.delegate = self;
-    [self.clozeVV setText:[self.questionDic objectForKey:@"full_text"]];
+    [self.clozeVV setText:[self.questionDic objectForKey:@"content"]];
     self.clozeVV.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.clozeVV];
     
@@ -80,7 +80,7 @@ static BOOL isCanUpLoad = NO;
     
     self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 20, 768, 400)];
     self.clozeVV.delegate = self;
-    [self.clozeVV setText:[self.questionDic objectForKey:@"full_text"]];
+    [self.clozeVV setText:[self.questionDic objectForKey:@"content"]];
     self.clozeVV.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.clozeVV];
     
