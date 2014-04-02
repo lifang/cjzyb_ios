@@ -125,7 +125,9 @@
             self.isReDoingChallenge = YES;
             NSString * timesLeft = [self.userDefaults stringForKey:@"reChallengeTimesLeft"];
             if (timesLeft.integerValue < 1) {
-                [Utility errorAlert:@"今日挑战次数已经用完"];
+//                [Utility errorAlert:@"今日挑战次数已经用完"];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"抱歉" message:@"今日挑战次数已经用完" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:nil];
+                [alert show];
                 self.upperButton.enabled = NO;
                 self.lowerButton.enabled = NO;
                 [parentVC stopTimer];
@@ -583,14 +585,19 @@
 
 #pragma mark AlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
-    if ([title isEqualToString:@"放弃"]) {
-        [parentVC.navigationController popViewControllerAnimated:YES];
-        return;
-    }
-    if ([title isEqualToString:@"重试"]) {
-        [self uploadJSON];
-        return;
+    if ([alertView.title isEqualToString:@"抱歉"]) {
+        //挑战次数用完
+        [parentVC dismissViewControllerAnimated:YES completion:nil];
+    }else{
+        NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+        if ([title isEqualToString:@"放弃"]) {
+            [parentVC dismissViewControllerAnimated:YES completion:nil];
+            return;
+        }
+        if ([title isEqualToString:@"重试"]) {
+            [self uploadJSON];
+            return;
+        }
     }
 }
 

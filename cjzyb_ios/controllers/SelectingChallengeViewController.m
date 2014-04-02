@@ -94,54 +94,6 @@
     做题结束,提交answer
 */
 
-//解析answerJSON并保存dic,获取有用信息
-//- (void)parseAnswer{
-//    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-//    //把path拼成真实文件路径
-//    
-//    path = [[NSBundle mainBundle] pathForResource:@"answer-1" ofType:@"js"]; //测试
-//    
-//    NSData *data = [NSData dataWithContentsOfFile:path];
-//    if (!data) {
-//        [Utility errorAlert:@"获取answer文件失败!"];
-//    }else{
-//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-//        if (!dic) {
-//            [Utility errorAlert:@"文件格式错误!"];
-//            return;
-//        }
-//        self.answerJSONDic = dic;
-//        NSDictionary *dicc = [dic objectForKey:@"selecting"];
-//        if (!dicc) { //判断是否已有选择挑战数据
-//            [Utility errorAlert:@"尚没有选择挑战内容"];
-//        }else{
-//            self.answerStatus = [dicc objectForKey:@"status"];  //只要解析状态,已答题时间,题号  其余的不解析
-//            self.timeCount = [[dicc objectForKey:@"use_time"] doubleValue];
-//            parentVC.spendSecond = self.timeCount;
-//            self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"questions_item"] integerValue];
-//            
-//            NSArray *questions = [dicc objectForKey:@"questions"];
-//            if ([questions firstObject]) {
-//                [self.answerArray removeAllObjects];  //此处清空answerArray,注意
-//                for (NSInteger i = 0; i < questions.count; i ++) {
-//                    NSDictionary *questionDic = [questions objectAtIndex:i];
-//                    if ([questionDic objectForKey:@"branch_questions"]) {
-//                        NSArray *branches = [questionDic objectForKey:@"branch_questions"];
-//                        for (int k = 0; k < branches.count; k ++) {
-//                            NSDictionary *branch = branches[k];
-//                            OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
-//                            answer.answerID = [branch objectForKey:@"id"];
-//                            answer.answerAnswer = [branch objectForKey:@"answer"];
-//                            answer.answerRatio = [branch objectForKey:@"ratio"];
-//                            [self.answerArray addObject:answer];
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-
 -(void)parseAnswerDic:(NSMutableDictionary *)dicc{
     self.answerStatus = [dicc objectForKey:@"status"];  //只要解析状态,已答题时间,题号  其余的不解析
     self.timeCount = [[dicc objectForKey:@"use_time"] doubleValue];
