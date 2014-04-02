@@ -161,6 +161,12 @@
 }
 
 #pragma mark -- 请求接口
+-(void)postNotification {
+    NSArray *array = [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId];
+    NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:array];
+    [mutableArray replaceObjectAtIndex:0 withObject:@"0"];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:mutableArray];
+}
 //请求接口,获取系统通知
 -(void)requestSysNoticeWithStudentID:(NSString *)studentID andClassID:(NSString *)classID andPage:(NSString *)page{
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
@@ -177,8 +183,8 @@
             self.isLoading = YES;
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 self.isLoading = NO;
-                self.appDel.isReceiveNotificationSystem = NO;
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:nil];
+                [self performSelectorOnMainThread:@selector(postNotification) withObject:nil waitUntilDone:NO];
+                
                 if (self.isRefreshing) {
                     self.notificationArray = [NSMutableArray array];
                     self.pageOfNotification = 1;

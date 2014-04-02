@@ -9,15 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "HomeworkContainerController.h"
 #import "BasePostInterface.h"
-#import "CardFullInterface.h"
+
 /**
  *  排序
  */
-@interface SortViewController : UIViewController<TenSecChallengeResultViewDelegate,PostDelegate,CardFullInterfaceDelegate,UIAlertViewDelegate>
+@interface SortViewController : UIViewController<TenSecChallengeResultViewDelegate,PostDelegate,UIAlertViewDelegate>
 
 @property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) BasePostInterface *postInter;
-@property (nonatomic, strong) CardFullInterface *cardFullInter;
+
 
 @property (nonatomic, strong) UIView *wordsContainerView;
 @property (nonatomic, assign) NSInteger number;//记录第几题--大题
@@ -42,6 +42,7 @@
 
 @property (nonatomic, strong) HomeworkContainerController *homeControl;
 @property (strong, nonatomic) UIButton *checkHomeworkButton;
+
 @property (nonatomic, strong) NSMutableDictionary *answerDic;
 
 @property (nonatomic, assign) BOOL isFirst;

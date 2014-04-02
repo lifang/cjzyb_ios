@@ -8,6 +8,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "ListenWriteViewController.h"
 
+
+static BOOL isCanUpLoad = NO;
+
 @interface ListenWriteViewController ()
 @property (nonatomic, strong) TenSecChallengeResultView *resultView;
 @end
@@ -20,13 +23,6 @@
 
 @implementation ListenWriteViewController
 
--(CardFullInterface *)cardFullInter {
-    if (!_cardFullInter) {
-        _cardFullInter = [[CardFullInterface alloc]init];
-        _cardFullInter.delegate = self;
-    }
-    return _cardFullInter;
-}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -63,6 +59,8 @@
     return label;
 }
 -(void)setUI {
+    self.homeControl.quitHomeworkButton.enabled = YES;
+    
     [self.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
     [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
     [self.checkHomeworkButton addTarget:self action:@selector(checkAnswer:) forControlEvents:UIControlEventTouchUpInside];
@@ -107,6 +105,7 @@
                     }
                 }
             } completion:^(BOOL finished){
+                
             }];
         }
     }];
@@ -273,31 +272,33 @@
             //题目已经完成
         }else {
             //判断卡包
-            [self.cardFullInter getCardFullInterfaceDelegate];
-            
-            self.isFirst = YES;
-            if ([DataService sharedService].number_reduceTime>0) {
-                self.homeControl.reduceTimeButton.enabled = YES;
-            }
-            
-            
-            int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
-            
-            if (number_question>=0) {
-                NSDictionary *dic = [self.questionArray objectAtIndex:number_question];
-                NSArray *array = [dic objectForKey:@"branch_questions"];
-                if (number_branch_question == array.count-1) {
-                    self.number = +1;self.branchNumber = 0;
-                }else {
-                    self.number = number_question;self.branchNumber = number_branch_question+1;
-                }
-                
-                int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
-                self.homeControl.spendSecond = useTime;
-                NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
-                self.homeControl.timerLabel.text = timeStr;
+            if ([DataService sharedService].cardsCount >20) {
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+                alert.tag = 999;
+                [alert show];
             }else {
-                self.number=0;self.branchNumber=0;
+                self.isFirst = YES;
+                if ([DataService sharedService].number_reduceTime>0) {
+                    self.homeControl.reduceTimeButton.enabled = YES;
+                }
+                int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
+                
+                if (number_question>=0) {
+                    NSDictionary *dic = [self.questionArray objectAtIndex:number_question];
+                    NSArray *array = [dic objectForKey:@"branch_questions"];
+                    if (number_branch_question == array.count-1) {
+                        self.number = +1;self.branchNumber = 0;
+                    }else {
+                        self.number = number_question;self.branchNumber = number_branch_question+1;
+                    }
+                    
+                    int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
+                    self.homeControl.spendSecond = useTime;
+                    NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
+                    self.homeControl.timerLabel.text = timeStr;
+                }else {
+                    self.number=0;self.branchNumber=0;
+                }
             }
         }
         
@@ -338,7 +339,7 @@ static int numberOfMusic =0;
     self.appDel.avPlayer.delegate=self;
     [self.appDel.avPlayer play];
 }
-#warning 路径有无问题？
+
 -(IBAction)listenMusic:(id)sender {
     self.urlArray = nil;
     self.listenBtn.enabled=NO;
@@ -348,9 +349,8 @@ static int numberOfMusic =0;
     NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     for (int i=self.branchNumber; i<self.branchQuestionArray.count; i++) {
         NSDictionary *dic = [self.branchQuestionArray objectAtIndex:i];
-        NSString *nameString = [NSString stringWithFormat:@"%@%@",documentDirectory,[dic objectForKey:@"resource_url"]];
-        NSString *savePath=[documentDirectory stringByAppendingPathComponent:nameString];
-        [self.urlArray addObject:savePath];
+        NSString *nameString = [NSString stringWithFormat:@"%@/%@",documentDirectory,[dic objectForKey:@"resource_url"]];
+        [self.urlArray addObject:nameString];
     }
     numberOfMusic=0;
     [self playMusic];
@@ -372,7 +372,7 @@ static int numberOfMusic =0;
             [self.appDel.avPlayer stop];
             self.appDel.avPlayer=nil;
             self.branch_listenBtn.enabled=YES;
-            [self.listenBtn setImage:[UIImage imageNamed:@"ios-stop"] forState:UIControlStateNormal];
+            [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-stop"] forState:UIControlStateNormal];
         }
         
     }
@@ -384,12 +384,11 @@ static int numberOfMusic =0;
     NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     
-    NSString *nameString = [NSString stringWithFormat:@"%@%@.mp3",documentDirectory,[self.branchQuestionDic objectForKey:@"resource_url"]];
-    NSString *savePath=[documentDirectory stringByAppendingPathComponent:nameString];
+    NSString *nameString = [NSString stringWithFormat:@"%@/%@",documentDirectory,[self.branchQuestionDic objectForKey:@"resource_url"]];
     
     NSError *error;
     self.appDel.avPlayer = nil;
-    self.appDel.avPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:savePath] error:&error];
+    self.appDel.avPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:nameString] error:&error];
     self.appDel.avPlayer.volume = 1;
     self.appDel.avPlayer.delegate = self;
     [self.appDel.avPlayer play];
@@ -565,6 +564,9 @@ static int numberOfMusic =0;
             TRUESOUND;
         }else {
             FALSESOUND;
+            if (self.isFirst==YES) {
+            [DataService sharedService].cardsCount += 1;
+            }
         }
         NSString *answer = [NSString stringWithFormat:@"%@;||;%@",anserString,wrong_anserString];
         //TODO:写入json
@@ -584,6 +586,8 @@ static int numberOfMusic =0;
     }
 }
 -(void)writeToAnswerJsonWithString:(NSString *)string {
+    isCanUpLoad = YES;
+    
     if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
         [self.answerDic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"status"];
     }
@@ -636,11 +640,9 @@ static int numberOfMusic =0;
     self.branch_listenBtn.enabled=YES;
     [self.listenBtn setImage:[UIImage imageNamed:@"ios-stop"] forState:UIControlStateNormal];
     
-    
     if (self.branchNumber == self.branchQuestionArray.count-1) {
         self.number++;self.branchNumber = 0;
         [self listenMusicViewUI];
-        ////////////////////////////////////////////////////////////////////////
     }else {
         [self.homeControl startTimer];
         self.branchNumber++;
@@ -650,8 +652,8 @@ static int numberOfMusic =0;
 }
 //结果
 -(void)showResultView {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentDirectory = [paths objectAtIndex:0];
+    NSString *path = [Utility returnPath];
+    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     
     NSError *error = nil;
@@ -742,6 +744,7 @@ static int numberOfMusic =0;
 #pragma mark
 #pragma mark - TenSecChallengeResultViewDelegate
 -(void)resultViewCommitButtonClicked {//确认完成
+    self.homeControl.quitHomeworkButton.enabled = YES;
     [self.resultView removeFromSuperview];
 }
 -(void)resultViewRestartButtonClicked {//再次挑战
@@ -789,46 +792,37 @@ static int numberOfMusic =0;
     [self.propsArray replaceObjectAtIndex:1 withObject:branch_propDic];
     [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
 }
-#pragma mark
-#pragma mark - 判断卡包是否已满
--(void)getCardFullInfoDidFinished:(NSDictionary *)result {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
-
-        });
-    });
-}
--(void)getCardFullInfoDidFailed:(NSString *)errorMsg {
-    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
-    [Utility errorAlert:errorMsg];
-}
 
 
 -(void)exitListenView {
     if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
-        //完成整个题型
+        [self.homeControl dismissViewControllerAnimated:YES completion:nil];
     }else {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+        alert.tag = 100;
         [alert show];
     }
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
-    if (buttonIndex==0) {
-        if (self.isFirst==YES) {
-            self.postNumber = 1;
-            if (self.appDel.isReachable == NO) {
-                [Utility errorAlert:@"暂无网络!"];
+    if (alertView.tag == 100) {
+        if (buttonIndex==0) {
+            if (self.isFirst==YES && isCanUpLoad==YES) {
+                self.postNumber = 1;
+                if (self.appDel.isReachable == NO) {
+                    [Utility errorAlert:@"暂无网络!"];
+                }else {
+                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    self.postInter = [[BasePostInterface alloc]init];
+                    self.postInter.delegate = self;
+                    [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
+                }
             }else {
-                [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-                self.postInter = [[BasePostInterface alloc]init];
-                self.postInter.delegate = self;
-                [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
+                [self.homeControl dismissViewControllerAnimated:YES completion:nil];
             }
-        }else {
-            [self.homeControl dismissViewControllerAnimated:YES completion:nil];
         }
+    }else {
+        [self.homeControl dismissViewControllerAnimated:YES completion:nil];
     }
 }
 @end

@@ -66,9 +66,6 @@
 		0E93C9AA18D80EB20094AD7B /* BasePostInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9A918D80EB20094AD7B /* BasePostInterface.m */; };
 		0E93C9B018D834630094AD7B /* ios-playing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E93C9AE18D834630094AD7B /* ios-playing@2x.png */; };
 		0E93C9B118D834630094AD7B /* ios-stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E93C9AF18D834630094AD7B /* ios-stop@2x.png */; };
-		0E93C9B618D842480094AD7B /* alertEffect.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0E93C9B418D842480094AD7B /* alertEffect.wav */; };
-		0E93C9B718D842480094AD7B /* btnEffect.wav in Resources */ = {isa = PBXBuildFile; fileRef = 0E93C9B518D842480094AD7B /* btnEffect.wav */; };
-		0E93C9BA18D93DE30094AD7B /* CardFullInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9B918D93DE30094AD7B /* CardFullInterface.m */; };
 		0E93C9BE18D9927E0094AD7B /* LininggViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9BC18D9927E0094AD7B /* LininggViewController.m */; };
 		0E93C9BF18D9927E0094AD7B /* LininggViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E93C9BD18D9927E0094AD7B /* LininggViewController.xib */; };
 		0E93C9D618DAE7C30094AD7B /* CustomLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9D518DAE7C30094AD7B /* CustomLabel.m */; };
@@ -479,10 +476,6 @@
 		0E93C9A918D80EB20094AD7B /* BasePostInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasePostInterface.m; sourceTree = "<group>"; };
 		0E93C9AE18D834630094AD7B /* ios-playing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-playing@2x.png"; sourceTree = "<group>"; };
 		0E93C9AF18D834630094AD7B /* ios-stop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ios-stop@2x.png"; sourceTree = "<group>"; };
-		0E93C9B418D842480094AD7B /* alertEffect.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = alertEffect.wav; sourceTree = "<group>"; };
-		0E93C9B518D842480094AD7B /* btnEffect.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = btnEffect.wav; sourceTree = "<group>"; };
-		0E93C9B818D93DE30094AD7B /* CardFullInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardFullInterface.h; sourceTree = "<group>"; };
-		0E93C9B918D93DE30094AD7B /* CardFullInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardFullInterface.m; sourceTree = "<group>"; };
 		0E93C9BB18D9927E0094AD7B /* LininggViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LininggViewController.h; sourceTree = "<group>"; };
 		0E93C9BC18D9927E0094AD7B /* LininggViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LininggViewController.m; sourceTree = "<group>"; };
 		0E93C9BD18D9927E0094AD7B /* LininggViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LininggViewController.xib; sourceTree = "<group>"; };
@@ -1302,8 +1295,6 @@
 				0EAABD8718CF1F6300CD2DE7 /* TagInterface.m */,
 				0EAABDA618D0062100CD2DE7 /* SelectedTagInterface.h */,
 				0EAABDA718D0062100CD2DE7 /* SelectedTagInterface.m */,
-				0E93C9B818D93DE30094AD7B /* CardFullInterface.h */,
-				0E93C9B918D93DE30094AD7B /* CardFullInterface.m */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -1489,8 +1480,6 @@
 		6329549718BC875800F2B78D /* cjzyb_ios */ = {
 			isa = PBXGroup;
 			children = (
-				0E93C9B418D842480094AD7B /* alertEffect.wav */,
-				0E93C9B518D842480094AD7B /* btnEffect.wav */,
 				0EAABDB418D034B800CD2DE7 /* answer.json */,
 				0EAABDB218D034AD00CD2DE7 /* question.json */,
 				0EAABDB618D0364800CD2DE7 /* modelmodel */,
@@ -2370,9 +2359,7 @@
 				0EEF4BDB18C561570058606A /* CardSecondView.xib in Resources */,
 				63DD5C6118C994B10034512D /* iSpeechSDK.bundle in Resources */,
 				630DBDFD18D15AFB009DA0EB /* jinque_yellow@2x.png in Resources */,
-				0E93C9B718D842480094AD7B /* btnEffect.wav in Resources */,
 				630DBDFB18D15AFB009DA0EB /* back@2x.png in Resources */,
-				0E93C9B618D842480094AD7B /* alertEffect.wav in Resources */,
 				0E9D68AA18CD685100EACFA3 /* card_back_selected@2x.png in Resources */,
 				18CF139C18E96402001E3448 /* LHLReplyNotificationViewController.xib in Resources */,
 				63289A2E18C595D300C0083E /* reading_stop@2x.png in Resources */,
@@ -2462,7 +2449,6 @@
 				63DD5C7918C9E9F60034512D /* ReadingTaskViewControllerView.m in Sources */,
 				6396577718C036B1002F2A90 /* ClassGroupViewController.m in Sources */,
 				6329553F18BC8D7C00F2B78D /* FMResultSet.m in Sources */,
-				0E93C9BA18D93DE30094AD7B /* CardFullInterface.m in Sources */,
 				0E9D68D918CDC28700EACFA3 /* MyPageControl.m in Sources */,
 				18B4EB8118D29DD800986766 /* LHLDeleteSysNoticeInterface.m in Sources */,
 				0E9D68C718CD966400EACFA3 /* Array.mm in Sources */,

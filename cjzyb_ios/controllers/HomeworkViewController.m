@@ -206,6 +206,12 @@
 }
 
 #pragma mark UIAlertViewDelegate
+-(void)postNotification {
+    NSArray *array = [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId];
+    NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:array];
+    [mutableArray replaceObjectAtIndex:2 withObject:@"0"];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:mutableArray];
+}
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     __block TaskObj *task = [DataService sharedService].taskObj;
     if (alertView.tag == 1000) {
@@ -223,6 +229,8 @@
                     }else{
                         progress.labelText = @"作业包下载成功";
                         [progress hide:YES afterDelay:1];
+                        [self performSelectorOnMainThread:@selector(postNotification) withObject:nil waitUntilDone:NO];
+                        
                     }
                 });
             });

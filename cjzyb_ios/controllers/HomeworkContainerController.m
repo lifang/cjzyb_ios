@@ -45,7 +45,7 @@
 
 -(void)timerExecute{
     self.spendSecond++;
-    self.timerLabel.text = [Utility formateDateStringWithSecond:self.spendSecond];
+    self.timerLabel.text = [Utility formateDateStringWithSecond:(NSInteger)self.spendSecond];
 }
 
 ///开始计时
@@ -94,7 +94,7 @@
             self.liningView.view.frame = self.contentView.bounds;
             [self.appearCorrectButton addTarget:self.liningView action:@selector(showLiningCorrectAnswer) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.liningView action:@selector(liningViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-            [self.quitHomeworkButton addTarget:self.readingController action:@selector(exitLiningView) forControlEvents:UIControlEventTouchUpInside];
+            [self.quitHomeworkButton addTarget:self.liningView action:@selector(exitLiningView) forControlEvents:UIControlEventTouchUpInside];
             self.liningView.checkHomeworkButton = self.checkHomeworkButton;
             [self.contentView addSubview:self.liningView.view];
             [self addChildViewController:self.liningView];
@@ -124,7 +124,7 @@
             self.listenView.view.frame = self.contentView.bounds;
             [self.appearCorrectButton setHidden:YES];
             self.listenView.checkHomeworkButton = self.checkHomeworkButton;
-            [self.quitHomeworkButton addTarget:self.readingController action:@selector(exitListenView) forControlEvents:UIControlEventTouchUpInside];
+            [self.quitHomeworkButton addTarget:self.listenView action:@selector(exitListenView) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.listenView action:@selector(listenViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
             [self.contentView addSubview:self.listenView.view];
             [self addChildViewController:self.listenView];
@@ -136,10 +136,11 @@
             self.selectedView = [[SelectedViewController alloc]initWithNibName:@"SelectedViewController" bundle:nil];
             [self.selectedView willMoveToParentViewController:self];
             self.selectedView.view.frame = self.contentView.bounds;
+            self.selectedView.checkHomeworkButton = self.checkHomeworkButton;
+             [self.quitHomeworkButton addTarget:self.selectedView action:@selector(exitClozeView) forControlEvents:UIControlEventTouchUpInside];
             [self.appearCorrectButton addTarget:self.selectedView action:@selector(showClozeCorrectAnswer) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.selectedView action:@selector(clozeViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-            [self.quitHomeworkButton addTarget:self.readingController action:@selector(exitClozeView) forControlEvents:UIControlEventTouchUpInside];
-            self.selectedView.checkHomeworkButton = self.checkHomeworkButton;
+           
             [self.contentView addSubview:self.selectedView.view];
             [self addChildViewController:self.selectedView];
             [self.selectedView didMoveToParentViewController:self];
@@ -150,10 +151,11 @@
             self.sortView = [[SortViewController alloc]initWithNibName:@"SortViewController" bundle:nil];
             [self.sortView willMoveToParentViewController:self];
             self.sortView.view.frame = self.contentView.bounds;
-            [self.quitHomeworkButton addTarget:self.readingController action:@selector(exitSortView) forControlEvents:UIControlEventTouchUpInside];
+             self.sortView.checkHomeworkButton = self.checkHomeworkButton;
+            [self.quitHomeworkButton addTarget:self.sortView action:@selector(exitSortView) forControlEvents:UIControlEventTouchUpInside];
             [self.appearCorrectButton addTarget:self.sortView action:@selector(showSortCorrectAnswer) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.sortView action:@selector(sortViewReduceTimeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-            self.sortView.checkHomeworkButton = self.checkHomeworkButton;
+           
             [self.contentView addSubview:self.sortView.view];
             [self addChildViewController:self.sortView];
             [self.sortView didMoveToParentViewController:self];
@@ -246,7 +248,7 @@
 
 -(void)setSpendSecond:(long long)spendSecond{
     _spendSecond = spendSecond;
-    self.timerLabel.text = [Utility formateDateStringWithSecond:self.spendSecond];
+    self.timerLabel.text = [Utility formateDateStringWithSecond:(NSInteger)self.spendSecond];
 }
 
 - (IBAction)quitButtonClicked:(id)sender {

@@ -73,11 +73,22 @@
     [self.view addSubview:self.leftTabBar];
     [self.leftTabBar defaultSelected];
     
-    self.leftTabBar.homeworkTabBarItem.redImg.hidden = !self.appDel.isReceiveTask;
-    if (self.appDel.isReceiveNotificationReply==YES || self.appDel.isReceiveNotificationSystem==YES) {
-        self.leftTabBar.notificationTabBarItem.redImg.hidden = NO;
-    }
+    //小红点
+    NSArray *array = [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId];
+    int system = [[array objectAtIndex:0]integerValue];
+    int reply = [[array objectAtIndex:1]integerValue];
+    int homework = [[array objectAtIndex:2]integerValue];
     
+    if (system==1 || reply==1) {//通知
+        self.leftTabBar.notificationTabBarItem.redImg.hidden = NO;
+    }else {
+        self.leftTabBar.notificationTabBarItem.redImg.hidden = YES;
+    }
+    if (homework==1) {//作业
+        self.leftTabBar.homeworkTabBarItem.redImg.hidden = NO;
+    }else {
+        self.leftTabBar.homeworkTabBarItem.redImg.hidden = YES;
+    }
     
     //设置导航栏
     self.drNavigationBar = [[[NSBundle mainBundle]  loadNibNamed:@"DRNavigationBar" owner:self options:nil] firstObject];
@@ -121,9 +132,21 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setStatus:) name:@"loadByNotification" object:nil];
 }
 -(void)setStatus:(NSNotification *)notifice {
-    self.leftTabBar.homeworkTabBarItem.redImg.hidden = !self.appDel.isReceiveTask;
-    if (self.appDel.isReceiveNotificationReply==YES || self.appDel.isReceiveNotificationSystem==YES) {
+    NSArray *array = [notifice object];
+    
+    int system = [[array objectAtIndex:0]integerValue];
+    int reply = [[array objectAtIndex:1]integerValue];
+    int homework = [[array objectAtIndex:2]integerValue];
+    
+    if (system==1 || reply==1) {//通知
         self.leftTabBar.notificationTabBarItem.redImg.hidden = NO;
+    }else {
+        self.leftTabBar.notificationTabBarItem.redImg.hidden = YES;
+    }
+    if (homework==1) {//作业
+        self.leftTabBar.homeworkTabBarItem.redImg.hidden = NO;
+    }else {
+        self.leftTabBar.homeworkTabBarItem.redImg.hidden = YES;
     }
 }
 //TODO:拍照

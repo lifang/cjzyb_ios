@@ -27,4 +27,5 @@
 
 + (DataService *)sharedService;
 
+@property (nonatomic,assign) NSInteger cardsCount; //剩余卡片的数量
 @end
