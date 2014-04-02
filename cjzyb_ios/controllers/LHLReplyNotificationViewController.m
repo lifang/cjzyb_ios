@@ -144,6 +144,10 @@
 
 #pragma mark -- action
 
+-(void)hideHUD{
+    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
+}
+
 //TODO: 此格式会不会改?  处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
 -(NSString *)handleApiResponseTimeString:(NSString *)str{
     if (![str isKindOfClass:[NSString class]]) {
@@ -235,6 +239,12 @@
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
+                    if (notices.count < 1) {
+                        [MBProgressHUD showHUDAddedTo:self.tableView animated:NO];
+                        MBProgressHUD *hud = [MBProgressHUD HUDForView:self.tableView];
+                        hud.labelText = @"已无更多消息!";
+                        [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.5];
+                    }
                     [self.tableView reloadData];
                 });
             } withFailure:^(NSError *error) {

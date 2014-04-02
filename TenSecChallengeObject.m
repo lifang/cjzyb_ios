@@ -11,10 +11,6 @@
 @implementation TenSecChallengeObject
 + (NSArray *)parseTenSecQuestionsFromFile{
     NSMutableArray *resultArray = [NSMutableArray array];//返回值
-//    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-//    //把path拼成真实文件路径
-//    
-//    path = [[NSBundle mainBundle] pathForResource:@"questions_lastest" ofType:@"js"]; //测试
     
     NSString *path = [Utility returnPath];
     path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate]; //日期对应的文件夹(task文件夹)
@@ -52,7 +48,7 @@
                         obj.tenTimeLimit = timeLimit;
                         obj.tenID = [question objectForKey:@"id"];
                         obj.tenQuestionContent = [question objectForKey:@"content"];
-                        obj.tenRightAnswer = [question objectForKey:@"anwser"];
+                        obj.tenRightAnswer = [question objectForKey:@"answer"];
                         NSString *options = [question objectForKey:@"options"];
                         NSArray *optionsArray = [options componentsSeparatedByString:@";||;"];
                         obj.tenAnswerOne = [optionsArray firstObject];

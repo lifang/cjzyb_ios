@@ -461,7 +461,8 @@
 
 - (NSData *)currentAudioData{
     if (!_currentAudioData) {
-        _currentAudioData = [NSData dataWithContentsOfFile:[[DataService sharedService].taskObj.taskFolderPath stringByAppendingPathComponent:self.currentQuestion.seContentAttachment]];
+        NSString *path = [[DataService sharedService].taskObj.taskFolderPath stringByAppendingPathComponent:self.currentQuestion.seContentAttachment];
+        _currentAudioData = [NSData dataWithContentsOfFile:path];
     }
     return _currentAudioData;
 }
@@ -575,7 +576,7 @@
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
                 NSData *imageData = [NSData dataWithContentsOfFile:[[DataService sharedService].taskObj.taskFolderPath stringByAppendingString:self.currentQuestion.seContentAttachment]];
-                self.questionImageView.image = [UIImage imageWithData:imageData];
+                self.questionImageView.image = [[UIImage imageWithData:imageData] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0) resizingMode:UIImageResizingModeStretch];
             }
                 break;
                 
