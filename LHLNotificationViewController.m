@@ -47,8 +47,6 @@
     [self.tableView registerNib:nib forCellReuseIdentifier:@"LHLNotificationCell"];
     
     [self initData];
-    
-    [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
         
     [self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
     
@@ -67,6 +65,7 @@
     self.notificationArray = [NSMutableArray array];
     self.pageOfNotification = 1;
     self.isRefreshing = YES;
+    [self requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
 }
 
 - (void)dealloc{
@@ -172,8 +171,8 @@
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
             //请求系统通知
-//            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
-            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",@"1",@"1",page];
+            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
+//            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",@"1",@"1",page];
             NSURL *url = [NSURL URLWithString:str];
             NSURLRequest *request = [NSURLRequest requestWithURL:url];
             if (page.integerValue == 1) {
@@ -262,8 +261,10 @@
     //停止请求接口时,隐藏header和footer
     if (isLoading == NO) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.tableView.tableHeaderView = nil;
-            self.tableView.tableFooterView = nil;
+            if (self.tableView.tableFooterView) {
+                self.tableView.tableFooterView = nil;
+                self.tableView.contentOffset = CGPointMake(self.tableView.contentOffset.x, self.tableView.contentOffset.y + 50);
+            }
         });
     }
     _isLoading = isLoading;

@@ -23,6 +23,7 @@
 
 #import "PreReadingTaskViewController.h"
 
+#import "DRSentenceSpellMatch.h"
 @implementation AppDelegate
 -(void)loadTrueSound:(NSInteger)index {
     NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"trueMusic.wav"];
@@ -157,7 +158,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.window.backgroundColor = [UIColor whiteColor];
+
     self.the_class_id = -1;
+
     [DataService sharedService].notificationPage=1;
     self.notification_type = 0;
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];

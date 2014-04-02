@@ -71,7 +71,11 @@
     progress.labelText = @"正在上传做题结果，请稍后...";
     self.successBlock = success;
     self.failureBlock = failure;
-    [self.postAnswerInterface postAnswerFileWith:answerPath];
+    NSString *path = @"";
+    if (answerPath) {
+        path = [[answerPath stringByDeletingLastPathComponent] lastPathComponent];
+    }
+    [self.postAnswerInterface postAnswerFileWith:path];
 }
 
 - (void)viewDidLoad
@@ -84,6 +88,12 @@
     }else {
         self.timeImg.hidden=NO; self.timerLabel.hidden=NO;
         self.label1.hidden=YES;self.label2.hidden=YES;self.rotioLabel.hidden=YES;self.timeLabel.hidden=YES;
+        if ([DataService sharedService].number_reduceTime <= 0) {
+            [self.reduceTimeButton setEnabled:NO];
+        }
+        if ([DataService sharedService].number_correctAnswer <= 0) {
+            [self.appearCorrectButton setEnabled:NO];
+        }
     }
     [self startTimer];
     switch (self.homeworkType) {
@@ -175,6 +185,7 @@
             [self.tenSecViewController didMoveToParentViewController:self];
             self.tenSecViewController.isViewingHistory = [DataService sharedService].isHistory;
             [self.tenSecViewController startChallenge];
+            [self.quitHomeworkButton addTarget:self.tenSecViewController action:@selector(tenQuitButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             if (![DataService sharedService].isHistory) {
                 [self.checkBgView setHidden:YES];
             }else{

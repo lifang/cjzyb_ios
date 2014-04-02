@@ -257,6 +257,7 @@
             [viewController willMoveToParentViewController:self];
             viewController.view.frame = CGRectMake(0, 0, CGRectGetWidth(self.scrollView.frame), self.scrollHeight);
             [self.scrollView addSubview:viewController.view];
+            [self addChildViewController:viewController]; //额外添加 --LHL
             [viewController didMoveToParentViewController:self];
         }
         [self layoutSubviews];

@@ -17,7 +17,7 @@
         }
         return;
     }
-    NSString *dircName = [jsonFilePath lastPathComponent];
+    NSString *dircName = [jsonFilePath stringByDeletingLastPathComponent];
     dircName = [dircName lastPathComponent];
     NSMutableArray *propsArray = [Utility returnAnswerPropsandDate:dircName];
     //存储道具记录JSON
@@ -63,7 +63,7 @@
     NSString *useTime = [Utility filterValue:[readingDic objectForKey:@"use_time"]];
     int questionIndex = [Utility filterValue:[readingDic objectForKey:@"questions_item"]].intValue;
     int questionItemIndex = [Utility filterValue:[readingDic objectForKey:@"branch_item"]].intValue;
-    int totalCount = 0;
+     int totalCount = 0;
     float ratio = 0;
     
     NSMutableArray *readingWorkList = [NSMutableArray array];
@@ -101,7 +101,7 @@
 
 
 //TODO: 根据答案的json文件解析出朗读类型的做题记录
-+(void)parseAnswerJsonFileWithUserId:(NSString*)userId withTask:(TaskObj*)task withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex,int status,NSString *updateTime,NSString *userTime,int specifyTime))questionArr withParseError:(void (^)(NSError *error))failure{
++(void)parseAnswerJsonFileWithUserId:(NSString*)userId withTask:(TaskObj*)task withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex,int status,NSString *updateTime,NSString *userTime,int specifyTime ,float ratio))questionArr withParseError:(void (^)(NSError *error))failure{
 
     NSDictionary *readingDic = [Utility returnAnswerDictionaryWithName:@"reading" andDate:task.taskStartDate];
     if (!readingDic || readingDic.count <= 0) {
@@ -115,7 +115,8 @@
     NSString *useTime = [Utility filterValue:[readingDic objectForKey:@"use_time"]];
     int questionIndex = [Utility filterValue:[readingDic objectForKey:@"questions_item"]].intValue;
     int questionItemIndex = [Utility filterValue:[readingDic objectForKey:@"branch_item"]].intValue;
-    
+    __block int count = 0;
+    __block float totalRatio = 0.0;
     NSString *filePath = [NSString stringWithFormat:@"%@/questions.json",task.taskFolderPath];
     [ParseQuestionJsonFileTool parseQuestionJsonFile:filePath withReadingQuestionArray:^(NSArray *readingQuestionArr, NSInteger specifiedTime) {
         NSArray *readingArr = [readingDic objectForKey:@"questions"];
@@ -128,11 +129,17 @@
                 ReadingSentenceObj *sentence = [reading.readingHomeworkSentenceObjArray objectAtIndex:i];
                 sentence.readingSentenceRatio = [Utility filterValue:[sentenceDic objectForKey:@"ratio"]];
                 sentence.readingErrorWordArray = [ParseAnswerJsonFileTool getErrorWordArrayFromString:[sentenceDic objectForKey:@"answer"]];
+                count++;
+                totalRatio += sentence.readingSentenceRatio.floatValue;
             }
         }
         
         if (questionArr) {
-            questionArr(readingQuestionArr,questionIndex,questionItemIndex,status,updateTime,useTime,specifiedTime);
+            float ratio = 1;
+            if (count > 0) {
+                ratio = totalRatio/count;
+            }
+            questionArr(readingQuestionArr,questionIndex,questionItemIndex,status,updateTime,useTime,specifiedTime,ratio);
         }
     } withParseError:^(NSError *error) {
         if (failure) {

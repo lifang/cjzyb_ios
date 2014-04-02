@@ -39,6 +39,7 @@
     
     [self.view addSubview:self.pagesContainer.view];
     [self.pagesContainer didMoveToParentViewController:self];
+    [self addChildViewController:self.pagesContainer];
     self.pagesContainer.topBarBackgroundColor = [UIColor colorWithRed:0.8235 green:0.8275 blue:0.8314 alpha:1];
     
     //加入子页面

@@ -419,10 +419,12 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         NSDictionary *dataObject = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:path] options:0 error:&jsonParsingError];
         NSString *updateDate = [dataObject objectForKey:@"update"];
-        NSDate *taskUpdteDate = [Utility getDateFromDateString:task.taskAnswerFileUpdateDate];
-        NSDate *fileUpDate = [Utility getDateFromDateString:updateDate];
-        if ([taskUpdteDate compare:fileUpDate] == NSOrderedSame) {
-            return YES;
+        if (updateDate && ![updateDate isEqualToString:@""]) {
+            NSDate *taskUpdteDate = [Utility getDateFromDateString:task.taskAnswerFileUpdateDate];
+            NSDate *fileUpDate = [Utility getDateFromDateString:updateDate];
+            if ([taskUpdteDate compare:fileUpDate] == NSOrderedSame) {
+                return YES;
+            }
         }
         return NO;
     }
@@ -1532,11 +1534,9 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSURL *url = [NSURL URLWithString:str];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
-//        NSNumber *cards_count = [dicData objectForKey:@"knowledges_cards_count"];
-//        if (cards_count.integerValue > 20) {
-//            returnMsg = @"先清卡包";
-//            return;
-//        }
+        NSNumber *cards_count = [dicData objectForKey:@"knowledges_cards_count"];
+        [DataService sharedService].cardsCount = cards_count.integerValue >= 0 ? : 0;
+
         NSArray *taskArray = [dicData objectForKey:@"tasks"];
         if (taskArray.count < 1) {
             returnMsg = @"暂未发布今日作业";
@@ -1916,7 +1916,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 +(BOOL)compareTime {
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    dateFormatter.dateFormat = @"yyyy-MM-ddTHH:mm:ss";
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
     NSDate *endDate = [dateFormatter dateFromString:[DataService sharedService].taskObj.taskEndDate];
     
