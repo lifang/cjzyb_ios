@@ -122,6 +122,7 @@
         parentVC.timeLabel.text = [NSString stringWithFormat:@"%d'%d\"",minite,second];
     }else{
         if ([self.answerStatus isEqualToString:@"1"]) { //重新做题  ,此时应判断是否有重新做题的剩余次数
+            self.isReDoingChallenge = YES;
             NSString * timesLeft = [self.userDefaults stringForKey:@"reChallengeTimesLeft"];
             if (timesLeft.integerValue < 1) {
                 [Utility errorAlert:@"今日挑战次数已经用完"];
@@ -134,7 +135,6 @@
                 [self.userDefaults synchronize];
             }
             parentVC.spendSecond = 0;
-            self.isReDoingChallenge = YES;
             self.currentNO = 0;
             self.answerArray = [NSMutableArray array];
         }else{ //继续做题
@@ -207,7 +207,10 @@
     NSString *answerJSONPath = [[DataService sharedService].taskObj.taskFolderPath stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     [parentVC uploadAnswerJsonFileWithPath:answerJSONPath withSuccess:^(NSString *success) {
         self.haveUploadedJSON = YES;
-        [self finishChallenge];
+        //如果已完成就显示结果
+        if (self.answerArray.count == self.questionArray.count) {
+            [self finishChallenge];
+        }
     } withFailure:^(NSString *error) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"上传未成功" message:@"无法提交成绩,重试?" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"重试", nil];
         [alert show];
@@ -335,8 +338,8 @@
 
 ///点击parentVC的退出按钮触发
 -(void)tenQuitButtonClicked:(id)sender{
-    if (self.haveUploadedJSON) {
-        [parentVC.navigationController popViewControllerAnimated:YES];
+    if (self.haveUploadedJSON || self.isReDoingChallenge || self.isViewingHistory) {
+        [parentVC dismissViewControllerAnimated:YES completion:nil];
     }else{
         [self uploadJSON];
     }
@@ -344,48 +347,48 @@
 
 #pragma mark -- action
 //从answer.js中解析有用信息,并保存JSONDic
--(void)parseAnswerJSON{
-    self.answerArray = [NSMutableArray array];
-    
-    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-    //把path拼成真实文件路径
-    
-    path = [[NSBundle mainBundle] pathForResource:@"answer-1" ofType:@"js"]; //测试
-    
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    if (!data) {
-        [Utility errorAlert:@"获取answer文件失败!"];
-    }else{
-        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-        if (!dic) {
-            [Utility errorAlert:@"文件格式错误!"];
-            return;
-        }
-        self.answerJSONDic = dic;
-        NSDictionary *dicc = [dic objectForKey:@"time_limit"];
-        if (!dicc) { //判断是否已有十速挑战数据
-            
-        }else{
-            self.answerStatus = [dicc objectForKey:@"status"];  //解析状态,已答题时间,题号,答案
-            parentVC.spendSecond = [[dicc objectForKey:@"use_time"] longLongValue];
-            self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"branch_item"] integerValue];
-            NSArray *questionsArray = [dicc objectForKey:@"questions"];
-            NSDictionary *bigQuestion = [questionsArray firstObject];
-            if (bigQuestion) {
-                NSArray *branchQuestionsArray = [bigQuestion objectForKey:@"branch_questions"];
-                for (NSInteger i = 0; i < branchQuestionsArray.count; i ++) {
-                    NSDictionary *branchQuestionDic = branchQuestionsArray[i];
-                    OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
-                    answer.answerID = [branchQuestionDic objectForKey:@"id"];
-                    answer.answerAnswer = [branchQuestionDic objectForKey:@"answer"];
-                    answer.answerRatio = [branchQuestionDic objectForKey:@"ratio"];
-                    
-                    [self.answerArray addObject:answer];
-                }
-            }
-        }
-    }
-}
+//-(void)parseAnswerJSON{
+//    self.answerArray = [NSMutableArray array];
+//    
+//    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
+//    //把path拼成真实文件路径
+//    
+//    path = [[NSBundle mainBundle] pathForResource:@"answer-1" ofType:@"js"]; //测试
+//    
+//    NSData *data = [NSData dataWithContentsOfFile:path];
+//    if (!data) {
+//        [Utility errorAlert:@"获取answer文件失败!"];
+//    }else{
+//        NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+//        if (!dic) {
+//            [Utility errorAlert:@"文件格式错误!"];
+//            return;
+//        }
+//        self.answerJSONDic = dic;
+//        NSDictionary *dicc = [dic objectForKey:@"time_limit"];
+//        if (!dicc) { //判断是否已有十速挑战数据
+//            
+//        }else{
+//            self.answerStatus = [dicc objectForKey:@"status"];  //解析状态,已答题时间,题号,答案
+//            parentVC.spendSecond = [[dicc objectForKey:@"use_time"] longLongValue];
+//            self.lastTimeCurrentNO = [(NSString *)[dicc objectForKey:@"branch_item"] integerValue];
+//            NSArray *questionsArray = [dicc objectForKey:@"questions"];
+//            NSDictionary *bigQuestion = [questionsArray firstObject];
+//            if (bigQuestion) {
+//                NSArray *branchQuestionsArray = [bigQuestion objectForKey:@"branch_questions"];
+//                for (NSInteger i = 0; i < branchQuestionsArray.count; i ++) {
+//                    NSDictionary *branchQuestionDic = branchQuestionsArray[i];
+//                    OrdinaryAnswerObject *answer = [[OrdinaryAnswerObject alloc] init];
+//                    answer.answerID = [branchQuestionDic objectForKey:@"id"];
+//                    answer.answerAnswer = [branchQuestionDic objectForKey:@"answer"];
+//                    answer.answerRatio = [branchQuestionDic objectForKey:@"ratio"];
+//                    
+//                    [self.answerArray addObject:answer];
+//                }
+//            }
+//        }
+//    }
+//}
 
 -(void)parseAnswerDic:(NSMutableDictionary *)dicc{
     self.answerArray = [NSMutableArray array];

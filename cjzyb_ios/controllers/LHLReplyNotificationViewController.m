@@ -144,6 +144,10 @@
 
 #pragma mark -- action
 
+-(void)hideHUD{
+    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
+}
+
 //TODO: 此格式会不会改?  处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
 -(NSString *)handleApiResponseTimeString:(NSString *)str{
     if (![str isKindOfClass:[NSString class]]) {
@@ -181,8 +185,8 @@
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
             //请求回复通知
-//            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",userID,classID,page];
-            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",@"115",@"83",page];
+            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",userID,classID,page];
+//            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",@"115",@"83",page];
             NSURL *url1 = [NSURL URLWithString:str1];
             NSURLRequest *request1 = [NSURLRequest requestWithURL:url1];
             if (page.integerValue == 1) {
@@ -209,10 +213,15 @@
                     if (ary.count >= 2) {
                         content = ary[1];
                     }
-                    NSRange range = [content rangeOfString:@"："];
+                    NSRange range = [content rangeOfString:@"："]; //第一个冒号
                     NSString *name = [content substringToIndex:range.location];
-                    range = [content rangeOfString:@";||;"];
-                    NSString *realContent = [content substringFromIndex:range.location + range.length];
+                    NSRange seperatorRange = [content rangeOfString:@";||;"]; //第一个分隔符
+                    NSString *realContent;
+                    if (seperatorRange.length > 0) {
+                        realContent = [content substringFromIndex:range.location + range.length];
+                    }else{
+                        realContent = [content substringFromIndex:range.location + range.length];
+                    }
                     
                     ReplyNotificationObject *obj = [ReplyNotificationObject new];
                     obj.replyId = [noticeDic objectForKey:@"id"];
@@ -224,12 +233,18 @@
                     obj.replyerImageAddress = [noticeDic objectForKey:@"sender_avatar_url"];
                     obj.replyerName = [noticeDic objectForKey:@"sender_name"];
                     obj.replyTargetName = name;
-                    
+                    obj.isEditing = NO;
                     
                     [self.replyNotificationArray addObject:obj];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
+                    if (notices.count < 1) {
+                        [MBProgressHUD showHUDAddedTo:self.tableView animated:NO];
+                        MBProgressHUD *hud = [MBProgressHUD HUDForView:self.tableView];
+                        hud.labelText = @"已无更多消息!";
+                        [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.5];
+                    }
                     [self.tableView reloadData];
                 });
             } withFailure:^(NSError *error) {
@@ -505,7 +520,7 @@
 }
 
 -(void) replyCell:(LHLReplyNotificationCell *)cell setIsEditing:(BOOL)editing{
-    [self replyInputCancelButtonClicked:nil];
+    [self replyInputCancelButtonClicked:nil];  //取消输入
     ReplyNotificationObject *obj = self.replyNotificationArray[cell.indexPath.row];
     obj.isEditing = editing;
     
@@ -513,7 +528,7 @@
         if (self.editingReplyCellIndexPath) {
             LHLReplyNotificationCell *editingCell = (LHLReplyNotificationCell *)[self.tableView cellForRowAtIndexPath:self.editingReplyCellIndexPath];
             if (editingCell) {
-                [editingCell coverButtonClicked:nil];
+                [editingCell coverButtonClicked:nil];  //此处另外一个按钮也调用本方法
             }else{
                 ReplyNotificationObject *editingObj = [self.replyNotificationArray objectAtIndex:self.editingReplyCellIndexPath.row];
                 editingObj.isEditing = NO;
@@ -521,7 +536,10 @@
         }
         self.editingReplyCellIndexPath = cell.indexPath;
     }else{
-        self.editingReplyCellIndexPath = nil;
+        if (cell.indexPath.row == self.editingReplyCellIndexPath.row) {
+            //清除editingIndexPath,只能通过该path的cell本身完成
+            self.editingReplyCellIndexPath = nil;
+        }
     }
 }
 

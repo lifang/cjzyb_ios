@@ -106,6 +106,7 @@
     NotificationObject *obj = self.notificationArray[indexPath.row];
     [cell setNotificationObject:obj];
     cell.indexPath = indexPath;
+    
     if (indexPath.row % 2 == 1) {
         cell.contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
     }else{
@@ -124,6 +125,10 @@
 }
 
 #pragma mark -- action
+
+-(void)hideHUD{
+    [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
+}
 
 //TODO: 此格式会不会改?  处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
 -(NSString *)handleApiResponseTimeString:(NSString *)str{
@@ -199,10 +204,19 @@
                     obj.notiStudentID = [noticeDic objectForKey:@"student_id"];
                     obj.notiContent = [noticeDic objectForKey:@"content"];
                     obj.notiTime = [self handleApiResponseTimeString:[noticeDic objectForKey:@"created_at"]];
+                    obj.isEditing = NO;
                     [self.notificationArray addObject:obj];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
+                    
+                    if (notices.count < 1) {
+                        [MBProgressHUD showHUDAddedTo:self.tableView animated:NO];
+                        MBProgressHUD *hud = [MBProgressHUD HUDForView:self.tableView];
+                        hud.labelText = @"已无更多消息!";
+                        [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.5];
+                    }
+                    
                     [self.tableView reloadData];
                 });
             } withFailure:^(NSError *error) {
@@ -348,7 +362,10 @@
         }
         self.editingNotiCellIndexPath = cell.indexPath;
     }else{
-        self.editingNotiCellIndexPath = nil;
+        if (cell.indexPath.row == self.editingNotiCellIndexPath.row) {
+            //清除editingIndexPath,只能通过该path的cell本身完成
+            self.editingNotiCellIndexPath = nil;
+        }
     }
 }
 

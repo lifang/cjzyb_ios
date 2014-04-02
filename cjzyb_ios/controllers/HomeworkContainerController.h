@@ -56,6 +56,7 @@
 ///上传answer文件
 -(void)uploadAnswerJsonFileWithPath:(NSString*)answerPath withSuccess:(void (^)(NSString *success))success withFailure:(void (^)(NSString *error ))failure;
 
+
 @property (strong, nonatomic) IBOutlet UIImageView *timeImg;
 
 

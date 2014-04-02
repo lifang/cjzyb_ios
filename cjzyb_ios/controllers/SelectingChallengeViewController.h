@@ -12,11 +12,12 @@
 #import <AVFoundation/AVFoundation.h>
 #import "SelectingChallengeOptionCell.h"
 
-@interface SelectingChallengeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,TenSecChallengeResultViewDelegate,SelectingChallengeOptionCellDelegate,AVAudioPlayerDelegate>
+@interface SelectingChallengeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,TenSecChallengeResultViewDelegate,SelectingChallengeOptionCellDelegate,AVAudioPlayerDelegate,UIAlertViewDelegate>
 -(void)getStart;        //调用此方法
 @property (weak, nonatomic) IBOutlet UIView *contentBgView;  //正文背景
 - (IBAction)nextButtonClicked:(id)sender;
 -(void)propOfReduceTimeClicked:(id)sender;
 -(void)propOfShowingAnswerClicked:(id)sender;
+-(void)seQuitButtonClicked:(id)sender;
 @property (assign,nonatomic) BOOL isViewingHistory; //当前行为类型:查看历史/做题
 @end

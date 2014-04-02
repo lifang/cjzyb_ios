@@ -67,14 +67,26 @@
                                 [contentArrayClear addObject:part];
                             }
                             if (contentArrayClear.count == 1) {
-                                if ([questionContent rangeOfString:@"<file>"].length > 0) {  //有附件
-                                    obj.seContentAttachment = [contentArrayClear firstObject];
-                                    obj.seType = SelectingTypeListening;
+                                if ([str rangeOfString:@"<file>"].length > 0) {  //有附件
+                                    NSString *attachmentString = [contentArrayClear firstObject];
+                                    NSArray *attachmentArray = [attachmentString componentsSeparatedByString:@"/"];
+                                    NSString *fileString = [attachmentArray lastObject];
+                                    obj.seContentAttachment = fileString;
+                                    //判断后缀
+                                    NSArray *fileStringArray = [fileString componentsSeparatedByString:@"."];
+                                    NSString *extensionName = [fileStringArray lastObject];//扩展名
+                                    extensionName = [extensionName uppercaseString];
+                                    if ([@".BMP.BMPF.ICO.CUR.XBM.GIF.JPEG.JPG.PNG.TIFF.TIF" rangeOfString:extensionName].length > 0) {
+                                        //图片
+                                        obj.seType = SelectingTypeWatching;
+                                    }else{
+                                        obj.seType = SelectingTypeListening;
+                                    }
                                 }else{
                                     obj.seContent = [contentArrayClear firstObject];
                                     obj.seType = SelectingTypeDefault;
                                 }
-                            }else if (contentArrayClear.count == 2){     //有附件且字符串分为两段
+                            }else if (contentArrayClear.count == 2){     //字符串分为两段
                                 obj.seType = SelectingTypeWatching;
                                 obj.seContentAttachment = [contentArrayClear firstObject];
                                 obj.seContent = [contentArrayClear lastObject];

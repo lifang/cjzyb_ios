@@ -51,8 +51,7 @@
 @property (strong,nonatomic) NSMutableArray *currentSelectedOptions; //当前问题被选中的选项 (为字符串,indexPath的row数字)
 
 @property (assign,nonatomic) NSInteger totalRatio; //正确率
-
-@property (strong,nonatomic) AVAudioPlayer *audioPlayer; //音频播放器
+@property (assign,nonatomic) BOOL haveUploadedJSON; //是否已上传JSON
 @end
 
 @implementation SelectingChallengeViewController
@@ -76,6 +75,8 @@
     self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.taskStartDate];
     
     [self.optionTable registerClass:[SelectingChallengeOptionCell class] forCellReuseIdentifier:@"cell"];
+    
+    self.haveUploadedJSON = NO;
     self.isReDoingChallenge = NO;
     
 }
@@ -189,7 +190,6 @@
     //改变按钮样式,及顶栏目样式
     self.propOfReduceTime.enabled = YES;
     self.propOfShowingAnswer.enabled = YES;
-//    [self.nextButton setImage:[UIImage imageNamed:@"选择_07.png"] forState:UIControlStateNormal];
     [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
     parentVC.appearCorrectButton.enabled = NO;
     parentVC.reduceTimeButton.enabled = NO;
@@ -228,34 +228,8 @@
     }
     parentVC.timeLabel.text = [NSString stringWithFormat:@"%@\"",self.timeCountString];
     
-//    ////改变按钮样式,顶栏等,添加正确率+时间label
-//    UIView *bgView = [[UIView alloc] init];
-//    [bgView setBackgroundColor:self.topBarView.backgroundColor];
-//    [bgView setFrame:(CGRect){0,0,self.topBarView.frame.size.width / 2,self.topBarView.frame.size.height}];
-//    bgView.center = self.topBarView.center ;
-//    [self.topBarView addSubview:bgView];
-//    UILabel *ratioAndTimeLabel = [[UILabel alloc] init];
-//    NSString *ratioAndTimeString = [NSString stringWithFormat:@"         %d%@          %@",self.totalRatio,@"%",self.timeCountString];
-//    ratioAndTimeLabel.text = ratioAndTimeString;
-//    ratioAndTimeLabel.font = [UIFont systemFontOfSize:30.0];
-//    ratioAndTimeLabel.textColor = [UIColor whiteColor];
-//    ratioAndTimeLabel.backgroundColor = [UIColor clearColor];
-//    ratioAndTimeLabel.frame = (CGRect){0,0,350,75};
-//    ratioAndTimeLabel.center = (CGPoint){bgView.frame.size.width / 2,bgView.frame.size.height / 2};
-//    [bgView addSubview:ratioAndTimeLabel];
-//    
-//    UILabel *ratioAndTimeLabel_ = [[UILabel alloc] init];
-//    ratioAndTimeLabel_.text = @"正确率:                用时:";
-//    ratioAndTimeLabel_.font = [UIFont systemFontOfSize:20.0];
-//    ratioAndTimeLabel_.textColor = [UIColor whiteColor];
-//    ratioAndTimeLabel_.backgroundColor = [UIColor clearColor];
-//    ratioAndTimeLabel_.frame = (CGRect){0,0,350,75};
-//    ratioAndTimeLabel_.center = ratioAndTimeLabel.center;
-//    [bgView addSubview:ratioAndTimeLabel_];
-    
     parentVC.appearCorrectButton.enabled = NO;
     parentVC.reduceTimeButton.enabled = NO;
-//    [self.nextButton setImage:nil forState:UIControlStateNormal];
     [parentVC.checkHomeworkButton setTitle:@"下一个" forState:UIControlStateNormal];
     self.historyView.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
     self.historyView.hidden = NO;
@@ -294,6 +268,8 @@
         if (self.currentNO == self.questionArray.count) {//最后一题
             self.isLastQuestion = YES;
             [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+        }else{
+            self.isLastQuestion = NO;
         }
         self.checked = NO;
         self.currentQuestion = self.questionArray[self.currentNO - 1];
@@ -352,7 +328,12 @@
         self.answerStatus = @"1";
         [self.timer invalidate];
         [parentVC stopTimer];
-        [self showResultView];
+        if (self.isReDoingChallenge) {
+            [self showResultView];
+        }else{
+            [self uploadJSON];
+        }
+        
     }
 }
 
@@ -437,6 +418,21 @@
     return [NSDictionary dictionaryWithDictionary:answerDic];
 }
 
+///保存挑战数据(上传JSON) ,成功则显示结果
+- (void)uploadJSON{
+    NSString *answerJSONPath = [[DataService sharedService].taskObj.taskFolderPath stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
+    [parentVC uploadAnswerJsonFileWithPath:answerJSONPath withSuccess:^(NSString *success) {
+        self.haveUploadedJSON = YES;
+        //如果已完成就显示结果
+        if (self.answerArray.count == self.questionArray.count) {
+            [self showResultView];
+        }
+    } withFailure:^(NSString *error) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"上传未成功" message:@"无法提交成绩,重试?" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"重试", nil];
+        [alert show];
+    }];
+}
+
 #pragma mark property
 - (UILabel *)currentNOLabel{
     if (!_currentNOLabel) {
@@ -467,9 +463,8 @@
 
 - (NSData *)currentAudioData{
     if (!_currentAudioData) {
-//        _currentAudioData = [NSData dataWithContentsOfURL:[NSURL URLWithString:self.currentQuestion.seContentAttachment]];
-        
-        _currentAudioData = [NSData dataWithContentsOfFile:[[DataService sharedService].taskObj.taskFolderPath stringByAppendingPathComponent:self.currentQuestion.seContentAttachment]];
+        NSString *path = [[DataService sharedService].taskObj.taskFolderPath stringByAppendingPathComponent:self.currentQuestion.seContentAttachment];
+        _currentAudioData = [NSData dataWithContentsOfFile:path];
     }
     return _currentAudioData;
 }
@@ -583,7 +578,7 @@
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
                 NSData *imageData = [NSData dataWithContentsOfFile:[[DataService sharedService].taskObj.taskFolderPath stringByAppendingString:self.currentQuestion.seContentAttachment]];
-                self.questionImageView.image = [UIImage imageWithData:imageData];
+                self.questionImageView.image = [[UIImage imageWithData:imageData] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0) resizingMode:UIImageResizingModeStretch];
             }
                 break;
                 
@@ -622,28 +617,7 @@
 //被timer触发
 -(void) timerFired:(NSTimer *)timer{
     self.timeCount = parentVC.spendSecond;
-//    [self refreshClock];
 }
-
-//-(void)refreshClock{//跳秒
-//    NSInteger second = self.timeCount;
-//    NSInteger minite = second / 60;
-//    second = second % 60;
-//    self.timeLabel.text = [NSString stringWithFormat:@"%i'%i",(minite > 0 ? minite : 0),second];
-//}
-
-////比对当前时间是否早于给定时间
-//-(BOOL)compareNowWithTime:(NSString *) time{
-//    //获取当前时间
-//    NSDate *now = [NSDate date];
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-//    NSDate *timeDate = [dateFormatter dateFromString:time];
-//    if (now == [now earlierDate:timeDate]) {
-//        return YES;
-//    }
-//    return NO;
-//}
 
 //根据已选择的选项,检查当前答案是否正确
 -(BOOL)judgeAnswer:(NSMutableArray *)selectedOptions{
@@ -702,7 +676,12 @@
     [self.answerArray addObject:answer];
     
     [self showCheckResult];
-    [self makeAnswerJSON];
+    if (!self.isReDoingChallenge) {
+        [self makeAnswerJSON];
+        if (!answerRatio) {
+            [DataService sharedService].cardsCount ++;
+        }
+    }
     
     //播放声音
     if (answerRatio) {
@@ -724,6 +703,7 @@
     self.checked = YES;
 }
 
+///标注检查结果
 - (void)showCheckResult{
     for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
         NSString *option = self.currentQuestion.seOptionsArray[i];
@@ -812,6 +792,7 @@
     if (self.currentNO > self.questionArray.count) {
         return;
     }
+    
     if (!self.isViewingHistory) {
         if (self.currentSelectedOptions.count < 1) {
             [Utility errorAlert:@"请先答本题"];
@@ -827,6 +808,14 @@
         [self loadNextQuestion];
     }
     
+}
+
+-(void)seQuitButtonClicked:(id)sender{
+    if (self.haveUploadedJSON || self.isReDoingChallenge || self.isViewingHistory) {
+        [parentVC dismissViewControllerAnimated:YES completion:nil];
+    }else{
+        [self uploadJSON];
+    }
 }
 
 #pragma mark TableViewDataSource
@@ -893,7 +882,7 @@
 -(void)resultViewCommitButtonClicked{
     [self.resultView removeFromSuperview];
     self.resultView = nil;
-    [parentVC quitButtonClicked:parentVC.quitHomeworkButton];
+    [self seQuitButtonClicked:nil];
 }
 
 -(void)resultViewRestartButtonClicked{
@@ -905,6 +894,19 @@
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
     if (flag) {
         self.questionPlayButton.enabled = YES;
+    }
+}
+
+#pragma mark AlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([title isEqualToString:@"放弃"]) {
+        [parentVC.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+    if ([title isEqualToString:@"重试"]) {
+        [self uploadJSON];
+        return;
     }
 }
 
