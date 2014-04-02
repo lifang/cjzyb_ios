@@ -271,34 +271,44 @@
     self.homeworkContainer = homeworkContainer;
     homeworkContainer.spendSecond = 0;
     
-    
-    
     if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {
-        
-        if (![Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task withUserId:[DataService sharedService].user.userId]) {
-            AppDelegate *app = [AppDelegate shareIntance];
-            __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
-            progress.labelText = @"正在更新历史记录包，请稍后...";
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (!dicData || dicData.count <= 0) {
-                        [Utility errorAlert:@"下载历史记录包失败"];
-                    }else{
-                        if (typeObj.homeworkTypeIsFinished) {
-                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
-                            alert.tag = 1001;
-                            [alert show];
+        if (![task.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && task.taskAnswerFileDownloadURL.length>5) {
+            if (![Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task withUserId:[DataService sharedService].user.userId]) {
+                AppDelegate *app = [AppDelegate shareIntance];
+                __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
+                progress.labelText = @"正在更新历史记录包，请稍后...";
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (!dicData || dicData.count <= 0) {
+                            [Utility errorAlert:@"下载历史记录包失败"];
                         }else{
-                            [DataService sharedService].isHistory = NO;
-                            [self presentViewController:homeworkContainer animated:YES completion:^{
-                                [self.selectedDailyController.collectionView reloadData];
-                            }];
+                            if (typeObj.homeworkTypeIsFinished) {
+                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
+                                alert.tag = 1001;
+                                [alert show];
+                            }else{
+                                [DataService sharedService].isHistory = NO;
+                                [self presentViewController:homeworkContainer animated:YES completion:^{
+                                    [self.selectedDailyController.collectionView reloadData];
+                                }];
+                            }
                         }
-                    }
-                    [MBProgressHUD hideHUDForView:app.window animated:YES];
+                        [MBProgressHUD hideHUDForView:app.window animated:YES];
+                    });
                 });
-            });
+            }
+        }else {
+            if (typeObj.homeworkTypeIsFinished) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
+                alert.tag = 1001;
+                [alert show];
+            }else{
+                [DataService sharedService].isHistory = NO;
+                [self presentViewController:homeworkContainer animated:YES completion:^{
+                    [self.selectedDailyController.collectionView reloadData];
+                }];
+            }
         }
     }else{
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"下载作业包才能开始答题" delegate:self cancelButtonTitle:nil otherButtonTitles:@"下载作业包",@"取消下载" ,nil];

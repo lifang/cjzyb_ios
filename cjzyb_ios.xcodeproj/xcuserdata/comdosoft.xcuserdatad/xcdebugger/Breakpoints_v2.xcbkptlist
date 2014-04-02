@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "cjzyb_ios/AppDelegate.m"
-            timestampString = "418101749.397734"
+            filePath = "cjzyb_ios/controllers/LininggViewController.m"
+            timestampString = "418110351.152054"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "253"
-            endingLineNumber = "253"
-            landmarkName = "-application:didFinishLaunchingWithOptions:"
+            startingLineNumber = "975"
+            endingLineNumber = "975"
+            landmarkName = "-getPostInfoDidFinished:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

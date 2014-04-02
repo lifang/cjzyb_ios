@@ -201,6 +201,9 @@
 
     //点击推送进入App
     NSDictionary *pushDict = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
+//    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:[pushDict debugDescription] delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+//    [alert show];
+    
     if (pushDict) {
         int typeValue = [[pushDict objectForKey:@"type"]integerValue];
         self.the_class_id = [[pushDict objectForKey:@"class_id"]integerValue];
@@ -251,7 +254,6 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [application setApplicationIconBadgeNumber:0];
     //记录作业＋通知右上角红点点～～
     NSFileManager *fileManage = [NSFileManager defaultManager];
     NSString *path = [Utility returnPath];
@@ -313,12 +315,6 @@
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
-    
-    NSString *badge = [apsInfo objectForKey:@"badge"];
-	if (badge != nil) {
-        [UIApplication sharedApplication].applicationIconBadgeNumber = [badge intValue];
-    }
     //接收到push  会震动
 	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     int type = [[userInfo objectForKey:@"type"] intValue];//推送类型
@@ -336,7 +332,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *isOn = [defaults objectForKey:@"isOn"];
     if ([isOn intValue] == 1) {//app登录
-        if (![[self.notification_dic objectForKey:classId]isKindOfClass:[NSNull class]]) {
+        if (![[self.notification_dic objectForKey:classId]isKindOfClass:[NSNull class]] && [self.notification_dic objectForKey:classId]!= nil) {
             NSMutableArray *mutableArr = [[NSMutableArray alloc]initWithArray:[self.notification_dic objectForKey:classId]];
             [mutableArr replaceObjectAtIndex:type withObject:@"1"];
             [self.notification_dic setObject:mutableArr forKey:classId];
@@ -353,13 +349,6 @@
 
 #ifdef __IPHONE_7_0
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    
-    NSDictionary *apsInfo = [userInfo objectForKey:@"aps"];
-    
-    NSString *badge = [apsInfo objectForKey:@"badge"];
-	if (badge != nil) {
-        [UIApplication sharedApplication].applicationIconBadgeNumber = [badge intValue];
-    }
     //接收到push  会震动
 	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     int type = [[userInfo objectForKey:@"type"] intValue];//推送类型
@@ -377,7 +366,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *isOn = [defaults objectForKey:@"isOn"];
     if ([isOn intValue] == 1) {//app登录
-        if (![[self.notification_dic objectForKey:classId]isKindOfClass:[NSNull class]]) {
+        if (![[self.notification_dic objectForKey:classId]isKindOfClass:[NSNull class]]  && [self.notification_dic objectForKey:classId]!=nil) {
             NSMutableArray *mutableArr = [[NSMutableArray alloc]initWithArray:[self.notification_dic objectForKey:classId]];
             [mutableArr replaceObjectAtIndex:type withObject:@"1"];
             [self.notification_dic setObject:mutableArr forKey:classId];
