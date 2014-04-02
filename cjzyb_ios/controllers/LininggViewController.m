@@ -278,7 +278,7 @@ static BOOL isCanUpLoad = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.historyView.hidden=YES;
     NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSDictionary *sortDic = [dic objectForKey:@"lining"];
     self.questionArray = [NSMutableArray arrayWithArray:[sortDic objectForKey:@"questions"]];
@@ -293,7 +293,7 @@ static BOOL isCanUpLoad = NO;
     //TODO:初始化答案的字典
     self.answerDic = [Utility returnAnswerDictionaryWithName:LINING andDate:[DataService sharedService].taskObj.taskStartDate];
     int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
-    self.historyView.hidden=YES;
+    
     if ([DataService sharedService].isHistory==YES) {
         if (number_question<0) {
             [Utility errorAlert:@"暂无历史记录!"];
@@ -385,9 +385,7 @@ static BOOL isCanUpLoad = NO;
             if (range.location == NSNotFound) {
                 leftBtn.backgroundColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
                 rightBtn.backgroundColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
-                if (self.isFirst==YES) {
-                [DataService sharedService].cardsCount += 1;
-                }
+                
             }else {
                 self.branchScore++;
             }
@@ -397,6 +395,9 @@ static BOOL isCanUpLoad = NO;
             TRUESOUND;
         }else {
             FALSESOUND;
+            if (self.isFirst==YES) {
+                [DataService sharedService].cardsCount += 1;
+            }
         }
         
         if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
@@ -973,7 +974,7 @@ static BOOL isCanUpLoad = NO;
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
             //上传answer.json文件之后返回的更新时间
-            NSString *timeStr = [result objectForKey:@""];
+            NSString *timeStr = [result objectForKey:@"updated_time"];
             [Utility returnAnswerPAthWithString:timeStr];
             
             if (self.postNumber==0) {

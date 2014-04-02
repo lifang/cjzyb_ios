@@ -25,6 +25,9 @@
 
 ///保存当前用户班级
 -(void)archiverClass{
+    AppDelegate *appDel = [AppDelegate shareIntance];
+    appDel.the_class_id = -1;
+    appDel.notification_type=0;
     NSFileManager *fileManage = [NSFileManager defaultManager];
     NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString *filename = [Path stringByAppendingPathComponent:@"class.plist"];

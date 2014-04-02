@@ -1842,7 +1842,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     if ([DataService sharedService].taskObj.finish_types.count == [DataService sharedService].taskObj.taskHomeworkTypeArray.count) {
         [answerDic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"status"];
     }
-//    [answerDic setObject:[DataService sharedService].taskObj.taskId forKey:@"pub_id"];
+    [answerDic setObject:[DataService sharedService].taskObj.taskID forKey:@"pub_id"];
     [answerDic setObject:aDic forKey:name];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
     [jsonData writeToFile:jsPath atomically:YES];
@@ -1891,7 +1891,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
     NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
     
-//    [answerDic setObject:[DataService sharedService].taskObj.taskId forKey:@"pub_id"];
+    [answerDic setObject:[DataService sharedService].taskObj.taskID forKey:@"pub_id"];
     [answerDic setObject:array forKey:@"props"];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
     [jsonData writeToFile:jsPath atomically:YES];
@@ -1906,7 +1906,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     Class JSONSerialization = [Utility JSONParserClass];
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
     NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
-//    [answerDic setObject:str forKey:@"update"];
+    [answerDic setObject:str forKey:@"update"];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
     [jsonData writeToFile:jsPath atomically:YES];
 }

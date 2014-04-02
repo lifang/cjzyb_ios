@@ -211,7 +211,7 @@ static BOOL isCanUpLoad = NO;
 {
     [super viewDidLoad];
     [self roundView:self.listenBtn];
-    
+    self.historyView.hidden=YES;
     NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSDictionary *listebDic = [dic objectForKey:@"listening"];
     self.questionArray = [NSMutableArray arrayWithArray:[listebDic objectForKey:@"questions"]];
@@ -251,7 +251,7 @@ static BOOL isCanUpLoad = NO;
     self.number=0;self.branchNumber=0;self.isFirst = NO;
     //TODO:初始化答案的字典
     self.answerDic = [Utility returnAnswerDictionaryWithName:LISTEN andDate:[DataService sharedService].taskObj.taskStartDate];
-    self.historyView.hidden=YES;
+    
     int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
     if ([DataService sharedService].isHistory==YES) {
         if (number_question<0) {
@@ -722,7 +722,7 @@ static int numberOfMusic =0;
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
             //上传answer.json文件之后返回的更新时间
-            NSString *timeStr = [result objectForKey:@""];
+            NSString *timeStr = [result objectForKey:@"updated_time"];
             [Utility returnAnswerPAthWithString:timeStr];
             
             if (self.postNumber==0) {
