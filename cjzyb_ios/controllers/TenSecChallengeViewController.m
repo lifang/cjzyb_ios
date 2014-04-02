@@ -207,7 +207,10 @@
     NSString *answerJSONPath = [[DataService sharedService].taskObj.taskFolderPath stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     [parentVC uploadAnswerJsonFileWithPath:answerJSONPath withSuccess:^(NSString *success) {
         self.haveUploadedJSON = YES;
-        [self finishChallenge];
+        //如果已完成就显示结果
+        if (self.answerArray.count == self.questionArray.count) {
+            [self finishChallenge];
+        }
     } withFailure:^(NSString *error) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"上传未成功" message:@"无法提交成绩,重试?" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"重试", nil];
         [alert show];
@@ -335,7 +338,7 @@
 
 ///点击parentVC的退出按钮触发
 -(void)tenQuitButtonClicked:(id)sender{
-    if (self.haveUploadedJSON) {
+    if (self.haveUploadedJSON || self.isReDoingChallenge || self.isViewingHistory) {
         [parentVC.navigationController popViewControllerAnimated:YES];
     }else{
         [self uploadJSON];

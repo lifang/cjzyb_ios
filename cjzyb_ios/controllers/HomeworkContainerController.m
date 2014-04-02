@@ -196,6 +196,7 @@
             [self.checkHomeworkButton addTarget:self.selectingChallengeViewController action:@selector(nextButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.appearCorrectButton addTarget:self.selectingChallengeViewController action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.selectingChallengeViewController action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [self.quitHomeworkButton addTarget:self.selectingChallengeViewController action:@selector(seQuitButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 //            self.selectingChallengeViewController.topBarView.hidden = YES;
 //            self.selectingChallengeViewController.itemsView.hidden = YES;
             self.selectingChallengeViewController.isViewingHistory = [DataService sharedService].isHistory;

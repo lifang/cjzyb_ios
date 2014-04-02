@@ -18,7 +18,7 @@
 @property (nonatomic,strong) UIView *titleBgView;  //第一行的背景
 @property (nonatomic,strong) UIView *buttonBgView;  //按钮背景
 @property (nonatomic,strong) UIImageView *imgView;  //头像
-@property (nonatomic,strong) UILabel *unnamedLabel;   //"回复"二字
+//@property (nonatomic,strong) UILabel *unnamedLabel;   //"回复"二字
 @property (nonatomic,strong) UILabel *myNameLabel;   //我的名字
 @property (nonatomic,strong) UILabel *replyerNameLabel;  //回复者的名字
 @property (nonatomic,strong) UILabel *timeLabel;   //时间
@@ -79,17 +79,18 @@
         _replyerNameLabel.textColor = [UIColor colorWithRed:21.0/255.0 green:168.0/255.0 blue:95.0/255.0 alpha:1.0];
         [_titleBgView addSubview:_replyerNameLabel];
         
-        //"回复"二字
-        self.unnamedLabel = [[UILabel alloc] init];
-        _unnamedLabel.font = LHLFONT;
-        _unnamedLabel.text = @"回复";
-        _unnamedLabel.textColor = [UIColor darkGrayColor];
-        [_titleBgView addSubview:_unnamedLabel];
+//        //"回复"二字
+//        self.unnamedLabel = [[UILabel alloc] init];
+//        _unnamedLabel.font = LHLFONT;
+//        _unnamedLabel.text = @"回复";
+//        _unnamedLabel.textColor = [UIColor darkGrayColor];
+//        [_titleBgView addSubview:_unnamedLabel];
         
         //我的名字
         self.myNameLabel = [[UILabel alloc] init];
         _myNameLabel.font = LHLFONT;
-        _myNameLabel.textColor = [UIColor colorWithRed:22.0/255.0 green:168.0/255.0 blue:95.0/255.0 alpha:1.0];
+        _myNameLabel.textColor = [UIColor darkGrayColor];
+//        _myNameLabel.textColor = [UIColor colorWithRed:22.0/255.0 green:168.0/255.0 blue:95.0/255.0 alpha:1.0];
         [_titleBgView addSubview:_myNameLabel];
         
         //回复时间
@@ -124,7 +125,7 @@
         
         _deleteButton.frame = (CGRect){0,_buttonBgView.frame.size.height / 2,_buttonBgView.frame.size.width,_buttonBgView.frame.size.height / 2};
         
-        _contentBgView.frame = (CGRect){0,0,self.bounds.size};
+        _contentBgView.frame = self.isEditing ? (CGRect){-103,0,LHLCELL_WIDTH,LHLCELL_HEIGHT} : (CGRect){0,0,self.bounds.size};
         
         _imgView.frame = (CGRect){53,34,103,103};
         
@@ -135,11 +136,11 @@
         CGSize size = [Utility getTextSizeWithString:self.replyObject.replyerName withFont:LHLFONT];
         _replyerNameLabel.frame = (CGRect){0,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
         
-        size = [Utility getTextSizeWithString:@"回复" withFont:LHLFONT];
-        _unnamedLabel.frame = (CGRect){CGRectGetMaxX(_replyerNameLabel.frame) + LHLTEXT_PADDING,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
+//        size = [Utility getTextSizeWithString:@"回复" withFont:LHLFONT];
+//        _unnamedLabel.frame = (CGRect){CGRectGetMaxX(_replyerNameLabel.frame) + LHLTEXT_PADDING,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
         
         size = [Utility getTextSizeWithString:self.replyObject.replyTargetName withFont:LHLFONT];
-        _myNameLabel.frame = (CGRect){CGRectGetMaxX(_unnamedLabel.frame) + LHLTEXT_PADDING,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
+        _myNameLabel.frame = (CGRect){CGRectGetMaxX(_replyerNameLabel.frame) + LHLTEXT_PADDING,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
         
         _timeLabel.frame = (CGRect){CGRectGetMaxX(_myNameLabel.frame) + LHLTEXT_PADDING * 2,0,titleBgFrame.size.width - (CGRectGetMaxX(_myNameLabel.frame) + LHLTEXT_PADDING),titleBgFrame.size.height};
         
@@ -187,15 +188,14 @@
 //}
 
 #pragma mark -- 按钮响应方法
-//- (void) coverButtonTouchDragInside:(id)sender{
-//    NSLog(@"%@",[super class]);
-//}
 
 - (void) coverButtonClicked:(id)sender{
     _isEditing = !_isEditing;
     if (self.delegate && [self.delegate respondsToSelector:@selector(replyCell:setIsEditing:)]) {
-        [self.delegate replyCell:self setIsEditing:self.isEditing];
+        [self.delegate replyCell:self setIsEditing:_isEditing];
     }
+    
+    //动画
     if (_contentBgView.frame.origin.x < 0) {
         [UIView animateWithDuration:0.25 animations:^{
             _contentBgView.frame = (CGRect){0,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
@@ -229,14 +229,15 @@
 #pragma  mark property
 -(void)setIsEditing:(BOOL)isEditing{
     _isEditing = isEditing;
-    if (isEditing) {
-        _buttonBgView.hidden = NO;
-        _contentBgView.frame = (CGRect){-1,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
-        _contentBgView.frame = (CGRect){-103,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
-    }else{
-        _contentBgView.frame = (CGRect){0,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
-        _buttonBgView.hidden = YES;
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (isEditing) {
+            _buttonBgView.hidden = NO;
+            _contentBgView.frame = (CGRect){-103,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
+        }else{
+            _contentBgView.frame = (CGRect){0,0,LHLCELL_WIDTH,LHLCELL_HEIGHT};
+            _buttonBgView.hidden = YES;
+        }
+    });
 }
 
 @end

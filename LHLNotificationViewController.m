@@ -106,6 +106,7 @@
     NotificationObject *obj = self.notificationArray[indexPath.row];
     [cell setNotificationObject:obj];
     cell.indexPath = indexPath;
+    
     if (indexPath.row % 2 == 1) {
         cell.contentBgView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:232.0/255.0 blue:232.0/255.0 alpha:1.0];
     }else{
@@ -193,6 +194,7 @@
                     obj.notiStudentID = [noticeDic objectForKey:@"student_id"];
                     obj.notiContent = [noticeDic objectForKey:@"content"];
                     obj.notiTime = [self handleApiResponseTimeString:[noticeDic objectForKey:@"created_at"]];
+                    obj.isEditing = NO;
                     [self.notificationArray addObject:obj];
                 }
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -342,7 +344,10 @@
         }
         self.editingNotiCellIndexPath = cell.indexPath;
     }else{
-        self.editingNotiCellIndexPath = nil;
+        if (cell.indexPath.row == self.editingNotiCellIndexPath.row) {
+            //清除editingIndexPath,只能通过该path的cell本身完成
+            self.editingNotiCellIndexPath = nil;
+        }
     }
 }
 

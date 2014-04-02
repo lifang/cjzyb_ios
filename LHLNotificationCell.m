@@ -23,15 +23,12 @@
 {
     [super setSelected:selected animated:animated];
 
-    // Configure the view for the selected state
 }
 
 - (void)initCell{
     [self.imgView.layer setCornerRadius:3.0];
     
     [self.coverButton addTarget:self action:@selector(coverButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-
-//    self.textView.delegate = self;
     
     [self makeSideButtons];
 }
