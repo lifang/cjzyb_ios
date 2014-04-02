@@ -268,6 +268,8 @@
         if (self.currentNO == self.questionArray.count) {//最后一题
             self.isLastQuestion = YES;
             [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+        }else{
+            self.isLastQuestion = NO;
         }
         self.checked = NO;
         self.currentQuestion = self.questionArray[self.currentNO - 1];
