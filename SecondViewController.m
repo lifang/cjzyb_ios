@@ -55,6 +55,7 @@
     __block UITableView *table = self.secondTable;
     [_secondTable addPullToRefreshWithActionHandler:^{
         secondView.isReloading = YES;
+        secondView.isLoading=NO;
         [secondView getMymessageData];
         [table.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];

@@ -81,7 +81,7 @@
         [self.avPlayer stop];
     }
     self.currentSentence = sentence;
-    [self.allAttriSentenceString  addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:[self getSentenceRange:self.currentSentence withHomework:self.currentHomework]];
+    [self.allAttriSentenceString  addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:[self getSentenceRange:self.currentSentence withHomework:self.currentHomework]];
     self.sentenceTextView.attributedText = self.allAttriSentenceString;
     if (self.currentSentence.readingSentenceLocalFileURL) {
         if (self.avPlayer.isPlaying) {

@@ -207,11 +207,20 @@
         }
         
     }else if (type==4) {//连线
+        NSMutableString *answerStr = [NSMutableString string];
+        NSString *content = self.aCard.content;
+        NSArray *array = [content componentsSeparatedByString:@";||;"];
+        for (int i=0; i<array.count; i++) {
+            NSString *str = [array objectAtIndex:i];
+            NSArray *subArray = [str componentsSeparatedByString:@"<=>"];
+            [answerStr appendFormat:@"%@ %@    ",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+        }
         self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
-        self.cardFirst.rightLetterLab.text = self.aCard.answer;
-        [self.cardSecond.rtLab setText:self.aCard.answer];
         
-        [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:self.aCard.answer.length];
+        self.cardFirst.rightLetterLab.text = answerStr;
+        [self.cardSecond.rtLab setText:answerStr];
+        
+        [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:answerStr.length];
         [self.cardSecond.rtLab setLine];
     }else if (type==5) {//完型填空
         self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;

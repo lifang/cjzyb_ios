@@ -53,6 +53,7 @@
     __block UITableView *table = self.fourthTable;
     [_fourthTable addPullToRefreshWithActionHandler:^{
         fourthView.isReloading = YES;
+        fourthView.isLoading=NO;
         [fourthView getMyfocusData];
         [table.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];

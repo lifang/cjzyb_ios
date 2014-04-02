@@ -87,6 +87,7 @@
     __block UITableView *table = self.firstTable;
     [_firstTable addPullToRefreshWithActionHandler:^{
         firstView.isReloading = YES;
+        firstView.isLoading=NO;
         [firstView getMessageData];
         [table.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];

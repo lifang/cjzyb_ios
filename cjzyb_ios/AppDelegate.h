@@ -33,6 +33,7 @@
 @property (nonatomic, strong) NSMutableDictionary *notification_dic;
 @property (nonatomic, assign) NSInteger notification_type;//0:系统，1：回复，2：作业
 @property (nonatomic, assign) NSInteger the_class_id;
+@property (nonatomic, strong) NSString *the_class_name;
 - (void)showRootView;
 +(AppDelegate *)shareIntance;
 

@@ -115,6 +115,7 @@
         
         if (self.the_class_id>0) {
             [DataService sharedService].theClass.classId = [NSString stringWithFormat:@"%d",self.the_class_id];
+            [DataService sharedService].theClass.name = [NSString stringWithFormat:@"%@",self.the_class_name];
         }
         filename = [path stringByAppendingPathComponent:@"student.plist"];
         NSDictionary *userDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
@@ -207,6 +208,7 @@
     if (pushDict) {
         int typeValue = [[pushDict objectForKey:@"type"]integerValue];
         self.the_class_id = [[pushDict objectForKey:@"class_id"]integerValue];
+        self.the_class_name = [pushDict objectForKey:@"class_name"];
         if (typeValue == 2) {
             self.notification_type = 1;
         }else {
@@ -219,6 +221,7 @@
         }
     }
 
+//    [self showHomework];
     [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
 
     

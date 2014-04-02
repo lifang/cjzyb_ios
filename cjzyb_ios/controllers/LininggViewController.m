@@ -80,13 +80,13 @@ static BOOL isCanUpLoad = NO;
 }
 -(NSMutableArray *)cancelTmpLeftArray {
     if (!_cancelTmpLeftArray) {
-        _cancelTmpLeftArray = [[NSMutableArray alloc]init];
+        _cancelTmpLeftArray = [[NSMutableArray alloc]initWithCapacity:1];
     }
     return _cancelTmpLeftArray;
 }
 -(NSMutableArray *)cancelTmpRightArray {
     if (!_cancelTmpRightArray) {
-        _cancelTmpRightArray = [[NSMutableArray alloc]init];
+        _cancelTmpRightArray = [[NSMutableArray alloc]initWithCapacity:1];
     }
     return _cancelTmpRightArray;
 }
@@ -378,7 +378,7 @@ static BOOL isCanUpLoad = NO;
             int tag_right = [[self.tmpRightArray objectAtIndex:i]integerValue];
             UIButton *rightBtn = (UIButton *)[self.wordsContainerView viewWithTag:tag_right];
             NSString *textString = [NSString stringWithFormat:@"%@ %@",leftBtn.titleLabel.text,rightBtn.titleLabel.text];
-            [anserString appendFormat:@"%@   ",textString];
+            [anserString appendFormat:@"%@    ",textString];
 
             NSString *text = [NSString stringWithFormat:@"%@<=>%@",leftBtn.titleLabel.text,rightBtn.titleLabel.text];
             NSRange range = [content rangeOfString:text];
@@ -514,6 +514,9 @@ static BOOL isCanUpLoad = NO;
         [leftBtn addTarget:self action:@selector(leftButtonCancelSelected:) forControlEvents:UIControlEventTouchUpInside];
         [self.cancelTmpLeftArray removeAllObjects];
     }
+    
+    //**********************************************************************************************
+    //点击选中
     if (tmpTag == btn.tag) {
         
     }else {
@@ -525,7 +528,12 @@ static BOOL isCanUpLoad = NO;
             [lastBtn removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
             [lastBtn addTarget:self action:@selector(leftButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
         }
-        [self.tmpLeftArray addObject:[NSString stringWithFormat:@"%d",btn.tag]];
+        
+        NSString *str = [NSString stringWithFormat:@"%d",btn.tag];
+        if (![self.tmpLeftArray containsObject:str]) {
+            [self.tmpLeftArray addObject:[NSString stringWithFormat:@"%d",btn.tag]];
+        }
+        
         
         [btn removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
         [btn addTarget:self action:@selector(leftButtonCancelSelected:) forControlEvents:UIControlEventTouchUpInside];
@@ -534,6 +542,10 @@ static BOOL isCanUpLoad = NO;
             [self addLine];
         }
     }
+    DLog(@"left = %@",self.tmpLeftArray);
+    DLog(@"cancelleft = %@",self.cancelTmpLeftArray);
+    DLog(@"right = %@",self.tmpRightArray);
+    DLog(@"cancelright = %@",self.cancelTmpRightArray);
 }
 -(void)rightButtonSelected:(id)sender {
     UIButton *btn= (UIButton *)sender;
@@ -558,6 +570,8 @@ static BOOL isCanUpLoad = NO;
         [self.cancelTmpRightArray removeAllObjects];
     }
     
+    //**********************************************************************************************
+    //点击选中
     if (tmpTag == btn.tag) {
         
     }else {
@@ -569,7 +583,11 @@ static BOOL isCanUpLoad = NO;
             [lastBtn removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
             [lastBtn addTarget:self action:@selector(rightButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
         }
-        [self.tmpRightArray addObject:[NSString stringWithFormat:@"%d",btn.tag]];
+        NSString *str = [NSString stringWithFormat:@"%d",btn.tag];
+        if (![self.tmpRightArray containsObject:str]) {
+            [self.tmpRightArray addObject:[NSString stringWithFormat:@"%d",btn.tag]];
+        }
+       
         
         [btn removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
         [btn addTarget:self action:@selector(rightButtonCancelSelected:) forControlEvents:UIControlEventTouchUpInside];
@@ -578,6 +596,10 @@ static BOOL isCanUpLoad = NO;
             [self addLine];
         }
     }
+    DLog(@"left = %@",self.tmpLeftArray);
+    DLog(@"cancelleft = %@",self.cancelTmpLeftArray);
+    DLog(@"right = %@",self.tmpRightArray);
+    DLog(@"cancelright = %@",self.cancelTmpRightArray);
 }
 //TODO:取消选中-------------------------------------------------
 -(void)leftButtonCancelSelected:(id)sender {
@@ -595,6 +617,7 @@ static BOOL isCanUpLoad = NO;
         [leftBtn addTarget:self action:@selector(leftButtonCancelSelected:) forControlEvents:UIControlEventTouchUpInside];
         [self.cancelTmpLeftArray removeAllObjects];
     }
+
     if (self.tmpLeftArray.count>self.tmpRightArray.count) {
         int tag = [[self.tmpLeftArray lastObject]integerValue];
         UIButton *lastBtn = (UIButton *)[self.wordsContainerView viewWithTag:tag];
@@ -611,10 +634,16 @@ static BOOL isCanUpLoad = NO;
         [lastBtn addTarget:self action:@selector(rightButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
     }
 
+    BOOL isExit = NO;
+    if ([self.tmpLeftArray containsObject:tagString_left]) {
+        isExit = YES;
+    }
     
-    [self.cancelTmpLeftArray addObject:tagString_left];
+    if (self.tmpLeftArray.count>0 && self.tmpLeftArray.count==self.tmpRightArray.count && isExit==YES) {
+        [self.cancelTmpLeftArray addObject:tagString_left];
+    }
     
-    if (self.cancelTmpLeftArray.count == self.cancelTmpRightArray.count) {
+    if (self.cancelTmpLeftArray.count == self.cancelTmpRightArray.count && self.cancelTmpLeftArray.count>0) {
         NSString *tagString_right = [self.cancelTmpRightArray firstObject];
         UIButton *rightBtn= (UIButton *)[self.wordsContainerView viewWithTag:[tagString_right intValue]];
         int index_right = [self.tmpRightArray indexOfObject:tagString_right];
@@ -631,7 +660,6 @@ static BOOL isCanUpLoad = NO;
             
             [self addLine];
         }else {
-            
             rightBtn.backgroundColor = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
             [rightBtn removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
             [rightBtn addTarget:self action:@selector(rightButtonCancelSelected:) forControlEvents:UIControlEventTouchUpInside];
@@ -641,6 +669,10 @@ static BOOL isCanUpLoad = NO;
         [btn removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
         [btn addTarget:self action:@selector(leftButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
     }
+    DLog(@"left = %@",self.tmpLeftArray);
+    DLog(@"cancelleft = %@",self.cancelTmpLeftArray);
+    DLog(@"right = %@",self.tmpRightArray);
+    DLog(@"cancelright = %@",self.cancelTmpRightArray);
 }
 -(void)rightButtonCancelSelected:(id)sender {
     UIButton *btn= (UIButton *)sender;
@@ -657,6 +689,8 @@ static BOOL isCanUpLoad = NO;
         [rightBtn addTarget:self action:@selector(rightButtonCancelSelected:) forControlEvents:UIControlEventTouchUpInside];
         [self.cancelTmpRightArray removeAllObjects];
     }
+    
+    
     if (self.tmpLeftArray.count<self.tmpRightArray.count){
         int tag = [[self.tmpRightArray lastObject]integerValue];
         UIButton *lastBtn = (UIButton *)[self.wordsContainerView viewWithTag:tag];
@@ -672,9 +706,16 @@ static BOOL isCanUpLoad = NO;
         [lastBtn removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
         [lastBtn addTarget:self action:@selector(leftButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
     }
-    [self.cancelTmpRightArray addObject:tagString_right];
     
-    if (self.cancelTmpLeftArray.count == self.cancelTmpRightArray.count) {
+    BOOL isExit = NO;
+    if ([self.tmpRightArray containsObject:tagString_right]) {
+        isExit = YES;
+    }
+    if (self.tmpRightArray.count>0 && self.tmpLeftArray.count==self.tmpRightArray.count && isExit==YES) {
+        [self.cancelTmpRightArray addObject:tagString_right];
+    }
+    
+    if (self.cancelTmpLeftArray.count == self.cancelTmpRightArray.count && self.cancelTmpRightArray.count>0) {
         NSString *tagString_left = [self.cancelTmpLeftArray firstObject];
         UIButton *leftBtn= (UIButton *)[self.wordsContainerView viewWithTag:[tagString_left intValue]];
         int index_left = [self.tmpLeftArray indexOfObject:tagString_left];
@@ -700,7 +741,12 @@ static BOOL isCanUpLoad = NO;
     }else {
         [btn removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
         [btn addTarget:self action:@selector(rightButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
-    }}
+    }
+    DLog(@"left = %@",self.tmpLeftArray);
+    DLog(@"cancelleft = %@",self.cancelTmpLeftArray);
+    DLog(@"right = %@",self.tmpRightArray);
+    DLog(@"cancelright = %@",self.cancelTmpRightArray);
+}
 
 -(void)nextQuestion:(id)sender {
     [self.homeControl startTimer];
