@@ -339,7 +339,7 @@
 ///点击parentVC的退出按钮触发
 -(void)tenQuitButtonClicked:(id)sender{
     if (self.haveUploadedJSON || self.isReDoingChallenge || self.isViewingHistory) {
-        [parentVC.navigationController popViewControllerAnimated:YES];
+        [parentVC dismissViewControllerAnimated:YES completion:nil];
     }else{
         [self uploadJSON];
     }

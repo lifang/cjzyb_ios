@@ -81,6 +81,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+//    [DataService sharedService].isHistory = YES;
     //TODO:判断做题历史 or  做题
     if ([DataService sharedService].isHistory==YES) {
         self.timeImg.hidden=YES; self.timerLabel.hidden=YES;
@@ -183,9 +185,12 @@
             [self addChildViewController:self.tenSecViewController];
             [self.contentView addSubview:self.tenSecViewController.view];
             [self.tenSecViewController didMoveToParentViewController:self];
+
             self.tenSecViewController.isViewingHistory = [DataService sharedService].isHistory;
             [self.tenSecViewController startChallenge];
             [self.quitHomeworkButton addTarget:self.tenSecViewController action:@selector(tenQuitButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            
+            //界面调整
             if (![DataService sharedService].isHistory) {
                 [self.checkBgView setHidden:YES];
             }else{
@@ -209,8 +214,8 @@
             [self.appearCorrectButton addTarget:self.selectingChallengeViewController action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.reduceTimeButton addTarget:self.selectingChallengeViewController action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.quitHomeworkButton addTarget:self.selectingChallengeViewController action:@selector(seQuitButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-//            self.selectingChallengeViewController.topBarView.hidden = YES;
-//            self.selectingChallengeViewController.itemsView.hidden = YES;
+            
+//            self.selectingChallengeViewController.isViewingHistory = YES;
             self.selectingChallengeViewController.isViewingHistory = [DataService sharedService].isHistory;
         }
             break;

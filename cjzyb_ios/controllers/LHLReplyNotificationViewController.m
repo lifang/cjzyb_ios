@@ -209,10 +209,15 @@
                     if (ary.count >= 2) {
                         content = ary[1];
                     }
-                    NSRange range = [content rangeOfString:@"："];
+                    NSRange range = [content rangeOfString:@"："]; //第一个冒号
                     NSString *name = [content substringToIndex:range.location];
-                    range = [content rangeOfString:@";||;"];
-                    NSString *realContent = [content substringFromIndex:range.location + range.length];
+                    NSRange seperatorRange = [content rangeOfString:@";||;"]; //第一个分隔符
+                    NSString *realContent;
+                    if (seperatorRange.length > 0) {
+                        realContent = [content substringFromIndex:range.location + range.length];
+                    }else{
+                        realContent = [content substringFromIndex:range.location + range.length];
+                    }
                     
                     ReplyNotificationObject *obj = [ReplyNotificationObject new];
                     obj.replyId = [noticeDic objectForKey:@"id"];

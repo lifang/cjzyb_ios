@@ -809,7 +809,7 @@
 
 -(void)seQuitButtonClicked:(id)sender{
     if (self.haveUploadedJSON || self.isReDoingChallenge || self.isViewingHistory) {
-        [parentVC.navigationController popViewControllerAnimated:YES];
+        [parentVC dismissViewControllerAnimated:YES completion:nil];
     }else{
         [self uploadJSON];
     }
@@ -879,7 +879,7 @@
 -(void)resultViewCommitButtonClicked{
     [self.resultView removeFromSuperview];
     self.resultView = nil;
-    [parentVC quitButtonClicked:parentVC.quitHomeworkButton];
+    [self seQuitButtonClicked:nil];
 }
 
 -(void)resultViewRestartButtonClicked{
