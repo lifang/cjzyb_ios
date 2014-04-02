@@ -372,7 +372,8 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
     NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:jsonPath];
-    NSString *filePath = [documentDirectory stringByAppendingPathComponent:@"questions.json"];
+//    NSString *filePath = [documentDirectory stringByAppendingPathComponent:@"questions.json"];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"question" ofType:@"json"];
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:0 error:&jsonParsingError];
     return dataObject;
 }

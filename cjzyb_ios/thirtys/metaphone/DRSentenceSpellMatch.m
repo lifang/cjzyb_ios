@@ -40,31 +40,6 @@
     }
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        //    NSString *oringStr = @"this is an apple";
-        //    NSArray *orgArray = [Utility handleTheString:oringStr];
-        //    NSArray *metaphoneArray = [Utility metaphoneArray:orgArray];
-        //    NSLog(@"orgArray = %@",orgArray);
-        //    NSLog(@"metaphoneArray = %@",metaphoneArray);
-        //
-        //
-        //    NSString *text = @"this a salple";
-        //    NSArray *array = [Utility handleTheString:text];
-        //    NSLog(@"array = %@",array);
-        //    NSArray *array2 = [Utility metaphoneArray:array];
-        //    NSLog(@"array2 = %@",array2);
-        //
-        //    [Utility shared].isOrg = NO;
-        //    [Utility shared].sureArray = [[NSMutableArray alloc]init];
-        //    [Utility shared].correctArray = [[NSMutableArray alloc]init];
-        //    [Utility shared].noticeArray = [[NSMutableArray alloc]init];
-        //    [Utility shared].greenArray = [[NSMutableArray alloc]init];
-        //    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
-        //    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
-        //    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
-        //    [Utility shared].firstpoint = 0;
-        //    NSDictionary *dic = [Utility compareWithArray:array andArray:array2 WithArray:orgArray andArray:metaphoneArray WithRange:[Utility shared].rangeArray];
-        //    NSLog(@"dic = %@",dic);
-        
         [Utility shared].isOrg = NO;
         [Utility shared].sureArray = [[NSMutableArray alloc]init];
          [Utility shared].correctArray = [[NSMutableArray alloc]init];
@@ -84,20 +59,22 @@
         int unMatch = 0;
         NSMutableArray *errorWordArr = [NSMutableArray array];
         for (SpellMatchObj *obj in spellMatchRangeArr) {
+            if (obj.range.location + obj.range.length > spellAttribute.length) {
+                continue;
+            }
             if (obj.spellLevel == 1 || obj.spellLevel == 0.5) {
                 [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:obj.range];
             }else{
                 unMatch++;
-                if (obj.originText) {
-                    [errorWordArr addObject:obj.originText];
-                }
+                [errorWordArr addObject:[senStr substringWithRange:obj.range]];
+                [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:obj.range];
             }
         }
         float score = 1;
         if (unMatch != 0) {
-            score = spellMatchRangeArr.count/(float)unMatch;
+            score = (spellMatchRangeArr.count - (float)unMatch)/(float)spellMatchRangeArr.count;
         }
-        if (score > 0.5) {
+        if (score >= 0.7) {
             [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(0, spellAttribute.length)];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -111,6 +88,7 @@
 +(NSArray*)spellMatchWord:(NSString*)spellString{
     NSMutableArray *spellsArr = [NSMutableArray array];
 
+    [Utility shared].isOrg = YES;
     NSString *text = spellString;
     text =   [text stringByReplacingOccurrencesOfString:@"[_]|[\n]+|[ ]{2,}" withString:@" " options:NSRegularExpressionSearch  range:NSMakeRange(0, text.length)];
     NSArray *array = [Utility handleTheString:text];
@@ -122,7 +100,7 @@
     [Utility shared].yellowArray = [[NSMutableArray alloc]init];
     [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
     [Utility shared].firstpoint = 0;
-    NSDictionary *dic = [Utility compareWithArray:array andArray:array2 WithArray:[Utility shared].orgArray andArray:[Utility shared].metaphoneArray WithRange:[Utility shared].rangeArray];
+    NSDictionary *dic = [Utility compareWithArray:[Utility shared].orgArray andArray:[Utility shared].metaphoneArray WithArray:array andArray:array2  WithRange:[Utility shared].rangeArray];
     //绿色
     if (![[dic objectForKey:@"green"]isKindOfClass:[NSNull class]] && [dic objectForKey:@"green"]!=nil) {
         NSMutableArray *green_array = [dic objectForKey:@"green"];
@@ -132,20 +110,7 @@
             NSRange range = [math rangeAtIndex:0];
             spell.range = range;
             spell.color = [UIColor greenColor];
-            spell.isUnderLine = NO;
             spell.spellLevel = 1;
-            if (![[dic objectForKey:@"notice"]isKindOfClass:[NSNull class]] && [dic objectForKey:@"notice"]!=nil) {
-                NSMutableArray *notice_array = [dic objectForKey:@"notice"];
-                for (int k=0; k<notice_array.count; k++) {
-                    NSTextCheckingResult *math2 = (NSTextCheckingResult *)[notice_array objectAtIndex:k];
-                    NSRange range2 = [math2 rangeAtIndex:0];
-                    if (range.location==range2.location && range.length==range2.length) {
-                        NSMutableArray *correct_array = [dic objectForKey:@"correct"];
-                        spell.originText = [correct_array objectAtIndex:k];
-                        break;
-                    }
-                }
-            }
             [spellsArr addObject:spell];
         }
     }
@@ -158,39 +123,20 @@
             NSRange range = [math rangeAtIndex:0];
             spell.range = range;
             spell.color = [UIColor yellowColor];
-            spell.isUnderLine = NO;
             spell.spellLevel = 0.5;
-            NSMutableArray *correct_array = [dic objectForKey:@"sure"];
-            spell.originText = [correct_array objectAtIndex:i];
             [spellsArr addObject:spell];
         }
     }
     //下划线
-    if (![[dic objectForKey:@"space"]isKindOfClass:[NSNull class]] && [dic objectForKey:@"space"]!=nil) {
-        NSMutableArray *space_array = [dic objectForKey:@"space"];
+    if (![[dic objectForKey:@"wrong"]isKindOfClass:[NSNull class]] && [dic objectForKey:@"wrong"]!=nil) {
+        NSMutableArray *space_array = [dic objectForKey:@"wrong"];
         for (int i=0; i<space_array.count; i++) {
-            NSString *str = [space_array objectAtIndex:i];
-            NSArray *arr = [str componentsSeparatedByString:@"_"];
-            int location = [[arr objectAtIndex:0]intValue];
-            int length = [[arr objectAtIndex:1]intValue];
-            
+            NSTextCheckingResult *math = (NSTextCheckingResult *)[space_array objectAtIndex:i];
+            NSRange range = [math rangeAtIndex:0];
             SpellMatchObj *spell = [[SpellMatchObj alloc] init];
-            NSRange range =NSMakeRange(location, length);
             spell.range = range;
-            spell.isUnderLine = YES;
             spell.spellLevel = 0;
-            BOOL isInsert = NO;
-            for ( int index = 0;index < spellsArr.count;index++) {
-                SpellMatchObj *obj = [spellsArr objectAtIndex:index];
-                if (obj.range.location == spell.range.location) {
-                    isInsert = YES;
-                    [spellsArr insertObject:spell atIndex:index];
-                    break;
-                }
-            }
-            if (!isInsert) {
-                [spellsArr addObject:spell];
-            }
+             [spellsArr addObject:spell];
         }
     }
     

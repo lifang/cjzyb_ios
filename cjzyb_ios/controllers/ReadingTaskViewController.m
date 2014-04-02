@@ -20,6 +20,7 @@
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
 #define minRecoginCount 4
 #define minRecoginLevel 0.5
+static BOOL isCanUpLoad = NO;
 @interface ReadingTaskViewController ()
 ///预听界面
 @property (nonatomic,strong) PreReadingTaskViewController *preReadingController;
@@ -221,7 +222,7 @@
 
 //TODO:退出作业界面
 -(void)exithomeworkUI{
-    if (!self.isPrePlay && ![DataService sharedService].isHistory && self.isFirst) {
+    if (!self.isPrePlay && ![DataService sharedService].isHistory && self.isFirst && isCanUpLoad == YES) {
         __weak ReadingTaskViewController *weakSelf = self;
         TaskObj *task = [DataService sharedService].taskObj;
         NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
@@ -406,8 +407,10 @@
     [self.preReadingController.view removeFromSuperview];
     [self.preReadingController removeFromParentViewController];
     [self.preReadingController didMoveToParentViewController:nil];
+    [self.preReadingController.avPlayer stop];
     [parentVC.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
     self.isPrePlay = NO;
+    
     [parentVC startTimer];
     if ([DataService sharedService].number_reduceTime > 0) {
         [parentVC.reduceTimeButton setEnabled:YES];
