@@ -12,8 +12,6 @@
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
 
 @interface SelectingChallengeViewController ()
-//@property (weak, nonatomic) IBOutlet UIButton *cancelButton;  //退出按钮
-//@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *questionPlayButton;  //声音按钮
 - (IBAction)questionPlayButtonClicked:(id)sender;
@@ -21,14 +19,10 @@
 @property (weak, nonatomic) IBOutlet UIImageView *questionImageView;
 @property (weak, nonatomic) IBOutlet UITextView *questionTextView;          //问题题面
 @property (weak, nonatomic) IBOutlet UITableView *optionTable;  //选项table
-//@property (weak, nonatomic) IBOutlet UIButton *nextButton;  //下一个/检查 按钮
-//- (IBAction)nextButtonClicked:(id)sender;
 @property (strong, nonatomic) UILabel *currentNOLabel;  //当前题号  2/5
 @property (weak, nonatomic) IBOutlet UIView *historyView;    //浏览历史时下方的view
 @property (weak, nonatomic) IBOutlet UILabel *historyYourChoiceLabel;  //显示"你的选择:"
 @property (strong,nonatomic) TenSecChallengeResultView *resultView; //结果界面
-@property (strong,nonatomic) UIButton *propOfShowingAnswer; //显示答案道具
-@property (strong,nonatomic) UIButton *propOfReduceTime; //时间-5道具
 
 @property (assign,nonatomic) BOOL checked; //本小题是否已经按过"检查"按钮
 @property (assign,nonatomic) BOOL isReDoingChallenge;  //是否是重新做题,重新挑战
@@ -44,13 +38,13 @@
 @property (strong,nonatomic) NSArray *questionArray;  //问题
 @property (strong,nonatomic) NSMutableArray *answerArray;   //选择的答案
 @property (strong,nonatomic) NSMutableArray *propsArray;//道具
-//@property (strong,nonatomic) NSDictionary *answerJSONDic; //从文件中读取的answerJSON字典
 @property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
 @property (strong,nonatomic) NSString *answerStatus;    //文件中记载的完成状态
 
 @property (strong,nonatomic) NSMutableArray *currentSelectedOptions; //当前问题被选中的选项 (为字符串,indexPath的row数字)
 
 @property (assign,nonatomic) NSInteger totalRatio; //正确率
+@property (assign,nonatomic) BOOL shouldUploadJSON;  //是否应上传JSON
 @property (assign,nonatomic) BOOL haveUploadedJSON; //是否已上传JSON
 @end
 
@@ -68,21 +62,26 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self initData];
+    
+    [self.optionTable registerClass:[SelectingChallengeOptionCell class] forCellReuseIdentifier:@"cell"];
+    
+    self.shouldUploadJSON = NO;
+    self.haveUploadedJSON = NO;
+    self.isReDoingChallenge = NO;
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [self getStart];
+}
+
+- (void)initData{
     if (!self.questionArray) {
         [Utility errorAlert:@"无法读取问题资料!"];
     }
     [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"selecting" andDate:[DataService sharedService].taskObj.taskStartDate]];
     self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.taskStartDate];
-    
-    [self.optionTable registerClass:[SelectingChallengeOptionCell class] forCellReuseIdentifier:@"cell"];
-    
-    self.haveUploadedJSON = NO;
-    self.isReDoingChallenge = NO;
-    
-}
-
-- (void)viewDidAppear:(BOOL)animated{
-    [self getStart];
 }
 
 #pragma mark -- 选择挑战的生命周期
@@ -140,8 +139,6 @@
     self.isReDoingChallenge = YES;
     self.currentNOLabel.hidden = YES;
     //改变按钮样式,及顶栏目样式
-    self.propOfReduceTime.enabled = YES;
-    self.propOfShowingAnswer.enabled = YES;
     [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
     parentVC.appearCorrectButton.enabled = NO;
     parentVC.reduceTimeButton.enabled = NO;
@@ -366,6 +363,7 @@
     [answerDic setObject:questions forKey:@"questions"];
     
     [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"selecting" andDate:[DataService sharedService].taskObj.taskStartDate];
+    self.shouldUploadJSON = YES;
     
     return [NSDictionary dictionaryWithDictionary:answerDic];
 }
@@ -378,6 +376,8 @@
         //如果已完成就显示结果
         if (self.answerArray.count == self.questionArray.count) {
             [self showResultView];
+        }else{
+            [self quitNow:nil];
         }
     } withFailure:^(NSString *error) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"上传未成功" message:@"无法提交成绩,重试?" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"重试", nil];
@@ -764,8 +764,17 @@
     
 }
 
+//点击退出按钮
 -(void)seQuitButtonClicked:(id)sender{
-    if (self.haveUploadedJSON || self.isReDoingChallenge || self.isViewingHistory) {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [alert show];
+    });
+}
+
+//真正退出
+-(void)quitNow:(id)sender{
+    if (self.haveUploadedJSON || self.isReDoingChallenge || self.isViewingHistory || !self.shouldUploadJSON) {
         [parentVC dismissViewControllerAnimated:YES completion:nil];
     }else{
         [self uploadJSON];
@@ -836,7 +845,7 @@
 -(void)resultViewCommitButtonClicked{
     [self.resultView removeFromSuperview];
     self.resultView = nil;
-    [self seQuitButtonClicked:nil];
+    [self quitNow:nil];
 }
 
 -(void)resultViewRestartButtonClicked{
@@ -853,14 +862,28 @@
 
 #pragma mark AlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
-    if ([title isEqualToString:@"放弃"]) {
-        [parentVC.navigationController popViewControllerAnimated:YES];
-        return;
-    }
-    if ([title isEqualToString:@"重试"]) {
-        [self uploadJSON];
-        return;
+    if ([alertView.title isEqualToString:@"警告"]){
+        //退出警告
+        NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+        if ([title isEqualToString:@"退出"]) {
+            [self quitNow:nil];
+            return;
+        }
+        if ([title isEqualToString:@"取消"]) {
+            
+            return;
+        }
+    }else{
+        //上传失败
+        NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+        if ([title isEqualToString:@"放弃"]) {
+            [parentVC.navigationController popViewControllerAnimated:YES];
+            return;
+        }
+        if ([title isEqualToString:@"重试"]) {
+            [self uploadJSON];
+            return;
+        }
     }
 }
 

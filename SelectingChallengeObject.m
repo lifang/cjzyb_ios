@@ -11,10 +11,6 @@
 @implementation SelectingChallengeObject
 +(NSArray *)parseSelectingChallengeFromQuestion{
     NSMutableArray *resultArray = [NSMutableArray array];
-//    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
-//    //把path拼成真实文件路径
-//    
-//    path = [[NSBundle mainBundle] pathForResource:@"questions_lastest" ofType:@"js"]; //测试
     
     NSString *path = [Utility returnPath];
     path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate]; //日期对应的文件夹(task文件夹)
@@ -87,9 +83,15 @@
                                     obj.seType = SelectingTypeDefault;
                                 }
                             }else if (contentArrayClear.count == 2){     //字符串分为两段
-                                obj.seType = SelectingTypeWatching;
                                 obj.seContentAttachment = [contentArrayClear firstObject];
                                 obj.seContent = [contentArrayClear lastObject];
+                                NSString *extensionName = [[[obj.seContentAttachment componentsSeparatedByString:@"."] lastObject] uppercaseString];
+                                if ([@".BMP.BMPF.ICO.CUR.XBM.GIF.JPEG.JPG.PNG.TIFF.TIF" rangeOfString:extensionName].length > 0) {
+                                    //图片
+                                    obj.seType = SelectingTypeWatching;
+                                }else{
+                                    obj.seType = SelectingTypeListening;
+                                }
                             }else{
                                 [Utility errorAlert:@"这到底是什么题型?"];
                             }

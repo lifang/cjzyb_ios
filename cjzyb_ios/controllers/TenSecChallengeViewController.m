@@ -28,13 +28,12 @@
 @property (assign,nonatomic) BOOL isLastQuestion; //是否最后一题
 @property (strong,nonatomic) NSArray *questionNumberImages; //题号图片数组
 @property (strong,nonatomic) NSMutableArray *answerArray; //选择的答案
-@property (strong,nonatomic) NSString *homeworkFinishTime; //今日作业提交时间期限
 @property (strong,nonatomic) NSDictionary *answerJSONDic; //从文件中读取的answerJSON字典
 @property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
 @property (strong,nonatomic) NSString *answerStatus;    //文件中记载的完成状态
 @property (assign,nonatomic) BOOL isReDoingChallenge; //是否为重新挑战
+@property (assign,nonatomic) BOOL shouldUploadJSON;  //是否需要上传JSON
 @property (assign,nonatomic) BOOL haveUploadedJSON; //是否已上传JSON
-//@property (strong,nonatomic) NSMutableDictionary *reChallengeTimesLeft; //剩余挑战数
 @property (strong,nonatomic) NSUserDefaults *userDefaults;
 @end
 
@@ -46,6 +45,7 @@
     if (self) {
         self.isViewingHistory = NO;
         self.isReDoingChallenge = NO;
+        self.shouldUploadJSON = NO;
         self.haveUploadedJSON = NO;
     }
     return self;
@@ -125,7 +125,6 @@
             self.isReDoingChallenge = YES;
             NSString * timesLeft = [self.userDefaults stringForKey:@"reChallengeTimesLeft"];
             if (timesLeft.integerValue < 1) {
-//                [Utility errorAlert:@"今日挑战次数已经用完"];
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"抱歉" message:@"今日挑战次数已经用完" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:nil];
                 dispatch_async(dispatch_get_main_queue(),^{
                     [alert show];
@@ -141,7 +140,7 @@
             parentVC.spendSecond = 0;
             self.currentNO = 0;
             self.answerArray = [NSMutableArray array];
-        }else{ //继续做题
+        }else{ //继续做题(第一遍做题)
             [self.userDefaults setObject:@"3" forKey:@"reChallengeTimesLeft"];
             [self.userDefaults synchronize];
             if (self.lastTimeCurrentNO > 1) {
@@ -233,7 +232,7 @@
     NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
     [answerDic setObject:nowDate forKey:@"update_time"];
     [answerDic setObject:@"1" forKey:@"questions_item"];
-    [answerDic setObject:[NSString stringWithFormat:@"%d",self.currentNO] forKey:@"branch_item"];  //小题索引,即当前做的题
+    [answerDic setObject:[NSString stringWithFormat:@"%d",self.currentNO] forKey:@"branch_item"];  //小题索引,即当前已完成的题
     
     [answerDic setObject:[NSString stringWithFormat:@"%d",(NSInteger)parentVC.spendSecond] forKey:@"use_time"];   //用时
         NSMutableArray *questions = [NSMutableArray array];
@@ -259,15 +258,12 @@
     
     //保存JSON
     [Utility returnAnswerPathWithDictionary:[NSDictionary dictionaryWithDictionary:answerDic] andName:@"time_limit" andDate:[DataService sharedService].taskObj.taskStartDate];
+    self.shouldUploadJSON = YES;
 
     return [NSDictionary dictionaryWithDictionary:answerDic];
 }
 
 #pragma mark --按钮响应
-//- (void)cancelButtonClicked:(id)sender{
-//    
-//}
-
 - (void)upperClicked:(id)sender{
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.answerArray.count < self.questionArray.count) {
@@ -345,7 +341,14 @@
 
 ///点击parentVC的退出按钮触发
 -(void)tenQuitButtonClicked:(id)sender{
-    if (self.haveUploadedJSON || self.isReDoingChallenge || self.isViewingHistory) {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [alert show];
+    });
+}
+
+-(void)quitNow:(id)sender{
+    if (self.haveUploadedJSON || self.isReDoingChallenge || self.isViewingHistory || !self.shouldUploadJSON) {
         [parentVC dismissViewControllerAnimated:YES completion:nil];
     }else{
         [self uploadJSON];
@@ -473,7 +476,6 @@
             [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
             [parentVC.checkHomeworkButton addTarget:self action:@selector(resultViewCommitButtonClicked) forControlEvents:UIControlEventTouchUpInside];
         }
-        
     }else{
         [Utility errorAlert:@"未成功获取题目!"];
     }
@@ -507,30 +509,6 @@
     return _userDefaults;
 }
 
-////从文件中读取字典,否则新建一个包含字符串@"3"的值
-//- (NSMutableDictionary *)reChallengeTimesLeft{
-//    if (!_reChallengeTimesLeft) {
-//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//        NSString *path = [paths firstObject];
-//        path = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
-//        NSFileManager *manager = [NSFileManager defaultManager];
-//        if (![manager fileExistsAtPath:path]) {
-//            [manager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
-//        }
-//        NSString *filePath = [NSString stringWithFormat:@"%@/tenSecChallenge.plist",path];
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-//        NSString *nowDate = [dateFormatter stringFromDate:[NSDate date]];
-//        _reChallengeTimesLeft = [NSMutableDictionary dictionaryWithContentsOfFile:filePath];
-//        //如果无文件,或文件中无今日记录,则新建dic
-//        if (!_reChallengeTimesLeft || [_reChallengeTimesLeft objectForKey:nowDate] == nil) {
-//            _reChallengeTimesLeft = [NSMutableDictionary dictionary];
-//            [_reChallengeTimesLeft setObject:@"3" forKey:nowDate];
-//        }
-//    }
-//    return _reChallengeTimesLeft;
-//}
-
 - (NSArray *)questionNumberImages{
     if (!_questionNumberImages || _questionNumberImages.count < 1) {
         NSMutableArray *array = [NSMutableArray array];
@@ -558,6 +536,7 @@
         self.questionLabel.text = currentQuestion.tenQuestionContent;
         [self handleLabelFont:self.questionLabel];
         
+        //显示历史数据
         if (self.isViewingHistory) {
             self.upperButton.enabled = NO;
             self.lowerButton.enabled = NO;
@@ -579,7 +558,7 @@
 - (void)resultViewCommitButtonClicked{
     [self.resultView removeFromSuperview];
     self.resultView = nil;
-    [self tenQuitButtonClicked:nil];
+    [self quitNow:nil];
 }
 
 - (void)resultViewRestartButtonClicked{
@@ -593,7 +572,18 @@
     if ([alertView.title isEqualToString:@"抱歉"]) {
         //挑战次数用完
         [parentVC dismissViewControllerAnimated:YES completion:nil];
+    }else if ([alertView.title isEqualToString:@"警告"]){
+        //退出警告
+        NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+        if ([title isEqualToString:@"退出"]) {
+            [self quitNow:nil];
+            return;
+        }
+        if ([title isEqualToString:@"取消"]) {
+            return;
+        }
     }else{
+        //上传失败
         NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
         if ([title isEqualToString:@"放弃"]) {
             [parentVC dismissViewControllerAnimated:YES completion:nil];

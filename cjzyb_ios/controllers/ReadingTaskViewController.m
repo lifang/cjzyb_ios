@@ -20,7 +20,7 @@
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
 #define minRecoginCount 4
 #define minRecoginLevel 0.5
-static BOOL isCanUpLoad = NO;
+static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 @interface ReadingTaskViewController ()
 ///预听界面
 @property (nonatomic,strong) PreReadingTaskViewController *preReadingController;
@@ -125,7 +125,6 @@ static BOOL isCanUpLoad = NO;
         }];
     }
 
-//    self.readingTextView.text = @"Sure,Where are you flying today?";
     [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
     
     //设置录音临时存放路径
@@ -161,8 +160,6 @@ static BOOL isCanUpLoad = NO;
     
     self.isReading = NO;
     self.isListening = NO;
-
-    // Do any additional setup after loading the view from its nib.
 }
 
 #pragma mark exchange homework切换题目
@@ -222,7 +219,7 @@ static BOOL isCanUpLoad = NO;
 
 //TODO:退出作业界面
 -(void)exithomeworkUI{
-    if (!self.isPrePlay && ![DataService sharedService].isHistory && self.isFirst && isCanUpLoad == YES) {
+    if (!self.isPrePlay && ![DataService sharedService].isHistory && self.isFirst && isCanUpLoad) {
         __weak ReadingTaskViewController *weakSelf = self;
         TaskObj *task = [DataService sharedService].taskObj;
         NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
@@ -238,14 +235,7 @@ static BOOL isCanUpLoad = NO;
             }
         }];
         
-        [parentVC  uploadAnswerJsonFileWithPath:path withSuccess:^(NSString *success) {
-            [Utility errorAlert:success];
-            [parentVC dismissViewControllerAnimated:YES completion:^{
-                
-            }];
-        } withFailure:^(NSString *error) {
-            [Utility errorAlert:error];
-        }];
+        [self uploadJSON];
     }else{
         [parentVC dismissViewControllerAnimated:YES completion:^{
             
@@ -253,7 +243,7 @@ static BOOL isCanUpLoad = NO;
     }
 }
 
-//TODO:开始做题
+//TODO:开始做题(点击"下一个"时也触发)
 -(void)startBeginninghomework{
     if ([DataService sharedService].isHistory==YES) {
         [self updateNextSentence];
@@ -261,27 +251,8 @@ static BOOL isCanUpLoad = NO;
         if (self.isPrePlay) {
             [self hiddlePrePlayControllerWithAnimation:YES];
         }else{
-            TaskObj *task = [DataService sharedService].taskObj;
-            NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
+            //切换到下一题
             if (self.currentSentence.readingSentenceRatio.floatValue >= minRecoginLevel || self.readingCount >= minRecoginCount) {
-                if (self.readingCount <= 1 && self.isFirst) {
-                      __weak ReadingTaskViewController *weakSelf = self;
-                    self.currentSentence.isFinished = YES;
-                    if (self.currentSentenceIndex == self.currentHomework.readingHomeworkSentenceObjArray.count-1) {
-                        self.currentHomework.isFinished = YES;
-                    }
-                    [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
-                        ReadingTaskViewController *tempSelf = weakSelf ;
-                        if (tempSelf) {
-                            
-                        }
-                    } withFailure:^(NSError *error) {
-                        ReadingTaskViewController *tempSelf = weakSelf ;
-                        if (tempSelf) {
-                            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-                        }
-                    }];
-                }
                 self.readingCount = 0;
                 [self.tipBackView setHidden:YES];
                 if (self.currentSentenceIndex+1 < self.currentHomework.readingHomeworkSentenceObjArray.count) {
@@ -295,18 +266,13 @@ static BOOL isCanUpLoad = NO;
                         [self appearPrePlayControllerWithAnimation:YES];
                     }else{//TODO:挑战结束
                         [parentVC stopTimer];
-                        if (self.isFirst ) {
-                            [parentVC  uploadAnswerJsonFileWithPath:path withSuccess:^(NSString *success) {
-                                [self showResultView];
-                            } withFailure:^(NSString *error) {
-                                [Utility errorAlert:error];
-                            }];
+                        if (self.isFirst && ![DataService sharedService].isHistory) {
+                            [self uploadJSON];
                         }else{
                             [self showResultView];
                         }
                     }
                 }
-                
             }else{
                 MBProgressHUD *alert = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
                 alert.labelText = @"读不够好哦，再试一次吧";
@@ -318,9 +284,6 @@ static BOOL isCanUpLoad = NO;
 
 ///切换到下一句
 -(void)updateNextSentence{
-    if (!self.currentSentence) {
-        [self updateFirstSentence];
-    }
     if (self.currentSentence) {
         if (self.currentSentenceIndex+1 < self.currentHomework.readingHomeworkSentenceObjArray.count) {
             self.currentSentenceIndex++;
@@ -328,10 +291,9 @@ static BOOL isCanUpLoad = NO;
             [self setCurrentSentence:[self.currentHomework.readingHomeworkSentenceObjArray objectAtIndex:self.currentSentenceIndex] withAnimation:YES];
         }else{//已经是最后一个句子
             
-            
         }
     }else{//当前大题中没有句子
-    
+        [self updateFirstSentence];
     }
     
 }
@@ -375,7 +337,6 @@ static BOOL isCanUpLoad = NO;
         ReadingTaskViewController *tempSelf = weakSelf;
         if (tempSelf) {
             HomeworkContainerController *container = (HomeworkContainerController*)tempSelf.parentViewController;
-//            container.timeLabel.text = [NSString stringWithFormat:@"用时：%@",[Utility  formateDateStringWithSecond:userTime.intValue]];
             container.spendSecond = userTime?userTime.intValue:0;
             tempSelf.currentHomeworkIndex = currentQuestionIndex < 0 ?0:currentQuestionIndex;
             tempSelf.currentSentenceIndex = currentQuestionItemIndex < 0 ?0:currentQuestionItemIndex;
@@ -384,6 +345,26 @@ static BOOL isCanUpLoad = NO;
         }
     } withParseError:^(NSError *error) {
         [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+    }];
+}
+
+//TODO:上传JSON文件
+- (void)uploadJSON{
+    TaskObj *task = [DataService sharedService].taskObj;
+    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
+    [parentVC  uploadAnswerJsonFileWithPath:path withSuccess:^(NSString *success) {
+        //上传成功后退出或显示成绩界面
+        if (self.currentHomeworkIndex+1 >= self.readingHomeworksArr.count && self.currentSentenceIndex+1 >= self.currentHomework.readingHomeworkSentenceObjArray.count) {
+            [self showResultView];
+        }else{
+            [parentVC dismissViewControllerAnimated:YES completion:nil];
+        }
+    } withFailure:^(NSString *error) {
+        //上传失败则显示alertView
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"上传未成功" message:@"无法提交成绩,重试?" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"重试", nil];
+        dispatch_async(dispatch_get_main_queue(),^{
+            [alert show];
+        });
     }];
 }
 #pragma mark --
@@ -685,6 +666,8 @@ static BOOL isCanUpLoad = NO;
 	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
 	NSLog(@"Result: %@", result.text);
     [parentVC stopTimer];
+    TaskObj *task = [DataService sharedService].taskObj;
+    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
     [DRSentenceSpellMatch checkSentence:self.currentSentence.readingSentenceContent withSpellMatchSentence:result.text andSpellMatchAttributeString:^(NSAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray) {
         self.readingTextView.attributedText = nil;
         self.readingTextView.attributedText = spellAttriString;
@@ -698,6 +681,24 @@ static BOOL isCanUpLoad = NO;
         }else
         {
             tip = @"看到橙色的这些词了吗,你的发音还不够标准哦,在来试试吧！";
+        }
+        if (self.readingCount <= 1 && self.isFirst) {//计入成绩
+            __weak ReadingTaskViewController *weakSelf = self;
+            self.currentSentence.isFinished = YES;
+            if (self.currentSentenceIndex == self.currentHomework.readingHomeworkSentenceObjArray.count-1) {
+                self.currentHomework.isFinished = YES;
+            }
+            [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
+                ReadingTaskViewController *tempSelf = weakSelf ;
+                if (tempSelf) {
+                    isCanUpLoad = YES;
+                }
+            } withFailure:^(NSError *error) {
+                ReadingTaskViewController *tempSelf = weakSelf ;
+                if (tempSelf) {
+                    [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+                }
+            }];
         }
         NSMutableAttributedString *attriString = [[NSMutableAttributedString alloc]initWithString:tip];
         [attriString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0,tip.length)];
@@ -791,5 +792,19 @@ static BOOL isCanUpLoad = NO;
     }
    
 }
+
+#pragma mark AlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    //上传失败
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([title isEqualToString:@"放弃"]) {
+        [parentVC dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+    if ([title isEqualToString:@"重试"]) {
+        [self uploadJSON];
+    }
+}
+
 #pragma mark --
 @end
