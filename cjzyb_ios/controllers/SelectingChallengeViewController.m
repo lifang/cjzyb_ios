@@ -380,10 +380,14 @@
             [self quitNow:nil];
         }
     } withFailure:^(NSString *error) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"上传未成功" message:@"无法提交成绩,重试?" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"重试", nil];
-        dispatch_async(dispatch_get_main_queue(),^{
-            [alert show];
-        });
+        [Utility errorAlert:error];
+        [Utility uploadFaild];
+        //如果已完成就显示结果
+        if (self.answerArray.count == self.questionArray.count) {
+            [self showResultView];
+        }else{
+            [self quitNow:nil];
+        }
     }];
 }
 
@@ -862,28 +866,15 @@
 
 #pragma mark AlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if ([alertView.title isEqualToString:@"警告"]){
-        //退出警告
-        NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
-        if ([title isEqualToString:@"退出"]) {
-            [self quitNow:nil];
-            return;
-        }
-        if ([title isEqualToString:@"取消"]) {
-            
-            return;
-        }
-    }else{
-        //上传失败
-        NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
-        if ([title isEqualToString:@"放弃"]) {
-            [parentVC.navigationController popViewControllerAnimated:YES];
-            return;
-        }
-        if ([title isEqualToString:@"重试"]) {
-            [self uploadJSON];
-            return;
-        }
+    //退出警告
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([title isEqualToString:@"退出"]) {
+        [self quitNow:nil];
+        return;
+    }
+    if ([title isEqualToString:@"取消"]) {
+        
+        return;
     }
 }
 

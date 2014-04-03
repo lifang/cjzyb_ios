@@ -219,6 +219,13 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 
 //TODO:退出作业界面
 -(void)exithomeworkUI{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"退出", nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [alert show];
+    });
+}
+
+-(void)quitNow{
     if (!self.isPrePlay && ![DataService sharedService].isHistory && self.isFirst && isCanUpLoad) {
         __weak ReadingTaskViewController *weakSelf = self;
         TaskObj *task = [DataService sharedService].taskObj;
@@ -353,18 +360,21 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
     TaskObj *task = [DataService sharedService].taskObj;
     NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
     [parentVC  uploadAnswerJsonFileWithPath:path withSuccess:^(NSString *success) {
-        //上传成功后退出或显示成绩界面
+        //退出或显示成绩界面
         if (self.currentHomeworkIndex+1 >= self.readingHomeworksArr.count && self.currentSentenceIndex+1 >= self.currentHomework.readingHomeworkSentenceObjArray.count) {
             [self showResultView];
         }else{
             [parentVC dismissViewControllerAnimated:YES completion:nil];
         }
     } withFailure:^(NSString *error) {
-        //上传失败则显示alertView
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"上传未成功" message:@"无法提交成绩,重试?" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"重试", nil];
-        dispatch_async(dispatch_get_main_queue(),^{
-            [alert show];
-        });
+        [Utility errorAlert:error];
+        [Utility uploadFaild];
+        //退出或显示成绩界面
+        if (self.currentHomeworkIndex+1 >= self.readingHomeworksArr.count && self.currentSentenceIndex+1 >= self.currentHomework.readingHomeworkSentenceObjArray.count) {
+            [self showResultView];
+        }else{
+            [parentVC dismissViewControllerAnimated:YES completion:nil];
+        }
     }];
 }
 #pragma mark --
@@ -766,10 +776,10 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
     [self.listeningButton setEnabled:!isListening];
 }
 
+//TODO:载入新句子
 -(void)setCurrentSentence:(ReadingSentenceObj *)currentSentence{
     _currentSentence = currentSentence;
     if (currentSentence) {
-        
         if ([DataService sharedService].isHistory) {
             NSMutableString *content = [NSMutableString stringWithFormat:@"需要多读的词"];
             for (NSString *errorWord in currentSentence.readingErrorWordArray) {
@@ -782,7 +792,6 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
             style.alignment = NSTextAlignmentCenter;
             [attriString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, content.length)];
             self.tipTextView.attributedText = attriString;
-            parentVC.rotioLabel.text = [NSString stringWithFormat:@"正确率：%0.0f",currentSentence.readingSentenceRatio.floatValue*100];
         }
         NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:currentSentence.readingSentenceContent];
         [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0, attri.length)];
@@ -793,16 +802,13 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
    
 }
 
-#pragma mark AlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    //上传失败
-    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
-    if ([title isEqualToString:@"放弃"]) {
-        [parentVC dismissViewControllerAnimated:YES completion:nil];
-        return;
-    }
-    if ([title isEqualToString:@"重试"]) {
-        [self uploadJSON];
+#pragma mark -- UIAlert Delegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSString *choice = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([choice isEqualToString:@"退出"]) {
+        [self quitNow];
+    }else if ([choice isEqualToString:@"取消"]){
+        
     }
 }
 
