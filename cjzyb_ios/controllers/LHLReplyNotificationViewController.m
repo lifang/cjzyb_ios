@@ -417,6 +417,7 @@
     _replyInputTextView.layer.borderWidth = 1.0;
     _replyInputTextView.returnKeyType = UIReturnKeySend;
     _replyInputTextView.delegate = self;
+    [_replyInputBgView addSubview:_replyInputTextView];
     return _replyInputTextView;
 }
 
@@ -461,6 +462,7 @@
 
 -(void)replyInputCancelButtonClicked:(id)sender{
     self.replyInputTextView.text = @"";
+    self.characterCountLabel.text = @"0/60";
     [self.replyInputTextView resignFirstResponder];
     self.replyingIndexPath = nil;
 }
@@ -516,6 +518,7 @@
         [self.replyInputTextView resignFirstResponder];
         self.replyingIndexPath = nil;
     }else{
+        [self makeReplyInputTextView];//TODO 看看行不行
         [self.replyInputTextView becomeFirstResponder];
         self.replyingIndexPath = cell.indexPath;
     }
@@ -563,6 +566,13 @@
 #pragma mark -- uitextView Delegate
 -(void)textViewDidChange:(UITextView *)textView{
     [self calculateTextLength];
+    CGFloat contentHeight = textView.contentSize.height;//一行字30  加16起步  实际大小为加10
+    contentHeight = contentHeight > 46 ? contentHeight : 46;
+    CGFloat maxY = CGRectGetMaxY(self.replyInputBgView.frame);
+    CGFloat newHeightForBg = contentHeight + 4;
+    self.replyInputBgView.frame = (CGRect){self.replyInputBgView.frame.origin.x,maxY - newHeightForBg,self.replyInputBgView.frame.size.width,newHeightForBg};
+    self.characterCountLabel.frame = (CGRect){710,4,50,40};
+    self.replyInputTextView.frame = (CGRect){textView.frame.origin , textView.frame.size.width , contentHeight - 6};
 }
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{

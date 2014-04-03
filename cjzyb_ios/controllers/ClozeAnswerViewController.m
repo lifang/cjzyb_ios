@@ -30,7 +30,7 @@
 -(void)setAnswerDic:(NSDictionary *)answerDic {
     _answerDic = answerDic;
     
-    NSString *str = [_answerDic objectForKey:@"options"];
+    NSString *str = [_answerDic objectForKey:@"opption"];
     self.answerArray = [str componentsSeparatedByString:@";||;"];
     [self.myTable reloadData];
 }

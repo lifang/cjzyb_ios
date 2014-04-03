@@ -57,7 +57,7 @@
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="JkM-aj-79g">
                             <rect key="frame" x="287" y="116" width="240" height="128"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="0.1554848938" green="0.79139429210000001" blue="0.48679585990000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" red="0.89710003396739135" green="0.89710003396739135" blue="0.89710003396739135" alpha="1" colorSpace="calibratedRGB"/>
