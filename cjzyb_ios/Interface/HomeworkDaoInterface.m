@@ -12,7 +12,7 @@
 @implementation HomeworkDaoInterface
 
 +(void)downloadCurrentTaskWithUserId:(NSString*)userId withClassId:(NSString*)classID withSuccess:(void(^)(TaskObj *taskObj))success withError:(void (^)(NSError *error))failure{
-    //http://58.240.210.42:3004/api/students/get_classmates_info?student_id=74&school_class_id=90
+
     if (!userId || !classID) {
         if (failure) {
             failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"请求参数不能为空"}]);
@@ -23,6 +23,7 @@
     DLog(@"获得班级同学信息url:%@",urlString);
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request setHTTPMethod:@"GET"];
+    [request setTimeoutInterval:60];
     [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
         NSArray *taskArr = [dicData objectForKey:@"tasks"];
         NSString *knowlegeCount = [Utility filterValue:[dicData objectForKey:@"knowledges_cards_count"]];
@@ -45,32 +46,26 @@
             return;
         }
         
-        TaskObj *taskObj = [[TaskObj alloc] init];
+        TaskObj *taskObj = [TaskObj taskFromDictionary:taskDic];
         taskObj.taskKnowlegeCount = knowlegeCount?knowlegeCount.intValue:0;
-        taskObj.taskID = [Utility filterValue:[taskDic objectForKey:@"id"]];
-        taskObj.taskName = [Utility filterValue:[taskDic objectForKey:@"name"]];
-        taskObj.taskStartDate = [Utility filterValue:[taskDic objectForKey:@"start_time"]];
-        taskObj.taskEndDate = [Utility filterValue:[taskDic objectForKey:@"end_time"]];
-        taskObj.taskFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"question_packages_url"]];
-//        taskObj.taskFileDownloadURL = [NSString stringWithFormat:@"%@%@",kHOST,[Utility filterValue:[taskDic objectForKey:@"question_packages_url"]]];
-        taskObj.taskAnswerFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"answer_url"]];
-        taskObj.taskFolderPath = [[Utility returnPath] stringByAppendingPathComponent:taskObj.taskStartDate];
+        
         NSMutableArray *homeworkTypeList = [NSMutableArray array];
         NSArray *undoTypeArr = [taskDic objectForKey:@"question_types"];
-        for (int index = 0; undoTypeArr && index < undoTypeArr.count; index++) {
+        NSArray *finishedTypeArr = [taskDic objectForKey:@"finish_types"];
+        for (int index = 0; index < undoTypeArr.count; index++) {
+            NSString *index_string = [undoTypeArr objectAtIndex:index];
             HomeworkTypeObj *type = [[HomeworkTypeObj alloc] init];
             type.homeworkType = [HomeworkDaoInterface convertTypeFromInt:[[undoTypeArr objectAtIndex:index] intValue]];
-            type.homeworkTypeIsFinished = NO;
+            
+            if ([finishedTypeArr containsObject:index_string]) {
+                type.homeworkTypeIsFinished = YES;
+            }else {
+                type.homeworkTypeIsFinished = NO;
+            }
             [homeworkTypeList addObject:type];
+            type = nil;
         }
         
-        NSArray *finishedTypeArr = [taskDic objectForKey:@"finish_types"];
-        for (int index = 0; finishedTypeArr && index < finishedTypeArr.count; index++) {
-            HomeworkTypeObj *type = [[HomeworkTypeObj alloc] init];
-            type.homeworkType = [HomeworkDaoInterface convertTypeFromInt:[[finishedTypeArr objectAtIndex:index] intValue]];
-            type.homeworkTypeIsFinished = YES;
-            [homeworkTypeList addObject:type];
-        }
         taskObj.taskHomeworkTypeArray = homeworkTypeList;
         
         //道具

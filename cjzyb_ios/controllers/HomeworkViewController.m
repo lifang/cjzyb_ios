@@ -63,20 +63,7 @@
     }
     return self;
 }
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.isShowHistory = NO;
-    [self.collectionView registerClass:[HomeworkHistoryCollectionCell class] forCellWithReuseIdentifier:@"cell"];
-    [self.flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    [self.flowLayout setItemSize:(CGSize){CGRectGetWidth(self.collectionView.frame),CGRectGetHeight(self.collectionView.frame)}];
-    [self.flowLayout setMinimumInteritemSpacing:0];
-    [self.flowLayout setMinimumLineSpacing:0];
-//    [self.flowLayout setSectionInset:UIEdgeInsetsMake(0, 10, 0, 10)];
-    [self.flowLayout setSectionInset:UIEdgeInsetsZero];
-    [self.collectionView setCollectionViewLayout:self.flowLayout];
-    
+-(void)getHomeworkData {
     __weak HomeworkViewController *weakSelf = self;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     DataService *data = [DataService sharedService];
@@ -96,7 +83,28 @@
             [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
         }
     }];
-    // Do any additional setup after loading the view from its nib.
+}
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.isShowHistory = NO;
+    [self.collectionView registerClass:[HomeworkHistoryCollectionCell class] forCellWithReuseIdentifier:@"cell"];
+//    [self.flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    [self.flowLayout setItemSize:(CGSize){CGRectGetWidth(self.collectionView.frame),CGRectGetHeight(self.collectionView.frame)}];
+    [self.flowLayout setMinimumInteritemSpacing:0];
+    [self.flowLayout setMinimumLineSpacing:0];
+    [self.flowLayout setSectionInset:UIEdgeInsetsZero];
+    [self.collectionView setCollectionViewLayout:self.flowLayout];
+    
+    [self getHomeworkData];
+    
+    //下拉刷新
+    __block HomeworkViewController *homeworkView = self;
+    __block UICollectionView *collect = self.collectionView;
+    [_collectionView addPullToRefreshWithActionHandler:^{
+        [homeworkView getHomeworkData];
+        [collect.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -210,10 +218,12 @@
 
 #pragma mark UIAlertViewDelegate
 -(void)postNotification {
+    if (![[self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]isKindOfClass:[NSNull class]] && [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]!=nil) {
     NSArray *array = [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId];
     NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:array];
     [mutableArray replaceObjectAtIndex:2 withObject:@"0"];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:mutableArray];
+    }
 }
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     __block TaskObj *task = [DataService sharedService].taskObj;
@@ -225,7 +235,9 @@
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
                 ;
                 NSDictionary *dicData = [Utility downloadQuestionWithAddress:task.taskFileDownloadURL andStartDate:task.taskStartDate];
-                [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                if (![task.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && task.taskAnswerFileDownloadURL.length>10) {
+                    [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if (!dicData || dicData.count <= 0) {
                         [MBProgressHUD hideHUDForView:app.window animated:YES];
@@ -257,7 +269,25 @@
     }
 }
 #pragma mark --
-
+-(void)showAlertWith:(HomeworkTypeObj *)typeObj {
+    //判断卡包
+    if ([DataService sharedService].cardsCount >20) {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        alert.tag = 999;
+        [alert show];
+    }else {
+        if (typeObj.homeworkTypeIsFinished) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
+            alert.tag = 1001;
+            [alert show];
+        }else{
+            [DataService sharedService].isHistory = NO;
+            [self presentViewController:self.homeworkContainer animated:YES completion:^{
+                [self.selectedDailyController.collectionView reloadData];
+            }];
+        }
+    }
+}
 #pragma mark HomeworkDailyCollectionViewControllerDelegate每一个题目类型cell代理
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller didSelectedAtIndexPath:(NSIndexPath *)path{
     HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
@@ -271,9 +301,12 @@
     self.homeworkContainer = homeworkContainer;
     homeworkContainer.spendSecond = 0;
     
-    if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {
-        if (![task.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && task.taskAnswerFileDownloadURL.length>5) {
-            if (![Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task withUserId:[DataService sharedService].user.userId]) {
+    if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {//存在question
+        NSInteger status = [Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task];
+        //0:不存在answer文件   1:存在不是最新的  2:最新的
+        if (status == 0) {
+            if (![task.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && task.taskAnswerFileDownloadURL.length>10) {
+                //answer的下载地址
                 AppDelegate *app = [AppDelegate shareIntance];
                 __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
                 progress.labelText = @"正在更新历史记录包，请稍后...";
@@ -284,7 +317,7 @@
                             [Utility errorAlert:@"下载历史记录包失败"];
                         }else{
                             if (typeObj.homeworkTypeIsFinished) {
-                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
+                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
                                 alert.tag = 1001;
                                 [alert show];
                             }else{
@@ -297,25 +330,82 @@
                         [MBProgressHUD hideHUDForView:app.window animated:YES];
                     });
                 });
+            }else {
+                //判断卡包
+                if ([DataService sharedService].cardsCount >20) {
+                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    alert.tag = 999;
+                    [alert show];
+                }else {
+                    if (typeObj.homeworkTypeIsFinished) {
+                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
+                        alert.tag = 1001;
+                        [alert show];
+                    }else{
+                        [DataService sharedService].isHistory = NO;
+                        [self presentViewController:homeworkContainer animated:YES completion:^{
+                            [self.selectedDailyController.collectionView reloadData];
+                        }];
+                    }
+                }
             }
+        }else if (status==1) {
+            AppDelegate *app = [AppDelegate shareIntance];
+            __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
+            progress.labelText = @"正在更新历史记录包，请稍后...";
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (!dicData || dicData.count <= 0) {
+                        [Utility errorAlert:@"下载历史记录包失败"];
+                    }else{
+                        //判断卡包
+                        if ([DataService sharedService].cardsCount >20) {
+                            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                            alert.tag = 999;
+                            [alert show];
+                        }else {
+                            if (typeObj.homeworkTypeIsFinished) {
+                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
+                                alert.tag = 1001;
+                                [alert show];
+                            }else{
+                                [DataService sharedService].isHistory = NO;
+                                [self presentViewController:homeworkContainer animated:YES completion:^{
+                                    [self.selectedDailyController.collectionView reloadData];
+                                }];
+                            }
+                        }
+                    }
+                    [MBProgressHUD hideHUDForView:app.window animated:YES];
+                });
+            });
         }else {
-            if (typeObj.homeworkTypeIsFinished) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"" delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
-                alert.tag = 1001;
-                [alert show];
-            }else{
-                [DataService sharedService].isHistory = NO;
-                [self presentViewController:homeworkContainer animated:YES completion:^{
-                    [self.selectedDailyController.collectionView reloadData];
-                }];
+            NSString *path = [Utility returnPath];
+            NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
+            NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
+            NSError *error = nil;
+            Class JSONSerialization = [Utility JSONParserClass];
+            NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
+            int isSuccess = [[dataObject objectForKey:@"isSuccessToUpload"]integerValue];
+            if (isSuccess == 1) {
+                [self showAlertWith:typeObj];
+            }else {
+                if (self.appDel.isReachable == NO) {
+                    [Utility errorAlert:@"暂无网络!"];
+                }else {
+                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    self.postInter = [[BasePostInterface alloc]init];
+                    self.postInter.delegate = self;
+                    [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
+                }
             }
         }
     }else{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"下载作业包才能开始答题" delegate:self cancelButtonTitle:nil otherButtonTitles:@"下载作业包",@"取消下载" ,nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"下载作业包才能开始答题" delegate:self cancelButtonTitle:nil otherButtonTitles:@"下载作业包",@"取消下载" ,nil];
         alert.tag = 1000;
         [alert show];
     }
-
 }
 
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller rankingButtonClickedAtIndexPath:(NSIndexPath *)path{
@@ -416,5 +506,23 @@
     }
     return _allHistoryTaskArray;
 }
+#pragma mark
+#pragma mark - PostDelegate
+-(void)getPostInfoDidFinished:(NSDictionary *)result {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            NSString *timeStr = [result objectForKey:@"updated_time"];
+            [Utility returnAnswerPAthWithString:timeStr];
+            [self getHomeworkData];
+        });
+    });
+}
+-(void)getPostInfoDidFailed:(NSString *)errorMsg {
+    [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+    [Utility errorAlert:errorMsg];
+    [Utility uploadFaild];
+}
+
 #pragma mark --
 @end

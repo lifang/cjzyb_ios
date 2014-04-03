@@ -166,18 +166,19 @@
 
 #pragma mark -- 请求接口
 -(void)postNotification {
-    NSArray *array = [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId];
-    NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:array];
-    [mutableArray replaceObjectAtIndex:0 withObject:@"0"];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:mutableArray];
+    if (![[self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]isKindOfClass:[NSNull class]] && [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]!=nil) {
+        NSArray *array = [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId];
+        NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:array];
+        [mutableArray replaceObjectAtIndex:0 withObject:@"0"];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:mutableArray];
+    }
 }
 //请求接口,获取系统通知
 -(void)requestSysNoticeWithStudentID:(NSString *)studentID andClassID:(NSString *)classID andPage:(NSString *)page{
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
             //请求系统通知
-            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",studentID,classID,page];
-//            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",@"1",@"1",page];
+            NSString *str = [NSString stringWithFormat:@"%@/api/students/get_sys_message?student_id=%@&school_class_id=%@&page=%@",kHOST,studentID,classID,page];
             NSURL *url = [NSURL URLWithString:str];
             NSURLRequest *request = [NSURLRequest requestWithURL:url];
             if (page.integerValue == 1) {
@@ -237,7 +238,7 @@
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
             //请求系统通知
-            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/delete_sys_message?user_id=%@&school_class_id=%@&sys_message_id=%@",studentID,classID,noticeID];
+            NSString *str = [NSString stringWithFormat:@"%@/api/students/delete_sys_message?user_id=%@&school_class_id=%@&sys_message_id=%@",kHOST,studentID,classID,noticeID];
             NSURL *url = [NSURL URLWithString:str];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
             [request setHTTPMethod:@"POST"];

@@ -206,6 +206,7 @@ typedef NSUInteger SVPullToRefreshState;
         case SVPullToRefreshStateLoading:
             titleLabel.text = NSLocalizedString(@"更新中...",);
             [self.activityIndicatorView startAnimating];
+            
             [self setScrollViewContentInset:UIEdgeInsetsMake(self.frame.origin.y*-1+self.originalScrollViewContentInset.top, 0, 0, 0)];
             [self rotateArrow:0 hide:YES];
             if(actionHandler)

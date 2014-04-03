@@ -426,9 +426,8 @@ static NSInteger tmpPage = 0;
     CardObject *card = [self.cardArray objectAtIndex:tag];
     
     self.appDel.player = nil;
-    self.appDel.player = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:@"http://58.240.210.42:3004/question_packages/17/questions_package_263/media_532.mp3"]];
-//    self.appDel.player = [[MPMoviePlayerController alloc]
-//                          initWithContentURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://58.240.210.42:3004%@",card.resource_url]]];
+    self.appDel.player = [[MPMoviePlayerController alloc]
+                          initWithContentURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,card.resource_url]]];
     [self.appDel.player play];
     [self.arrSelSection addObject:[NSString stringWithFormat:@"%d",tag]];
 }

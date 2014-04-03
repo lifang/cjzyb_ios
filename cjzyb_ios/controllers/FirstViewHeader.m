@@ -163,7 +163,7 @@
     }else {
         [self.focusButton setImage:[UIImage imageNamed:@"focusBtn"] forState:UIControlStateNormal];
     }
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://58.240.210.42:3004%@",aMessage.headUrl]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,aMessage.headUrl]];
     [self.headImg setImageWithURL:url placeholderImage:[UIImage imageNamed:@"commentBtn"]];
 }
 

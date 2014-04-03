@@ -18,7 +18,7 @@
     [reqheaders setValue:[NSString stringWithFormat:@"%@",classId] forKey:@"school_class_id"];
     [reqheaders setValue:[NSString stringWithFormat:@"%@",userId] forKey:@"student_id"];
     
-    self.interfaceUrl = @"http://58.240.210.42:3004/api/students/get_class_info";
+    self.interfaceUrl =[NSString stringWithFormat:@"%@/api/students/get_class_info",kHOST];
 
     self.baseDelegate = self;
     self.headers = reqheaders;

@@ -86,7 +86,7 @@
 +(NSString*)formateDateStringWithDateString:(NSString*)dateString;
 
 ///判断answer json文件是否是最新的版本
-+(BOOL)judgeAnswerJsonFileIsLastVersionForTaskObj:(TaskObj*)task withUserId:(NSString*)userId;
++(NSInteger)judgeAnswerJsonFileIsLastVersionForTaskObj:(TaskObj*)task;
 
 ///判断question文件是否已经下载
 +(BOOL)judgeQuestionJsonFileIsExistForTaskObj:(TaskObj*)task;
@@ -111,4 +111,6 @@
 + (NSString *)isExistenceNetwork;
 +(void)returnAnswerPAthWithString:(NSString *)str;
 +(NSString *)returnPath;
++(NSString *)returnTypeOfQuestionWithString:(NSString *)str;
++(void)uploadFaild;
 @end

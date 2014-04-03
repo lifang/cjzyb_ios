@@ -20,7 +20,7 @@
     
     if (type==1) {
         [reqheaders setValue:[NSString stringWithFormat:@"%@",messageId] forKey:@"micropost_id"];
-        self.interfaceUrl = @"http://58.240.210.42:3004/api/students/delete_posts";
+        self.interfaceUrl = [NSString stringWithFormat:@"%@/api/students/delete_posts",kHOST];
         
         self.baseDelegate = self;
         self.headers = reqheaders;
@@ -28,7 +28,7 @@
         [self connectWithMethod:@"GET"];
     }else {
         [reqheaders setValue:[NSString stringWithFormat:@"%@",messageId] forKey:@"reply_micropost_id"];
-        self.interfaceUrl = @"http://58.240.210.42:3004/api/students/delete_reply_microposts";
+        self.interfaceUrl =[NSString stringWithFormat:@"%@/api/students/delete_reply_microposts",kHOST];
         
         self.baseDelegate = self;
         self.headers = reqheaders;

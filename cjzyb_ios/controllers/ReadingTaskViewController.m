@@ -680,7 +680,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
             tip = @"你的发音真的很不错哦,让我们再来读读其它的句子吧！";
         }else
         {
-            tip = @"看到橙色的这些词了吗,你的发音还不够标准哦,在来试试吧！";
+            tip = @"看到红色的这些词了吗,你的发音还不够标准哦,在来试试吧！";
         }
         if (self.readingCount <= 1 && self.isFirst) {//计入成绩
             __weak ReadingTaskViewController *weakSelf = self;

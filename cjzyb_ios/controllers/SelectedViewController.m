@@ -193,12 +193,7 @@ static BOOL isCanUpLoad = NO;
         if (status == 1) {
             
         }else {
-            //判断卡包
-            if ([DataService sharedService].cardsCount >20) {
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
-                alert.tag = 999;
-                [alert show];
-            }else {
+           
                 self.isFirst= YES;
                 if ([DataService sharedService].number_reduceTime>0) {
                     self.homeControl.reduceTimeButton.enabled = YES;
@@ -213,7 +208,7 @@ static BOOL isCanUpLoad = NO;
                 NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
                 self.homeControl.timerLabel.text = timeStr;
             }
-        }
+        
         [self getQuestionData];
     }
     
@@ -280,10 +275,10 @@ static BOOL isCanUpLoad = NO;
         if (number_question >= self.number) {
             //表示已经做过这道题
         }else {
-            isCanUpLoad = YES;
-            
             if (self.number == self.questionArray.count-1) {
                 [self.answerDic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"status"];
+                NSString *str = [Utility returnTypeOfQuestionWithString:CLOZE];
+                [[DataService sharedService].taskObj.finish_types addObject:str];
             }
             NSString *time = [Utility getNowDateFromatAnDate];
             [self.answerDic setObject:time forKey:@"update_time"];
@@ -319,6 +314,7 @@ static BOOL isCanUpLoad = NO;
             [self.answerDic setObject:questions forKey:@"questions"];
             
             [Utility returnAnswerPathWithDictionary:self.answerDic andName:CLOZE andDate:[DataService sharedService].taskObj.taskStartDate];
+            isCanUpLoad = YES;
         }
     }
 }
@@ -333,6 +329,12 @@ static BOOL isCanUpLoad = NO;
 }
 //结果
 -(void)showResultView {
+    for (HomeworkTypeObj *type in [DataService sharedService].taskObj.taskHomeworkTypeArray) {
+        if (type.homeworkType == self.homeControl.homeworkType) {
+            type.homeworkTypeIsFinished = YES;
+        }
+    }
+    
     NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
@@ -382,7 +384,7 @@ static BOOL isCanUpLoad = NO;
 -(void)finishQuestion:(id)sender {
     self.homeControl.appearCorrectButton.enabled=NO;
     self.homeControl.reduceTimeButton.enabled=NO;
-    self.checkHomeworkButton.enabled=NO;
+    
 
     if (self.isFirst==YES) {
         self.postNumber = 0;
@@ -409,7 +411,8 @@ static BOOL isCanUpLoad = NO;
             //上传answer.json文件之后返回的更新时间
             NSString *timeStr = [result objectForKey:@"updated_time"];
             [Utility returnAnswerPAthWithString:timeStr];
-            
+            self.checkHomeworkButton.enabled=NO;
+            isCanUpLoad=NO;
             if (self.postNumber==0) {
                 [self showResultView];
             }else {
@@ -423,6 +426,7 @@ static BOOL isCanUpLoad = NO;
 -(void)getPostInfoDidFailed:(NSString *)errorMsg {
     [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
     [Utility errorAlert:errorMsg];
+    [Utility uploadFaild];
 }
 
 #pragma mark
@@ -506,7 +510,7 @@ static BOOL isCanUpLoad = NO;
 }
 
 -(void)exitClozeView {
-    if (self.number == self.questionArray.count-1) {
+    if (self.isFirst==NO) {
         [self.homeControl dismissViewControllerAnimated:YES completion:nil];
     }else {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
@@ -532,8 +536,6 @@ static BOOL isCanUpLoad = NO;
                 [self.homeControl dismissViewControllerAnimated:YES completion:nil];
             }
         }
-    }else {
-        [self.homeControl dismissViewControllerAnimated:YES completion:nil];
     }
 }
 @end

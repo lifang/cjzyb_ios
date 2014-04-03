@@ -42,7 +42,7 @@
 
 ///获取用户成就信息
 +(void)downloadUserAchievementWithUserId:(NSString*)userId withGradeID:(NSString*)gradeID withSuccess:(void(^)(int youxi,int xunsu,int jiezu,int jingzhun))success withFailure:(void(^)(NSError *error))failure{
-//    http://58.240.210.42:3004/api/students/get_my_archivements?school_class_id=83&student_id=73
+//    kHOST/api/students/get_my_archivements?school_class_id=83&student_id=73
     if (!userId || !gradeID || [[gradeID stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
         if (failure) {
             failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"请求参数不能为空"}]);

@@ -22,7 +22,7 @@
     [reqheaders setValue:[NSString stringWithFormat:@"%@",code] forKey:@"verification_code"];
     
     
-    self.interfaceUrl = @"http://58.240.210.42:3004/api/students/record_person_info";
+    self.interfaceUrl =[NSString stringWithFormat:@"%@/api/students/record_person_info",kHOST];
     
     self.baseDelegate = self;
     self.headers = reqheaders;

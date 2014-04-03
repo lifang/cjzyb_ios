@@ -10,7 +10,7 @@
 #import "UserObject.h"
 @implementation DownloadClassmatesInfo
 +(void)downloadClassmatesinfoWithUserId:(NSString*)userId withClassId:(NSString*)classID withSuccess:(void(^)(NSArray *classmatesArray))success withError:(void (^)(NSError *error))failure{
-//http://58.240.210.42:3004/api/students/get_classmates_info?student_id=74&school_class_id=90
+//kHOST/api/students/get_classmates_info?student_id=74&school_class_id=90
     if (!userId || !classID) {
         if (failure) {
             failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"请求参数不能为空"}]);

@@ -372,8 +372,8 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     
     NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:jsonPath];
-//    NSString *filePath = [documentDirectory stringByAppendingPathComponent:@"questions.json"];
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"question" ofType:@"json"];
+    NSString *filePath = [documentDirectory stringByAppendingPathComponent:@"questions.json"];
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"question" ofType:@"json"];
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:0 error:&jsonParsingError];
     return dataObject;
 }
@@ -412,8 +412,9 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 
 ///判断answer json文件是否是最新的版本
-+(BOOL)judgeAnswerJsonFileIsLastVersionForTaskObj:(TaskObj*)task withUserId:(NSString*)userId{
-    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,userId?:@""];
+//0:不存在answer文件   1:存在不是最新的  2:最新的
++(NSInteger)judgeAnswerJsonFileIsLastVersionForTaskObj:(TaskObj*)task{
+    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId];
     NSFileManager *manager = [NSFileManager defaultManager];
     if ([manager fileExistsAtPath:path isDirectory:NO]) {
         NSError *jsonParsingError = nil;
@@ -424,12 +425,12 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSDate *taskUpdteDate = [Utility getDateFromDateString:task.taskAnswerFileUpdateDate];
             NSDate *fileUpDate = [Utility getDateFromDateString:updateDate];
             if ([taskUpdteDate compare:fileUpDate] == NSOrderedSame) {
-                return YES;
+                return 2;
             }
         }
-        return NO;
+        return 1;
     }
-    return NO;
+    return 0;
 }
 
 ///判断question文件是否已经下载
@@ -441,7 +442,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     }
     return NO;
 }
-
 +(BOOL)requestFailure:(NSError*)error tipMessageBlock:(void(^)(NSString *tipMsg))msg{
     if (!error) {
         msg(@"无法连接服务器");
@@ -1531,7 +1531,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 //TODO:请求当天题目 (未下载,由用户点击"确定"后下载)
 + (NSString *)getTodayNewestQuestionPackage{
     __block NSString *returnMsg;
-    NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_newer_task?student_id=%@&school_class_id=%@",[DataService sharedService].user.studentId,[DataService sharedService].theClass.classId];
+    NSString *str = [NSString stringWithFormat:@"%@/api/students/get_newer_task?student_id=%@&school_class_id=%@",kHOST,[DataService sharedService].user.studentId,[DataService sharedService].theClass.classId];
     NSURL *url = [NSURL URLWithString:str];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
@@ -1557,7 +1557,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 //TODO:请求历史题目  (并下载)
 + (NSString *)getHistoryQuestionPackage{
     __block NSString *returnMsg;
-    NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_more_tasks?student_id=%@&school_class_id=%@",[DataService sharedService].user.studentId,[DataService sharedService].theClass.classId];
+    NSString *str = [NSString stringWithFormat:@"%@/api/students/get_more_tasks?student_id=%@&school_class_id=%@",kHOST,[DataService sharedService].user.studentId,[DataService sharedService].theClass.classId];
     NSURL *url = [NSURL URLWithString:str];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
@@ -1575,7 +1575,9 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             
             //下载answer和question?
             [Utility downloadQuestionWithAddress:taskObj.taskFileDownloadURL andStartDate:taskObj.taskStartDate];
-            [Utility downloadAnswerWithAddress:taskObj.taskAnswerFileDownloadURL andStartDate:taskObj.taskStartDate];
+            if (![taskObj.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && taskObj.taskAnswerFileDownloadURL.length>10) {
+                [Utility downloadAnswerWithAddress:taskObj.taskAnswerFileDownloadURL andStartDate:taskObj.taskStartDate];
+            }
         }
         returnMsg = @"读取成功";
     } withFailure:^(NSError *error) {
@@ -1642,10 +1644,8 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSString *answerPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     NSError *error;
     NSData *answerData;
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd hh:mm:ss"];
     //下载文件
-    NSString *fullAdress = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",address];
+    NSString *fullAdress = [NSString stringWithFormat:@"%@%@",kHOST,address];
     answerData = [NSData dataWithContentsOfURL:[NSURL URLWithString:fullAdress] options:NSDataReadingMappedIfSafe error:&error];
     if (!error) {
         //此处认为下载的answerXXX.js自带update字段,故不必添加该字段
@@ -1657,74 +1657,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:answerData options:NSJSONReadingAllowFragments error:&error];
     return jsonDic;
 }
-
-//    if ([manager fileExistsAtPath:path]) {
-//        answerData = [NSData dataWithContentsOfFile:path];
-//        NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:answerData options:NSJSONReadingAllowFragments error:&error];
-//        NSMutableArray *localFinishedChallenges = [NSMutableArray array];
-//        {
-//            NSDictionary *dic = [jsonDic objectForKey:@"listening"];
-//            NSString *status = [dic objectForKey:@"status"];
-//            if ([status isEqualToString:@"1"]) {
-//                [localFinishedChallenges addObject:@"0"];
-//            }
-//        }
-//        {
-//            NSDictionary *dic = [jsonDic objectForKey:@"reading"];
-//            NSString *status = [dic objectForKey:@"status"];
-//            if ([status isEqualToString:@"1"]) {
-//                [localFinishedChallenges addObject:@"1"];
-//            }
-//        }
-//        {
-//            NSDictionary *dic = [jsonDic objectForKey:@"time_limit"];
-//            NSString *status = [dic objectForKey:@"status"];
-//            if ([status isEqualToString:@"1"]) {
-//                [localFinishedChallenges addObject:@"2"];
-//            }
-//        }
-//        {
-//            NSDictionary *dic = [jsonDic objectForKey:@"selecting"];
-//            NSString *status = [dic objectForKey:@"status"];
-//            if ([status isEqualToString:@"1"]) {
-//                [localFinishedChallenges addObject:@"3"];
-//            }
-//        }
-//        {
-//            NSDictionary *dic = [jsonDic objectForKey:@"lining"];
-//            NSString *status = [dic objectForKey:@"status"];
-//            if ([status isEqualToString:@"1"]) {
-//                [localFinishedChallenges addObject:@"4"];
-//            }
-//        }
-//        {
-//            NSDictionary *dic = [jsonDic objectForKey:@"cloze"];
-//            NSString *status = [dic objectForKey:@"status"];
-//            if ([status isEqualToString:@"1"]) {
-//                [localFinishedChallenges addObject:@"5"];
-//            }
-//        }
-//        {
-//            NSDictionary *dic = [jsonDic objectForKey:@"sort"];
-//            NSString *status = [dic objectForKey:@"status"];
-//            if ([status isEqualToString:@"1"]) {
-//                [localFinishedChallenges addObject:@"6"];
-//            }
-//        }
-//        for(NSNumber *number in [DataService sharedService].taskObj.finish_types){
-//            //如果服务器上有本地未完成的答案
-//            if(![localFinishedChallenges containsObject:[NSString stringWithFormat:@"%d",number.integerValue]]){
-//                answerData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.taskAnswerFileDownloadURL]];
-//                [answerData writeToFile:path atomically:YES]; //保存文件,并返回JSON 字典
-//                break;
-//            };
-//        }
-//    }else{
-//        answerData =  [NSData dataWithContentsOfURL:[NSURL URLWithString:[DataService sharedService].taskObj.taskAnswerFileDownloadURL]];
-//        [answerData writeToFile:path atomically:YES]; //保存文件,并返回JSON 字典
-//    }
-
-
 
 //添加不用备份的属性5.0.1
 + (BOOL)addSkipBackupAttributeToItemAtURL:(NSURL *)URL
@@ -1780,6 +1712,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         }else {
             NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
             [dic setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"status"];
+            [dic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"isSuccessToUpload"];
             NSString *time = [Utility getNowDateFromatAnDate];
             [dic setObject:time forKey:@"update_time"];
             [dic setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"questions_item"];
@@ -1829,9 +1762,6 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 //TODO:保存答案
 +(void)returnAnswerPathWithDictionary:(NSDictionary *)aDic andName:(NSString *)name andDate:(NSString *)timeString{
     
-    NSString *str = [Utility returnTypeOfQuestionWithString:name];
-    [[DataService sharedService].taskObj.finish_types addObject:str];
-    
     NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:timeString];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
@@ -1842,6 +1772,8 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
     if ([DataService sharedService].taskObj.finish_types.count == [DataService sharedService].taskObj.taskHomeworkTypeArray.count) {
         [answerDic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"status"];
+    }else {
+        [answerDic setObject:[NSString stringWithFormat:@"%d",0] forKey:@"status"];
     }
     [answerDic setObject:[DataService sharedService].taskObj.taskID forKey:@"pub_id"];
     [answerDic setObject:aDic forKey:name];
@@ -1908,16 +1840,30 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
     NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
     [answerDic setObject:str forKey:@"update"];
+    [answerDic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"isSuccessToUpload"];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
     [jsonData writeToFile:jsPath atomically:YES];
 }
-
+//TODO:上传失败
++(void)uploadFaild {
+    NSString *path = [Utility returnPath];
+    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
+    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
+    
+    NSError *error = nil;
+    Class JSONSerialization = [Utility JSONParserClass];
+    NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
+    NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
+    [answerDic setObject:[NSString stringWithFormat:@"%d",0] forKey:@"isSuccessToUpload"];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
+    [jsonData writeToFile:jsPath atomically:YES];
+}
 
 //比较时间
 +(BOOL)compareTime {
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"yyyy-MM-ddTHH:mm:ss";
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
     NSDate *endDate = [dateFormatter dateFromString:[DataService sharedService].taskObj.taskEndDate];
     

@@ -176,18 +176,20 @@
 
 #pragma mark -- 请求接口
 -(void)postNotification {
+    if (![[self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]isKindOfClass:[NSNull class]] && [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]!=nil) {
     NSArray *array = [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId];
     NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:array];
     [mutableArray replaceObjectAtIndex:1 withObject:@"0"];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:mutableArray];
+    }
 }
 //请求接口,获取回复通知
 -(void)requestMyNoticeWithUserID:(NSString *)userID andClassID:(NSString *)classID andPage:(NSString *)page{
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
             //请求回复通知
-            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",userID,classID,page];
-//            NSString *str1 = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",@"115",@"83",page];
+            NSString *str1 = [NSString stringWithFormat:@"%@/api/students/get_messages?user_id=%@&school_class_id=%@&page=%@",kHOST,userID,classID,page];
+
             NSURL *url1 = [NSURL URLWithString:str1];
             NSURLRequest *request1 = [NSURLRequest requestWithURL:url1];
             if (page.integerValue == 1) {
@@ -267,7 +269,7 @@
     [Utility judgeNetWorkStatus:^(NSString *networkStatus) {
         if (![@"NotReachable" isEqualToString:networkStatus]) {
             //请求系统通知
-            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/delete_message?user_id=%@&school_class_id=%@&message_id=%@",studentID,classID,noticeID];
+            NSString *str = [NSString stringWithFormat:@"%@/api/students/delete_message?user_id=%@&school_class_id=%@&message_id=%@",kHOST,studentID,classID,noticeID];
             NSURL *url = [NSURL URLWithString:str];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
             
@@ -314,7 +316,7 @@
                                                                                      NULL,
                                                                                      kCFStringEncodingUTF8));
             //请求系统通知
-            NSString *str = [NSString stringWithFormat:@"http://58.240.210.42:3004/api/students/reply_message?sender_id=%@&sender_types=%@&content=%@&school_class_id=%@&micropost_id=%@&reciver_id=%@&reciver_types=%@",senderID,senderType,originString,classID,microPostID,reciverID,reciverType];
+            NSString *str = [NSString stringWithFormat:@"%@/api/students/reply_message?sender_id=%@&sender_types=%@&content=%@&school_class_id=%@&micropost_id=%@&reciver_id=%@&reciver_types=%@",kHOST,senderID,senderType,originString,classID,microPostID,reciverID,reciverType];
             NSURL *url = [NSURL URLWithString:str];
             NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
             [request setHTTPMethod:@"POST"];
@@ -517,7 +519,7 @@
 //-(UIImage *)replyCell:(LHLReplyNotificationCell *)cell bufferedImageForAddress:(NSString *)address{
 //    NSData *imgData = [self.bufferedImageDic objectForKey:address];
 //    if (imgData == nil) {
-//        NSString *urlString = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",address];
+//        NSString *urlString = [NSString stringWithFormat:@"kHOST%@",address];
 //        NSURL *url = [NSURL URLWithString:urlString];
 //        imgData = [NSData dataWithContentsOfURL:url];
 //        if (imgData == nil) {

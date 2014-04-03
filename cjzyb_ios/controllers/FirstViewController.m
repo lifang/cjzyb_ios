@@ -699,13 +699,7 @@
 {
     NSString *string = self.textViewFirst.text;
     int wordcount = [self textLength:string];
-    
-	NSInteger count  = 60 - wordcount;
-    if (count<0) {
-        [self.textCountLabel setText:[NSString stringWithFormat:@"%i/60",60]];
-    }else {
-        [self.textCountLabel setText:[NSString stringWithFormat:@"%i/60",wordcount]];
-    }
+    [self.textCountLabel setText:[NSString stringWithFormat:@"%i/60",wordcount]];
 }
 
 #pragma mark

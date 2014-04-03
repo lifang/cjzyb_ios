@@ -175,7 +175,7 @@
     _timeLab.text = _aReplyMsg.created_at;
     _contentLab.text = _aReplyMsg.content;
     _nameToLab.text = _aReplyMsg.reciver_name;
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://58.240.210.42:3004%@",_aReplyMsg.sender_avatar_url]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,_aReplyMsg.sender_avatar_url]];
     [self.headImg setImageWithURL:url placeholderImage:[UIImage imageNamed:@"focusBtn_active"]];
 }
 #pragma mark -- 按钮及其点击事件

@@ -123,12 +123,8 @@
     NSString *string = self.txtView.text;
     int wordcount = [self textLength:string];
     
-	NSInteger count  = 60 - wordcount;
-    if (count<0) {
-        [self.textCountLabel setText:[NSString stringWithFormat:@"还可以输入%i个字",0]];
-    }else {
-        [self.textCountLabel setText:[NSString stringWithFormat:@"还可以输入%i个字",count]];
-    }
+    [self.textCountLabel setText:[NSString stringWithFormat:@"字数限制:%i/60",wordcount]];
+	
 }
 
 

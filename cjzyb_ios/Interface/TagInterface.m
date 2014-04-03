@@ -21,7 +21,7 @@
     [reqheaders setValue:[NSString stringWithFormat:@"%@",cardId] forKey:@"knowledge_card_id"];
     [reqheaders setValue:[NSString stringWithFormat:@"%@",name] forKey:@"name"];
 
-    self.interfaceUrl = @"http://58.240.210.42:3004/api/students/create_card_tag";
+    self.interfaceUrl =[NSString stringWithFormat:@"%@/api/students/create_card_tag",kHOST];
 
     self.baseDelegate = self;
     self.headers = reqheaders;
