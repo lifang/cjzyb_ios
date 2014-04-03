@@ -14,6 +14,7 @@
                 <outlet property="historyStartTaskLabel" destination="IeH-dx-jVw" id="qFG-wf-s44"/>
                 <outlet property="historyTopBackView" destination="YG3-2M-coV" id="Smy-ql-Jl6"/>
                 <outlet property="leftSwipButton" destination="rtv-uX-JGD" id="J68-Yh-ZGW"/>
+                <outlet property="refreshBtn" destination="zGJ-jH-TWe" id="1wu-x3-n6T"/>
                 <outlet property="rightSwipButton" destination="ocs-Me-VTz" id="i1y-W5-U7C"/>
                 <outlet property="startTaskTimeLabel" destination="sUK-eE-LR4" id="VOb-ki-XEc"/>
                 <outlet property="view" destination="2" id="3"/>
@@ -24,40 +25,6 @@
             <rect key="frame" x="0.0" y="0.0" width="768" height="960"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="Mez-ey-dvl" userLabel="currentTopView">
-                    <rect key="frame" x="0.0" y="0.0" width="768" height="85"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="发布时间为 18 : 30" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sUK-eE-LR4" userLabel="startTimeLabel - 发布时间为 18 : 30">
-                            <rect key="frame" x="0.0" y="5" width="234" height="27"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="今日作业截止时间为 18 : 30" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cze-z6-CHK" userLabel="endTimeLabel - 发布时间为 18 : 30">
-                            <rect key="frame" x="0.0" y="18" width="768" height="49"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="twA-3M-bMC" userLabel="historyButton">
-                            <rect key="frame" x="599.9999993556255" y="0.0" width="148" height="85"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <state key="normal" image="homework_history.png">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="historyButtonClicked:" destination="-1" eventType="touchUpInside" id="MqH-u1-b3J"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" red="0.97254908084869385" green="0.96862751245498657" blue="0.96862751245498657" alpha="1" colorSpace="deviceRGB"/>
-                </view>
                 <view contentMode="scaleToFill" id="YG3-2M-coV" userLabel="historyTopView">
                     <rect key="frame" x="0.0" y="0.0" width="768" height="85"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -144,6 +111,53 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
+                <view contentMode="scaleToFill" id="Mez-ey-dvl" userLabel="currentTopView">
+                    <rect key="frame" x="0.0" y="0.0" width="768" height="85"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="发布时间为 18 : 30" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sUK-eE-LR4" userLabel="startTimeLabel - 发布时间为 18 : 30">
+                            <rect key="frame" x="267" y="5" width="234" height="27"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="今日作业截止时间为 18 : 30" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cze-z6-CHK" userLabel="endTimeLabel - 发布时间为 18 : 30">
+                            <rect key="frame" x="0.0" y="18" width="768" height="49"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zGJ-jH-TWe" userLabel="refreshButton">
+                            <rect key="frame" x="20" y="0.0" width="148" height="85"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" image="homework_refresh.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="backButtonClicked:" destination="-1" eventType="touchUpInside" id="CtQ-IV-6cB"/>
+                                <action selector="refreshData:" destination="-1" eventType="touchUpInside" id="z9O-HB-31u"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="twA-3M-bMC" userLabel="historyButton">
+                            <rect key="frame" x="600" y="0.0" width="148" height="85"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" image="homework_history.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="historyButtonClicked:" destination="-1" eventType="touchUpInside" id="MqH-u1-b3J"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.97254908084869385" green="0.96862751245498657" blue="0.96862751245498657" alpha="1" colorSpace="deviceRGB"/>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.84313732389999996" green="0.83921575550000005" blue="0.83921575550000005" alpha="1" colorSpace="deviceRGB"/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
@@ -155,6 +169,7 @@
         <image name="homework_calendar.png" width="54" height="54"/>
         <image name="homework_history.png" width="54" height="54"/>
         <image name="homework_left.png" width="23" height="35"/>
+        <image name="homework_refresh.png" width="54" height="54"/>
         <image name="homework_right.png" width="23" height="35"/>
     </resources>
 </document>
