@@ -381,7 +381,9 @@
         }
     } withFailure:^(NSString *error) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"上传未成功" message:@"无法提交成绩,重试?" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"重试", nil];
-        [alert show];
+        dispatch_async(dispatch_get_main_queue(),^{
+            [alert show];
+        });
     }];
 }
 

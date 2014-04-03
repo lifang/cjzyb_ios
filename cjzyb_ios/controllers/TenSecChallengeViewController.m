@@ -127,7 +127,9 @@
             if (timesLeft.integerValue < 1) {
 //                [Utility errorAlert:@"今日挑战次数已经用完"];
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"抱歉" message:@"今日挑战次数已经用完" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:nil];
-                [alert show];
+                dispatch_async(dispatch_get_main_queue(),^{
+                    [alert show];
+                });
                 self.upperButton.enabled = NO;
                 self.lowerButton.enabled = NO;
                 [parentVC stopTimer];
@@ -215,7 +217,10 @@
         }
     } withFailure:^(NSString *error) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"上传未成功" message:@"无法提交成绩,重试?" delegate:self cancelButtonTitle:@"放弃" otherButtonTitles:@"重试", nil];
-        [alert show];
+        dispatch_async(dispatch_get_main_queue(),^{
+            [alert show];
+        });
+        
     }];
 }
 

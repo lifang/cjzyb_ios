@@ -192,6 +192,7 @@
                 if (self.isRefreshing) {
                     self.notificationArray = [NSMutableArray array];
                     self.pageOfNotification = 1;
+                    self.editingNotiCellIndexPath = nil;
                 }else{
                     self.pageOfNotification ++;
                 }

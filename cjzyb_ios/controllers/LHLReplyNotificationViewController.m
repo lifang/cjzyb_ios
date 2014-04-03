@@ -57,6 +57,7 @@
     [self addNotificationOb];
     
     [self.tableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
+    [self.replyInputTextView addObserver:self forKeyPath:@"contentSize" options:NSKeyValueObservingOptionNew context:nil];
     
     //下拉刷新
     __block LHLReplyNotificationViewController *replyVC = self;
@@ -201,6 +202,7 @@
                 if (self.isRefreshing) {
                     self.replyNotificationArray = [NSMutableArray array];
                     self.pageOfReplyNotification = 1;
+                    self.editingReplyCellIndexPath = nil;
                 }else{
                     self.pageOfReplyNotification ++;
                 }
@@ -274,10 +276,10 @@
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 self.isLoading = NO;
                 self.editingReplyCellIndexPath = nil;
-                [self.replyInputTextView resignFirstResponder];
                 [self.replyNotificationArray removeObjectAtIndex:self.deletingIndexPath.row];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
+                    [self.replyInputTextView resignFirstResponder];
                     [self.tableView deleteRowsAtIndexPaths:@[self.deletingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                     [UIView animateWithDuration:0.3 animations:^{
                         self.tableView.alpha = self.tableView.alpha == 1.0 ? 0.99 : 1.0;
@@ -409,7 +411,7 @@
     }
     [self.view addSubview:_replyInputBgView];
     [_replyInputTextView setFrame:(CGRect){20,4,688,40}];
-    _replyInputTextView.font = [UIFont systemFontOfSize:25.0];
+    _replyInputTextView.font = [UIFont systemFontOfSize:20.0];
     _replyInputTextView.layer.cornerRadius = 6.0;
     _replyInputTextView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _replyInputTextView.layer.borderWidth = 1.0;
@@ -421,6 +423,25 @@
 
 #pragma mark -- KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    //textView变动
+    if ([object isKindOfClass:[UITextView class]]) {
+        NSValue *contentSizeValue = [change objectForKey:@"new"];
+        CGSize contentSize;
+        [contentSizeValue getValue:&contentSize];
+        
+        CGFloat contentHeight = contentSize.height;//一行字30  加16起步  实际大小为加10
+        contentHeight = contentHeight > 46 ? contentHeight : 46;
+        contentHeight = contentHeight > 400 ? 400 : contentHeight;
+        CGFloat maxY = CGRectGetMaxY(self.replyInputBgView.frame);
+        CGFloat newHeightForBg = contentHeight + 4;
+        self.replyInputBgView.frame = (CGRect){self.replyInputBgView.frame.origin.x,maxY - newHeightForBg,self.replyInputBgView.frame.size.width,newHeightForBg};
+        self.characterCountLabel.frame = (CGRect){710,4,50,40};
+        self.replyInputTextView.frame = (CGRect){self.replyInputTextView.frame.origin , self.replyInputTextView.frame.size.width , contentHeight - 6};
+        self.replyInputTextView.contentOffset = CGPointMake(0, 0);
+        return;
+    }
+    
+    //分页加载
     if (self.isLoading) {
         return;
     }
@@ -516,7 +537,9 @@
         [self.replyInputTextView resignFirstResponder];
         self.replyingIndexPath = nil;
     }else{
-        [self makeReplyInputTextView];//TODO 看看行不行
+        if (self.replyInputTextView.text.length < 10) {
+            [self makeReplyInputTextView];//TODO 看看行不行
+        }
         [self.replyInputTextView becomeFirstResponder];
         self.replyingIndexPath = cell.indexPath;
     }
@@ -564,13 +587,6 @@
 #pragma mark -- uitextView Delegate
 -(void)textViewDidChange:(UITextView *)textView{
     [self calculateTextLength];
-    CGFloat contentHeight = textView.contentSize.height;//一行字30  加16起步  实际大小为加10
-    contentHeight = contentHeight > 46 ? contentHeight : 46;
-    CGFloat maxY = CGRectGetMaxY(self.replyInputBgView.frame);
-    CGFloat newHeightForBg = contentHeight + 4;
-    self.replyInputBgView.frame = (CGRect){self.replyInputBgView.frame.origin.x,maxY - newHeightForBg,self.replyInputBgView.frame.size.width,newHeightForBg};
-    self.characterCountLabel.frame = (CGRect){710,4,50,40};
-    self.replyInputTextView.frame = (CGRect){textView.frame.origin , textView.frame.size.width , contentHeight - 6};
 }
 
 -(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
