@@ -697,7 +697,7 @@ static BOOL isCanUpLoad = NO;
             tip = @"你的发音真的很不错哦,让我们再来读读其它的句子吧！";
         }else
         {
-            tip = @"看到橙色的这些词了吗,你的发音还不够标准哦,在来试试吧！";
+            tip = @"看到红色的这些词了吗,你的发音还不够标准哦,在来试试吧！";
         }
         NSMutableAttributedString *attriString = [[NSMutableAttributedString alloc]initWithString:tip];
         [attriString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0,tip.length)];

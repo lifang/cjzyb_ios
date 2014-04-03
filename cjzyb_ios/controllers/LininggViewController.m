@@ -267,6 +267,19 @@ static BOOL isCanUpLoad = NO;
         self.history_branchQuestionDic = [self.history_branchQuestionArray objectAtIndex:self.branchNumber];
         
         self.homeControl.rotioLabel.text = [NSString stringWithFormat:@"%d%%",[[self.history_branchQuestionDic objectForKey:@"ratio"] integerValue]];
+        NSMutableString *string = [NSMutableString string];
+        NSString *content = [self.history_branchQuestionDic objectForKey:@"answer"];
+        NSArray *array = [content componentsSeparatedByString:@";||;"];
+        for (int i=0; i<array.count; i++) {
+            NSString *str = [array objectAtIndex:i];
+            NSArray *subArray = [str componentsSeparatedByString:@"<=>"];
+            if (i==array.count-1) {
+                [string appendFormat:@"%@ %@",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+            }else {
+                [string appendFormat:@"%@ %@    ",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+            }
+        }
+        
         NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
         self.historyAnswer.text = [NSString stringWithFormat:@"你的排序: %@",txt];
         
@@ -309,12 +322,7 @@ static BOOL isCanUpLoad = NO;
         if (status == 1) {
             
         }else {
-            //判断卡包
-            if ([DataService sharedService].cardsCount >20) {
-                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
-                alert.tag = 999;
-                [alert show];
-            }else {
+            
                 self.isFirst= YES;
                 if ([DataService sharedService].number_reduceTime>0) {
                     self.homeControl.reduceTimeButton.enabled = YES;
@@ -339,7 +347,7 @@ static BOOL isCanUpLoad = NO;
                     self.homeControl.spendSecond = useTime;
                     NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
                     self.homeControl.timerLabel.text = timeStr;
-                }
+            
             }
         }
         [self getQuestionData];
@@ -377,10 +385,12 @@ static BOOL isCanUpLoad = NO;
             UIButton *leftBtn = (UIButton *)[self.wordsContainerView viewWithTag:tag_left];
             int tag_right = [[self.tmpRightArray objectAtIndex:i]integerValue];
             UIButton *rightBtn = (UIButton *)[self.wordsContainerView viewWithTag:tag_right];
-            NSString *textString = [NSString stringWithFormat:@"%@ %@",leftBtn.titleLabel.text,rightBtn.titleLabel.text];
-            [anserString appendFormat:@"%@    ",textString];
-
             NSString *text = [NSString stringWithFormat:@"%@<=>%@",leftBtn.titleLabel.text,rightBtn.titleLabel.text];
+            if (i==self.tmpLeftArray.count-1) {
+                [anserString appendFormat:@"%@",text];
+            }else {
+                [anserString appendFormat:@"%@;||;",text];
+            }
             NSRange range = [content rangeOfString:text];
             if (range.location == NSNotFound) {
                 leftBtn.backgroundColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
@@ -430,6 +440,8 @@ static BOOL isCanUpLoad = NO;
     isCanUpLoad = YES;
     if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
         [self.answerDic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"status"];
+        NSString *str = [Utility returnTypeOfQuestionWithString:LINING];
+        [[DataService sharedService].taskObj.finish_types addObject:str];
     }
     NSString *time = [Utility getNowDateFromatAnDate];
     [self.answerDic setObject:time forKey:@"update_time"];
@@ -542,10 +554,6 @@ static BOOL isCanUpLoad = NO;
             [self addLine];
         }
     }
-    DLog(@"left = %@",self.tmpLeftArray);
-    DLog(@"cancelleft = %@",self.cancelTmpLeftArray);
-    DLog(@"right = %@",self.tmpRightArray);
-    DLog(@"cancelright = %@",self.cancelTmpRightArray);
 }
 -(void)rightButtonSelected:(id)sender {
     UIButton *btn= (UIButton *)sender;
@@ -596,10 +604,6 @@ static BOOL isCanUpLoad = NO;
             [self addLine];
         }
     }
-    DLog(@"left = %@",self.tmpLeftArray);
-    DLog(@"cancelleft = %@",self.cancelTmpLeftArray);
-    DLog(@"right = %@",self.tmpRightArray);
-    DLog(@"cancelright = %@",self.cancelTmpRightArray);
 }
 //TODO:取消选中-------------------------------------------------
 -(void)leftButtonCancelSelected:(id)sender {
@@ -669,10 +673,6 @@ static BOOL isCanUpLoad = NO;
         [btn removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
         [btn addTarget:self action:@selector(leftButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
     }
-    DLog(@"left = %@",self.tmpLeftArray);
-    DLog(@"cancelleft = %@",self.cancelTmpLeftArray);
-    DLog(@"right = %@",self.tmpRightArray);
-    DLog(@"cancelright = %@",self.cancelTmpRightArray);
 }
 -(void)rightButtonCancelSelected:(id)sender {
     UIButton *btn= (UIButton *)sender;
@@ -742,10 +742,6 @@ static BOOL isCanUpLoad = NO;
         [btn removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
         [btn addTarget:self action:@selector(rightButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
     }
-    DLog(@"left = %@",self.tmpLeftArray);
-    DLog(@"cancelleft = %@",self.cancelTmpLeftArray);
-    DLog(@"right = %@",self.tmpRightArray);
-    DLog(@"cancelright = %@",self.cancelTmpRightArray);
 }
 
 -(void)nextQuestion:(id)sender {
@@ -764,6 +760,12 @@ static BOOL isCanUpLoad = NO;
 }
 //结果
 -(void)showResultView {
+    for (HomeworkTypeObj *type in [DataService sharedService].taskObj.taskHomeworkTypeArray) {
+        if (type.homeworkType == self.homeControl.homeworkType) {
+            type.homeworkTypeIsFinished = YES;
+        }
+    }
+    
     NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
@@ -812,7 +814,6 @@ static BOOL isCanUpLoad = NO;
 -(void)finishQuestion:(id)sender {
     self.homeControl.appearCorrectButton.enabled=NO;
     self.homeControl.reduceTimeButton.enabled=NO;
-    self.checkHomeworkButton.enabled=NO;
     if (self.isFirst==YES) {
         self.postNumber = 0;
         if (self.appDel.isReachable == NO) {
@@ -1022,7 +1023,8 @@ static BOOL isCanUpLoad = NO;
             //上传answer.json文件之后返回的更新时间
             NSString *timeStr = [result objectForKey:@"updated_time"];
             [Utility returnAnswerPAthWithString:timeStr];
-            
+            self.checkHomeworkButton.enabled=NO;
+            isCanUpLoad=NO;
             if (self.postNumber==0) {
                 [self showResultView];
             }else {
@@ -1036,11 +1038,12 @@ static BOOL isCanUpLoad = NO;
 -(void)getPostInfoDidFailed:(NSString *)errorMsg {
     [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
     [Utility errorAlert:errorMsg];
+    [Utility uploadFaild];
 }
 
 
 -(void)exitLiningView {
-    if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
+    if (self.isFirst==NO) {
         [self.homeControl dismissViewControllerAnimated:YES completion:nil];
     }else {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
@@ -1067,8 +1070,6 @@ static BOOL isCanUpLoad = NO;
                 [self.homeControl dismissViewControllerAnimated:YES completion:nil];
             }
         }
-    }else {
-        [self.homeControl dismissViewControllerAnimated:YES completion:nil];
     }
 }
 @end

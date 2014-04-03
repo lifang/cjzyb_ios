@@ -96,7 +96,7 @@
     
     //头像
     [self roundView:self.drNavigationBar.userHeaderImage];
-    [self.drNavigationBar.userHeaderImage setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://58.240.210.42:3004%@",[DataService sharedService].user.headUrl]] placeholderImage:[UIImage imageNamed:@""]];
+    [self.drNavigationBar.userHeaderImage setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,[DataService sharedService].user.headUrl]] placeholderImage:[UIImage imageNamed:@""]];
     //用户名
     self.drNavigationBar.userNameLabel.text = [DataService sharedService].user.nickName;
     
@@ -406,7 +406,7 @@
 #pragma mark VPImageCropperDelegate
 - (void)imageCropper:(VPImageCropperViewController *)cropperViewController didFinished:(UIImage *)editedImage {
     [cropperViewController dismissViewControllerAnimated:YES completion:^{
-        NSString *string = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",[DataService sharedService].user.headUrl];
+        NSString *string = [NSString stringWithFormat:@"%@%@",kHOST,[DataService sharedService].user.headUrl];
         [[SDImageCache sharedImageCache] removeImageForKey:string];
         
         DataService *data = [DataService sharedService];

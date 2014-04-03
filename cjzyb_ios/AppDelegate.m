@@ -126,7 +126,7 @@
         LHLNotificationContainerVC *notificationView = [[LHLNotificationContainerVC alloc]initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
         CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
         DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-        tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
+        tabBarController.childenControllerArray = @[homework,main,notificationView,cardView];
         
         tabBarController.currentPage = self.notification_type;
         
@@ -167,7 +167,7 @@
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
     //推送
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+     (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     
     //表示app是登录状态
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];

@@ -20,9 +20,9 @@
     [reqheaders setValue:[NSString stringWithFormat:@"%@",userId] forKey:@"user_id"];
     self.type = type;
     if (type == 0) {//取消关注
-        self.interfaceUrl = @"http://58.240.210.42:3004/api/students/unfollow";
+        self.interfaceUrl =[NSString stringWithFormat:@"%@/api/students/unfollow",kHOST];
     }else {//关注
-        self.interfaceUrl = @"http://58.240.210.42:3004/api/students/add_concern";
+        self.interfaceUrl =[NSString stringWithFormat:@"%@/api/students/add_concern",kHOST];
     }
     
     self.baseDelegate = self;

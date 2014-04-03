@@ -21,7 +21,7 @@
     [reqheaders setValue:[NSString stringWithFormat:@"%@",qq] forKey:@"open_id"];
     [reqheaders setValue:[NSString stringWithFormat:@"%@",appDel.pushstr] forKey:@"token"];
 
-    self.interfaceUrl = @"http://58.240.210.42:3004/api/students/login";
+    self.interfaceUrl =[NSString stringWithFormat:@"%@/api/students/login",kHOST];
 
     self.baseDelegate = self;
     self.headers = reqheaders;

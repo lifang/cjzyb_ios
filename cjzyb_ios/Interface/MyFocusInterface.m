@@ -20,7 +20,7 @@
     [reqheaders setValue:[NSString stringWithFormat:@"%@",userId] forKey:@"student_id"];
     [reqheaders setValue:[NSString stringWithFormat:@"%d",page] forKey:@"page"];
     
-    self.interfaceUrl = @"http://58.240.210.42:3004/api/students/get_follow_microposts";
+    self.interfaceUrl =[NSString stringWithFormat:@"%@/api/students/get_follow_microposts",kHOST];
     
     self.baseDelegate = self;
     self.headers = reqheaders;

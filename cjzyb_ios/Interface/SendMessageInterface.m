@@ -25,7 +25,7 @@
     [reqheaders setValue:[NSString stringWithFormat:@"%@",content] forKey:@"content"];
     
     self.type = type;
-    self.interfaceUrl = @"http://58.240.210.42:3004/api/students/reply_message";
+    self.interfaceUrl =[NSString stringWithFormat:@"%@/api/students/reply_message",kHOST];
     
 
     self.baseDelegate = self;

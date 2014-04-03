@@ -15,13 +15,14 @@
     NSString *documentDirectory = [path stringByAppendingPathComponent:jsonPath];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:@"http://58.240.210.42:3004/api/students/finish_question_packge"]];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/api/students/finish_question_packge",kHOST]]];
+
     [request setPostValue:[DataService sharedService].user.studentId forKey:@"student_id"];
     [request setPostValue:[DataService sharedService].theClass.classId forKey:@"school_class_id"];
     [request setPostValue:[DataService sharedService].taskObj.taskID forKey:@"publish_question_package_id"];
     
     [request setFile:jsPath forKey:@"answer_file"];
-    
+    [request setTimeOutSeconds:60];
     [request setDelegate:self];
     
     [request startAsynchronous];

@@ -156,7 +156,7 @@
 -(void)setInfomations:(ReplyNotificationObject *)reply{
     if (reply != nil) {
         self.replyObject = reply;
-        NSString *urlString = [NSString stringWithFormat:@"http://58.240.210.42:3004%@",reply.replyerImageAddress];
+        NSString *urlString = [NSString stringWithFormat:@"%@%@",kHOST,reply.replyerImageAddress];
         NSURL *url = [NSURL URLWithString:urlString];
         [_imgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"systemMessage.png"]];
         _replyerNameLabel.text = reply.replyerName;
@@ -181,7 +181,7 @@
 ////图像缓冲
 //- (UIImage *)bufferedImageForAddress:(NSString *)address{
 //    
-//    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://58.240.210.42:3004%@",address]]];
+//    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"kHOST%@",address]]];
 //    NSMutableDictionary *tempImageDic = [NSMutableDictionary dictionary];
 //    [tempImageDic setObject:imageData forKey:address];
 //    return nil;

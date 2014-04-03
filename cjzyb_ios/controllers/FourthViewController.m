@@ -283,13 +283,8 @@
 {
     NSString *string = self.textView.text;
     int wordcount = [self textLength:string];
-    
-	NSInteger count  = 250 - wordcount;
-    if (count<0) {
-        [self.textCountLabel setText:[NSString stringWithFormat:@"%i/60",60]];
-    }else {
-        [self.textCountLabel setText:[NSString stringWithFormat:@"%i/60",wordcount]];
-    }
+    [self.textCountLabel setText:[NSString stringWithFormat:@"%i/60",wordcount]];
+
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text

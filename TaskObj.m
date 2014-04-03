@@ -18,10 +18,9 @@
     [task setTaskStartDate:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"start_time"]]];
     [task setTaskEndDate:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"end_time"]]];
     [task setTaskFileDownloadURL:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"question_packages_url"]]];
-    [task setTaskHomeworkTypeArray:[NSArray arrayWithArray:[aDic objectForKey:@"question_types"]]];
     [task setFinish_types:[NSMutableArray arrayWithArray:[aDic objectForKey:@"finish_types"]]];
     [task setTaskAnswerFileDownloadURL:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"answer_url"]]];
-    
+    [task setTaskAnswerFileUpdateDate:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"updated_at"]]];
     if (task.taskStartDate.length > 0) {
         [task setTaskFolderPath:[[Utility returnPath] stringByAppendingPathComponent:task.taskStartDate]];
     }
