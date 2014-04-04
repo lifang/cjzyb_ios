@@ -243,7 +243,7 @@ static BOOL isCanUpLoad = NO;
     [self getQuestionData];
 }
 -(void)finishHistoryQuestion:(id)sender {
-    
+    [self.homeControl dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)getQuestionData {
@@ -266,7 +266,6 @@ static BOOL isCanUpLoad = NO;
         self.history_branchQuestionArray = [self.history_questionDic objectForKey:@"branch_questions"];
         self.history_branchQuestionDic = [self.history_branchQuestionArray objectAtIndex:self.branchNumber];
         
-        self.homeControl.rotioLabel.text = [NSString stringWithFormat:@"%d%%",[[self.history_branchQuestionDic objectForKey:@"ratio"] integerValue]];
         NSMutableString *string = [NSMutableString string];
         NSString *content = [self.history_branchQuestionDic objectForKey:@"answer"];
         NSArray *array = [content componentsSeparatedByString:@";||;"];
@@ -314,6 +313,22 @@ static BOOL isCanUpLoad = NO;
             self.historyView.hidden=NO;
             self.history_questionArray = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
             self.homeControl.timeLabel.text = [NSString stringWithFormat:@"%@",[Utility formateDateStringWithSecond:[[self.answerDic objectForKey:@"use_time"]integerValue]]];
+            
+            CGFloat score_radio=0;int count =0;
+            for (int i=0; i<self.history_questionArray.count; i++) {
+                NSDictionary *question_dic = [self.history_questionArray objectAtIndex:i];
+                NSArray *branchArray = [question_dic objectForKey:@"branch_questions"];
+                
+                for (int j=0; j<branchArray.count; j++) {
+                    count++;
+                    NSDictionary *branch_dic = [branchArray objectAtIndex:j];
+                    CGFloat radio = [[branch_dic objectForKey:@"ratio"]floatValue];
+                    score_radio += radio;
+                }
+            }
+            score_radio = score_radio/count;
+            self.homeControl.rotioLabel.text = [NSString stringWithFormat:@"%d%%",(int)score_radio];
+            
             [self getQuestionData];
         }
     }else {
@@ -1002,6 +1017,7 @@ static BOOL isCanUpLoad = NO;
 #pragma mark - TenSecChallengeResultViewDelegate
 -(void)resultViewCommitButtonClicked {//确认完成
     [self.resultView removeFromSuperview];
+    [self.homeControl dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)resultViewRestartButtonClicked {//再次挑战
     [self.resultView removeFromSuperview];
@@ -1039,6 +1055,7 @@ static BOOL isCanUpLoad = NO;
     [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
     [Utility errorAlert:errorMsg];
     [Utility uploadFaild];
+    [self.homeControl dismissViewControllerAnimated:YES completion:nil];
 }
 
 

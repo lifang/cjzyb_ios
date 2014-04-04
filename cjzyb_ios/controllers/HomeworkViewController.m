@@ -46,6 +46,8 @@
 - (IBAction)leftSwipButtonClicked:(id)sender;
 ///显示下一次的历史任务
 - (IBAction)rightSwipButtonClicked:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UIButton * refreshBtn;
 @end
 
 @implementation HomeworkViewController
@@ -62,6 +64,9 @@
         // Custom initialization
     }
     return self;
+}
+-(IBAction)refreshData:(id)sender {
+    [self getHomeworkData];
 }
 -(void)getHomeworkData {
     __weak HomeworkViewController *weakSelf = self;
@@ -89,7 +94,7 @@
     [super viewDidLoad];
     self.isShowHistory = NO;
     [self.collectionView registerClass:[HomeworkHistoryCollectionCell class] forCellWithReuseIdentifier:@"cell"];
-//    [self.flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    [self.flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     [self.flowLayout setItemSize:(CGSize){CGRectGetWidth(self.collectionView.frame),CGRectGetHeight(self.collectionView.frame)}];
     [self.flowLayout setMinimumInteritemSpacing:0];
     [self.flowLayout setMinimumLineSpacing:0];
@@ -97,14 +102,6 @@
     [self.collectionView setCollectionViewLayout:self.flowLayout];
     
     [self getHomeworkData];
-    
-    //下拉刷新
-    __block HomeworkViewController *homeworkView = self;
-    __block UICollectionView *collect = self.collectionView;
-    [_collectionView addPullToRefreshWithActionHandler:^{
-        [homeworkView getHomeworkData];
-        [collect.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
-    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -349,7 +346,7 @@
                     }
                 }
             }
-        }else if (status==1) {
+        }else if (status==1) {//存在不是最新的
             AppDelegate *app = [AppDelegate shareIntance];
             __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
             progress.labelText = @"正在更新历史记录包，请稍后...";
@@ -381,24 +378,28 @@
                 });
             });
         }else {
-            NSString *path = [Utility returnPath];
-            NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
-            NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
-            NSError *error = nil;
-            Class JSONSerialization = [Utility JSONParserClass];
-            NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
-            int isSuccess = [[dataObject objectForKey:@"isSuccessToUpload"]integerValue];
-            if (isSuccess == 1) {
-                [self showAlertWith:typeObj];
-            }else {
-                if (self.appDel.isReachable == NO) {
-                    [Utility errorAlert:@"暂无网络!"];
+            if (!self.isShowHistory) {
+                NSString *path = [Utility returnPath];
+                NSString *documentDirectory = [path stringByAppendingPathComponent:task.taskStartDate];
+                NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
+                NSError *error = nil;
+                Class JSONSerialization = [Utility JSONParserClass];
+                NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
+                int isSuccess = [[dataObject objectForKey:@"isSuccessToUpload"]integerValue];
+                if (isSuccess == 1) {
+                    [self showAlertWith:typeObj];
                 }else {
-                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-                    self.postInter = [[BasePostInterface alloc]init];
-                    self.postInter.delegate = self;
-                    [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
+                    if (self.appDel.isReachable == NO) {
+                        [Utility errorAlert:@"暂无网络!"];
+                    }else {
+                        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                        self.postInter = [[BasePostInterface alloc]init];
+                        self.postInter.delegate = self;
+                        [self.postInter postAnswerFileWith:task.taskStartDate];
+                    }
                 }
+            }else {
+                [self showAlertWith:typeObj];
             }
         }
     }else{

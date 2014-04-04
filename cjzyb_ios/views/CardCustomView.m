@@ -96,20 +96,9 @@
             break;
     }
     //TYPES_NAME = {0 => "听力", 1 => "朗读",  2 => "十速挑战", 3 => "选择", 4 => "连线", 5 => "完型填空", 6 => "排序"}
-    //错误答案
-    int type = 3;
-//    self.aCard.your_answer = @"a";
-//    self.aCard.answer = @"this;||;an;||;apple";
-    self.aCard.content = @"<file>http://116.255.202.123/companies/5/weixin_avatar/2890223880.jpg</file>选出图片中的单词选出图片中的单词";
-//    self.aCard.full_text = @"[[tag]] is [[tag]] what are you dong [[tag]]";
-    
-    self.aCard.your_answer = @"A";
-    self.aCard.answer = @"B;||;C";
-    self.aCard.options = @"a;||;an;||;two";
+    int type = [self.aCard.types integerValue];
     
     if (type==0) {//听力
-        self.aCard.your_answer = @"this is a salple ;||;apple;||;an";
-        self.aCard.content = @"this is an apple this this this this this this this this this this ";
         [self.cardSecond.rtLab setText:self.aCard.content];
         NSArray *yourArray = [self.aCard.your_answer componentsSeparatedByString:@";||;"];
         NSString *wrongStr = [yourArray objectAtIndex:0];
@@ -129,8 +118,19 @@
         [self.cardSecond.rtLab setLine];
         
     }else if (type==1) {//朗读
-        self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
         [self.cardSecond.rtLab setText:self.aCard.content];
+        NSMutableString *string = [NSMutableString string];
+        NSArray *answerArray = [self.aCard.your_answer componentsSeparatedByString:@";||;"];
+        for (int i=0; i<answerArray.count; i++) {
+            NSString *text = [answerArray objectAtIndex:i];
+            [string appendFormat:@"%@ ",text];
+            NSRange range = [self.aCard.content rangeOfString:text];
+            if (range.location != NSNotFound) {
+                [self.cardSecond.rtLab setStyle:kCTUnderlineStyleSingle fromIndex:range.location length:range.length];
+            }
+        }
+        self.cardFirst.wrongLetterLab.text = string;
+        
         [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:self.aCard.content.length];
         [self.cardSecond.rtLab setLine];
         
@@ -153,18 +153,19 @@
         self.cardSecond.cardSecondTable.delegate = self.cardSecond;
         self.cardSecond.cardSecondTable.dataSource = self.cardSecond;
         [self.cardSecond addSubview:self.cardSecond.cardSecondTable];
+
+        self.cardSecond.cardSecondArray = [self.aCard.options componentsSeparatedByString:@";||;"];
         
-        NSArray *LetterArray = [NSArray arrayWithObjects:@"A",@"B",@"C",@"D",@"E",@"F", nil];
         NSMutableArray *indexArray = [[NSMutableArray alloc]init];
         for (int i=0; i<answerArray.count; i++) {
             NSString *str = [answerArray objectAtIndex:i];
-            if ([LetterArray containsObject:str]) {
-                NSString *index_str = [NSString stringWithFormat:@"%d",[LetterArray indexOfObject:str]];
+            if ([self.cardSecond.cardSecondArray containsObject:str]) {
+                NSString *index_str = [NSString stringWithFormat:@"%d",[self.cardSecond.cardSecondArray indexOfObject:str]];
                 [indexArray addObject:index_str];
             }
         }
+        
         self.cardSecond.indexArray = indexArray;
-        self.cardSecond.cardSecondArray = [self.aCard.options componentsSeparatedByString:@";||;"];
         [self.cardSecond.cardSecondTable reloadData];
         [self.cardSecond.rtLab removeFromSuperview];
         
@@ -207,16 +208,34 @@
         }
         
     }else if (type==4) {//连线
+
+        NSMutableString *wrongStr = [NSMutableString string];
+        NSString *wrongContent = self.aCard.your_answer;
+        NSArray *wrongArray = [wrongContent componentsSeparatedByString:@";||;"];
+        for (int i=0; i<wrongArray.count; i++) {
+            NSString *str = [wrongArray objectAtIndex:i];
+            NSArray *subArray = [str componentsSeparatedByString:@"<=>"];
+            if (i==wrongArray.count-1) {
+                [wrongStr appendFormat:@"%@ %@",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+            }else {
+                [wrongStr appendFormat:@"%@ %@    ",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+            }
+        }
+        
+        self.cardFirst.wrongLetterLab.text =wrongStr;
+        
         NSMutableString *answerStr = [NSMutableString string];
         NSString *content = self.aCard.content;
         NSArray *array = [content componentsSeparatedByString:@";||;"];
         for (int i=0; i<array.count; i++) {
             NSString *str = [array objectAtIndex:i];
             NSArray *subArray = [str componentsSeparatedByString:@"<=>"];
-            [answerStr appendFormat:@"%@ %@    ",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+            if (i==array.count-1) {
+                [answerStr appendFormat:@"%@ %@",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+            }else {
+                [answerStr appendFormat:@"%@ %@    ",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+            }
         }
-        self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
-        
         self.cardFirst.rightLetterLab.text = answerStr;
         [self.cardSecond.rtLab setText:answerStr];
         
@@ -225,19 +244,28 @@
     }else if (type==5) {//完型填空
         self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
         
-        NSArray *answerArray = [self.aCard.answer componentsSeparatedByString:@";||;"];
         int index = [self.aCard.content integerValue];
-        self.cardFirst.rightLetterLab.text = [answerArray objectAtIndex:index];
         
+        for (int i=0; i<self.aCard.clozeAnswer.count; i++) {
+            NSDictionary *dic = [self.aCard.clozeAnswer objectAtIndex:i];
+            int content_index = [[dic objectForKey:@"content"]integerValue];
+            if (content_index == index) {
+                self.cardFirst.rightLetterLab.text = [dic objectForKey:@"answer"];
+                break;
+            }
+        }
+
         NSMutableString *full_context = [NSMutableString stringWithString:self.aCard.full_text];
         
         NSRange UnderLineRange;
         
-        for (int i=0; i<answerArray.count; i++) {
-            NSString *replaceStr =[answerArray objectAtIndex:i];
+        for (int i=0; i<self.aCard.clozeAnswer.count; i++) {
+            NSDictionary *dic = [self.aCard.clozeAnswer objectAtIndex:i];
+            NSString *replaceStr =[dic objectForKey:@"answer"];
             NSRange range = [self dealWithString:full_context];
             [full_context replaceCharactersInRange:range withString:replaceStr];
-            if (i==index) {
+            int content_index = [[dic objectForKey:@"content"]integerValue];
+            if (content_index==index) {
                 range.length = replaceStr.length;
                 UnderLineRange = range;
             }
@@ -248,22 +276,26 @@
         [self.cardSecond.rtLab setLine];
         
     }else if (type==6) {//排序
+        [Utility shared].isOrg = NO;
+        [Utility shared].rangeArray = [[NSMutableArray alloc]init];
         [self.cardSecond.rtLab setText:self.aCard.content];
+        NSArray *content_array = [Utility handleTheString:self.aCard.content];
         
-        NSArray *yourArray = [self.aCard.your_answer componentsSeparatedByString:@";||;"];
-        NSString *wrongStr = [yourArray objectAtIndex:0];
-        self.cardFirst.wrongLetterLab.text =wrongStr;
+        [Utility shared].isOrg = YES;
+        self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
+        NSArray *answer_array = [Utility handleTheString:self.aCard.your_answer];
         
-        NSMutableString *string = [NSMutableString string];
-        for (int i=1; i<yourArray.count; i++) {
-            NSString *text = [yourArray objectAtIndex:i];
-            [string appendFormat:@"%@  ",text];
-            NSRange range = [self.aCard.content rangeOfString:text];
-            if (range.location != NSNotFound) {
+        for (int i=0; i<content_array.count; i++) {
+            NSString *content_str = [content_array objectAtIndex:i];
+            NSString *answer_str = [answer_array objectAtIndex:i];
+            if (![answer_str isEqualToString:content_str]) {
+                NSTextCheckingResult *math = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:i];
+                NSRange range = [math rangeAtIndex:0];
                 [self.cardSecond.rtLab setStyle:kCTUnderlineStyleSingle fromIndex:range.location length:range.length];
             }
         }
-        self.cardFirst.rightLetterLab.text = string;
+        [Utility shared].rangeArray = nil;
+        self.cardFirst.rightLetterLab.text = self.aCard.answer;
         [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:self.aCard.content.length];
         [self.cardSecond.rtLab setLine];
     }

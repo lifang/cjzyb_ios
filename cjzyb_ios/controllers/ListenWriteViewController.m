@@ -184,7 +184,7 @@ static BOOL isCanUpLoad = NO;
     [self getQuestionData];
 }
 -(void)finishHistoryQuestion:(id)sender {
-    
+    [self.homeControl dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)getQuestionData {
     self.branchScore = 0;
@@ -197,7 +197,6 @@ static BOOL isCanUpLoad = NO;
         self.history_branchQuestionArray = [self.history_questionDic objectForKey:@"branch_questions"];
         self.history_branchQuestionDic = [self.history_branchQuestionArray objectAtIndex:self.branchNumber];
         
-        self.homeControl.rotioLabel.text = [NSString stringWithFormat:@"%d%%",[[self.history_branchQuestionDic objectForKey:@"ratio"] integerValue]];
         NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
         NSArray *array = [txt componentsSeparatedByString:@";||;"];
         self.historyAnswer.text = [NSString stringWithFormat:@"你的作答: %@",[array objectAtIndex:0]];
@@ -217,7 +216,6 @@ static BOOL isCanUpLoad = NO;
     self.questionArray = [NSMutableArray arrayWithArray:[listebDic objectForKey:@"questions"]];
     self.specified_time = [[listebDic objectForKey:@"specified_time"]intValue];
 
-    
     [Utility shared].isOrg = YES;
 }
 -(void)listenMusicViewUI {
@@ -261,6 +259,22 @@ static BOOL isCanUpLoad = NO;
             self.history_questionArray = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
             self.historyView.hidden=NO;
             self.homeControl.timeLabel.text = [NSString stringWithFormat:@"%@",[Utility formateDateStringWithSecond:[[self.answerDic objectForKey:@"use_time"]integerValue]]];
+            
+            CGFloat score_radio=0;int count =0;
+            for (int i=0; i<self.history_questionArray.count; i++) {
+                NSDictionary *question_dic = [self.history_questionArray objectAtIndex:i];
+                NSArray *branchArray = [question_dic objectForKey:@"branch_questions"];
+                for (int j=0; j<branchArray.count; j++) {
+                    count++;
+                    NSDictionary *branch_dic = [branchArray objectAtIndex:j];
+                    CGFloat radio = [[branch_dic objectForKey:@"ratio"]floatValue];
+                    score_radio += radio;
+                }
+            }
+            score_radio = score_radio/count;
+            
+            self.homeControl.rotioLabel.text = [NSString stringWithFormat:@"%d%%",(int)score_radio];
+            
             [self getQuestionData];
         }
         
@@ -493,7 +507,12 @@ static int numberOfMusic =0;
     for (int i=0; i<self.orgArray.count; i++) {
         UITextField *txtField = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
         [txtField resignFirstResponder];
-        [anserString appendFormat:@"%@ ",txtField.text];
+        if (i==self.orgArray.count-1) {
+            [anserString appendFormat:@"%@",txtField.text];
+        }else {
+            [anserString appendFormat:@"%@ ",txtField.text];
+        }
+        
         if (txtField.text.length<=0) {
             str = @"请填写完整!";
             anserString = [NSMutableString string];
@@ -658,7 +677,6 @@ static int numberOfMusic =0;
         }
     }
 
-    
     NSString *path = [Utility returnPath];
     NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
@@ -748,6 +766,7 @@ static int numberOfMusic =0;
     [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
     [Utility errorAlert:errorMsg];
     [Utility uploadFaild];
+    [self.homeControl dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark
@@ -755,6 +774,7 @@ static int numberOfMusic =0;
 -(void)resultViewCommitButtonClicked {//确认完成
     self.homeControl.quitHomeworkButton.enabled = YES;
     [self.resultView removeFromSuperview];
+    [self.homeControl dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)resultViewRestartButtonClicked {//再次挑战
     [self.resultView removeFromSuperview];

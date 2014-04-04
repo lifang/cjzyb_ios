@@ -28,8 +28,7 @@ static NSInteger tmpPage = 0;
         [Utility errorAlert:@"暂无网络!"];
     }else {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//        [self.cardInter getCardInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andType:@"4"];
-        [self.cardInter getCardInterfaceDelegateWithStudentId:@"1" andClassId:@"1" andType:@"4"];
+        [self.cardInter getCardInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andType:@"4"];
     }
 }
 
@@ -40,6 +39,9 @@ static NSInteger tmpPage = 0;
     return _appDel;
 }
 
+-(IBAction)refreshCardPackageData:(id)sender {
+    [self getCardData];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -148,7 +150,7 @@ static NSInteger tmpPage = 0;
 }
 -(NSMutableArray *)arrSelSection {
     if (!_arrSelSection) {
-        _arrSelSection = [[NSMutableArray alloc]initWithCapacity:1];
+        _arrSelSection = [[NSMutableArray alloc]init];
     }
     return _arrSelSection;
 }
@@ -394,6 +396,7 @@ static NSInteger tmpPage = 0;
             }
             
             NSArray *array = [result objectForKey:@"knowledges_card"];
+            self.cardArray = nil;[[CMRManager sharedService] Reset];
             if (array.count>0) {
                 for (int i=0; i<array.count; i++) {
                     NSDictionary *dic = [array objectAtIndex:i];

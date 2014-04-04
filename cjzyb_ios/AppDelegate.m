@@ -76,10 +76,13 @@
 -(void)showMainController{
     MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-    LHLNotificationViewController *notificationView = [[LHLNotificationViewController alloc]initWithNibName:@"LHLNotificationViewController" bundle:nil];
+    LHLNotificationContainerVC *notificationView = [[LHLNotificationContainerVC alloc]initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
     DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
     tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
+    
+    tabBarController.currentPage = self.notification_type;
+    
     self.window.rootViewController = tabBarController;
 }
 
@@ -113,27 +116,34 @@
         NSDictionary *classDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
         
-        if (self.the_class_id>0) {
-            [DataService sharedService].theClass.classId = [NSString stringWithFormat:@"%d",self.the_class_id];
-            [DataService sharedService].theClass.name = [NSString stringWithFormat:@"%@",self.the_class_name];
-        }
         filename = [path stringByAppendingPathComponent:@"student.plist"];
         NSDictionary *userDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         [DataService sharedService].user = [UserObject userFromDictionary:userDic];
         
-        MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-        HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-        LHLNotificationContainerVC *notificationView = [[LHLNotificationContainerVC alloc]initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
-        CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-        DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-        tabBarController.childenControllerArray = @[homework,main,notificationView,cardView];
-        
-        tabBarController.currentPage = self.notification_type;
-        
-        self.window.rootViewController = tabBarController;
-       
+        if (self.the_class_id>0) {
+            if (self.the_student_id == [[DataService sharedService].user.studentId integerValue]) {//学生student—id相同
+                [DataService sharedService].theClass.classId = [NSString stringWithFormat:@"%d",self.the_class_id];
+                [DataService sharedService].theClass.name = [NSString stringWithFormat:@"%@",self.the_class_name];
+                
+                [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
+            }else {
+                NSFileManager *fileManage = [NSFileManager defaultManager];
+                NSString *path = [Utility returnPath];
+                NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
+                if ([fileManage fileExistsAtPath:filename]) {
+                    [fileManage removeItemAtPath:filename error:nil];
+                }
+                NSString *filename2 = [path stringByAppendingPathComponent:@"student.plist"];
+                if ([fileManage fileExistsAtPath:filename2]) {
+                    [fileManage removeItemAtPath:filename2 error:nil];
+                }
+                LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
+                self.window.rootViewController = logView;
+            }
+        }else {
+            [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
+        }
     }
-     [self.window makeKeyAndVisible];
 }
 
 
@@ -209,6 +219,7 @@
         int typeValue = [[pushDict objectForKey:@"type"]integerValue];
         self.the_class_id = [[pushDict objectForKey:@"class_id"]integerValue];
         self.the_class_name = [pushDict objectForKey:@"class_name"];
+        self.the_student_id = [[pushDict objectForKey:@"student_id"]integerValue];
         if (typeValue == 2) {
             self.notification_type = 1;
         }else {

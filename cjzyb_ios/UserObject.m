@@ -13,11 +13,11 @@
 +(UserObject *)userFromDictionary:(NSDictionary *)aDic {
     UserObject *user = [[UserObject alloc]init];
     
-    [user setStudentId:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"id"]]];
-    [user setName:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"name"]]];
-    [user setUserId:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"user_id"]]];
-    [user setNickName:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"nickname"]]];
-    [user setHeadUrl:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"avatar_url"]]];
+    [user setStudentId:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"id"]]]];
+    [user setName:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"name"]]]];
+    [user setUserId:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"user_id"]]]];
+    [user setNickName:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"nickname"]]]];
+    [user setHeadUrl:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"avatar_url"]]]];
     
     return user;
 }

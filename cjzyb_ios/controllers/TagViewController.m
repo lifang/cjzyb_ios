@@ -130,12 +130,25 @@
 
 -(void)textFieldChanged:(NSNotification *)sender {
     UITextField *txtField = (UITextField *)sender.object;
+    
     if (txtField.text.length>0) {
+        BOOL isExit = NO;
+        for (int i=0; i<self.tagArray.count; i++) {
+            TagObject *tagObj = (TagObject *)[self.tagArray objectAtIndex:i];
+            if ([txtField.text isEqualToString:tagObj.tagName]) {
+                isExit = YES;
+                break;
+            }
+        }
         NSString *keyName = @"tagName";
         NSString *searchText = [txtField.text substringWithRange:NSMakeRange(0, 1)];
         NSPredicate *predicateString = [NSPredicate predicateWithFormat:@"%K contains[cd] %@", keyName, searchText];
         self.tagArray = [NSMutableArray arrayWithArray:[self.filteredArray filteredArrayUsingPredicate:predicateString]];
-        [self initFooterView];
+        if (isExit == YES) {
+            self.tagTable.tableFooterView = nil;
+        }else {
+            [self initFooterView];
+        }
     }else {
         self.tagArray = self.filteredArray;
         self.tagTable.tableFooterView = nil;
@@ -154,9 +167,7 @@
         self.tmpIndex = btn.tag;
         TagObject *tagObj = [self.tagArray objectAtIndex:btn.tag];
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//            [self.tagInter getTagInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andCardId:self.aCard.carId andName:self.tagtxt.text];
-        
-        [self.selectedInter getSelectedTagInterfaceDelegateWithStudentId:@"1" andClassId:@"1" andCardId:self.aCard.carId andCardTagId:tagObj.tagId];
+        [self.selectedInter getSelectedTagInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andCardId:self.aCard.carId andCardTagId:tagObj.tagId];
     }
 }
 -(void)getSelectedTagInfoDidFinished:(NSDictionary *)result {
@@ -219,9 +230,7 @@
         [Utility errorAlert:@"暂无网络!"];
     }else {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        //            [self.tagInter getTagInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andCardId:self.aCard.carId andName:self.tagtxt.text];
-        
-        [self.tagInter getTagInterfaceDelegateWithStudentId:@"1" andClassId:@"1" andCardId:self.aCard.carId andName:self.tagtxt.text];
+        [self.tagInter getTagInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andCardId:self.aCard.carId andName:self.tagtxt.text];
     }
 }
 @end

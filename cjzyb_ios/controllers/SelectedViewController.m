@@ -53,7 +53,7 @@ static BOOL isCanUpLoad = NO;
     
     self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 20, 768, 400)];
     self.clozeVV.delegate = self;
-    [self.clozeVV setText:[self.questionDic objectForKey:@"content"]];
+    [self.clozeVV setText:[self.questionDic objectForKey:@"full_text"]];
     self.clozeVV.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.clozeVV];
     
@@ -80,7 +80,7 @@ static BOOL isCanUpLoad = NO;
     
     self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 20, 768, 400)];
     self.clozeVV.delegate = self;
-    [self.clozeVV setText:[self.questionDic objectForKey:@"content"]];
+    [self.clozeVV setText:[self.questionDic objectForKey:@"full_text"]];
     self.clozeVV.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.clozeVV];
     
@@ -104,7 +104,7 @@ static BOOL isCanUpLoad = NO;
     [self getQuestionData];
 }
 -(void)finishHistoryQuestion:(id)sender {
-    
+    [self.homeControl dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)getQuestionData {
@@ -124,8 +124,6 @@ static BOOL isCanUpLoad = NO;
             [answerStr appendFormat:@"%d.%@  ",(i+1),[history_branchQuestionDic objectForKey:@"answer"]];
         }
         
-        
-        self.homeControl.rotioLabel.text = [NSString stringWithFormat:@"%d%%", rotio/history_branchQuestionArray.count];
         self.historyAnswer.text = [NSString stringWithFormat:@"你的选择: %@",answerStr];
         
         [self setHistoryUI];
@@ -185,6 +183,22 @@ static BOOL isCanUpLoad = NO;
             self.historyView.hidden=NO;
             self.history_questionArray = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
             self.homeControl.timeLabel.text = [NSString stringWithFormat:@"%@",[Utility formateDateStringWithSecond:[[self.answerDic objectForKey:@"use_time"]integerValue]]];
+            
+            CGFloat score_radio=0;int count =0;
+            for (int i=0; i<self.history_questionArray.count; i++) {
+                NSDictionary *question_dic = [self.history_questionArray objectAtIndex:i];
+                NSArray *branchArray = [question_dic objectForKey:@"branch_questions"];
+                
+                for (int j=0; j<branchArray.count; j++) {
+                    count++;
+                    NSDictionary *branch_dic = [branchArray objectAtIndex:j];
+                    CGFloat radio = [[branch_dic objectForKey:@"ratio"]floatValue];
+                    score_radio += radio;
+                }
+            }
+            score_radio = score_radio/count;
+            self.homeControl.rotioLabel.text = [NSString stringWithFormat:@"%d%%", (int)score_radio];
+            
             [self getQuestionData];
         }
     }else {
@@ -303,7 +317,7 @@ static BOOL isCanUpLoad = NO;
                 }
                 
                 NSString *a_id = [NSString stringWithFormat:@"%@",[a_dic objectForKey:@"id"]];
-                NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.2f",ratio],@"ratio",answer,@"answer", nil];
+                NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.2f",ratio],@"ratio",label.text,@"answer", nil];
                 [branch_questions addObject:answer_dic];
             }
             
@@ -427,12 +441,14 @@ static BOOL isCanUpLoad = NO;
     [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
     [Utility errorAlert:errorMsg];
     [Utility uploadFaild];
+    [self.homeControl dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark
 #pragma mark - TenSecChallengeResultViewDelegate
 -(void)resultViewCommitButtonClicked {//确认完成
     [self.resultView removeFromSuperview];
+    [self.homeControl dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)resultViewRestartButtonClicked {//再次挑战
     [self.resultView removeFromSuperview];

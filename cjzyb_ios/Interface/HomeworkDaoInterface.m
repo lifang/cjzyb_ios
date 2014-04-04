@@ -169,32 +169,26 @@
             if (!taskDic || taskDic.count <= 0) {
                 continue;
             }
-            TaskObj *taskObj = [[TaskObj alloc] init];
+            TaskObj *taskObj = [TaskObj taskFromDictionary:taskDic];
             taskObj.taskKnowlegeCount = knowlegeCount?knowlegeCount.intValue:0;
-            taskObj.taskID = [Utility filterValue:[taskDic objectForKey:@"id"]];
-            taskObj.taskName = [Utility filterValue:[taskDic objectForKey:@"name"]];
-            taskObj.taskStartDate = [Utility filterValue:[taskDic objectForKey:@"start_time"]];
-            taskObj.taskEndDate = [Utility filterValue:[taskDic objectForKey:@"end_time"]];
-            taskObj.taskFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"question_packages_url"]];
-//            taskObj.taskFileDownloadURL = [NSString stringWithFormat:@"%@%@",kHOST,[Utility filterValue:[taskDic objectForKey:@"question_packages_url"]]];
-            taskObj.taskAnswerFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"answer_url"]];
-             taskObj.taskFolderPath = [[Utility returnPath] stringByAppendingPathComponent:taskObj.taskStartDate];
+            
             NSMutableArray *homeworkTypeList = [NSMutableArray array];
             NSArray *undoTypeArr = [taskDic objectForKey:@"question_types"];
-            for (int index = 0; undoTypeArr && index < undoTypeArr.count; index++) {
+            NSArray *finishedTypeArr = [taskDic objectForKey:@"finish_types"];
+            for (int index = 0; index < undoTypeArr.count; index++) {
+                NSString *index_string = [undoTypeArr objectAtIndex:index];
                 HomeworkTypeObj *type = [[HomeworkTypeObj alloc] init];
                 type.homeworkType = [HomeworkDaoInterface convertTypeFromInt:[[undoTypeArr objectAtIndex:index] intValue]];
-                type.homeworkTypeIsFinished = NO;
+                
+                if ([finishedTypeArr containsObject:index_string]) {
+                    type.homeworkTypeIsFinished = YES;
+                }else {
+                    type.homeworkTypeIsFinished = NO;
+                }
                 [homeworkTypeList addObject:type];
+                type = nil;
             }
             
-            NSArray *finishedTypeArr = [taskDic objectForKey:@"finish_types"];
-            for (int index = 0; finishedTypeArr && index < finishedTypeArr.count; index++) {
-                HomeworkTypeObj *type = [[HomeworkTypeObj alloc] init];
-                type.homeworkType = [HomeworkDaoInterface convertTypeFromInt:[[finishedTypeArr objectAtIndex:index] intValue]];
-                type.homeworkTypeIsFinished = YES;
-                [homeworkTypeList addObject:type];
-            }
             taskObj.taskHomeworkTypeArray = homeworkTypeList;
             
             //道具
@@ -319,32 +313,26 @@
             if (!taskDic || taskDic.count <= 0) {
                 continue;
             }
-            TaskObj *taskObj = [[TaskObj alloc] init];
+            TaskObj *taskObj = [TaskObj taskFromDictionary:taskDic];
             taskObj.taskKnowlegeCount = knowlegeCount?knowlegeCount.intValue:0;
-            taskObj.taskID = [Utility filterValue:[taskDic objectForKey:@"id"]];
-            taskObj.taskName = [Utility filterValue:[taskDic objectForKey:@"name"]];
-            taskObj.taskStartDate = [Utility filterValue:[taskDic objectForKey:@"start_time"]];
-            taskObj.taskEndDate = [Utility filterValue:[taskDic objectForKey:@"end_time"]];
-            taskObj.taskFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"question_packages_url"]];
-//            taskObj.taskFileDownloadURL = [NSString stringWithFormat:@"%@%@",kHOST,[Utility filterValue:[taskDic objectForKey:@"question_packages_url"]]];
-            taskObj.taskAnswerFileDownloadURL = [Utility filterValue:[taskDic objectForKey:@"answer_url"]];
-             taskObj.taskFolderPath = [[Utility returnPath] stringByAppendingPathComponent:taskObj.taskStartDate];
+            
             NSMutableArray *homeworkTypeList = [NSMutableArray array];
             NSArray *undoTypeArr = [taskDic objectForKey:@"question_types"];
-            for (int index = 0; undoTypeArr && index < undoTypeArr.count; index++) {
+            NSArray *finishedTypeArr = [taskDic objectForKey:@"finish_types"];
+            for (int index = 0; index < undoTypeArr.count; index++) {
+                NSString *index_string = [undoTypeArr objectAtIndex:index];
                 HomeworkTypeObj *type = [[HomeworkTypeObj alloc] init];
                 type.homeworkType = [HomeworkDaoInterface convertTypeFromInt:[[undoTypeArr objectAtIndex:index] intValue]];
-                type.homeworkTypeIsFinished = NO;
+                
+                if ([finishedTypeArr containsObject:index_string]) {
+                    type.homeworkTypeIsFinished = YES;
+                }else {
+                    type.homeworkTypeIsFinished = NO;
+                }
                 [homeworkTypeList addObject:type];
+                type = nil;
             }
             
-            NSArray *finishedTypeArr = [taskDic objectForKey:@"finish_types"];
-            for (int index = 0; finishedTypeArr && index < finishedTypeArr.count; index++) {
-                HomeworkTypeObj *type = [[HomeworkTypeObj alloc] init];
-                type.homeworkType = [HomeworkDaoInterface convertTypeFromInt:[[finishedTypeArr objectAtIndex:index] intValue]];
-                type.homeworkTypeIsFinished = YES;
-                [homeworkTypeList addObject:type];
-            }
             taskObj.taskHomeworkTypeArray = homeworkTypeList;
             
             //道具
