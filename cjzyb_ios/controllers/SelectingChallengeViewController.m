@@ -272,7 +272,7 @@
 
 - (void)endChallenge{
     if (self.isViewingHistory) {
-        //退出本界面
+        [self quitNow:nil];
     }else{
         self.answerStatus = @"1";
         [self.timer invalidate];
@@ -554,7 +554,20 @@
     NSMutableString *yourChoiceString = [NSMutableString stringWithFormat:@"你的选择:"];
     OrdinaryAnswerObject *currentAnswer = self.answerArray[self.currentNO - 1];
     NSArray *myAnswers = [currentAnswer.answerAnswer componentsSeparatedByString:@";||;"];
-    [yourChoiceString appendString:[myAnswers componentsJoinedByString:@""]];
+    
+    //转换成ABCD
+    NSMutableArray *myABCDAnswers = [NSMutableArray array];
+    for (NSInteger j = 0; j < myAnswers.count; j++) {
+        NSString *myAnswerString = myAnswers[j];
+        for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
+            NSString *option = self.currentQuestion.seOptionsArray[i];
+            if ([option isEqualToString:myAnswerString]) {
+                [myABCDAnswers addObject:[NSString stringWithFormat:@"%c",'A' + i]];
+            }
+        }
+    }
+    
+    [yourChoiceString appendString:[myABCDAnswers componentsJoinedByString:@""]];
     
     //2,选中选项
     for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
@@ -624,7 +637,8 @@
     for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
         for (NSString *str in self.currentSelectedOptions) {
             if (str.integerValue == i) {
-                [selectedOptions addObject:[NSString stringWithFormat:@"%c",'A' + i]];
+//                [selectedOptions addObject:[NSString stringWithFormat:@"%c",'A' + i]];
+                [selectedOptions addObject:self.currentQuestion.seOptionsArray[i]];
             }
         }
     }
@@ -645,6 +659,7 @@
     if (answerRatio) {
         [AppDelegate shareIntance].avPlayer = nil;
         [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"trueMusic" ofType:@"wav"]] error:nil];
+        [AppDelegate shareIntance].avPlayer.delegate = self;
         [AppDelegate shareIntance].avPlayer.volume = 1;
         if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
             [[AppDelegate shareIntance].avPlayer play];
@@ -652,6 +667,7 @@
     }else{
         [AppDelegate shareIntance].avPlayer = nil;
         [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"falseMusic" ofType:@"wav"]] error:nil];
+        [AppDelegate shareIntance].avPlayer.delegate = self;
         [AppDelegate shareIntance].avPlayer.volume = 1;
         if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
             [[AppDelegate shareIntance].avPlayer play];

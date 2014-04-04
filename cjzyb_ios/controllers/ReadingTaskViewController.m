@@ -72,7 +72,9 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
     if ([DataService sharedService].isHistory) {
+        //初始化浏览历史
         [self.tipBackView setHidden:NO];
         [self.readingButton setHidden:YES];
         TaskObj *task = [DataService sharedService].taskObj;
@@ -81,10 +83,14 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
         [ParseAnswerJsonFileTool parseAnswerJsonFileWithUserId:[DataService sharedService].user.userId withTask:task withReadingHistoryArray:^(NSArray *readingQuestionArr, int currentQuestionIndex, int currentQuestionItemIndex, int status, NSString *updateTime, NSString *userTime, int specifyTime,float ratio) {
             ReadingTaskViewController *tempSelf = weakSelf;
             if (tempSelf) {
-                parentVC.timeLabel.text = [NSString stringWithFormat:@"用时：%@",[Utility  formateDateStringWithSecond:userTime.intValue]];
-                parentVC.rotioLabel.text = [NSString stringWithFormat:@"正确率：%0.0f",ratio];
+                parentVC.timeLabel.text = [NSString stringWithFormat:@"%@",[Utility  formateDateStringWithSecond:userTime.intValue]];
+                parentVC.rotioLabel.text = [NSString stringWithFormat:@"%0.0f%@",ratio * 100,@"%"];
+                [parentVC.checkHomeworkButton setTitle:@"下一个" forState:UIControlStateNormal];
                 tempSelf.readingHomeworksArr = readingQuestionArr;
                 [tempSelf updateFirstSentence];
+                if (status == 1) {
+                    tempSelf.isFirst = NO;
+                }
             }
         } withParseError:^(NSError *error) {
             [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
@@ -129,10 +135,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
     
     //设置录音临时存放路径
     self.recorderTempPath =  [NSString stringWithFormat:@"%@recorder.aac",NSTemporaryDirectory()];
-//    NSFileManager *fileManager = [NSFileManager defaultManager];
-//    if (![fileManager fileExistsAtPath:self.recorderTempPath]) {
-//        [fileManager createFileAtPath:self.recorderTempPath contents:nil attributes:nil];
-//    }
+    
     //设置录音对象
     
     //录音设置
@@ -179,11 +182,15 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
         [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
         [self.view.layer addAnimation:animation forKey:@"PushLeft"];
     }
+    //设置"完成"按钮
+    if (self.currentSentenceIndex +1 == self.currentHomework.readingHomeworkSentenceObjArray.count && self.currentHomeworkIndex +1 == self.readingHomeworksArr.count) {
+        [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+    }
 }
 
-///切换到第一句
+///切换到指定句
 -(void)updateFirstSentence{
-    if (!self.currentSentence) {
+    if (!self.currentHomework) {
         [self updateFirstHomework];
     }
     [self setCurrentSentence:[self.currentHomework.readingHomeworkSentenceObjArray objectAtIndex:self.currentSentenceIndex] withAnimation:YES];
@@ -233,7 +240,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
         [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
             ReadingTaskViewController *tempSelf = weakSelf ;
             if (tempSelf) {
-                
+                [tempSelf uploadJSON];
             }
         } withFailure:^(NSError *error) {
             ReadingTaskViewController *tempSelf = weakSelf ;
@@ -242,7 +249,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
             }
         }];
         
-        [self uploadJSON];
+        
     }else{
         [parentVC dismissViewControllerAnimated:YES completion:^{
             
@@ -271,7 +278,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
                             [parentVC startTimer];
                         }];
                         [self appearPrePlayControllerWithAnimation:YES];
-                    }else{//TODO:挑战结束
+                    }else{
                         [parentVC stopTimer];
                         if (self.isFirst && ![DataService sharedService].isHistory) {
                             [self uploadJSON];
@@ -297,15 +304,24 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
             self.currentSentence.isFinished = YES;
             [self setCurrentSentence:[self.currentHomework.readingHomeworkSentenceObjArray objectAtIndex:self.currentSentenceIndex] withAnimation:YES];
         }else{//已经是最后一个句子
-            
+            if (self.currentHomeworkIndex+1 < self.readingHomeworksArr.count) {
+                [self updateNextHomework];
+                [self.preReadingController startPreListeningHomeworkSentence:self.currentHomework withPlayFinished:^(BOOL isSuccess) {
+                }];
+                [self appearPrePlayControllerWithAnimation:YES];
+            }else{
+                //TODO:已是最后一大题最后一小题
+//                [self quitNow];
+            }
         }
     }else{//当前大题中没有句子
         [self updateFirstSentence];
     }
     
 }
-///切换到第一大题
+///读取当前指定大题
 -(void)updateFirstHomework{
+    //读取题目
     if (!self.readingHomeworksArr || self.readingHomeworksArr.count <= 0) {
         if (![DataService sharedService].isHistory) {
             [self loadHomeworkFromFile];
@@ -344,11 +360,21 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
         ReadingTaskViewController *tempSelf = weakSelf;
         if (tempSelf) {
             HomeworkContainerController *container = (HomeworkContainerController*)tempSelf.parentViewController;
-            container.spendSecond = userTime?userTime.intValue:0;
-            tempSelf.currentHomeworkIndex = currentQuestionIndex < 0 ?0:currentQuestionIndex;
-            tempSelf.currentSentenceIndex = currentQuestionItemIndex < 0 ?0:currentQuestionItemIndex;
             tempSelf.readingHomeworksArr = readingQuestionArr;
             tempSelf.specifiedSecond = specifyTime;
+            if (status > 0) {
+                //重新开始
+                tempSelf.isFirst = NO;
+                tempSelf.currentHomeworkIndex = 0;
+                tempSelf.currentSentenceIndex = 0;
+                container.spendSecond = 0;
+            }else{
+                //第一次(继续做题)
+                tempSelf.isFirst = YES;
+                tempSelf.currentHomeworkIndex = currentQuestionIndex < 0 ?0:currentQuestionIndex;
+                tempSelf.currentSentenceIndex = currentQuestionItemIndex < 0 ?0:currentQuestionItemIndex;
+                container.spendSecond = userTime?userTime.intValue:0;
+            }
         }
     } withParseError:^(NSError *error) {
         [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
@@ -361,7 +387,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
     NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
     [parentVC  uploadAnswerJsonFileWithPath:path withSuccess:^(NSString *success) {
         //退出或显示成绩界面
-        if (self.currentHomeworkIndex+1 >= self.readingHomeworksArr.count && self.currentSentenceIndex+1 >= self.currentHomework.readingHomeworkSentenceObjArray.count) {
+        if (self.currentHomeworkIndex+1 >= self.readingHomeworksArr.count && self.currentSentenceIndex+1 >= self.currentHomework.readingHomeworkSentenceObjArray.count && ![DataService sharedService].isHistory) {
             [self showResultView];
         }else{
             [parentVC dismissViewControllerAnimated:YES completion:nil];
@@ -370,7 +396,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
         [Utility errorAlert:error];
         [Utility uploadFaild];
         //退出或显示成绩界面
-        if (self.currentHomeworkIndex+1 >= self.readingHomeworksArr.count && self.currentSentenceIndex+1 >= self.currentHomework.readingHomeworkSentenceObjArray.count) {
+        if (self.currentHomeworkIndex+1 >= self.readingHomeworksArr.count && self.currentSentenceIndex+1 >= self.currentHomework.readingHomeworkSentenceObjArray.count && ![DataService sharedService].isHistory) {
             [self showResultView];
         }else{
             [parentVC dismissViewControllerAnimated:YES completion:nil];
@@ -587,18 +613,16 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 -(void)updateAllFrame{
     NSAttributedString *attributeString = self.readingTextView.attributedText;
     NSAttributedString *attributeTip = self.tipTextView.attributedText;
-    if (!attributeString) {
-        return ;
-    }
+  
     CGRect textRect = [attributeString boundingRectWithSize:(CGSize){CGRectGetWidth(self.readingTextView.frame),self.view.frame.size.height-350} options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading context:nil];
-    self.readingTextView.frame = (CGRect){self.readingTextView.frame.origin,CGRectGetWidth(self.readingTextView.frame),textRect.size.height};
+    self.readingTextView.frame = (CGRect){self.readingTextView.frame.origin,CGRectGetWidth(self.readingTextView.frame),textRect.size.height + 10};
     
     float maxTipHeight = (self.view.frame.size.height-CGRectGetMaxY(self.readingTextView.frame)-30);
-    CGRect tipRect = [attributeTip boundingRectWithSize:(CGSize){CGRectGetWidth(self.tipBackView.frame), maxTipHeight<100 ?100:maxTipHeight} options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading context:nil];
+    CGRect tipRect = [attributeTip boundingRectWithSize:(CGSize){CGRectGetWidth(self.tipTextView.frame), maxTipHeight<80 ?80:maxTipHeight} options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading context:nil];
     
-    self.readingButton.frame = (CGRect){CGRectGetMinX(self.readingButton.frame),CGRectGetMaxY(self.readingButton.frame)+20,self.readingButton.frame.size};
+    self.readingButton.frame = (CGRect){CGRectGetMinX(self.readingButton.frame),CGRectGetMaxY(self.readingTextView.frame)+20,self.readingButton.frame.size};
     
-    self.tipBackView.frame = (CGRect){CGRectGetMinX(self.tipBackView.frame),CGRectGetMaxY(self.readingButton.frame) +30,self.tipBackView.frame.size.width,tipRect.size.height+40};
+    self.tipBackView.frame = (CGRect){CGRectGetMinX(self.tipBackView.frame),CGRectGetMaxY(self.readingButton.frame) +30,self.tipBackView.frame.size.width,tipRect.size.height+60};
 }
 
 ///标记颜色
@@ -794,12 +818,14 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
             self.tipTextView.attributedText = attriString;
         }
         NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:currentSentence.readingSentenceContent];
-        [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0, attri.length)];
+        [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:35] range:NSMakeRange(0, attri.length)];
         [attri addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(0, attri.length)];
         self.readingTextView.attributedText = attri;
          [self updateAllFrame];
+        if (self.currentHomeworkIndex >= self.readingHomeworksArr.count && self.currentSentenceIndex >= ((ReadingHomeworkObj *)[self.readingHomeworksArr lastObject]).readingHomeworkSentenceObjArray.count) {
+            [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+        }
     }
-   
 }
 
 #pragma mark -- UIAlert Delegate

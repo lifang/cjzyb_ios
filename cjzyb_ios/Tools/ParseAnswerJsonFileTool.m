@@ -41,62 +41,62 @@
     }
 }
 
-//TODO: 根据答案的json文件解析出朗读类型的做题记录
-+(void)parseAnswerJsonFile:(NSString*)jsonFilePath withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex,int status,NSString *updateTime,NSString *userTime,float ratio))questionArr withParseError:(void (^)(NSError *error))failure{
-    NSString *dircName = [jsonFilePath lastPathComponent];
-    dircName = [dircName lastPathComponent];
-    if (!dircName || [dircName isEqualToString:@""]) {
-        if (failure) {
-            failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"json文件不存在"}]);
-        }
-        return;
-    }
-    NSDictionary *readingDic = [Utility returnAnswerDictionaryWithName:@"reading" andDate:dircName];
-    if (!readingDic || readingDic.count <= 0) {
-        if (failure) {
-            failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"没有历史记录"}]);
-        }
-        return;
-    }
-    int status = [Utility filterValue:[readingDic objectForKey:@"status"]].intValue;
-    NSString *updateTime = [Utility filterValue:[readingDic objectForKey:@"update_time"]];
-    NSString *useTime = [Utility filterValue:[readingDic objectForKey:@"use_time"]];
-    int questionIndex = [Utility filterValue:[readingDic objectForKey:@"questions_item"]].intValue;
-    int questionItemIndex = [Utility filterValue:[readingDic objectForKey:@"branch_item"]].intValue;
-     int totalCount = 0;
-    float ratio = 0;
-    
-    NSMutableArray *readingWorkList = [NSMutableArray array];
-    for (NSDictionary *questionDic in [readingDic objectForKey:@"questions"]) {
-        ReadingHomeworkObj *reading = [[ReadingHomeworkObj alloc] init];
-        reading.readingHomeworkID = [Utility filterValue:[questionDic objectForKey:@"id"]];
-        
-        NSMutableArray *sentenceList = [NSMutableArray array];
-        for (NSDictionary *sentenceDic in [questionDic objectForKey:@"branch_questions"]) {
-            ReadingSentenceObj *sentence = [[ReadingSentenceObj alloc] init];
-            sentence.readingSentenceID = [Utility filterValue:[sentenceDic objectForKey:@"id"]];
-            sentence.readingSentenceRatio = [Utility filterValue:[sentenceDic objectForKey:@"ratio"]];
-            totalCount++;
-            ratio += sentence.readingSentenceRatio.floatValue;
-            sentence.readingSentenceContent = [Utility filterValue:[sentenceDic objectForKey:@"answerContent"]];
-            sentence.readingErrorWordArray = [ParseAnswerJsonFileTool getErrorWordArrayFromString:[sentenceDic objectForKey:@"answer"]];
-            [sentenceList addObject:sentence];
-        }
-        reading.readingHomeworkSentenceObjArray = sentenceList;
-        [readingWorkList addObject:reading];
-    }
-    
-    if (readingWorkList.count <= 0) {
-        if (failure) {
-            failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"没有历史记录"}]);
-        }
-        return;
-    }
-    
-    if (questionArr) {
-        questionArr(readingWorkList,questionIndex,questionItemIndex,status,updateTime,useTime,totalCount<= 0 ?0:(ratio/totalCount));
-    }
-}
+////TODO: 根据答案的json文件解析出朗读类型的做题记录
+//+(void)parseAnswerJsonFile:(NSString*)jsonFilePath withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex,int status,NSString *updateTime,NSString *userTime,float ratio))questionArr withParseError:(void (^)(NSError *error))failure{
+//    NSString *dircName = [jsonFilePath lastPathComponent];
+//    dircName = [dircName lastPathComponent];
+//    if (!dircName || [dircName isEqualToString:@""]) {
+//        if (failure) {
+//            failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"json文件不存在"}]);
+//        }
+//        return;
+//    }
+//    NSDictionary *readingDic = [Utility returnAnswerDictionaryWithName:@"reading" andDate:dircName];
+//    if (!readingDic || readingDic.count <= 0) {
+//        if (failure) {
+//            failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"没有历史记录"}]);
+//        }
+//        return;
+//    }
+//    int status = [Utility filterValue:[readingDic objectForKey:@"status"]].intValue;
+//    NSString *updateTime = [Utility filterValue:[readingDic objectForKey:@"update_time"]];
+//    NSString *useTime = [Utility filterValue:[readingDic objectForKey:@"use_time"]];
+//    int questionIndex = [Utility filterValue:[readingDic objectForKey:@"questions_item"]].intValue;
+//    int questionItemIndex = [Utility filterValue:[readingDic objectForKey:@"branch_item"]].intValue;
+//     int totalCount = 0;
+//    float ratio = 0;
+//    
+//    NSMutableArray *readingWorkList = [NSMutableArray array];
+//    for (NSDictionary *questionDic in [readingDic objectForKey:@"questions"]) {
+//        ReadingHomeworkObj *reading = [[ReadingHomeworkObj alloc] init];
+//        reading.readingHomeworkID = [Utility filterValue:[questionDic objectForKey:@"id"]];
+//        
+//        NSMutableArray *sentenceList = [NSMutableArray array];
+//        for (NSDictionary *sentenceDic in [questionDic objectForKey:@"branch_questions"]) {
+//            ReadingSentenceObj *sentence = [[ReadingSentenceObj alloc] init];
+//            sentence.readingSentenceID = [Utility filterValue:[sentenceDic objectForKey:@"id"]];
+//            sentence.readingSentenceRatio = [Utility filterValue:[sentenceDic objectForKey:@"ratio"]];
+//            totalCount++;
+//            ratio += sentence.readingSentenceRatio.floatValue;
+//            sentence.readingSentenceContent = [Utility filterValue:[sentenceDic objectForKey:@"answerContent"]];
+//            sentence.readingErrorWordArray = [ParseAnswerJsonFileTool getErrorWordArrayFromString:[sentenceDic objectForKey:@"answer"]];
+//            [sentenceList addObject:sentence];
+//        }
+//        reading.readingHomeworkSentenceObjArray = sentenceList;
+//        [readingWorkList addObject:reading];
+//    }
+//    
+//    if (readingWorkList.count <= 0) {
+//        if (failure) {
+//            failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"没有历史记录"}]);
+//        }
+//        return;
+//    }
+//    
+//    if (questionArr) {
+//        questionArr(readingWorkList,questionIndex,questionItemIndex,status,updateTime,useTime,totalCount<= 0 ?0:(ratio/totalCount));
+//    }
+//}
 
 
 
@@ -194,14 +194,18 @@
 
 //TODO:将读错的单词拼接成字符串
 +(NSString*)getErrorWordContentFromErrorArray:(NSArray*)array{
-    NSMutableString *content = [[NSMutableString alloc] init];
-    for (NSString *sentence in array) {
-        [content appendFormat:@"%@;||;",sentence];
-    }
-    if (content.length <= 0) {
+    if (!array || array.count < 1) {
         return @"";
     }
-    return content;
+    return [array componentsJoinedByString:@";||;"];
+//    NSMutableString *content = [[NSMutableString alloc] init];
+//    for (NSString *sentence in array) {
+//        [content appendFormat:@"%@;||;",sentence];
+//    }
+//    if (content.length <= 0) {
+//        return @"";
+//    }
+//    return content;
 }
 
 //TODO:从字符串中获取

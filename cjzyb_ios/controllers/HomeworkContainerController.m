@@ -126,7 +126,7 @@
             [self addChildViewController:self.readingController];
             [self.readingController didMoveToParentViewController:self];
             self.readingController.isPrePlay = YES;
-            self.readingController.isFirst = YES;
+//            self.readingController.isFirst = YES;
             break;
         }
         case HomeworkType_listeningAndWrite://听写

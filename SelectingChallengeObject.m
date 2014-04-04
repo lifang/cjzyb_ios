@@ -83,15 +83,21 @@
                                     obj.seType = SelectingTypeDefault;
                                 }
                             }else if (contentArrayClear.count == 2){     //字符串分为两段
-                                obj.seContentAttachment = [contentArrayClear firstObject];
-                                obj.seContent = [contentArrayClear lastObject];
-                                NSString *extensionName = [[[obj.seContentAttachment componentsSeparatedByString:@"."] lastObject] uppercaseString];
+                                NSString *attachmentString = [contentArrayClear firstObject];
+                                NSArray *attachmentArray = [attachmentString componentsSeparatedByString:@"/"];
+                                NSString *fileString = [attachmentArray lastObject];
+                                obj.seContentAttachment = fileString;
+                                //判断后缀
+                                NSArray *fileStringArray = [fileString componentsSeparatedByString:@"."];
+                                NSString *extensionName = [fileStringArray lastObject];//扩展名
+                                extensionName = [extensionName uppercaseString];
                                 if ([@".BMP.BMPF.ICO.CUR.XBM.GIF.JPEG.JPG.PNG.TIFF.TIF" rangeOfString:extensionName].length > 0) {
                                     //图片
                                     obj.seType = SelectingTypeWatching;
                                 }else{
                                     obj.seType = SelectingTypeListening;
                                 }
+                                obj.seContent = [contentArrayClear lastObject];
                             }else{
                                 [Utility errorAlert:@"这到底是什么题型?"];
                             }
