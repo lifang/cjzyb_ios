@@ -130,12 +130,25 @@
 
 -(void)textFieldChanged:(NSNotification *)sender {
     UITextField *txtField = (UITextField *)sender.object;
+    
     if (txtField.text.length>0) {
+        BOOL isExit = NO;
+        for (int i=0; i<self.tagArray.count; i++) {
+            TagObject *tagObj = (TagObject *)[self.tagArray objectAtIndex:i];
+            if ([txtField.text isEqualToString:tagObj.tagName]) {
+                isExit = YES;
+                break;
+            }
+        }
         NSString *keyName = @"tagName";
         NSString *searchText = [txtField.text substringWithRange:NSMakeRange(0, 1)];
         NSPredicate *predicateString = [NSPredicate predicateWithFormat:@"%K contains[cd] %@", keyName, searchText];
         self.tagArray = [NSMutableArray arrayWithArray:[self.filteredArray filteredArrayUsingPredicate:predicateString]];
-        [self initFooterView];
+        if (isExit == YES) {
+            self.tagTable.tableFooterView = nil;
+        }else {
+            [self initFooterView];
+        }
     }else {
         self.tagArray = self.filteredArray;
         self.tagTable.tableFooterView = nil;

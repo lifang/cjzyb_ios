@@ -118,8 +118,19 @@
         [self.cardSecond.rtLab setLine];
         
     }else if (type==1) {//朗读
-        self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
         [self.cardSecond.rtLab setText:self.aCard.content];
+        NSMutableString *string = [NSMutableString string];
+        NSArray *answerArray = [self.aCard.your_answer componentsSeparatedByString:@";||;"];
+        for (int i=0; i<answerArray.count; i++) {
+            NSString *text = [answerArray objectAtIndex:i];
+            [string appendFormat:@"%@ ",text];
+            NSRange range = [self.aCard.content rangeOfString:text];
+            if (range.location != NSNotFound) {
+                [self.cardSecond.rtLab setStyle:kCTUnderlineStyleSingle fromIndex:range.location length:range.length];
+            }
+        }
+        self.cardFirst.wrongLetterLab.text = string;
+        
         [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:self.aCard.content.length];
         [self.cardSecond.rtLab setLine];
         
@@ -265,22 +276,26 @@
         [self.cardSecond.rtLab setLine];
         
     }else if (type==6) {//排序
+        [Utility shared].isOrg = NO;
+        [Utility shared].rangeArray = [[NSMutableArray alloc]init];
         [self.cardSecond.rtLab setText:self.aCard.content];
+        NSArray *content_array = [Utility handleTheString:self.aCard.content];
         
-        NSArray *yourArray = [self.aCard.your_answer componentsSeparatedByString:@";||;"];
-        NSString *wrongStr = [yourArray objectAtIndex:0];
-        self.cardFirst.wrongLetterLab.text =wrongStr;
+        [Utility shared].isOrg = YES;
+        self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
+        NSArray *answer_array = [Utility handleTheString:self.aCard.your_answer];
         
-        NSMutableString *string = [NSMutableString string];
-        for (int i=1; i<yourArray.count; i++) {
-            NSString *text = [yourArray objectAtIndex:i];
-            [string appendFormat:@"%@  ",text];
-            NSRange range = [self.aCard.content rangeOfString:text];
-            if (range.location != NSNotFound) {
+        for (int i=0; i<content_array.count; i++) {
+            NSString *content_str = [content_array objectAtIndex:i];
+            NSString *answer_str = [answer_array objectAtIndex:i];
+            if (![answer_str isEqualToString:content_str]) {
+                NSTextCheckingResult *math = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:i];
+                NSRange range = [math rangeAtIndex:0];
                 [self.cardSecond.rtLab setStyle:kCTUnderlineStyleSingle fromIndex:range.location length:range.length];
             }
         }
-        self.cardFirst.rightLetterLab.text = string;
+        [Utility shared].rangeArray = nil;
+        self.cardFirst.rightLetterLab.text = self.aCard.answer;
         [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:self.aCard.content.length];
         [self.cardSecond.rtLab setLine];
     }

@@ -85,6 +85,7 @@
 }
 
 
+
 +(NSArray*)spellMatchWord:(NSString*)spellString{
     NSMutableArray *spellsArr = [NSMutableArray array];
 
@@ -101,9 +102,24 @@
     [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
     [Utility shared].firstpoint = 0;
     NSDictionary *dic = [Utility compareWithArray:[Utility shared].orgArray andArray:[Utility shared].metaphoneArray WithArray:array andArray:array2  WithRange:[Utility shared].rangeArray];
+    
+    NSMutableArray *range_array = [[NSMutableArray alloc]init];
+    for (int i=0; i<[Utility shared].orgArray.count; i++) {
+        NSString *string = [[Utility shared].orgArray objectAtIndex:i];
+        [NSCharacterSet decimalDigitCharacterSet];
+        NSString *string2 = [string stringByTrimmingCharactersInSet: [NSCharacterSet decimalDigitCharacterSet]];
+        if ([string2 stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]].length >0) {
+            DLog(@"不是纯数字");
+        }else{
+            [range_array addObject:[[Utility shared].rangeArray objectAtIndex:i]];
+        }
+    }
+    
     //绿色
     if (![[dic objectForKey:@"green"]isKindOfClass:[NSNull class]] && [dic objectForKey:@"green"]!=nil) {
-        NSMutableArray *green_array = [dic objectForKey:@"green"];
+        NSMutableArray *green_array = [NSMutableArray arrayWithArray:[dic objectForKey:@"green"]];
+        [green_array addObjectsFromArray:range_array];
+        
         for (int i=0; i<green_array.count; i++) {
             SpellMatchObj *spell = [[SpellMatchObj alloc] init];
             NSTextCheckingResult *math = (NSTextCheckingResult *)[green_array objectAtIndex:i];
@@ -127,16 +143,31 @@
             [spellsArr addObject:spell];
         }
     }
-    //下划线
+    //错误
     if (![[dic objectForKey:@"wrong"]isKindOfClass:[NSNull class]] && [dic objectForKey:@"wrong"]!=nil) {
-        NSMutableArray *space_array = [dic objectForKey:@"wrong"];
+        NSMutableArray *space_array = [NSMutableArray arrayWithArray:[dic objectForKey:@"wrong"]];
         for (int i=0; i<space_array.count; i++) {
             NSTextCheckingResult *math = (NSTextCheckingResult *)[space_array objectAtIndex:i];
             NSRange range = [math rangeAtIndex:0];
-            SpellMatchObj *spell = [[SpellMatchObj alloc] init];
-            spell.range = range;
-            spell.spellLevel = 0;
-             [spellsArr addObject:spell];
+            
+            if (range_array.count>0) {
+                for (NSTextCheckingResult *math2 in range_array){
+                    NSRange range2 = [math2 rangeAtIndex:0];
+                    if (range.location==range2.location && range.length==range2.length) {
+                        
+                    }else {
+                        SpellMatchObj *spell = [[SpellMatchObj alloc] init];
+                        spell.range = range;
+                        spell.spellLevel = 0;
+                        [spellsArr addObject:spell];
+                    }
+                }
+            }else {
+                SpellMatchObj *spell = [[SpellMatchObj alloc] init];
+                spell.range = range;
+                spell.spellLevel = 0;
+                [spellsArr addObject:spell];
+            }
         }
     }
     
@@ -152,7 +183,7 @@
                 return NSOrderedSame;
             }
     }];
-    NSLog(@"%@",spellsArr);
+    DLog(@"%@",spellsArr);
     return spellsArr;
 }
 

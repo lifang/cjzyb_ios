@@ -39,6 +39,9 @@ static NSInteger tmpPage = 0;
     return _appDel;
 }
 
+-(IBAction)refreshCardPackageData:(id)sender {
+    [self getCardData];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -393,6 +396,7 @@ static NSInteger tmpPage = 0;
             }
             
             NSArray *array = [result objectForKey:@"knowledges_card"];
+            self.cardArray = nil;[[CMRManager sharedService] Reset];
             if (array.count>0) {
                 for (int i=0; i<array.count; i++) {
                     NSDictionary *dic = [array objectAtIndex:i];

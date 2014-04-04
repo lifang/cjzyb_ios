@@ -216,7 +216,6 @@ static BOOL isCanUpLoad = NO;
     self.questionArray = [NSMutableArray arrayWithArray:[listebDic objectForKey:@"questions"]];
     self.specified_time = [[listebDic objectForKey:@"specified_time"]intValue];
 
-    
     [Utility shared].isOrg = YES;
 }
 -(void)listenMusicViewUI {
@@ -508,7 +507,12 @@ static int numberOfMusic =0;
     for (int i=0; i<self.orgArray.count; i++) {
         UITextField *txtField = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
         [txtField resignFirstResponder];
-        [anserString appendFormat:@"%@ ",txtField.text];
+        if (i==self.orgArray.count-1) {
+            [anserString appendFormat:@"%@",txtField.text];
+        }else {
+            [anserString appendFormat:@"%@ ",txtField.text];
+        }
+        
         if (txtField.text.length<=0) {
             str = @"请填写完整!";
             anserString = [NSMutableString string];
