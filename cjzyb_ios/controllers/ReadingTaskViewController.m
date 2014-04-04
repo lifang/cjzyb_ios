@@ -8,14 +8,15 @@
 
 #import "ReadingTaskViewController.h"
 
-#import "GoogleTTSAPI.h"
 #import "DRSentenceSpellMatch.h"
 #import <QuartzCore/QuartzCore.h>
 #import "HomeworkContainerController.h"
 #import "ParseAnswerJsonFileTool.h"
 #import "ParseQuestionJsonFileTool.h"
-
+#import "RecognizerFactory.h"//语音
 #import "PreReadingTaskViewController.h"
+
+
 
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
 #define minRecoginCount 4
@@ -24,17 +25,11 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 @interface ReadingTaskViewController ()
 ///预听界面
 @property (nonatomic,strong) PreReadingTaskViewController *preReadingController;
-
+@property (nonatomic,strong) AVAudioPlayer *avPlayer;
 ///当前读句子下标
 @property (nonatomic,assign) int currentSentenceIndex;
 ///当前所做大题下标
 @property (nonatomic,assign) int currentHomeworkIndex;
-
-@property (nonatomic,strong) NSString  *recorderTempPath;
-@property (nonatomic,strong) AVAudioRecorder *avRecorder;
-@property (nonatomic,strong) AVAudioPlayer *avPlayer;
-
-
 ///读匹配次数
 @property (nonatomic,assign) int readingCount;
 
@@ -72,6 +67,8 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
+    
+    
     if ([DataService sharedService].isHistory) {
         [self.tipBackView setHidden:NO];
         [self.readingButton setHidden:YES];
@@ -114,6 +111,12 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    // 创建识别对象
+    _iFlySpeechRecognizer = [RecognizerFactory CreateRecognizer:self Domain:@"iat"];
+    _popUpView = [[PopupView alloc]initWithFrame:CGRectMake(100, 100, 0, 0)];
+    _popUpView.ParentView = self.view;
+    
+    
     if ([DataService sharedService].isHistory) {
         
     }else{
@@ -124,35 +127,6 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
             
         }];
     }
-
-    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
-    
-    //设置录音临时存放路径
-    self.recorderTempPath =  [NSString stringWithFormat:@"%@recorder.aac",NSTemporaryDirectory()];
-//    NSFileManager *fileManager = [NSFileManager defaultManager];
-//    if (![fileManager fileExistsAtPath:self.recorderTempPath]) {
-//        [fileManager createFileAtPath:self.recorderTempPath contents:nil attributes:nil];
-//    }
-    //设置录音对象
-    
-    //录音设置
-    NSMutableDictionary *recordSetting = [[NSMutableDictionary alloc]init];
-    //设置录音格式  AVFormatIDKey==kAudioFormatLinearPCM
-    [recordSetting setValue:[NSNumber numberWithInt:kAudioFormatMPEG4AAC] forKey:AVFormatIDKey];
-    //设置录音采样率(Hz) 如：AVSampleRateKey==8000/44100/96000（影响音频的质量）
-    [recordSetting setValue:[NSNumber numberWithFloat:44100] forKey:AVSampleRateKey];
-    //录音通道数  1 或 2
-    [recordSetting setValue:[NSNumber numberWithInt:1] forKey:AVNumberOfChannelsKey];
-    //线性采样位数  8、16、24、32
-    [recordSetting setValue:[NSNumber numberWithInt:16] forKey:AVLinearPCMBitDepthKey];
-    //录音的质量
-    [recordSetting setValue:[NSNumber numberWithInt:AVAudioQualityHigh] forKey:AVEncoderAudioQualityKey];
-    
-    NSError *recorderError = nil;
-    self.avRecorder = [[AVAudioRecorder alloc] initWithURL:[NSURL fileURLWithPath:self.recorderTempPath] settings:recordSetting error:&recorderError];
-    self.avRecorder.meteringEnabled = NO;
-    self.avRecorder.delegate = self;
-    
 
 
     [self.listeningButton setImage:[UIImage imageNamed:@"listening_start.png"] forState:UIControlStateNormal];
@@ -469,38 +443,24 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 
 //TODO:开始识别语音
 - (IBAction)readingButtonClicked:(id)sender {
-    ISSpeechRecognition *recognition = [[ISSpeechRecognition alloc] init];
-	
-	NSError *err;
-	
-	[recognition setDelegate:self];
-	
-	if(![recognition listen:&err]) {
-		NSLog(@"ERROR: %@", err);
-	}
     
-    return;
+    bool ret = [_iFlySpeechRecognizer startListening];
+    if (ret) {
+        NSLog(@"111");
+    }else {
+        [_popUpView setText: @"启动识别服务失败，请稍后重试"];//可能是上次请求未结束
+        [self.view addSubview:_popUpView];
+    }
     //////
     if (self.isReading) {
-        [self.readingButton setEnabled:NO];
-        if (self.avRecorder.isRecording) {
-            [self.avRecorder stop];
-        }else{
-            [self.readingButton setEnabled:YES];
-            self.isReading = NO;
-            [self.listeningButton setUserInteractionEnabled:YES];
-        }
+
+        [self.readingButton setEnabled:YES];
+        self.isReading = NO;
+        [self.listeningButton setUserInteractionEnabled:YES];
+        
     }else{
-        [self.avRecorder deleteRecording];
-        if ([self.avRecorder prepareToRecord]) {
-            self.isReading = YES;
-            [self.listeningButton setUserInteractionEnabled:NO];
-            [self.avRecorder recordForDuration:60*60];
-//            [self.avRecorder record];
-        }else{
-            self.isReading = NO;
-            [self.listeningButton setUserInteractionEnabled:YES];
-        }
+        self.isReading = NO;
+        [self.listeningButton setUserInteractionEnabled:YES];
     }
 }
 
@@ -606,25 +566,6 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 
 }
 
-#pragma mark AVAudioRecorderDelegate录音代理
--(void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag{
-    [self.readingButton setEnabled:YES];
-    self.isReading = NO;
-    [self.listeningButton setUserInteractionEnabled:YES];
-    NSLog(@"audioRecorderDidFinishRecording:%@",flag?@"YES":@"NO");
-}
-
--(void)audioRecorderBeginInterruption:(AVAudioRecorder *)recorder{
-    NSLog(@"audioRecorderBeginInterruption");
-}
-
--(void)audioRecorderEndInterruption:(AVAudioRecorder *)recorder withOptions:(NSUInteger)flags{
-    NSLog(@"audioRecorderEndInterruption");
-}
-
--(void)audioRecorderEncodeErrorDidOccur:(AVAudioRecorder *)recorder error:(NSError *)error{
-    NSLog(@"audioRecorderEncodeErrorDidOccur:%@",error.userInfo);
-}
 #pragma mark --
 
 #pragma mark TenSecChallengeResultViewDelegate显示结果代理
@@ -652,98 +593,12 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 
 #pragma mark AVAudioPlayerDelegate 播放代理
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
-    NSLog(@"audioPlayerDidFinishPlaying:%@",flag?@"YES":@"NO");
     self.isListening = NO;
     [self.readingButton setUserInteractionEnabled:YES];
 }
-
--(void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error{
-    NSLog(@"audioPlayerDecodeErrorDidOccur");
-}
-
--(void)audioPlayerBeginInterruption:(AVAudioPlayer *)player{
-    NSLog(@"audioPlayerBeginInterruption");
-}
-
--(void)audioPlayerEndInterruption:(AVAudioPlayer *)player withOptions:(NSUInteger)flags{
-    NSLog(@"audioPlayerEndInterruption:%@",flags?@"YES":@"NO");
-}
-#pragma mark --
-
-
-#pragma mark ISSpeechRecognitionDelegate语音识别代理
-- (void)recognition:(ISSpeechRecognition *)speechRecognition didGetRecognitionResult:(ISSpeechRecognitionResult *)result {
-	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
-	NSLog(@"Result: %@", result.text);
-    [parentVC stopTimer];
-    TaskObj *task = [DataService sharedService].taskObj;
-    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
-    [DRSentenceSpellMatch checkSentence:self.currentSentence.readingSentenceContent withSpellMatchSentence:result.text andSpellMatchAttributeString:^(NSAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray) {
-        self.readingTextView.attributedText = nil;
-        self.readingTextView.attributedText = spellAttriString;
-        self.readingCount++;
-        self.currentSentence.readingErrorWordArray = [NSMutableArray arrayWithArray:errorWordArray];
-        self.currentSentence.readingSentenceRatio = [NSString stringWithFormat:@"%0.2f",matchScore];
-        [self.tipBackView setHidden:NO];
-        NSString *tip = @"";
-        if (matchScore >= 0.5) {
-            tip = @"你的发音真的很不错哦,让我们再来读读其它的句子吧！";
-        }else
-        {
-            tip = @"看到红色的这些词了吗,你的发音还不够标准哦,在来试试吧！";
-        }
-        if (self.readingCount <= 1 && self.isFirst) {//计入成绩
-            __weak ReadingTaskViewController *weakSelf = self;
-            self.currentSentence.isFinished = YES;
-            if (self.currentSentenceIndex == self.currentHomework.readingHomeworkSentenceObjArray.count-1) {
-                self.currentHomework.isFinished = YES;
-            }
-            [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
-                ReadingTaskViewController *tempSelf = weakSelf ;
-                if (tempSelf) {
-                    isCanUpLoad = YES;
-                }
-            } withFailure:^(NSError *error) {
-                ReadingTaskViewController *tempSelf = weakSelf ;
-                if (tempSelf) {
-                    [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-                }
-            }];
-        }
-        NSMutableAttributedString *attriString = [[NSMutableAttributedString alloc]initWithString:tip];
-        [attriString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0,tip.length)];
-        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-        style.alignment = NSTextAlignmentCenter;
-        [attriString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0,tip.length)];
-        self.tipTextView.attributedText = attriString;
-        [self updateAllFrame];
-        [parentVC startTimer];
-    } orSpellMatchFailure:^(NSError *error) {
-        [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-        [parentVC startTimer];
-    }];
-}
-
-- (void)recognition:(ISSpeechRecognition *)speechRecognition didFailWithError:(NSError *)error {
-	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
-	NSLog(@"Error: %@", error);
-     [parentVC startTimer];
-}
-
-- (void)recognitionCancelledByUser:(ISSpeechRecognition *)speechRecognition {
-	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
-    [parentVC startTimer];
-}
-
-- (void)recognitionDidBeginRecording:(ISSpeechRecognition *)speechRecognition {
-	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
-    
-}
-
-- (void)recognitionDidFinishRecording:(ISSpeechRecognition *)speechRecognition {
-	NSLog(@"Method: %@", NSStringFromSelector(_cmd));
-    [parentVC stopTimer];
-}
+-(void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error{}
+-(void)audioPlayerBeginInterruption:(AVAudioPlayer *)player{}
+-(void)audioPlayerEndInterruption:(AVAudioPlayer *)player withOptions:(NSUInteger)flags{}
 #pragma mark --
 
 #pragma mark property
@@ -811,6 +666,112 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
         
     }
 }
-
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [_iFlySpeechRecognizer cancel];
+    [_iFlySpeechRecognizer setDelegate: nil];
+}
 #pragma mark --
+#pragma mark - IFlySpeechRecognizerDelegate
+/**
+ * @fn      onVolumeChanged
+ * @brief   音量变化回调
+ *
+ * @param   volume      -[in] 录音的音量，音量范围1~100
+ * @see
+ */
+- (void) onVolumeChanged: (int)volume
+{
+    NSString * vol = [NSString stringWithFormat:@"音量：%d",volume];
+    [_popUpView setText: vol];
+    [self.view addSubview:_popUpView];
+}
+
+/**
+ * @fn      onError
+ * @brief   识别结束回调
+ *
+ * @param   errorCode   -[out] 错误类，具体用法见IFlySpeechError
+ */
+- (void) onError:(IFlySpeechError *) error
+{
+    
+    [parentVC stopTimer];
+    NSString *text ;
+    if (error.errorCode ==0 ) {
+        text = @"识别成功";
+    }else {
+        text = [NSString stringWithFormat:@"发生错误：%d %@",error.errorCode,error.errorDesc];
+    }
+    [_popUpView setText: text];
+    [self.view addSubview:_popUpView];
+}
+
+/**
+ * @fn      onResults
+ * @brief   识别结果回调
+ *
+ * @param   result      -[out] 识别结果，NSArray的第一个元素为NSDictionary，NSDictionary的key为识别结果，value为置信度
+ * @see
+ */
+- (void) onResults:(NSArray *) results
+{
+    [parentVC stopTimer];
+    NSMutableString *result = [[NSMutableString alloc] init];
+    NSDictionary *dic = [results objectAtIndex:0];
+    for (NSString *key in dic) {
+        [result appendFormat:@"%@",key];
+    }
+    NSLog(@"听写结果：%@",result);
+    [_iFlySpeechRecognizer cancel];
+    [parentVC stopTimer];
+    TaskObj *task = [DataService sharedService].taskObj;
+    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
+    [DRSentenceSpellMatch checkSentence:self.currentSentence.readingSentenceContent withSpellMatchSentence:result andSpellMatchAttributeString:^(NSAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray) {
+        self.readingTextView.attributedText = nil;
+        self.readingTextView.attributedText = spellAttriString;
+        self.readingCount++;
+        self.currentSentence.readingErrorWordArray = [NSMutableArray arrayWithArray:errorWordArray];
+        self.currentSentence.readingSentenceRatio = [NSString stringWithFormat:@"%0.2f",matchScore];
+        [self.tipBackView setHidden:NO];
+        NSString *tip = @"";
+        if (matchScore >= 0.5) {
+            tip = @"你的发音真的很不错哦,让我们再来读读其它的句子吧！";
+        }else
+        {
+            tip = @"看到红色的这些词了吗,你的发音还不够标准哦,在来试试吧！";
+        }
+        if (self.readingCount <= 1 && self.isFirst) {//计入成绩
+            __weak ReadingTaskViewController *weakSelf = self;
+            self.currentSentence.isFinished = YES;
+            if (self.currentSentenceIndex == self.currentHomework.readingHomeworkSentenceObjArray.count-1) {
+                self.currentHomework.isFinished = YES;
+            }
+            [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
+                ReadingTaskViewController *tempSelf = weakSelf ;
+                if (tempSelf) {
+                    isCanUpLoad = YES;
+                }
+            } withFailure:^(NSError *error) {
+                ReadingTaskViewController *tempSelf = weakSelf ;
+                if (tempSelf) {
+                    [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+                }
+            }];
+        }
+        NSMutableAttributedString *attriString = [[NSMutableAttributedString alloc]initWithString:tip];
+        [attriString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0,tip.length)];
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.alignment = NSTextAlignmentCenter;
+        [attriString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0,tip.length)];
+        self.tipTextView.attributedText = attriString;
+        [self updateAllFrame];
+        [parentVC startTimer];
+    } orSpellMatchFailure:^(NSError *error) {
+        [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+        [parentVC startTimer];
+    }];
+}
+
+
 @end

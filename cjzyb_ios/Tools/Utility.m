@@ -1716,7 +1716,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         }else {
             NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
             [dic setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"status"];
-            [dic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"isSuccessToUpload"];
+            
             NSString *time = [Utility getNowDateFromatAnDate];
             [dic setObject:time forKey:@"update_time"];
             [dic setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"questions_item"];
@@ -1729,6 +1729,10 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     }else {
         [Utility addSkipBackupAttributeToItemAtURL:[NSURL fileURLWithPath:jsPath]];
         [fileManage createFileAtPath:jsPath contents:nil attributes:nil];
+        
+        NSDictionary *dic_up = [NSDictionary dictionaryWithObjectsAndKeys:@"1",@"isSuccessToUpload", nil];
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dic_up options:NSJSONWritingPrettyPrinted error:nil];
+        [jsonData writeToFile:jsPath atomically:YES];
         
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
         [dic setObject:[NSString stringWithFormat:@"%d",-1] forKey:@"status"];
@@ -1845,6 +1849,9 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
     [answerDic setObject:str forKey:@"update"];
     [answerDic setObject:[NSString stringWithFormat:@"%d",1] forKey:@"isSuccessToUpload"];
+    if (![[answerDic objectForKey:@"props"]isKindOfClass:[NSNull class]] && [answerDic objectForKey:@"props"]!=nil)  {
+        [answerDic removeObjectForKey:@"props"];
+    }
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
     [jsonData writeToFile:jsPath atomically:YES];
 }
@@ -1859,6 +1866,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
     NSMutableDictionary *answerDic = [NSMutableDictionary dictionaryWithDictionary:dataObject];
     [answerDic setObject:[NSString stringWithFormat:@"%d",0] forKey:@"isSuccessToUpload"];
+    
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:answerDic options:NSJSONWritingPrettyPrinted error:&error];
     [jsonData writeToFile:jsPath atomically:YES];
 }
