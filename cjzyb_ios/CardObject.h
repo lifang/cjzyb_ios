@@ -25,6 +25,7 @@
 @property (nonatomic, strong) NSString *created_at;
 @property (nonatomic, strong) NSString *full_text;
 @property (nonatomic, strong) NSMutableArray *tagArray;
+@property (nonatomic, strong) NSArray *clozeAnswer;
 
 +(CardObject *)cardFromDictionary:(NSDictionary *)aDic;
 @end

@@ -113,7 +113,7 @@
             [self.liningView didMoveToParentViewController:self];
         }
             break;
-        case HomeworkType_reading:
+        case HomeworkType_reading://朗读
         {
             self.readingController = [[ReadingTaskViewController alloc] initWithNibName:@"ReadingTaskViewController" bundle:nil];
             [self.readingController willMoveToParentViewController:self];

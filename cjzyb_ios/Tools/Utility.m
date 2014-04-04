@@ -136,7 +136,7 @@
 
 +(NSString *)filterValue:(NSString*)filterValue{
     NSString *value = [NSString stringWithFormat:@"%@",filterValue];
-    if ([value isEqualToString:@""] || [value isEqualToString:@"<NULL>"] || [value isEqualToString:@"null"] || [value isEqualToString:@"<null>"]) {
+    if ([value isEqualToString:@""] || [value isEqualToString:@"<NULL>"] || [value isEqualToString:@"null"] || [value isEqualToString:@"<null>"] || [value isEqualToString:@"(null)"]) {
         return nil;
     }
     return value;
@@ -418,17 +418,21 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSFileManager *manager = [NSFileManager defaultManager];
     if ([manager fileExistsAtPath:path isDirectory:NO]) {
         NSError *jsonParsingError = nil;
-        
         NSDictionary *dataObject = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:path] options:0 error:&jsonParsingError];
-        NSString *updateDate = [dataObject objectForKey:@"update"];
-        if (updateDate && ![updateDate isEqualToString:@""]) {
-            NSDate *taskUpdteDate = [Utility getDateFromDateString:task.taskAnswerFileUpdateDate];
-            NSDate *fileUpDate = [Utility getDateFromDateString:updateDate];
-            if ([taskUpdteDate compare:fileUpDate] == NSOrderedSame) {
-                return 2;
+        if (![[dataObject objectForKey:@"update"]isKindOfClass:[NSNull class]] && [dataObject objectForKey:@"update"]!=nil) {
+            NSString *updateDate = [dataObject objectForKey:@"update"];
+            
+            if (task.taskAnswerFileUpdateDate.length>10) {
+                NSDate *taskUpdteDate = [Utility getDateFromDateString:task.taskAnswerFileUpdateDate];
+                NSDate *fileUpDate = [Utility getDateFromDateString:updateDate];
+                if ([taskUpdteDate compare:fileUpDate] == NSOrderedSame) {
+                    return 2;
+                }else
+                    return 1;
             }
+            return 2;
         }
-        return 1;
+        return 2;
     }
     return 0;
 }

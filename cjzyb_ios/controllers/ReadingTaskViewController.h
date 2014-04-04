@@ -17,7 +17,7 @@
  *
  * 朗读任务
  */
-@interface ReadingTaskViewController : UIViewController<AVAudioRecorderDelegate,AVAudioPlayerDelegate,ISSpeechRecognitionDelegate,TenSecChallengeResultViewDelegate>
+@interface ReadingTaskViewController : UIViewController<AVAudioRecorderDelegate,AVAudioPlayerDelegate,UIAlertViewDelegate,ISSpeechRecognitionDelegate,TenSecChallengeResultViewDelegate>
 ///每道大题需要时间秒数（包含多个句子）
 @property (assign,nonatomic) int specifiedSecond;
 ///当前正在做的题目

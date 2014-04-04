@@ -13,10 +13,10 @@
 +(ClassObject *)classFromDictionary:(NSDictionary *)aDic {
     ClassObject *class = [[ClassObject alloc]init];
     
-    [class setClassId:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"id"]]];
-    [class setName:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"name"]]];
-    [class setTName:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"tearcher_name"]]];
-    [class setTId:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"tearcher_id"]]];
+    [class setClassId:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"id"]]]];
+    [class setName:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"name"]]]];
+    [class setTName:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"tearcher_name"]]]];
+    [class setTId:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"tearcher_id"]]]];
     
     return class;
 }

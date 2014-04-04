@@ -53,7 +53,7 @@ static BOOL isCanUpLoad = NO;
     
     self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 20, 768, 400)];
     self.clozeVV.delegate = self;
-    [self.clozeVV setText:[self.questionDic objectForKey:@"content"]];
+    [self.clozeVV setText:[self.questionDic objectForKey:@"full_text"]];
     self.clozeVV.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.clozeVV];
     
@@ -80,7 +80,7 @@ static BOOL isCanUpLoad = NO;
     
     self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 20, 768, 400)];
     self.clozeVV.delegate = self;
-    [self.clozeVV setText:[self.questionDic objectForKey:@"content"]];
+    [self.clozeVV setText:[self.questionDic objectForKey:@"full_text"]];
     self.clozeVV.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.clozeVV];
     
@@ -317,7 +317,7 @@ static BOOL isCanUpLoad = NO;
                 }
                 
                 NSString *a_id = [NSString stringWithFormat:@"%@",[a_dic objectForKey:@"id"]];
-                NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.2f",ratio],@"ratio",answer,@"answer", nil];
+                NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.2f",ratio],@"ratio",label.text,@"answer", nil];
                 [branch_questions addObject:answer_dic];
             }
             

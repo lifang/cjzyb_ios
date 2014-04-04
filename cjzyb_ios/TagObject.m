@@ -11,10 +11,10 @@
 @implementation TagObject
 +(TagObject *)tagFromDictionary:(NSDictionary *)aDic {
     TagObject *tagObj = [[TagObject alloc]init];
-    [tagObj setTagId:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"id"]]];
-    [tagObj setTagName:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"name"]]];
-    [tagObj setTag_card_bag_id:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"card_bag_id"]]];
-    [tagObj setTagCreat:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"created_at"]]];
+    [tagObj setTagId:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"id"]]]];
+    [tagObj setTagName:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"name"]]]];
+    [tagObj setTag_card_bag_id:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"card_bag_id"]]]];
+    [tagObj setTagCreat:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"created_at"]]]];
     
     return tagObj;
 }

@@ -346,7 +346,7 @@
                     }
                 }
             }
-        }else if (status==1) {
+        }else if (status==1) {//存在不是最新的
             AppDelegate *app = [AppDelegate shareIntance];
             __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
             progress.labelText = @"正在更新历史记录包，请稍后...";
@@ -380,7 +380,7 @@
         }else {
             if (!self.isShowHistory) {
                 NSString *path = [Utility returnPath];
-                NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
+                NSString *documentDirectory = [path stringByAppendingPathComponent:task.taskStartDate];
                 NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
                 NSError *error = nil;
                 Class JSONSerialization = [Utility JSONParserClass];
@@ -395,7 +395,7 @@
                         [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
                         self.postInter = [[BasePostInterface alloc]init];
                         self.postInter.delegate = self;
-                        [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
+                        [self.postInter postAnswerFileWith:task.taskStartDate];
                     }
                 }
             }else {
