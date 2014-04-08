@@ -207,7 +207,8 @@
                     obj.notiSchoolClassID = [noticeDic objectForKey:@"school_class_id"];
                     obj.notiStudentID = [noticeDic objectForKey:@"student_id"];
                     obj.notiContent = [noticeDic objectForKey:@"content"];
-                    obj.notiTime = [NSString stringWithFormat:@"%@",[noticeDic objectForKey:@"created_at"]];
+//                    obj.notiTime = [NSString stringWithFormat:@"%@",[noticeDic objectForKey:@"created_at"]];
+                    obj.notiTime = [NSString stringWithFormat:@"%@",[noticeDic objectForKey:@"new_created_at"]];
                     obj.isEditing = NO;
                     [self.notificationArray addObject:obj];
                 }

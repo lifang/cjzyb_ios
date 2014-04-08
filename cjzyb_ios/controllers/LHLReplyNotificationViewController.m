@@ -224,14 +224,14 @@
                     NSRange seperatorRange = [content rangeOfString:@";||;"]; //第一个分隔符
                     NSString *realContent;
                     if (seperatorRange.length > 0) {
-                        realContent = [content substringFromIndex:range.location + range.length];
+                        realContent = [content substringFromIndex:seperatorRange.location + seperatorRange.length];
                     }else{
                         realContent = [content substringFromIndex:range.location + range.length];
                     }
                     
                     ReplyNotificationObject *obj = [ReplyNotificationObject new];
                     obj.replyId = [noticeDic objectForKey:@"id"];
-                    obj.replyTime = [self handleApiResponseTimeString:[noticeDic objectForKey:@"created_at"]];
+                    obj.replyTime = [noticeDic objectForKey:@"new_created_at"];
                     obj.replyContent = realContent;
                     obj.replyMicropostId = [noticeDic objectForKey:@"micropost_id"];
                     obj.replyReciverID = [noticeDic objectForKey:@"reciver_id"];

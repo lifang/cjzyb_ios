@@ -173,6 +173,12 @@
 }
 
 - (void)makeResult{
+    //向系统标志本题完成
+    for (HomeworkTypeObj *type in [DataService sharedService].taskObj.taskHomeworkTypeArray) {
+        if (type.homeworkType == parentVC.homeworkType) {
+            type.homeworkTypeIsFinished = YES;
+        }
+    }
     //准确率,耗时,提交时间  判断精准/迅速/捷足成就  显示结果界面
     NSInteger numberOfRightAnswers = 0;
     if (self.answerArray.count == self.questionArray.count) {

@@ -127,6 +127,7 @@
     }else{
         self.preReadingController = [[PreReadingTaskViewController alloc] initWithNibName:@"PreReadingTaskViewController" bundle:nil];
         [self appearPrePlayControllerWithAnimation:YES];
+        [self loadHomeworkFromFile];
         [self updateFirstSentence];
         [self.preReadingController startPreListeningHomeworkSentence:self.currentHomework withPlayFinished:^(BOOL isSuccess) {
             
@@ -301,6 +302,29 @@
     }
     
 }
+
+///计算下一题的homeworkIndex和sentenceIndex(section代表home,row代表sentence ,如都为-2代表已完成)
+- (NSIndexPath *)findNextIndexWithHomeworkIndex:(NSInteger )homeIndex andSentenceIndex:(NSInteger)sentenceIndex{
+    if (sentenceIndex + 1 < self.currentHomework.readingHomeworkSentenceObjArray.count) {
+        //有下一小题
+        return [NSIndexPath indexPathForRow:sentenceIndex + 1 inSection:homeIndex];
+    }else{
+        if (homeIndex + 1 < self.readingHomeworksArr.count) {
+            ReadingHomeworkObj *nextHomework = self.readingHomeworksArr[homeIndex + 1];
+            if (nextHomework.readingHomeworkSentenceObjArray.count >= 1) {
+                //有下一大题且有小题
+                return [NSIndexPath indexPathForRow:0 inSection:homeIndex + 1];
+            }else{
+                //有下一大题但无小题?
+                return [NSIndexPath indexPathForRow:-2 inSection:-2];
+            }
+        }else{
+            //无下一大题
+            return [NSIndexPath indexPathForRow:-2 inSection:-2];
+        }
+    }
+}
+
 ///读取当前指定大题
 -(void)updateFirstHomework{
     //读取题目
@@ -775,8 +799,14 @@
             if (self.currentSentenceIndex == self.currentHomework.readingHomeworkSentenceObjArray.count-1) {
                 self.currentHomework.isFinished = YES;
             }
+            NSIndexPath *indexPath = [self findNextIndexWithHomeworkIndex:self.currentHomeworkIndex andSentenceIndex:self.currentSentenceIndex];
             //TODO:此处保存的是已经被做过的题目号码
-            [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
+            [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path
+                                                        withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond]
+                                                  withQuestionIndex:indexPath.section
+                                              withQuestionItemIndex:indexPath.row
+                                              withReadingHomworkArr:self.readingHomeworksArr
+                                                        withSuccess:^{
                 ReadingTaskViewController *tempSelf = weakSelf ;
                 if (tempSelf) {
                     self.shouldUpload = YES;
