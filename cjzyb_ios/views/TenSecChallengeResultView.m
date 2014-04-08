@@ -41,16 +41,21 @@
         self.accuracyAchievementLabel.text = [NSString stringWithFormat:@"所有题目全部正确!<精准>成就加10分!"];
     }
     
-    if (self.timeCount <= self.timeLimit) {//迅速成就
-        self.fastAchievementLabel.text = [NSString stringWithFormat:@"恭喜你的用时在%d秒内,<迅速>成就加10分!",self.timeLimit];
+    if (self.ratio < 60) {
+        self.fastAchievementLabel.text = [NSString stringWithFormat:@"正确率未达到60%@,不能拿到迅速得分哦!",@"%"];
+        self.earlyAchievementLabel.text = [NSString stringWithFormat:@"正确率未达到60%@,不能拿到捷足得分哦!",@"%"];
     }else{
-        self.fastAchievementLabel.text = [NSString stringWithFormat:@"你的用时超过了%d秒,不能拿到迅速得分哦!",self.timeLimit];
-    }
-    
-    if (self.isEarly) {//捷足成就
-        self.earlyAchievementLabel.text = [NSString stringWithFormat:@"恭喜你在截止时间提前两小时完成作业,<捷足>成就加10分!"];
-    }else{
-        self.earlyAchievementLabel.text = [NSString stringWithFormat:@"未能在截止时间提前两小时完成作业,不能拿到捷足得分哦!"];
+        if (self.timeCount <= self.timeLimit) {//迅速成就
+            self.fastAchievementLabel.text = [NSString stringWithFormat:@"恭喜你的用时在%d秒内,<迅速>成就加10分!",self.timeLimit];
+        }else{
+            self.fastAchievementLabel.text = [NSString stringWithFormat:@"你的用时超过了%d秒,不能拿到迅速得分哦!",self.timeLimit];
+        }
+        
+        if (self.isEarly) {//捷足成就
+            self.earlyAchievementLabel.text = [NSString stringWithFormat:@"恭喜你在截止时间提前两小时完成作业,<捷足>成就加10分!"];
+        }else{
+            self.earlyAchievementLabel.text = [NSString stringWithFormat:@"未能在截止时间提前两小时完成作业,不能拿到捷足得分哦!"];
+        }
     }
     
     //剩余挑战次数(十速挑战专用)
