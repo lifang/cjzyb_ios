@@ -54,8 +54,10 @@
     __block LHLNotificationViewController *notiVC = self;
     __block UITableView *tableView = self.tableView;
     [_tableView addPullToRefreshWithActionHandler:^{
-        notiVC.isRefreshing = YES;
-        [notiVC requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+        if (!self.isLoading) {
+            notiVC.isRefreshing = YES;
+            [notiVC requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+        }
         [tableView.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];
 }
@@ -154,15 +156,15 @@
     self.tableView.tableFooterView = header;
 }
 
--(void)initHeaderView {
-    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 768, 50)];
-    header.backgroundColor = [UIColor clearColor];
-    [header addSubview:self.indicView];
-    UILabel *loadLab = [[UILabel alloc]initWithFrame:CGRectMake(self.indicView.frame.origin.x+30, 10, 200, 30)];
-    loadLab.text = @"正在刷新中...";
-    [header addSubview:loadLab];
-    self.tableView.tableHeaderView = header;
-}
+//-(void)initHeaderView {
+//    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 768, 50)];
+//    header.backgroundColor = [UIColor clearColor];
+//    [header addSubview:self.indicView];
+//    UILabel *loadLab = [[UILabel alloc]initWithFrame:CGRectMake(self.indicView.frame.origin.x+30, 10, 200, 30)];
+//    loadLab.text = @"正在刷新中...";
+//    [header addSubview:loadLab];
+//    self.tableView.tableHeaderView = header;
+//}
 
 #pragma mark -- 请求接口
 -(void)postNotification {
@@ -205,7 +207,7 @@
                     obj.notiSchoolClassID = [noticeDic objectForKey:@"school_class_id"];
                     obj.notiStudentID = [noticeDic objectForKey:@"student_id"];
                     obj.notiContent = [noticeDic objectForKey:@"content"];
-                    obj.notiTime = [self handleApiResponseTimeString:[noticeDic objectForKey:@"created_at"]];
+                    obj.notiTime = [NSString stringWithFormat:@"%@",[noticeDic objectForKey:@"created_at"]];
                     obj.isEditing = NO;
                     [self.notificationArray addObject:obj];
                 }
