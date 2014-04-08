@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *tName;
 @property (nonatomic, strong) NSString *tId;
+@property (nonatomic, strong) NSString *expireTime;//班级过期时间
 
 +(ClassObject *)classFromDictionary:(NSDictionary *)aDic;
 ///保存当前用户班级

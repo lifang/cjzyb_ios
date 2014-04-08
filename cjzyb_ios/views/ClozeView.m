@@ -163,8 +163,7 @@
                     
                     while (![str isEqualToString:@" "] && str.length>0) {
                         NSString *str_sub = [self handleWithString:str andFrame:frame];
-                        NSLog(@"str_sub = %@",str_sub);
-                        if (![str_sub isEqualToString:@" "] && str_sub.length>0) {
+                        if (str_sub.length>0) {
                             UILabel *label = [self returnLabel];
                             CGSize size1 = [str_sub sizeWithFont:aFont];
                             frame.size.width = size1.width;

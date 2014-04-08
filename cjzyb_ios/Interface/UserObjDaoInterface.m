@@ -109,7 +109,6 @@
         return;
     }
     NSString *urlString = [NSString stringWithFormat:@"%@/api/students/validate_verification_code",kHOST];
-    DLog(@"修改同学信息url:%@",urlString);
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlString]];
     
     [request setTimeOutSeconds:60];
@@ -119,21 +118,11 @@
     [Utility requestDataWithASIRequest:request withSuccess:^(NSDictionary *dicData) {
         NSDictionary *userDic = [dicData objectForKey:@"student"];
         NSDictionary *gradeDic = [dicData objectForKey:@"class"];
-        UserObject *user = [[UserObject alloc] init];
-        user.userId = [Utility filterValue:[userDic objectForKey:@"id"]];
-//        user.userId = [Utility filterValue:[userDic objectForKey:@"user_id"]];//user_id代表
-        user.name = [Utility filterValue:[userDic objectForKey:@"name"]];
-        user.nickName = [Utility filterValue:[userDic objectForKey:@"nickname"]];
-        user.headUrl = [Utility filterValue:[userDic objectForKey:@"avatar_url"]];
+        UserObject *user = [UserObject userFromDictionary:userDic];
+        ClassObject *grade = [ClassObject classFromDictionary:gradeDic];
         
-        ClassObject *grade = [[ClassObject alloc] init];
-        grade.classId = [Utility filterValue:[gradeDic objectForKey:@"id"]];
-        grade.name = [Utility filterValue:[gradeDic objectForKey:@"name"]];
-        grade.tName = [Utility filterValue:[gradeDic objectForKey:@"tearcher_name"]];
-        grade.tId = [Utility filterValue:[gradeDic objectForKey:@"tearcher_id"]];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
-                DLog(@"%@",dicData);
                 success(user,grade);
             }
         });
@@ -157,9 +146,9 @@
     [Utility requestDataWithASIRequest:request withSuccess:^(NSDictionary *dicData) {
         NSMutableArray *classArr = [NSMutableArray array];
         for (NSDictionary *gradeDic in [dicData objectForKey:@"classes"]) {
-            ClassObject *grade = [[ClassObject alloc] init];
-            grade.classId = [Utility filterValue:[gradeDic objectForKey:@"class_id"]];
-            grade.name = [Utility filterValue:[gradeDic objectForKey:@"class_name"]];
+            ClassObject *grade = [[ClassObject alloc]init];
+            grade.classId = [gradeDic objectForKey:@"class_id"];
+            grade.name = [gradeDic objectForKey:@"class_name"];
             [classArr addObject:grade];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -187,21 +176,12 @@
     [Utility requestDataWithASIRequest:request withSuccess:^(NSDictionary *dicData) {
         NSDictionary *userDic = [dicData objectForKey:@"student"];
         NSDictionary *gradeDic = [dicData objectForKey:@"class"];
-        UserObject *user = [[UserObject alloc] init];
-        user.userId = [Utility filterValue:[userDic objectForKey:@"id"]];
-        //        user.userId = [Utility filterValue:[userDic objectForKey:@"user_id"]];//user_id代表
-        user.name = [Utility filterValue:[userDic objectForKey:@"name"]];
-        user.nickName = [Utility filterValue:[userDic objectForKey:@"nickname"]];
-        user.headUrl = [Utility filterValue:[userDic objectForKey:@"avatar_url"]];
         
-        ClassObject *grade = [[ClassObject alloc] init];
-        grade.classId = [Utility filterValue:[gradeDic objectForKey:@"id"]];
-        grade.name = [Utility filterValue:[gradeDic objectForKey:@"name"]];
-        grade.tName = [Utility filterValue:[gradeDic objectForKey:@"tearcher_name"]];
-        grade.tId = [Utility filterValue:[gradeDic objectForKey:@"tearcher_id"]];
+        UserObject *user = [UserObject userFromDictionary:userDic];
+        ClassObject *grade = [ClassObject classFromDictionary:gradeDic];
+
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
-                DLog(@"%@",dicData);
                 success(user,grade);
             }
         });

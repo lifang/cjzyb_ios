@@ -103,7 +103,26 @@
     tabBarController.childenControllerArray = @[main];
     self.window.rootViewController = tabBarController;
 }
-
+//比较时间
+-(BOOL)compareTimeWithString:(NSString *)string {
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+    NSDate *endDate = [dateFormatter dateFromString:string];
+    
+    NSDate *nowDate = [NSDate date];
+    
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    unsigned int unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    NSDateComponents *d = [cal components:unitFlags fromDate:nowDate toDate:endDate options:0];
+    int hour =[d hour];int day = [d day];int month = [d month];int minute = [d minute];int second = [d second];int year = [d year];
+    
+    if (year>0 || month>0 || day>0 || hour>0 || minute>0 || second>0) {
+        return YES;
+    }else
+        return NO;
+}
 - (void)showRootView{
     
     NSFileManager *fileManage = [NSFileManager defaultManager];
@@ -116,32 +135,42 @@
         NSDictionary *classDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
         [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
         
-        filename = [path stringByAppendingPathComponent:@"student.plist"];
-        NSDictionary *userDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-        [DataService sharedService].user = [UserObject userFromDictionary:userDic];
-        
-        if (self.the_class_id>0) {
-            if (self.the_student_id == [[DataService sharedService].user.studentId integerValue]) {//学生student—id相同
-                [DataService sharedService].theClass.classId = [NSString stringWithFormat:@"%d",self.the_class_id];
-                [DataService sharedService].theClass.name = [NSString stringWithFormat:@"%@",self.the_class_name];
-                
-                [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
-            }else {
-                NSFileManager *fileManage = [NSFileManager defaultManager];
-                NSString *path = [Utility returnPath];
-                NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
-                if ([fileManage fileExistsAtPath:filename]) {
-                    [fileManage removeItemAtPath:filename error:nil];
-                }
-                NSString *filename2 = [path stringByAppendingPathComponent:@"student.plist"];
-                if ([fileManage fileExistsAtPath:filename2]) {
-                    [fileManage removeItemAtPath:filename2 error:nil];
-                }
-                LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
-                self.window.rootViewController = logView;
-            }
+        BOOL isExpire = [self compareTimeWithString:[DataService sharedService].theClass.expireTime];
+        if (isExpire==NO) {
+            [fileManage removeItemAtPath:filename error:nil];
+            filename = [path stringByAppendingPathComponent:@"student.plist"];
+            [fileManage removeItemAtPath:filename error:nil];
+            
+            LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
+            self.window.rootViewController = logView;
         }else {
-            [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
+            filename = [path stringByAppendingPathComponent:@"student.plist"];
+            NSDictionary *userDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
+            [DataService sharedService].user = [UserObject userFromDictionary:userDic];
+            
+            if (self.the_class_id>0) {
+                if (self.the_student_id == [[DataService sharedService].user.studentId integerValue]) {//学生student—id相同
+                    [DataService sharedService].theClass.classId = [NSString stringWithFormat:@"%d",self.the_class_id];
+                    [DataService sharedService].theClass.name = [NSString stringWithFormat:@"%@",self.the_class_name];
+                    
+                    [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
+                }else {
+                    NSFileManager *fileManage = [NSFileManager defaultManager];
+                    NSString *path = [Utility returnPath];
+                    NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
+                    if ([fileManage fileExistsAtPath:filename]) {
+                        [fileManage removeItemAtPath:filename error:nil];
+                    }
+                    NSString *filename2 = [path stringByAppendingPathComponent:@"student.plist"];
+                    if ([fileManage fileExistsAtPath:filename2]) {
+                        [fileManage removeItemAtPath:filename2 error:nil];
+                    }
+                    LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
+                    self.window.rootViewController = logView;
+                }
+            }else {
+                [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
+            }
         }
     }
 }
@@ -167,7 +196,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
+    InitViewController *initView = [[InitViewController alloc]initWithNibName:@"InitViewController" bundle:nil];
+    self.window.rootViewController = initView;
     self.window.backgroundColor = [UIColor whiteColor];
 
     self.the_class_id = -1;

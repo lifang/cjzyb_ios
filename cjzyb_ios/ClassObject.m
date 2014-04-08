@@ -17,6 +17,7 @@
     [class setName:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"name"]]]];
     [class setTName:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"tearcher_name"]]]];
     [class setTId:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"tearcher_id"]]]];
+    [class setExpireTime:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"period_of_validity"]]]];
     
     return class;
 }
@@ -34,7 +35,7 @@
     if ([fileManage fileExistsAtPath:filename]) {
         [fileManage removeItemAtPath:filename error:nil];
     }
-    NSDictionary *classDic = @{@"id": (self.classId?:@""),@"name":(self.name?:@""),@"tearcher_name":(self.tName?:@""),@"tearcher_id":(self.tId?:@"")};
+    NSDictionary *classDic = @{@"id": (self.classId?:@""),@"name":(self.name?:@""),@"tearcher_name":(self.tName?:@""),@"tearcher_id":(self.tId?:@""),@"period_of_validity":(self.expireTime?:@"")};
     [NSKeyedArchiver archiveRootObject:classDic toFile:filename];
 }
 
