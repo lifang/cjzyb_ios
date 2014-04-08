@@ -118,32 +118,55 @@
         }
     }];
 }
-
+- (int)textLength:(NSString *)text
+{
+    float number = 0.0;
+    for (int index = 0; index < [text length]; index++)
+    {
+        NSString *character = [text substringWithRange:NSMakeRange(index, 1)];
+        
+        if ([character lengthOfBytesUsingEncoding:NSUTF8StringEncoding] == 3)
+        {
+            number++;
+        }
+        else
+        {
+            number = number + 0.5;
+        }
+    }
+    return ceil(number);
+}
 - (IBAction)modifyUserNameButtonClicked:(id)sender {
     __weak UserInfoPopViewController *weakSelf = self;
     DataService *data = [DataService sharedService];
     AppDelegate *appDel = [AppDelegate shareIntance];
     
     [ModelTypeViewController presentTypeViewWithTipString:@"请输入新名称：" withFinishedInput:^(NSString *inputString) {
-        [MBProgressHUD showHUDAddedTo:appDel.window animated:YES];
-        [UserObjDaoInterface modifyUserNickNameAndHeaderImageWithUserId:data.user.studentId withUserName:data.user.name withUserNickName:inputString withHeaderData:nil withSuccess:^(NSString *msg) {
-            UserInfoPopViewController *tempSelf = weakSelf;
-            if (tempSelf) {
-                data.user.nickName = inputString;
-                [data.user archiverUser];
-                tempSelf.userNameLabel.text = data.user.nickName;
-//                [tempSelf updateViewContents];
-                [Utility errorAlert:msg];
-                [MBProgressHUD hideHUDForView:appDel.window animated:YES];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kModifyUserNickNameNotification object:nil];
-            }
-        } withFailure:^(NSError *error) {
-            UserInfoPopViewController *tempSelf = weakSelf;
-            if (tempSelf) {
-                [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-                [MBProgressHUD hideHUDForView:appDel.window animated:YES];
-            }
-        }];
+        
+        int wordcount = [self textLength:inputString];
+        if (wordcount>8) {
+            [Utility errorAlert:@"昵称不能超过8个字符"];
+        }else {
+            [MBProgressHUD showHUDAddedTo:appDel.window animated:YES];
+            [UserObjDaoInterface modifyUserNickNameAndHeaderImageWithUserId:data.user.studentId withUserName:data.user.name withUserNickName:inputString withHeaderData:nil withSuccess:^(NSString *msg) {
+                UserInfoPopViewController *tempSelf = weakSelf;
+                if (tempSelf) {
+                    data.user.nickName = inputString;
+                    [data.user archiverUser];
+                    tempSelf.userNameLabel.text = data.user.nickName;
+                    //                [tempSelf updateViewContents];
+                    [Utility errorAlert:msg];
+                    [MBProgressHUD hideHUDForView:appDel.window animated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kModifyUserNickNameNotification object:nil];
+                }
+            } withFailure:^(NSError *error) {
+                UserInfoPopViewController *tempSelf = weakSelf;
+                if (tempSelf) {
+                    [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+                    [MBProgressHUD hideHUDForView:appDel.window animated:YES];
+                }
+            }];
+        }        
     } withCancel:nil];
 }
 @end

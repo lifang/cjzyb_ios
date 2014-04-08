@@ -18,7 +18,7 @@ enum MessageCellStyle {
 #define M_Name     @"name"
 #define M_Userid   @"user_id"
 #define M_Content  @"content"
-#define M_Time     @"created_at"
+#define M_Time     @"new_created_at"
 #define M_head     @"avatar_url"
 #define M_userType    @"user_types"
 #define M_replyCount   @"reply_microposts_count"

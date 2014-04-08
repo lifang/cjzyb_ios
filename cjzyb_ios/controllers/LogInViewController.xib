@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LogInViewController">
             <connections>
+                <outlet property="backBtn" destination="S4I-VW-PNo" id="r13-SQ-aao"/>
                 <outlet property="classTxt" destination="igZ-GG-GbX" id="iQm-5i-yHC"/>
                 <outlet property="detailBtn" destination="c88-yU-gDa" id="aGa-6h-b3C"/>
                 <outlet property="detailView" destination="7mF-LY-oIS" id="qF4-29-ywK"/>
@@ -77,6 +78,16 @@
                                 <action selector="sureToLoad:" destination="-1" eventType="touchUpInside" id="Lhh-eR-RqX"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S4I-VW-PNo">
+                            <rect key="frame" x="20" y="20" width="45" height="45"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" image="backBtn.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="backPressed:" destination="-1" eventType="touchUpInside" id="sqq-1F-YyB"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <connections>
@@ -116,6 +127,7 @@
     </objects>
     <resources>
         <image name="QQLogIn.png" width="278" height="55"/>
+        <image name="backBtn.png" width="30" height="30"/>
         <image name="detail_info.png" width="278" height="53"/>
         <image name="detail_logIn.png" width="768" height="1024"/>
         <image name="detail_sure.png" width="278" height="53"/>

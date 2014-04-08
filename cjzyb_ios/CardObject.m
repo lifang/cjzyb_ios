@@ -34,7 +34,7 @@
     
     [card setOptions:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"options"]]]];
     [card setCard_tag_id:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"card_tag_id"]]]];
-    [card setCreated_at:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"created_at"]]]];
+    [card setCreated_at:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"new_created_at"]]]];
     [card setFull_text:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"full_text"]]]];
     [card setTagArray:[NSMutableArray arrayWithArray:[aDic objectForKey:@"card_tags_id"]]];
     return card;

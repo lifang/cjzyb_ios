@@ -213,6 +213,11 @@
     }
 }
 
+
+-(IBAction)backPressed:(id)sender {
+    self.logView.hidden = NO;
+    self.detailView.hidden = YES;
+}
 #pragma mark
 #pragma mark - LogInterfaceDelegate
 
@@ -232,15 +237,12 @@
                 [NSKeyedArchiver archiveRootObject:classDic toFile:filename];
                 
                 //小红点
-                NSLog(@"%@",self.appDel.notification_dic);
                 if (![[self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]isKindOfClass:[NSNull class]] && [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]!=nil) {
                     
                 }else {
                     NSArray *array = [[NSArray alloc]initWithObjects:@"0",@"0",@"0", nil];
                     [self.appDel.notification_dic setObject:array forKey:[DataService sharedService].theClass.classId];
                 }
-                NSLog(@"%@",self.appDel.notification_dic);
-                
                 
                 NSString *filename2 = [path stringByAppendingPathComponent:@"student.plist"];
                 if ([fileManage fileExistsAtPath:filename2]) {
@@ -284,6 +286,14 @@
             [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
             [NSKeyedArchiver archiveRootObject:classDic toFile:filename];
             
+            //小红点
+            if (![[self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]isKindOfClass:[NSNull class]] && [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]!=nil) {
+                
+            }else {
+                NSArray *array = [[NSArray alloc]initWithObjects:@"0",@"0",@"0", nil];
+                [self.appDel.notification_dic setObject:array forKey:[DataService sharedService].theClass.classId];
+            }
+            
             NSString *filename2 = [Path stringByAppendingPathComponent:@"student.plist"];
             if ([fileManage fileExistsAtPath:filename2]) {
                 [fileManage removeItemAtPath:filename2 error:nil];
@@ -294,6 +304,8 @@
             
             AppDelegate *appDel = [AppDelegate shareIntance];
             [appDel showRootView];
+            
+            [_tencentOAuth logout:self];
         });
     });
 }
