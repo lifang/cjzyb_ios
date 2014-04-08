@@ -91,6 +91,8 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
                 if (status == 1) {
                     tempSelf.isFirst = NO;
                 }
+                tempSelf.currentSentenceIndex = 0;
+                tempSelf.currentHomeworkIndex = 0;
             }
         } withParseError:^(NSError *error) {
             [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
@@ -352,7 +354,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
     }
 }
 
-//TODO:从json文件中加载题目数据
+//TODO:从json文件中加载题目数据(非历史)
 -(void)loadHomeworkFromFile{
     TaskObj *task = [DataService sharedService].taskObj;
     __weak ReadingTaskViewController *weakSelf = self;
