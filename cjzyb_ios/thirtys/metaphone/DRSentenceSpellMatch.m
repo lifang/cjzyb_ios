@@ -109,7 +109,6 @@
         [NSCharacterSet decimalDigitCharacterSet];
         NSString *string2 = [string stringByTrimmingCharactersInSet: [NSCharacterSet decimalDigitCharacterSet]];
         if ([string2 stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]].length >0) {
-            DLog(@"不是纯数字");
         }else{
             [range_array addObject:[[Utility shared].rangeArray objectAtIndex:i]];
         }
@@ -119,7 +118,7 @@
     if (![[dic objectForKey:@"green"]isKindOfClass:[NSNull class]] && [dic objectForKey:@"green"]!=nil) {
         NSMutableArray *green_array = [NSMutableArray arrayWithArray:[dic objectForKey:@"green"]];
         [green_array addObjectsFromArray:range_array];
-        
+
         for (int i=0; i<green_array.count; i++) {
             SpellMatchObj *spell = [[SpellMatchObj alloc] init];
             NSTextCheckingResult *math = (NSTextCheckingResult *)[green_array objectAtIndex:i];

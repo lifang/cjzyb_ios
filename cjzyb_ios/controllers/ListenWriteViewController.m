@@ -465,7 +465,7 @@ static int numberOfMusic =0;
     if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
         NSMutableArray *yellow_array = [self.resultDic objectForKey:@"yellow"];
         for (int i=0; i<yellow_array.count; i++) {
-            self.branchScore += 0.8;
+            self.branchScore += 0;
             
             int index = [[yellow_array objectAtIndex:i]intValue];
             UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:index+Textfield_Tag];
@@ -558,10 +558,7 @@ static int numberOfMusic =0;
                     [wrong_anserString appendFormat:@"%@;||;",[self.orgArray objectAtIndex:index]];
                 }
             }
-        }
-        
-        self.scoreRadio = (self.branchScore/((float)self.orgArray.count))*100;
-        if (self.scoreRadio-80>=0) {//超过8成的真确率
+        }else {
             if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
                 self.homeControl.reduceTimeButton.enabled=NO;
                 [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
@@ -574,6 +571,8 @@ static int numberOfMusic =0;
             }
         }
         
+        
+        self.scoreRadio = (self.branchScore/((float)self.orgArray.count))*100;
         if (self.scoreRadio-100>=0) {
             TRUESOUND;
         }else {

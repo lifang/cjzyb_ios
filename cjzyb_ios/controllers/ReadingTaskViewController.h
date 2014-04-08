@@ -7,17 +7,23 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GoogleTTSAPI.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
-#import "ISpeechSDK.h"
 #import "ParseQuestionJsonFileTool.h"
 #import "TenSecChallengeResultView.h"
 @class HomeworkContainerController;
+#import "iflyMSC/IFlySpeechRecognizer.h"
+#import "PopupView.h"
 /** ReadingTaskViewController
  *
  * 朗读任务
  */
-@interface ReadingTaskViewController : UIViewController<AVAudioRecorderDelegate,AVAudioPlayerDelegate,UIAlertViewDelegate,ISSpeechRecognitionDelegate,TenSecChallengeResultViewDelegate>
+@interface ReadingTaskViewController : UIViewController<AVAudioRecorderDelegate,AVAudioPlayerDelegate,UIAlertViewDelegate,TenSecChallengeResultViewDelegate,IFlySpeechRecognizerDelegate>
+{
+    IFlySpeechRecognizer    * _iFlySpeechRecognizer;
+    PopupView               * _popUpView;
+}
 ///每道大题需要时间秒数（包含多个句子）
 @property (assign,nonatomic) int specifiedSecond;
 ///当前正在做的题目
@@ -32,7 +38,6 @@
 
 ///显示结果view
 @property (nonatomic, strong) TenSecChallengeResultView *resultView;
-
 
 ///是否是第一次做题
 @property (nonatomic,assign) BOOL isFirst;
