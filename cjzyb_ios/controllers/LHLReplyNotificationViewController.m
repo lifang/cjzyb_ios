@@ -46,7 +46,6 @@
     
     UINib *nib = [UINib nibWithNibName:@"LHLNotificationCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"LHLNotificationCell"];
-
     [self.tableView registerClass:[LHLReplyNotificationCell class] forCellReuseIdentifier:@"LHLReplyNotificationCell"];
     
     [self initData];
