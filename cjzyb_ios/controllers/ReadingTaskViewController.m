@@ -87,12 +87,10 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
                 parentVC.rotioLabel.text = [NSString stringWithFormat:@"%0.0f%@",ratio * 100,@"%"];
                 [parentVC.checkHomeworkButton setTitle:@"下一个" forState:UIControlStateNormal];
                 tempSelf.readingHomeworksArr = readingQuestionArr;
-                [tempSelf updateFirstSentence];
-                if (status == 1) {
-                    tempSelf.isFirst = NO;
-                }
+                tempSelf.isFirst = NO;
                 tempSelf.currentSentenceIndex = 0;
                 tempSelf.currentHomeworkIndex = 0;
+                [tempSelf updateFirstSentence];
             }
         } withParseError:^(NSError *error) {
             [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
@@ -173,7 +171,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
     if (!currentSentence) {
         return;
     }
-    self.currentSentence = currentSentence;
+    self.currentSentence = currentSentence;//GO
     if (ani) {
         CATransition *animation = [CATransition animation];
         [animation setType:kCATransitionPush];
@@ -235,13 +233,19 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 }
 
 -(void)quitNow{
-    if (!self.isPrePlay && ![DataService sharedService].isHistory && self.isFirst && isCanUpLoad) {
+    
+//    if (!self.isPrePlay && ![DataService sharedService].isHistory && self.isFirst && isCanUpLoad) {
+    if (![DataService sharedService].isHistory && self.isFirst && isCanUpLoad) {
+        //第一次做题且需上传
         __weak ReadingTaskViewController *weakSelf = self;
         TaskObj *task = [DataService sharedService].taskObj;
         NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
+        
+        //先保存一次JSON
         [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
             ReadingTaskViewController *tempSelf = weakSelf ;
             if (tempSelf) {
+                //成功后上传
                 [tempSelf uploadJSON];
             }
         } withFailure:^(NSError *error) {
