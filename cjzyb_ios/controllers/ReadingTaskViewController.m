@@ -21,8 +21,9 @@
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
 #define minRecoginCount 4
 #define minRecoginLevel 0.5
-static BOOL isCanUpLoad = NO;  //是否应该上传JSON
+
 @interface ReadingTaskViewController ()
+@property (nonatomic,assign) BOOL shouldUpload;  //是否应该上传JSON
 ///预听界面
 @property (nonatomic,strong) PreReadingTaskViewController *preReadingController;
 @property (nonatomic,strong) AVAudioPlayer *avPlayer;
@@ -81,10 +82,10 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
                 parentVC.rotioLabel.text = [NSString stringWithFormat:@"%0.0f%@",ratio * 100,@"%"];
                 [parentVC.checkHomeworkButton setTitle:@"下一个" forState:UIControlStateNormal];
                 tempSelf.readingHomeworksArr = readingQuestionArr;
+                tempSelf.isFirst = NO;
+                tempSelf.currentSentenceIndex = 0;
+                tempSelf.currentHomeworkIndex = 0;
                 [tempSelf updateFirstSentence];
-                if (status == 1) {
-                    tempSelf.isFirst = NO;
-                }
             }
         } withParseError:^(NSError *error) {
             [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
@@ -114,6 +115,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.shouldUpload = NO;
     // 创建识别对象
     _iFlySpeechRecognizer = [RecognizerFactory CreateRecognizer:self Domain:@"iat"];
     _popUpView = [[PopupView alloc]initWithFrame:CGRectMake(100, 100, 0, 0)];
@@ -125,6 +127,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
     }else{
         self.preReadingController = [[PreReadingTaskViewController alloc] initWithNibName:@"PreReadingTaskViewController" bundle:nil];
         [self appearPrePlayControllerWithAnimation:YES];
+        [self loadHomeworkFromFile];
         [self updateFirstSentence];
         [self.preReadingController startPreListeningHomeworkSentence:self.currentHomework withPlayFinished:^(BOOL isSuccess) {
             
@@ -144,7 +147,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
     if (!currentSentence) {
         return;
     }
-    self.currentSentence = currentSentence;
+    self.currentSentence = currentSentence;//GO
     if (ani) {
         CATransition *animation = [CATransition animation];
         [animation setType:kCATransitionPush];
@@ -181,20 +184,21 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
         [parentVC.reduceTimeButton setEnabled:NO];
     }
     [DataService sharedService].number_reduceTime--;
-    __weak ReadingTaskViewController *weakSelf = self;
-    TaskObj *task = [DataService sharedService].taskObj;
-    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
-    [ParseAnswerJsonFileTool writePropsToJsonFile:path withQuestionId:[NSString stringWithFormat:@"%d",self.currentSentenceIndex] withPropsType:@"1" withSuccess:^{
-        ReadingTaskViewController *tempSelf = weakSelf ;
-        if (tempSelf) {
-        
-        }
-    } withFailure:^(NSError *error) {
-        ReadingTaskViewController *tempSelf = weakSelf ;
-        if (tempSelf) {
-            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-        }
-    }];
+    parentVC.spendSecond = parentVC.spendSecond > 5 ? parentVC.spendSecond - 5 : 0;
+//    __weak ReadingTaskViewController *weakSelf = self;
+//    TaskObj *task = [DataService sharedService].taskObj;
+//    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
+//    [ParseAnswerJsonFileTool writePropsToJsonFile:path withQuestionId:[NSString stringWithFormat:@"%d",self.currentSentenceIndex] withPropsType:@"1" withSuccess:^{
+//        ReadingTaskViewController *tempSelf = weakSelf ;
+//        if (tempSelf) {
+//        
+//        }
+//    } withFailure:^(NSError *error) {
+//        ReadingTaskViewController *tempSelf = weakSelf ;
+//        if (tempSelf) {
+//            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+//        }
+//    }];
 }
 
 //TODO:退出作业界面
@@ -206,13 +210,19 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 }
 
 -(void)quitNow{
-    if (!self.isPrePlay && ![DataService sharedService].isHistory && self.isFirst && isCanUpLoad) {
+    
+//    if (!self.isPrePlay && ![DataService sharedService].isHistory && self.isFirst && shouldUpload) {
+    if (![DataService sharedService].isHistory && self.isFirst && self.shouldUpload) {
+        //第一次做题且需上传
         __weak ReadingTaskViewController *weakSelf = self;
         TaskObj *task = [DataService sharedService].taskObj;
         NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
+        
+        //先保存一次JSON
         [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
             ReadingTaskViewController *tempSelf = weakSelf ;
             if (tempSelf) {
+                //成功后上传
                 [tempSelf uploadJSON];
             }
         } withFailure:^(NSError *error) {
@@ -292,6 +302,29 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
     }
     
 }
+
+///计算下一题的homeworkIndex和sentenceIndex(section代表home,row代表sentence ,如都为-2代表已完成)
+- (NSIndexPath *)findNextIndexWithHomeworkIndex:(NSInteger )homeIndex andSentenceIndex:(NSInteger)sentenceIndex{
+    if (sentenceIndex + 1 < self.currentHomework.readingHomeworkSentenceObjArray.count) {
+        //有下一小题
+        return [NSIndexPath indexPathForRow:sentenceIndex + 1 inSection:homeIndex];
+    }else{
+        if (homeIndex + 1 < self.readingHomeworksArr.count) {
+            ReadingHomeworkObj *nextHomework = self.readingHomeworksArr[homeIndex + 1];
+            if (nextHomework.readingHomeworkSentenceObjArray.count >= 1) {
+                //有下一大题且有小题
+                return [NSIndexPath indexPathForRow:0 inSection:homeIndex + 1];
+            }else{
+                //有下一大题但无小题?
+                return [NSIndexPath indexPathForRow:-2 inSection:-2];
+            }
+        }else{
+            //无下一大题
+            return [NSIndexPath indexPathForRow:-2 inSection:-2];
+        }
+    }
+}
+
 ///读取当前指定大题
 -(void)updateFirstHomework{
     //读取题目
@@ -325,7 +358,7 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
     }
 }
 
-//TODO:从json文件中加载题目数据
+//TODO:从json文件中加载题目数据(非历史)
 -(void)loadHomeworkFromFile{
     TaskObj *task = [DataService sharedService].taskObj;
     __weak ReadingTaskViewController *weakSelf = self;
@@ -712,7 +745,8 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
 - (void) onError:(IFlySpeechError *) error
 {
     
-    [parentVC stopTimer];
+    [parentVC startTimer];
+    [self.readingButton setEnabled:YES];
     NSString *text ;
     if (error.errorCode ==0 ) {
         text = @"识别成功";
@@ -765,10 +799,17 @@ static BOOL isCanUpLoad = NO;  //是否应该上传JSON
             if (self.currentSentenceIndex == self.currentHomework.readingHomeworkSentenceObjArray.count-1) {
                 self.currentHomework.isFinished = YES;
             }
-            [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
+            NSIndexPath *indexPath = [self findNextIndexWithHomeworkIndex:self.currentHomeworkIndex andSentenceIndex:self.currentSentenceIndex];
+            //TODO:此处保存的是已经被做过的题目号码
+            [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path
+                                                        withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond]
+                                                  withQuestionIndex:indexPath.section
+                                              withQuestionItemIndex:indexPath.row
+                                              withReadingHomworkArr:self.readingHomeworksArr
+                                                        withSuccess:^{
                 ReadingTaskViewController *tempSelf = weakSelf ;
                 if (tempSelf) {
-                    isCanUpLoad = YES;
+                    self.shouldUpload = YES;
                 }
             } withFailure:^(NSError *error) {
                 ReadingTaskViewController *tempSelf = weakSelf ;

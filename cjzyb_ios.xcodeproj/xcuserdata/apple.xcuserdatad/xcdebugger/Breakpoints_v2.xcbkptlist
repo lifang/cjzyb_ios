@@ -26,28 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cjzyb_ios/controllers/ReadingTaskViewController.m"
-            timestampString = "418289893.427226"
+            timestampString = "418636704.909093"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "318"
-            endingLineNumber = "318"
-            landmarkName = "-updateNextSentence"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "cjzyb_ios/controllers/ReadingTaskViewController.m"
-            timestampString = "418294399.794816"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "261"
-            endingLineNumber = "261"
-            landmarkName = "-startBeginninghomework"
+            startingLineNumber = "212"
+            endingLineNumber = "212"
+            landmarkName = "-quitNow"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

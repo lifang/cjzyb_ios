@@ -63,8 +63,10 @@
     __block LHLReplyNotificationViewController *replyVC = self;
     __block UITableView *tableView = self.tableView;
     [_tableView addPullToRefreshWithActionHandler:^{
-        replyVC.isRefreshing = YES;
-        [replyVC requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+        if (!self.isLoading) {
+            replyVC.isRefreshing = YES;
+            [replyVC requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
+        }
         [tableView.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];
 }
@@ -222,7 +224,7 @@
                     NSRange seperatorRange = [content rangeOfString:@";||;"]; //第一个分隔符
                     NSString *realContent;
                     if (seperatorRange.length > 0) {
-                        realContent = [content substringFromIndex:range.location + range.length];
+                        realContent = [content substringFromIndex:seperatorRange.location + seperatorRange.length];
                     }else{
                         realContent = [content substringFromIndex:range.location + range.length];
                     }
