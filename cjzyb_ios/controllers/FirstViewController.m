@@ -44,14 +44,9 @@
     return _appDel;
 }
 -(void)getMessageData {
-    if (self.appDel.isReachable == NO) {
-        [Utility errorAlert:@"暂无网络!"];
-    }else {
-        self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [self.messageInter getMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId];
-//        [self.messageInter getMessageInterfaceDelegateWithClassId:@"83" andUserId:@"73"];
-    }
+    self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [self.messageInter getMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId];
 }
 -(void)textBarInit {
     self.textViewFirst.frame = CGRectMake(3, 3, 710, 44);
@@ -80,7 +75,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadFirstArrayHeaderBySecondView:) name:@"reloadFirstArrayHeaderBySecondView" object:nil];
     //子
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadFirstArrayCellBySecondView:) name:@"reloadFirstArrayCellBySecondView" object:nil];
-    [self getMessageData];
+    
+    if (self.appDel.isReachable == NO) {
+        [Utility errorAlert:@"暂无网络!"];
+    }else {
+        [self getMessageData];
+    }
+    
     
     //下拉刷新
     __block FirstViewController *firstView = self;
@@ -745,28 +746,32 @@
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     if ([text isEqualToString:@"\n"]) {
-        int wordcount = [self textLength:self.textViewFirst.text];
-        if (wordcount>60) {
-            [Utility errorAlert:@"最多输入60个字!"];
+        if (self.textViewFirst.text.length==0) {
+            [Utility errorAlert:@"回复内容不能为空"];
         }else {
-            [textView resignFirstResponder];
-            if (self.type == 1) {//回复的主消息
-                if (self.appDel.isReachable == NO) {
-                    [Utility errorAlert:@"暂无网络!"];
-                }else {
-                    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                    MessageObject *message = (MessageObject *)[self.firstArray objectAtIndex:self.tmpSection];
-                    [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:message.userId andReceiverType:message.userType andmessageId:message.messageId andContent:self.textViewFirst.text andType:self.type];
-                }
-
-            }else {//回复的子消息
-                if (self.appDel.isReachable == NO) {
-                    [Utility errorAlert:@"暂无网络!"];
-                }else {
-                    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                    MessageObject *message = (MessageObject *)[self.firstArray objectAtIndex:self.theIndex.section];
-                    ReplyMessageObject *replyMsg = (ReplyMessageObject *)[message.replyMessageArray objectAtIndex:self.theIndex.row];
-                    [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:replyMsg.sender_id andReceiverType:replyMsg.sender_types andmessageId:message.messageId andContent:self.textViewFirst.text andType:self.type];
+            int wordcount = [self textLength:self.textViewFirst.text];
+            if (wordcount>60) {
+                [Utility errorAlert:@"回复内容不能超过60个字符"];
+            }else {
+                [textView resignFirstResponder];
+                if (self.type == 1) {//回复的主消息
+                    if (self.appDel.isReachable == NO) {
+                        [Utility errorAlert:@"暂无网络!"];
+                    }else {
+                        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                        MessageObject *message = (MessageObject *)[self.firstArray objectAtIndex:self.tmpSection];
+                        [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:message.userId andReceiverType:message.userType andmessageId:message.messageId andContent:self.textViewFirst.text andType:self.type];
+                    }
+                    
+                }else {//回复的子消息
+                    if (self.appDel.isReachable == NO) {
+                        [Utility errorAlert:@"暂无网络!"];
+                    }else {
+                        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                        MessageObject *message = (MessageObject *)[self.firstArray objectAtIndex:self.theIndex.section];
+                        ReplyMessageObject *replyMsg = (ReplyMessageObject *)[message.replyMessageArray objectAtIndex:self.theIndex.row];
+                        [self.sendInter getSendDelegateWithSendId:[DataService sharedService].user.userId andSendType:@"1" andClassId:[DataService sharedService].theClass.classId andReceiverId:replyMsg.sender_id andReceiverType:replyMsg.sender_types andmessageId:message.messageId andContent:self.textViewFirst.text andType:self.type];
+                    }
                 }
             }
         }
@@ -811,10 +816,7 @@
                     [self.firstArray addObject:msg];
                 }
                 [self.firstTable reloadData];
-            }else {
-                [Utility errorAlert:@"暂无数据!"];
             }
-            
         });
     });
 }

@@ -229,7 +229,7 @@
                     
                     ReplyNotificationObject *obj = [ReplyNotificationObject new];
                     obj.replyId = [noticeDic objectForKey:@"id"];
-                    obj.replyTime = [self handleApiResponseTimeString:[noticeDic objectForKey:@"created_at"]];
+                    obj.replyTime = [noticeDic objectForKey:@"new_created_at"];
                     obj.replyContent = realContent;
                     obj.replyMicropostId = [noticeDic objectForKey:@"micropost_id"];
                     obj.replyReciverID = [noticeDic objectForKey:@"reciver_id"];

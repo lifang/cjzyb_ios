@@ -28,5 +28,5 @@
 @property (nonatomic, strong) IBOutlet UITextField *classTxt;
 @property (nonatomic, strong) IBOutlet UIButton *detailBtn;
 @property (nonatomic, strong) IBOutlet UIImageView *logoImg;
-
+@property (nonatomic, strong) IBOutlet UIButton *backBtn;
 @end

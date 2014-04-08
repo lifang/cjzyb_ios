@@ -45,11 +45,21 @@
     
     [ModelTypeViewController presentTypeViewWithTipString:@"请输入班级验证码：" withFinishedInput:^(NSString *inputString) {
         AppDelegate *app = [AppDelegate shareIntance];
-        [MBProgressHUD showHUDAddedTo:app.window animated:YES];
-        if (!inputString && [inputString isEqualToString:@""]) {
-            [Utility errorAlert:@"班级验证码不能为空"];
+
+        NSString *msgStr = @"";
+        NSString *regexCall = @"[0-9]{10}";
+        NSPredicate *predicateCall = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regexCall];
+        if ([predicateCall evaluateWithObject:inputString]) {
+            
+        }else {
+            msgStr = @"班级验证码不能为空";
+        }
+        if (msgStr.length>0) {
+            [Utility errorAlert:msgStr];
             return ;
         }
+        
+        [MBProgressHUD showHUDAddedTo:app.window animated:YES];
         [UserObjDaoInterface joinNewGradeWithUserId:data.user.studentId withIdentifyCode:inputString withSuccess:^(UserObject *userObj, ClassObject *gradeObj) {
             ClassGroupViewController *tempSelf = weakSelf;
             if (tempSelf) {

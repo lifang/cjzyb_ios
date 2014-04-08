@@ -177,7 +177,7 @@
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
     //推送
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-     (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     
     //表示app是登录状态
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -265,6 +265,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     //记录作业＋通知右上角红点点～～
     NSFileManager *fileManage = [NSFileManager defaultManager];
     NSString *path = [Utility returnPath];
@@ -329,7 +330,8 @@
     //接收到push  会震动
 	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     int type = [[userInfo objectForKey:@"type"] intValue];//推送类型
-    NSString * classId = [userInfo objectForKey:@"class_id"];//推送班级
+    NSString * classId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"class_id"]];//推送班级
+    NSString * studentId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"student_id"]];//推送学生
     
     NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
     for (int i=0; i<3; i++) {
@@ -343,27 +345,49 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *isOn = [defaults objectForKey:@"isOn"];
     if ([isOn intValue] == 1) {//app登录
-        if (![[self.notification_dic objectForKey:classId]isKindOfClass:[NSNull class]] && [self.notification_dic objectForKey:classId]!= nil) {
-            NSMutableArray *mutableArr = [[NSMutableArray alloc]initWithArray:[self.notification_dic objectForKey:classId]];
-            [mutableArr replaceObjectAtIndex:type withObject:@"1"];
-            [self.notification_dic setObject:mutableArr forKey:classId];
+        
+        BOOL isPush = NO;
+        if (type==2) {
+            if ([classId integerValue] == [[DataService sharedService].theClass.classId integerValue]) {//班级相同
+                isPush = YES;
+                if (![[self.notification_dic objectForKey:classId]isKindOfClass:[NSNull class]]  && [self.notification_dic objectForKey:classId]!=nil) {
+                    NSMutableArray *mutableArr = [[NSMutableArray alloc]initWithArray:[self.notification_dic objectForKey:classId]];
+                    [mutableArr replaceObjectAtIndex:type withObject:@"1"];
+                    [self.notification_dic setObject:mutableArr forKey:classId];
+                }else {
+                    [self.notification_dic setObject:mutableArray forKey:classId];
+                }
+            }
         }else {
-            [self.notification_dic setObject:mutableArray forKey:classId];
+            if ([studentId integerValue] == [[DataService sharedService].user.studentId integerValue] && [classId integerValue] == [[DataService sharedService].theClass.classId integerValue]) {//学生相同
+                isPush = YES;
+                if (![[self.notification_dic objectForKey:classId]isKindOfClass:[NSNull class]]  && [self.notification_dic objectForKey:classId]!=nil) {
+                    NSMutableArray *mutableArr = [[NSMutableArray alloc]initWithArray:[self.notification_dic objectForKey:classId]];
+                    [mutableArr replaceObjectAtIndex:type withObject:@"1"];
+                    [self.notification_dic setObject:mutableArr forKey:classId];
+                }else {
+                    [self.notification_dic setObject:mutableArray forKey:classId];
+                }
+            }
         }
         
-        if ([classId integerValue] == [[DataService sharedService].theClass.classId integerValue]) {//班级相同
+        if (isPush==YES) {
             [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:[self.notification_dic objectForKey:classId]];
         }
+        
     }
 }
 
 
 #ifdef __IPHONE_7_0
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:[userInfo debugDescription] delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+    [alert show];
     //接收到push  会震动
 	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     int type = [[userInfo objectForKey:@"type"] intValue];//推送类型
     NSString * classId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"class_id"]];//推送班级
+    NSString * studentId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"student_id"]];//推送学生
     
     NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
     for (int i=0; i<3; i++) {
@@ -377,17 +401,36 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *isOn = [defaults objectForKey:@"isOn"];
     if ([isOn intValue] == 1) {//app登录
-        if (![[self.notification_dic objectForKey:classId]isKindOfClass:[NSNull class]]  && [self.notification_dic objectForKey:classId]!=nil) {
-            NSMutableArray *mutableArr = [[NSMutableArray alloc]initWithArray:[self.notification_dic objectForKey:classId]];
-            [mutableArr replaceObjectAtIndex:type withObject:@"1"];
-            [self.notification_dic setObject:mutableArr forKey:classId];
+        
+        BOOL isPush = NO;
+        if (type==2) {
+            if ([classId integerValue] == [[DataService sharedService].theClass.classId integerValue]) {//班级相同
+                isPush = YES;
+                if (![[self.notification_dic objectForKey:classId]isKindOfClass:[NSNull class]]  && [self.notification_dic objectForKey:classId]!=nil) {
+                    NSMutableArray *mutableArr = [[NSMutableArray alloc]initWithArray:[self.notification_dic objectForKey:classId]];
+                    [mutableArr replaceObjectAtIndex:type withObject:@"1"];
+                    [self.notification_dic setObject:mutableArr forKey:classId];
+                }else {
+                    [self.notification_dic setObject:mutableArray forKey:classId];
+                }
+            }
         }else {
-            [self.notification_dic setObject:mutableArray forKey:classId];
+            if ([studentId integerValue] == [[DataService sharedService].user.studentId integerValue] && [classId integerValue] == [[DataService sharedService].theClass.classId integerValue]) {//学生相同
+                isPush = YES;
+                if (![[self.notification_dic objectForKey:classId]isKindOfClass:[NSNull class]]  && [self.notification_dic objectForKey:classId]!=nil) {
+                    NSMutableArray *mutableArr = [[NSMutableArray alloc]initWithArray:[self.notification_dic objectForKey:classId]];
+                    [mutableArr replaceObjectAtIndex:type withObject:@"1"];
+                    [self.notification_dic setObject:mutableArr forKey:classId];
+                }else {
+                    [self.notification_dic setObject:mutableArray forKey:classId];
+                }
+            }
         }
         
-        if ([classId integerValue] == [[DataService sharedService].theClass.classId integerValue]) {//班级相同
+        if (isPush==YES) {
             [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:[self.notification_dic objectForKey:classId]];
         }
+        
     }
     completionHandler(UIBackgroundFetchResultNoData);
 }

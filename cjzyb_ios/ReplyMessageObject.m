@@ -14,7 +14,7 @@
     
     [obj setMicropost_id:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"id"]]]];
     [obj setContent:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"content"]]]];
-    [obj setCreated_at:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"created_at"]]]];
+    [obj setCreated_at:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"new_created_at"]]]];
     [obj setReciver_avatar_url:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"reciver_avatar_url"]]]];
     [obj setReciver_id:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"reciver_id"]]]];
     [obj setReciver_name:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"reciver_name"]]]];
