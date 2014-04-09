@@ -266,6 +266,7 @@
                         }];
                         [self appearPrePlayControllerWithAnimation:YES];
                     }else{
+                        //且是最后一个大题
                         [parentVC stopTimer];
                         if (self.isFirst && ![DataService sharedService].isHistory) {
                             [self uploadJSON];
@@ -298,7 +299,7 @@
                 [self appearPrePlayControllerWithAnimation:YES];
             }else{
                 //TODO:已是最后一大题最后一小题
-//                [self quitNow];
+                [self quitNow];
             }
         }
     }else{//当前大题中没有句子
@@ -605,7 +606,7 @@
     self.readingTextView.frame = (CGRect){self.readingTextView.frame.origin,CGRectGetWidth(self.readingTextView.frame),textRect.size.height + 10};
     
     float maxTipHeight = (self.view.frame.size.height-CGRectGetMaxY(self.readingTextView.frame)-30);
-    CGRect tipRect = [attributeTip boundingRectWithSize:(CGSize){CGRectGetWidth(self.tipTextView.frame), maxTipHeight<80 ?80:maxTipHeight} options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading context:nil];
+    CGRect tipRect = [attributeTip boundingRectWithSize:(CGSize){CGRectGetWidth(self.tipTextView.frame) - 5, maxTipHeight<80 ?80:maxTipHeight} options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading context:nil];
     
     self.readingButton.frame = (CGRect){CGRectGetMinX(self.readingButton.frame),CGRectGetMaxY(self.readingTextView.frame)+20,self.readingButton.frame.size};
     
@@ -794,36 +795,40 @@
             self.currentSentencePassed = YES;
         }else
         {
-            tip = @"看到红色的这些词了吗,你的发音还不够标准哦,在来试试吧！";
+            tip = @"看到红色的这些词了吗,发音还不够标准哦,再来试试吧！";
         }
-        if (self.readingCount <= 1 && self.isFirst) {//计入成绩
+        if (self.readingCount <= 1) {//计入成绩
             //存内存中
             self.currentSentence.readingErrorWordArray = [NSMutableArray arrayWithArray:errorWordArray];
             self.currentSentence.readingSentenceRatio = [NSString stringWithFormat:@"%0.2f",matchScore];
-            //保存JSON
-            __weak ReadingTaskViewController *weakSelf = self;
-            self.currentSentence.isFinished = YES;
+            //标志本大题完成
             if (self.currentSentenceIndex == self.currentHomework.readingHomeworkSentenceObjArray.count-1) {
                 self.currentHomework.isFinished = YES;
             }
-            NSIndexPath *indexPath = [self findNextIndexWithHomeworkIndex:self.currentHomeworkIndex andSentenceIndex:self.currentSentenceIndex];
-            //TODO:此处保存的是下一题的对应index
-            [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path
-                                                        withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond]
-                                                  withQuestionIndex:indexPath.section
-                                              withQuestionItemIndex:indexPath.row
-                                              withReadingHomworkArr:self.readingHomeworksArr
-                                                        withSuccess:^{
-                ReadingTaskViewController *tempSelf = weakSelf ;
-                if (tempSelf) {
-                    self.shouldUpload = YES;
-                }
-            } withFailure:^(NSError *error) {
-                ReadingTaskViewController *tempSelf = weakSelf ;
-                if (tempSelf) {
-                    [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-                }
-            }];
+            if (self.isFirst) {
+                //保存JSON
+                __weak ReadingTaskViewController *weakSelf = self;
+                self.currentSentence.isFinished = YES;
+                
+                NSIndexPath *indexPath = [self findNextIndexWithHomeworkIndex:self.currentHomeworkIndex andSentenceIndex:self.currentSentenceIndex];
+                //TODO:此处保存的是下一题的对应index
+                [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path
+                                                            withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond]
+                                                      withQuestionIndex:indexPath.section
+                                                  withQuestionItemIndex:indexPath.row
+                                                  withReadingHomworkArr:self.readingHomeworksArr
+                                                            withSuccess:^{
+                                                                ReadingTaskViewController *tempSelf = weakSelf ;
+                                                                if (tempSelf) {
+                                                                    self.shouldUpload = YES;
+                                                                }
+                                                            } withFailure:^(NSError *error) {
+                                                                ReadingTaskViewController *tempSelf = weakSelf ;
+                                                                if (tempSelf) {
+                                                                    [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+                                                                }
+                                                            }];
+            }
         }
         NSMutableAttributedString *attriString = [[NSMutableAttributedString alloc]initWithString:tip];
         [attriString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0,tip.length)];

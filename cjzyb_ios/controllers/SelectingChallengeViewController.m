@@ -513,7 +513,7 @@
                 self.questionTextView.hidden = NO;
                 
                 self.questionTextView.frame = (CGRect){38,17,650,100};
-                self.optionTable.frame = (CGRect){38,117,650,400};
+                self.optionTable.frame = (CGRect){38,117,650,874 - 117 - (self.isViewingHistory ? 155 : 0)};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
             }
@@ -526,7 +526,8 @@
                 self.questionTextView.hidden = YES;
                 
                 self.questionPlayButton.frame = (CGRect){38,17,65,65};
-                self.optionTable.frame = (CGRect){118,17,550,400};
+                self.optionTable.frame = (CGRect){118,17,570,874 - 17 - (self.isViewingHistory ? 155 : 0)};
+                
             }
                 break;
                 
@@ -538,7 +539,7 @@
                 
                 self.questionImageView.frame = (CGRect){38,17,250,265};
                 self.questionTextView.frame = (CGRect){290,17,430,265};
-                self.optionTable.frame = (CGRect){38,317,650,400};
+                self.optionTable.frame = (CGRect){38,317,650,874 - 317 - (self.isViewingHistory ? 155 : 0)};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
                 NSData *imageData = [NSData dataWithContentsOfFile:[[DataService sharedService].taskObj.taskFolderPath stringByAppendingString:self.currentQuestion.seContentAttachment]];
@@ -643,7 +644,6 @@
     for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
         for (NSString *str in self.currentSelectedOptions) {
             if (str.integerValue == i) {
-//                [selectedOptions addObject:[NSString stringWithFormat:@"%c",'A' + i]];
                 [selectedOptions addObject:self.currentQuestion.seOptionsArray[i]];
             }
         }
@@ -693,7 +693,7 @@
                 //标注正确答案
                 optionIsRightAnswer = YES;
                 SelectingChallengeOptionCell *cell = (SelectingChallengeOptionCell *)[self.optionTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-                cell.optionBackgroundView.backgroundColor = [UIColor greenColor];
+                cell.optionLabel.textColor = [UIColor greenColor];
             }
         }
         if (!optionIsRightAnswer) {
@@ -701,11 +701,31 @@
             for(NSString *selectedOptionIndex in self.currentSelectedOptions){
                 if (i == selectedOptionIndex.integerValue) {
                     SelectingChallengeOptionCell *cell = (SelectingChallengeOptionCell *)[self.optionTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-                    cell.optionBackgroundView.backgroundColor = [UIColor redColor];
+                    cell.optionLabel.textColor = [UIColor redColor];
                 }
             }
         }
     }
+}
+
+- (void)showCheckResultForCell:(SelectingChallengeOptionCell *)cell{
+        NSString *option = self.currentQuestion.seOptionsArray[cell.indexPath.row];
+        BOOL optionIsRightAnswer = NO;
+        for(NSString *rightAnswer in self.currentQuestion.seRightAnswers){
+            if ([option isEqualToString:rightAnswer]) {
+                //标注正确答案
+                optionIsRightAnswer = YES;
+                cell.optionLabel.textColor = [UIColor greenColor];
+            }
+        }
+        if (!optionIsRightAnswer) {
+            //错误答案是否是被选中的
+            for(NSString *selectedOptionIndex in self.currentSelectedOptions){
+                if (cell.indexPath.row == selectedOptionIndex.integerValue) {
+                    cell.optionLabel.textColor = [UIColor redColor];
+                }
+            }
+        }
 }
 
 #pragma mark 界面交互
@@ -813,10 +833,9 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (((NSString *)self.currentQuestion.seOptionsArray[indexPath.row]).length > 20) {
-        
-    }
-    return 100.0;
+    CGSize textSize = [Utility getTextSizeWithString:(NSString *)self.currentQuestion.seOptionsArray[indexPath.row] withFont:[UIFont systemFontOfSize:35.0] withWidth:self.optionTable.frame.size.width - 75 - 54];
+    CGFloat height = textSize.height + 10 > 78. ? textSize.height + 10 : 78.0;
+    return height + 22;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -824,17 +843,27 @@
     cell.indexPath = indexPath;
     cell.optionString = self.currentQuestion.seOptionsArray[indexPath.row];
     cell.delegate = self;
+    
+    CGSize textSize = [Utility getTextSizeWithString:cell.optionString withFont:[UIFont systemFontOfSize:35.0] withWidth:self.optionTable.frame.size.width - 75 - 54];
     cell.maxLabelWidth = 0;
-    cell.optionBackgroundView.backgroundColor = [UIColor whiteColor];
+    cell.cellHeight = textSize.height + 10 > 78. ? textSize.height + 10 : 78.0;
+    
+    cell.optionLabel.textColor = [UIColor blackColor];
+    cell.optionSelected = NO;
+    //支持滑动
+    if (self.checked) {
+        [self showCheckResultForCell:cell];
+    }
+    if ([self.currentSelectedOptions containsObject:[NSString stringWithFormat:@"%d",indexPath.row]]) {
+        cell.optionSelected = YES;
+    }
     for (int i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
-        NSString *option = self.currentQuestion.seOptionsArray[i];
-        CGFloat width = [Utility getTextSizeWithString:option withFont:[UIFont systemFontOfSize:40.0]].width;
-        if (cell.maxLabelWidth <=  width) {
-            cell.maxLabelWidth = width;
+        if (cell.maxLabelWidth <=  textSize.width) {
+            cell.maxLabelWidth = textSize.width;
         }
     }
     
-    cell.optionSelected = NO;
+    
     if (self.isViewingHistory) {
         cell.optionButton.enabled = NO;
         for(NSString *rightAnswer in self.currentQuestion.seRightAnswers){

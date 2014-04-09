@@ -493,8 +493,8 @@
 }
 
 //调整某个label的字体,使其适合长度
-- (void)handleLabelFont:(UILabel *)label{
-    UIFont *font = label.font;
+- (void)handleLabelFont:(UILabel *)label withBeginningSize:(CGFloat)size{
+    UIFont *font = [UIFont systemFontOfSize:size];
     for (CGFloat fontSize = font.pointSize; fontSize > 14; fontSize -- ) {
         CGSize size = [Utility getTextSizeWithString:label.text withFont:[UIFont systemFontOfSize:fontSize]];
         if (size.width < label.frame.size.width - 8) {
@@ -541,11 +541,11 @@
     if (currentQuestion) {
         _currentQuestion = currentQuestion;
         self.upperOptionLabel.text = currentQuestion.tenAnswerOne;
-        [self handleLabelFont:self.upperOptionLabel];
+        [self handleLabelFont:self.upperOptionLabel withBeginningSize:80.];
         self.lowerOptionLabel.text = currentQuestion.tenAnswerTwo;
-        [self handleLabelFont:self.lowerOptionLabel];
+        [self handleLabelFont:self.lowerOptionLabel withBeginningSize:80.];
         self.questionLabel.text = currentQuestion.tenQuestionContent;
-        [self handleLabelFont:self.questionLabel];
+        [self handleLabelFont:self.questionLabel withBeginningSize:38.];
         
         //显示历史数据
         if (self.isViewingHistory) {

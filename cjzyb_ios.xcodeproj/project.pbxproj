@@ -214,6 +214,7 @@
 		18E01DA518CDB70B0016FA7D /* yourChoice@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18E01DA418CDB70B0016FA7D /* yourChoice@2x.png */; };
 		18FAB37618F4DE4E00C2AB83 /* InitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18FAB37518F4DE4E00C2AB83 /* InitViewController.m */; };
 		18FAB37818F4DF4C00C2AB83 /* InitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18FAB37718F4DF4C00C2AB83 /* InitViewController.xib */; };
+		18FAB37A18F4F84700C2AB83 /* homework_refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18FAB37918F4F84700C2AB83 /* homework_refresh@2x.png */; };
 		630DBDC918D1562D009DA0EB /* DRNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 630DBDC818D1562D009DA0EB /* DRNavigationBar.m */; };
 		630DBDCD18D15653009DA0EB /* DRNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 630DBDCC18D15653009DA0EB /* DRNavigationBar.xib */; };
 		630DBDD418D15936009DA0EB /* carBarItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 630DBDCE18D15936009DA0EB /* carBarItem@2x.png */; };
@@ -693,6 +694,7 @@
 		18FAB37418F4DE4E00C2AB83 /* InitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InitViewController.h; sourceTree = "<group>"; };
 		18FAB37518F4DE4E00C2AB83 /* InitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InitViewController.m; sourceTree = "<group>"; };
 		18FAB37718F4DF4C00C2AB83 /* InitViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InitViewController.xib; sourceTree = "<group>"; };
+		18FAB37918F4F84700C2AB83 /* homework_refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "homework_refresh@2x.png"; sourceTree = "<group>"; };
 		630DBDC718D1562D009DA0EB /* DRNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRNavigationBar.h; sourceTree = "<group>"; };
 		630DBDC818D1562D009DA0EB /* DRNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRNavigationBar.m; sourceTree = "<group>"; };
 		630DBDCC18D15653009DA0EB /* DRNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DRNavigationBar.xib; sourceTree = "<group>"; };
@@ -1055,6 +1057,7 @@
 		0E92657218BDACCE003ADEC3 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				18FAB37918F4F84700C2AB83 /* homework_refresh@2x.png */,
 				0E97C9CD18E2A81700890F60 /* contact_message@2x.png */,
 				0E97C9CB18E2A17500890F60 /* logOut@2x.png */,
 				0E93C9AE18D834630094AD7B /* ios-stop@2x.png */,
@@ -2199,6 +2202,7 @@
 				0E9D689818CD4E0D00EACFA3 /* SVPullToRefresh.bundle in Resources */,
 				63289A2D18C595D300C0083E /* reading_start@2x.png in Resources */,
 				187C4AC918D304AC0006461D /* 10_04@2x.png in Resources */,
+				18FAB37A18F4F84700C2AB83 /* homework_refresh@2x.png in Resources */,
 				0E0E801C18E912BF0022AC57 /* InfoPlist.strings in Resources */,
 				630DBDFE18D15AFB009DA0EB /* xunsu_yellow@2x.png in Resources */,
 				6396579118C03766002F2A90 /* LeftTabBarView.xib in Resources */,

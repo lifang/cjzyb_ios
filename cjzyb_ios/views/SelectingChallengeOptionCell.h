@@ -17,6 +17,8 @@
 @property (assign,nonatomic) CGFloat maxLabelWidth;//一个问题的最大选项label长度
 @property (strong,nonatomic) id<SelectingChallengeOptionCellDelegate> delegate;
 @property (strong,nonatomic) UIButton *optionButton;
+@property (nonatomic,assign) NSInteger cellHeight;//指实际背景的高度 ,tableCellHeight要再加22
+@property (strong,nonatomic) UILabel *optionLabel;
 @end
 
 @protocol SelectingChallengeOptionCellDelegate <NSObject>
