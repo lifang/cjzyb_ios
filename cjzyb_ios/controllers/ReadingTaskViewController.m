@@ -368,7 +368,7 @@
             HomeworkContainerController *container = (HomeworkContainerController*)tempSelf.parentViewController;
             tempSelf.readingHomeworksArr = readingQuestionArr;
             tempSelf.specifiedSecond = specifyTime;
-            if (status > 0) {
+            if (status > 0 || [DataService sharedService].taskObj.isExpire) {
                 //重新开始
                 tempSelf.isFirst = NO;
                 tempSelf.currentHomeworkIndex = 0;
@@ -381,9 +381,15 @@
                 tempSelf.currentSentenceIndex = currentQuestionItemIndex < 0 ?0:currentQuestionItemIndex;
                 container.spendSecond = userTime?userTime.intValue:0;
             }
+            
         }
     } withParseError:^(NSError *error) {
         [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+        //重新开始
+        self.isFirst = NO;
+        self.currentHomeworkIndex = 0;
+        self.currentSentenceIndex = 0;
+        parentVC.spendSecond = 0;
     }];
 }
 
@@ -688,6 +694,10 @@
     if (currentSentence) {
         if ([DataService sharedService].isHistory) {
             NSMutableString *content = [NSMutableString stringWithFormat:@"需要多读的词"];
+            if (currentSentence.readingErrorWordArray.count < 1 && [DataService sharedService].taskObj.isExpire) {
+                [content appendString:@"\n"];
+                [content appendString:@"未完成本小题"];
+            }
             for (NSString *errorWord in currentSentence.readingErrorWordArray) {
                 [content appendString:@"\n"];
                 [content appendString:errorWord];

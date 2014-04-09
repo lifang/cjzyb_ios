@@ -81,6 +81,11 @@
         [Utility errorAlert:@"无法读取问题资料!"];
     }
     [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"selecting" andDate:[DataService sharedService].taskObj.taskStartDate]];
+    
+    if ([DataService sharedService].taskObj.isExpire) {
+        self.answerStatus = @"1";
+    }
+    
     self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.taskStartDate];
 }
 
@@ -589,7 +594,7 @@
             }
         }
     }
-    self.historyYourChoiceLabel.text = yourChoiceString;
+    self.historyYourChoiceLabel.text = yourChoiceString.length > 0 ? yourChoiceString : @"未完成本小题";
 }
 
 #pragma mark 被调方法

@@ -36,4 +36,10 @@
 ///提示正确答案次数
 @property (assign,nonatomic) int taskTipCorrectAnswer;
 +(TaskObj *)taskFromDictionary:(NSDictionary *)aDic;
+
+///是否过期
+@property (nonatomic, assign) BOOL isExpire;
+
+///0:不存在answer文件   1:存在不是最新的  2:最新的
+@property (nonatomic, assign) NSInteger taskStatus;
 @end

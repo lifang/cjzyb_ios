@@ -34,7 +34,7 @@
 @property (assign,nonatomic) BOOL isReDoingChallenge; //是否为重新挑战
 @property (assign,nonatomic) BOOL shouldUploadJSON;  //是否需要上传JSON
 @property (assign,nonatomic) BOOL haveUploadedJSON; //是否已上传JSON
-@property (assign,nonatomic) BOOL runningWithoutAnswer; //进入未做过的历史题时,标记的状态
+//@property (assign,nonatomic) BOOL runningWithoutAnswer; //进入未做过的历史题时,标记的状态
 @property (strong,nonatomic) NSUserDefaults *userDefaults;
 @end
 
@@ -48,7 +48,6 @@
         self.isReDoingChallenge = NO;
         self.shouldUploadJSON = NO;
         self.haveUploadedJSON = NO;
-        self.runningWithoutAnswer = NO;
     }
     return self;
 }
@@ -88,11 +87,11 @@
     self.questionArray = [NSMutableArray arrayWithArray:[TenSecChallengeObject parseTenSecQuestionsFromFile]];
     
     //载入answer文件
-    if (self.runningWithoutAnswer) {
+    [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit" andDate:[DataService sharedService].taskObj.taskStartDate]];
+    if ([DataService sharedService].taskObj.isExpire) {
         self.answerStatus = @"1";
-    }else{
-        [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit" andDate:[DataService sharedService].taskObj.taskStartDate]];
     }
+    
     
     //重新挑战次数
     if (![self.userDefaults stringForKey:@"reChallengeTimesLeft"]) {
@@ -462,7 +461,8 @@
         OrdinaryAnswerObject *answer = self.answerArray[self.currentNO];
         self.historyYourChoiceLabel.text = [NSString stringWithFormat:@"你的答案:%@",answer.answerAnswer];
     }else{
-        [Utility errorAlert:@"历史答案错误!"];
+//        [Utility errorAlert:@"历史答案错误!"];
+        self.historyYourChoiceLabel.text = @"未完成本小题";
     }
 }
 

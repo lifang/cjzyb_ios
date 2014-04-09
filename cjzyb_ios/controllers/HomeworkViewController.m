@@ -289,7 +289,7 @@
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller didSelectedAtIndexPath:(NSIndexPath *)path{
     HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
     TaskObj *task = controller.taskObj;
-    [DataService sharedService].taskObj = task;
+    
     [DataService sharedService].number_reduceTime = task.taskReduceTimeCount;
     [DataService sharedService].number_correctAnswer=task.taskTipCorrectAnswer;
     self.selectedDailyController = controller;
@@ -300,6 +300,8 @@
     
     if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {//存在question
         NSInteger status = [Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task];
+        task.taskStatus = status;
+        [DataService sharedService].taskObj = task;
         //0:不存在answer文件   1:存在不是最新的  2:最新的
         if (task.isExpire == NO) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
