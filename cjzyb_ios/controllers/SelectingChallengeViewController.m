@@ -504,6 +504,7 @@
 #pragma mark 被调方法
 //创建问题显示
 -(void)createQuestionView{
+    [self.view setHidden:NO];
     dispatch_async(dispatch_get_main_queue(), ^{
         switch (self.selectingType) {
             case SelectingTypeDefault:
