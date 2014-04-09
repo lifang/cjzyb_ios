@@ -5,14 +5,14 @@
 //  Created by lhl0033 on 14-3-9.
 //  Copyright (c) 2014年 david. All rights reserved.
 //
-#define FONT [UIFont systemFontOfSize:40.0]
+#define FONT [UIFont systemFontOfSize:35.0]
 #define ABCDWIDTH 54.0
 #define PADDING 25.0
 
 #import "SelectingChallengeOptionCell.h"
 @interface SelectingChallengeOptionCell()
 @property (strong,nonatomic) UILabel *abcdLabel;
-@property (strong,nonatomic) UILabel *optionLabel;
+
 @end
 
 @implementation SelectingChallengeOptionCell
@@ -27,7 +27,7 @@
         self.optionBackgroundView = [[UIView alloc] init];
         _optionBackgroundView.backgroundColor = [UIColor whiteColor];
         _optionBackgroundView.layer.cornerRadius = 8.0;
-        _optionBackgroundView.layer.borderWidth = 2.0;
+        _optionBackgroundView.layer.borderWidth = 3.0;
         _optionBackgroundView.layer.borderColor = _optionBackgroundView.backgroundColor.CGColor;
         [self addSubview:_optionBackgroundView];
         
@@ -44,6 +44,7 @@
         _optionLabel.textColor = [UIColor blackColor];
         _optionLabel.font = FONT;
         _optionLabel.textAlignment = NSTextAlignmentCenter;
+        _optionLabel.numberOfLines = 0;
         [_optionBackgroundView addSubview:_optionLabel];
         
         _optionButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -57,7 +58,7 @@
 }
 
 -(void)layoutSubviews{
-    CGFloat cellHeight = 78.0;
+    CGFloat cellHeight = self.cellHeight;
     
     _optionBackgroundView.frame = (CGRect){0,0,3 * PADDING + self.maxLabelWidth + ABCDWIDTH,cellHeight};
     
