@@ -99,7 +99,9 @@
         if (timeCount <= 0) {
             [parentVC.reduceTimeButton setEnabled:NO];
         }else{
-            [parentVC.reduceTimeButton setEnabled:YES];
+            if (self.isFirst) {
+                [parentVC.reduceTimeButton setEnabled:YES];
+            }
         }
         
         if (self.isPrePlay) {
@@ -441,7 +443,9 @@
     
     [parentVC startTimer];
     if ([DataService sharedService].number_reduceTime > 0) {
-        [parentVC.reduceTimeButton setEnabled:YES];
+        if (self.isFirst) {
+            [parentVC.reduceTimeButton setEnabled:YES];
+        }
     }
 }
 
@@ -664,7 +668,9 @@
         if (timeCount <= 0) {
             [parentVC.reduceTimeButton setEnabled:NO];
         }else{
-            [parentVC.reduceTimeButton setEnabled:YES];
+            if (self.isFirst) {
+                [parentVC.reduceTimeButton setEnabled:YES];
+            }
         }
     }
 }

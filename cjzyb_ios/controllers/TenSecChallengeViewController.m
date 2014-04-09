@@ -495,6 +495,7 @@
 //调整某个label的字体,使其适合长度
 - (void)handleLabelFont:(UILabel *)label withBeginningSize:(CGFloat)size{
     UIFont *font = [UIFont systemFontOfSize:size];
+    label.numberOfLines = 0;
     for (CGFloat fontSize = font.pointSize; fontSize > 14; fontSize -- ) {
         CGSize size = [Utility getTextSizeWithString:label.text withFont:[UIFont systemFontOfSize:fontSize]];
         if (size.width < label.frame.size.width - 8) {

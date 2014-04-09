@@ -512,7 +512,7 @@
                 self.questionPlayButton.hidden = YES;
                 self.questionTextView.hidden = NO;
                 
-                self.questionTextView.frame = (CGRect){38,17,650,100};
+                self.questionTextView.frame = (CGRect){38,17,650,200};
                 self.optionTable.frame = (CGRect){38,117,650,874 - 117 - (self.isViewingHistory ? 155 : 0)};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
