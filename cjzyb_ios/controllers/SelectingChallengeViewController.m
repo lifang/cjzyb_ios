@@ -813,6 +813,9 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (((NSString *)self.currentQuestion.seOptionsArray[indexPath.row]).length > 20) {
+        
+    }
     return 100.0;
 }
 
