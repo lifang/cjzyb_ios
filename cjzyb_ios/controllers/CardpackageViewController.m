@@ -477,6 +477,7 @@ static NSInteger tmpPage = 0;
                 }
             }
             [self.cardArray removeObjectAtIndex:tag];
+            [DataService sharedService].cardsCount -= 1;
             [self displayNewView];
         });
     });
