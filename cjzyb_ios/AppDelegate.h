@@ -11,7 +11,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <AVFoundation/AVFoundation.h> 
-
+#import "InitViewController.h"
 #import "Reachability.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>

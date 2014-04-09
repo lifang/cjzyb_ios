@@ -465,9 +465,14 @@ static BOOL isCanUpLoad = NO;
     [self.answerDic setObject:[NSString stringWithFormat:@"%lld",self.homeControl.spendSecond] forKey:@"use_time"];
     //一道题目------------------------------------------------------------------
     //正确率
-    CGFloat ratio = (self.branchScore/((float)self.leftArray.count))*100;
+    int ratio;
+    if (self.branchScore != self.leftArray.count) {
+        ratio = 0;
+    }else {
+        ratio = 100;
+    }
     NSString *a_id = [NSString stringWithFormat:@"%@",[self.branchQuestionDic objectForKey:@"id"]];
-    NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.2f",ratio],@"ratio",string,@"answer", nil];
+    NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%d%%",ratio],@"ratio",string,@"answer", nil];
     
     NSMutableArray *questions = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
     if (questions.count>0) {

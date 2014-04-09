@@ -793,6 +793,19 @@
             //班级
             NSDictionary *classDic =[result objectForKey:@"class"];
             [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
+            
+            NSFileManager *fileManage = [NSFileManager defaultManager];
+            NSString *path = [Utility returnPath];
+            NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
+            if ([fileManage fileExistsAtPath:filename]) {
+                [fileManage removeItemAtPath:filename error:nil];
+            }
+            [NSKeyedArchiver archiveRootObject:classDic toFile:filename];
+            NSString *filename2 = [path stringByAppendingPathComponent:@"student.plist"];
+            if ([fileManage fileExistsAtPath:filename2]) {
+                [fileManage removeItemAtPath:filename2 error:nil];
+            }
+            [NSKeyedArchiver archiveRootObject:userDic toFile:filename2];
             //消息
             NSDictionary *messages = [result objectForKey:@"microposts"];
             NSArray *array = [messages objectForKey:@"details_microposts"];
