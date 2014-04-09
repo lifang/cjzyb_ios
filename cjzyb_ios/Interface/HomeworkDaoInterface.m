@@ -11,6 +11,27 @@
 #import "ASIFormDataRequest.h"
 @implementation HomeworkDaoInterface
 
+//判断
++(BOOL)compareTimeWithString:(NSString *)string {
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+    NSDate *endDate = [dateFormatter dateFromString:string];
+    
+    NSDate *nowDate = [NSDate date];
+    
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    unsigned int unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+    NSDateComponents *d = [cal components:unitFlags fromDate:nowDate toDate:endDate options:0];
+    int hour =[d hour];int day = [d day];int month = [d month];int minute = [d minute];int second = [d second];int year = [d year];
+    
+    if (year>0 || month>0 || day>0 || hour>0 || minute>0 || second>0) {
+        return NO;
+    }else
+        return YES;
+}
+
 +(void)downloadCurrentTaskWithUserId:(NSString*)userId withClassId:(NSString*)classID withSuccess:(void(^)(TaskObj *taskObj))success withError:(void (^)(NSError *error))failure{
 
     if (!userId || !classID) {
@@ -47,6 +68,9 @@
         }
         
         TaskObj *taskObj = [TaskObj taskFromDictionary:taskDic];
+        
+        BOOL isExipre = [HomeworkDaoInterface compareTimeWithString:taskObj.taskEndDate];
+        taskObj.isExpire = isExipre;
         taskObj.taskKnowlegeCount = knowlegeCount?knowlegeCount.intValue:0;
         
         NSMutableArray *homeworkTypeList = [NSMutableArray array];
@@ -170,6 +194,8 @@
                 continue;
             }
             TaskObj *taskObj = [TaskObj taskFromDictionary:taskDic];
+            BOOL isExipre = [HomeworkDaoInterface compareTimeWithString:taskObj.taskEndDate];
+            taskObj.isExpire = isExipre;
             taskObj.taskKnowlegeCount = knowlegeCount?knowlegeCount.intValue:0;
             
             NSMutableArray *homeworkTypeList = [NSMutableArray array];
@@ -314,6 +340,8 @@
                 continue;
             }
             TaskObj *taskObj = [TaskObj taskFromDictionary:taskDic];
+            BOOL isExipre = [HomeworkDaoInterface compareTimeWithString:taskObj.taskEndDate];
+            taskObj.isExpire = isExipre;
             taskObj.taskKnowlegeCount = knowlegeCount?knowlegeCount.intValue:0;
             
             NSMutableArray *homeworkTypeList = [NSMutableArray array];

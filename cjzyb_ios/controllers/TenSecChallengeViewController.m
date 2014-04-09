@@ -352,10 +352,14 @@
 
 ///点击parentVC的退出按钮触发
 -(void)tenQuitButtonClicked:(id)sender{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [alert show];
-    });
+    if (self.isViewingHistory) {
+        [parentVC dismissViewControllerAnimated:YES completion:nil];
+    }else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [alert show];
+        });
+    }
 }
 
 -(void)quitNow:(id)sender{

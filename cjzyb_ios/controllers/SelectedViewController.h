@@ -50,7 +50,9 @@
 //道具
 @property (nonatomic, strong) NSMutableArray *propsArray;
 
-
+///再次挑战
+@property (nonatomic, assign) NSInteger right_number;
+@property (nonatomic, assign) NSInteger count_number;
 
 
 

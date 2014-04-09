@@ -291,6 +291,8 @@ static BOOL isCanUpLoad = NO;
 {
     [super viewDidLoad];
     self.historyView.hidden=YES;
+    self.right_number = 0;
+    self.count_number = 0;
     NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSDictionary *sortDic = [dic objectForKey:@"lining"];
     self.questionArray = [NSMutableArray arrayWithArray:[sortDic objectForKey:@"questions"]];
@@ -407,6 +409,7 @@ static BOOL isCanUpLoad = NO;
                 [rightBtn setTitleColor:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1] forState:UIControlStateNormal];
             }else {
                 self.branchScore++;
+                self.right_number +=1;
             }
         }
         

@@ -298,7 +298,9 @@ static BOOL isCanUpLoad = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-self.historyView.hidden=YES;
+    self.right_number = 0;
+    self.count_number = 0;
+    self.historyView.hidden=YES;
     NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSDictionary *sortDic = [dic objectForKey:@"sort"];
     self.questionArray = [NSMutableArray arrayWithArray:[sortDic objectForKey:@"questions"]];
@@ -600,6 +602,7 @@ self.historyView.hidden=YES;
             NSString *text = answerBtn.titleLabel.text;
             if ([text isEqualToString:[self.orgArray objectAtIndex:i]]) {
                 self.branchScore++;
+                self.right_number +=1;
                 [answerBtn setTitleColor:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] forState:UIControlStateNormal];
             }else {
                 [answerBtn setTitleColor:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1] forState:UIControlStateNormal];

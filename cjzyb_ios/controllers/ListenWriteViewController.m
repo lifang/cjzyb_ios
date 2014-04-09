@@ -209,6 +209,9 @@ static BOOL isCanUpLoad = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.right_number = 0;
+    self.count_number = 0;
+    
     [self roundView:self.listenBtn];
     self.historyView.hidden=YES;
     NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
@@ -454,7 +457,7 @@ static int numberOfMusic =0;
         NSMutableArray *green_array = [self.resultDic objectForKey:@"green"];
         for (int i=0; i<green_array.count; i++) {
             self.branchScore += 1;
-
+            self.right_number +=1;
             int index = [[green_array objectAtIndex:i]intValue];
             UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:index+Textfield_Tag];
             textField.textColor = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
@@ -654,7 +657,7 @@ static int numberOfMusic =0;
         [self.appDel.avPlayer stop];
         self.appDel.avPlayer=nil;
     }
-    
+    self.remindLab.text = @"";
     self.branch_listenBtn.enabled=YES;
     [self.listenBtn setImage:[UIImage imageNamed:@"ios-stop"] forState:UIControlStateNormal];
     

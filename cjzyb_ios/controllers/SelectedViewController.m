@@ -177,6 +177,8 @@ static BOOL isCanUpLoad = NO;
 {
     [super viewDidLoad];
     self.historyView.hidden=YES;
+    self.right_number = 0;
+    self.count_number = 0;
     //选择答案之后更新界面
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAnswerByClozeView:) name:@"reloadAnswerByClozeView" object:nil];
     
