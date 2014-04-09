@@ -52,8 +52,7 @@
 }
 
 -(void)changeGradeNtificationNotification{
-    AppDelegate *appDel = [AppDelegate shareIntance];
-    [appDel showRootView];
+    [self.appDel showRootView];
 
 }
 #pragma mark --
@@ -64,6 +63,8 @@
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(modifyUserNickNameNotification) name:kModifyUserNickNameNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeGradeNtificationNotification) name:kChangeGradeNotification object:nil];
+    
+    
     //设置左边栏
     NSArray *bundles = [[NSBundle mainBundle] loadNibNamed:@"LeftTabBarView" owner:self options:nil];
     self.leftTabBar = (LeftTabBarView*)[bundles objectAtIndex:0];
@@ -225,7 +226,15 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+#pragma mark --
+#pragma mark --
+-(void)HiddenLeftBar {
+    self.isHiddleLeftTabBar = !self.isHiddleLeftTabBar;
+    if (self.isHiddleLeftTabBar) {
+        self.leftTabBar.userGroupTabBarItem.isSelected = NO;
+        [self hiddleStudentListViewController:self.studentListViewController];
+    }
+}
 #pragma mark 导航栏
 ///导航栏左边item点击事件
 -(void)navigationLeftItemClicked{
@@ -362,8 +371,15 @@
         [self.leftTabBar.layer removeAllAnimations];
         if (isHiddle) {
             self.leftTabBar.center = (CGPoint){CGRectGetWidth(self.leftTabBar.frame)/2,self.leftTabBar.center.y};
+            [self.back_ground_view removeFromSuperview];
         }else{
             self.leftTabBar.center = (CGPoint){-CGRectGetWidth(self.leftTabBar.frame),self.leftTabBar.center.y};
+            
+            //隐藏的
+            self.back_ground_view = [[UIControl alloc]initWithFrame:self.appDel.window.frame];
+            self.back_ground_view.backgroundColor = [UIColor clearColor];
+            [self.back_ground_view addTarget:self action:@selector(HiddenLeftBar) forControlEvents:UIControlEventTouchUpInside];
+            [self.view insertSubview:self.back_ground_view belowSubview:self.leftTabBar];
         }
         
         [UIView animateWithDuration:0.5 animations:^{

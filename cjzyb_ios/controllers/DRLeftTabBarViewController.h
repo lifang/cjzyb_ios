@@ -37,4 +37,6 @@
 -(void)addOneController:(UIViewController*)childController;
 -(void)changeFromController:(UIViewController*)from toController:(UIViewController*)to;
 
+
+@property (nonatomic, strong) UIControl *back_ground_view;
 @end

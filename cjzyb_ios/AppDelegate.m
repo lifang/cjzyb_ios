@@ -78,12 +78,12 @@
     HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
     LHLNotificationContainerVC *notificationView = [[LHLNotificationContainerVC alloc]initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
+    self.tabBarController = [[DRLeftTabBarViewController alloc] init];
+    self.tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
     
-    tabBarController.currentPage = self.notification_type;
+    self.tabBarController.currentPage = self.notification_type;
     
-    self.window.rootViewController = tabBarController;
+    self.window.rootViewController = self.tabBarController;
 }
 
 -(void)showHomework{
