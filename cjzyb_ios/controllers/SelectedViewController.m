@@ -42,7 +42,25 @@ static BOOL isCanUpLoad = NO;
     }
     return _appDel;
 }
-
+-(void)UIset {
+    self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 20, 768, 400)];
+    self.clozeVV.delegate = self;
+    
+    [self.clozeVV setText:[self.questionDic objectForKey:@"full_text"]];
+    self.clozeVV.backgroundColor = [UIColor clearColor];
+    [self.myScroll addSubview:self.clozeVV];
+    
+    CGRect frame = self.clozeVV.frame;
+    self.myScroll.contentSize = CGSizeMake(768,self.clozeVV.frame.size.height+10);
+    [self.myScroll setScrollEnabled:YES];
+    
+    frame.origin.x = 0;
+    [UIView animateWithDuration:0.5 animations:^{
+        self.clozeVV.frame = frame;
+    } completion:^(BOOL finished){
+        [MBProgressHUD hideHUDForView:self.myScroll animated:YES];
+    }];
+}
 -(void)setUI {
     [self.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
     [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
@@ -51,20 +69,39 @@ static BOOL isCanUpLoad = NO;
     [self.clozeVV.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.clozeVV removeFromSuperview];
     
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.myScroll];
+    hud.dimBackground = NO;
+    [hud showWhileExecuting:@selector(UIset) onTarget:self withObject:nil animated:YES];
+    [self.myScroll addSubview:hud];
+}
+-(void)HistoryUIset {
     self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 20, 768, 400)];
-    self.clozeVV.delegate = self;
     [self.clozeVV setText:[self.questionDic objectForKey:@"full_text"]];
     self.clozeVV.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:self.clozeVV];
+    
+    for (int i=0; i<self.answerArray.count; i++) {
+        UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:i+UnderLab_tag];
+        NSDictionary *dic = [self.answerArray objectAtIndex:i];
+        NSString *answer = [dic objectForKey:@"answer"];
+        [label setText:answer];
+    }
+    
+    [self.myScroll addSubview:self.clozeVV];
+    
+    self.myScroll.contentSize = CGSizeMake(768,self.clozeVV.frame.size.height+10);
+    [self.myScroll setScrollEnabled:YES];
+    
     
     CGRect frame = self.clozeVV.frame;
     frame.origin.x = 0;
     [UIView animateWithDuration:0.5 animations:^{
         self.clozeVV.frame = frame;
     } completion:^(BOOL finished){
+        [MBProgressHUD hideHUDForView:self.myScroll animated:YES];
     }];
 }
 -(void)setHistoryUI {
+
     if (self.number==self.history_questionArray.count-1) {
         [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
         [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
@@ -78,26 +115,10 @@ static BOOL isCanUpLoad = NO;
     [self.clozeVV.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.clozeVV removeFromSuperview];
     
-    self.clozeVV = [[ClozeView alloc]initWithFrame:CGRectMake(-768, 20, 768, 400)];
-    self.clozeVV.delegate = self;
-    [self.clozeVV setText:[self.questionDic objectForKey:@"full_text"]];
-    self.clozeVV.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:self.clozeVV];
-    
-    for (int i=0; i<self.answerArray.count; i++) {
-        UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:i+UnderLab_tag];
-        NSDictionary *dic = [self.answerArray objectAtIndex:i];
-        NSString *answer = [dic objectForKey:@"answer"];
-        [label setText:answer];
-    }
-    
-    
-    CGRect frame = self.clozeVV.frame;
-    frame.origin.x = 0;
-    [UIView animateWithDuration:0.5 animations:^{
-        self.clozeVV.frame = frame;
-    } completion:^(BOOL finished){
-    }];
+    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.myScroll];
+    hud.dimBackground = NO;
+    [hud showWhileExecuting:@selector(HistoryUIset) onTarget:self withObject:nil animated:YES];
+    [self.myScroll addSubview:hud];
 }
 -(void)nextHistoryQuestion:(id)sender {
     self.number++;
@@ -110,7 +131,6 @@ static BOOL isCanUpLoad = NO;
 -(void)getQuestionData {
     self.branchScore = 0;
     self.questionDic = [self.questionArray objectAtIndex:self.number];
-    NSLog(@"dic = %@",self.questionDic);
     self.answerArray = [NSMutableArray arrayWithArray:[self.questionDic objectForKey:@"branch_questions"]];
 
     if ([DataService sharedService].isHistory==YES) {
@@ -147,7 +167,7 @@ static BOOL isCanUpLoad = NO;
     self.poprController.theme.fillBottomColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
     self.poprController.theme.glossShadowColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
     
-    self.poprController.popoverContentSize = (CGSize){188,175};
+    self.poprController.popoverContentSize = (CGSize){350,175};
     [self.poprController presentPopoverFromBarButtonItem:barItem permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES completion:^{
         barItemm=nil;
     }];
@@ -157,6 +177,8 @@ static BOOL isCanUpLoad = NO;
 {
     [super viewDidLoad];
     self.historyView.hidden=YES;
+    self.right_number = 0;
+    self.count_number = 0;
     //选择答案之后更新界面
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadAnswerByClozeView:) name:@"reloadAnswerByClozeView" object:nil];
     
@@ -167,6 +189,7 @@ static BOOL isCanUpLoad = NO;
 }
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [self.myScroll setContentOffset:CGPointMake(0, 0)];
     self.homeControl = (HomeworkContainerController *)self.parentViewController;
     self.homeControl.appearCorrectButton.enabled=NO;
     self.homeControl.reduceTimeButton.enabled = NO;
@@ -227,11 +250,22 @@ static BOOL isCanUpLoad = NO;
     }
     
 }
+
 - (void)reloadAnswerByClozeView:(NSNotification *)notification {
     NSString *answerStr = [notification object];
-    
     UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:self.tmpTag+UnderLab_tag];
+    
+    int font_size = 20;
+    for (int i=33; i>=20; i--) {
+        CGSize sizeSub = [answerStr sizeWithFont:[UIFont systemFontOfSize:i]];
+        if (sizeSub.width-150<=0) {
+            font_size = i;
+            break;
+        }
+    }
+    label.font = [UIFont systemFontOfSize:font_size];
     [label setText:answerStr];
+    [self.poprController dismissPopoverAnimated:YES];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -266,6 +300,7 @@ static BOOL isCanUpLoad = NO;
                 [DataService sharedService].cardsCount += 1;
                 }
             }
+            self.clozeVV.delegate = nil;
         }
         if (self.number == self.questionArray.count-1) {
             self.homeControl.reduceTimeButton.enabled=NO;
@@ -392,7 +427,7 @@ static BOOL isCanUpLoad = NO;
     
     [self.resultView initView];
     
-    [self.view addSubview: self.resultView];
+    [self.myScroll addSubview: self.resultView];
 }
 
 -(void)finishQuestion:(id)sender {

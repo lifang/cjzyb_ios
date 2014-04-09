@@ -417,8 +417,12 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId];
     NSFileManager *manager = [NSFileManager defaultManager];
     if ([manager fileExistsAtPath:path isDirectory:NO]) {
+        
+        Class JSONSerialization = [Utility JSONParserClass];
+        NSAssert(JSONSerialization != NULL, @"No JSON serializer available!");
+        
         NSError *jsonParsingError = nil;
-        NSDictionary *dataObject = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:path] options:0 error:&jsonParsingError];
+        NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:path] options:0 error:&jsonParsingError];
         if (![[dataObject objectForKey:@"update"]isKindOfClass:[NSNull class]] && [dataObject objectForKey:@"update"]!=nil) {
             NSString *updateDate = [dataObject objectForKey:@"update"];
             

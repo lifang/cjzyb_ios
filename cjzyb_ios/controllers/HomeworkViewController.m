@@ -247,23 +247,23 @@
                     }
                 });
             });
-
+            
         }
     }else
-    if (alertView.tag == 1001) {
-        if (buttonIndex == 0) {//查看历史记录
-            [DataService sharedService].isHistory = YES;
-            [self presentViewController:self.homeworkContainer animated:YES completion:^{
-                [self.selectedDailyController.collectionView reloadData];
-            }];
-        }else
-        if (buttonIndex == 1) {//重新答题
-            [DataService sharedService].isHistory = NO;
-            [self presentViewController:self.homeworkContainer animated:YES completion:^{
-                [self.selectedDailyController.collectionView reloadData];
-            }];
+        if (alertView.tag == 1001) {
+            if (buttonIndex == 0) {//查看历史记录
+                [DataService sharedService].isHistory = YES;
+                [self presentViewController:self.homeworkContainer animated:YES completion:^{
+                    [self.selectedDailyController.collectionView reloadData];
+                }];
+            }else
+                if (buttonIndex == 1) {//重新答题
+                    [DataService sharedService].isHistory = NO;
+                    [self presentViewController:self.homeworkContainer animated:YES completion:^{
+                        [self.selectedDailyController.collectionView reloadData];
+                    }];
+                }
         }
-    }
 }
 #pragma mark --
 -(void)showAlertWith:(HomeworkTypeObj *)typeObj {
@@ -301,9 +301,32 @@
     if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {//存在question
         NSInteger status = [Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task];
         //0:不存在answer文件   1:存在不是最新的  2:最新的
-        if (status == 0) {
-            if (![task.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && task.taskAnswerFileDownloadURL.length>10) {
-                //answer的下载地址
+        if (task.isExpire == NO) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
+            alert.tag = 1001;
+            [alert show];
+        }else {
+            if (status == 0) {
+                if (![task.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && task.taskAnswerFileDownloadURL.length>10) {
+                    //answer的下载地址
+                    AppDelegate *app = [AppDelegate shareIntance];
+                    __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
+                    progress.labelText = @"正在更新历史记录包，请稍后...";
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                        NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if (!dicData || dicData.count <= 0) {
+                                [Utility errorAlert:@"下载历史记录包失败"];
+                            }else{
+                                [self showAlertWith:typeObj];
+                            }
+                            [MBProgressHUD hideHUDForView:app.window animated:YES];
+                        });
+                    });
+                }else {
+                    [self showAlertWith:typeObj];
+                }
+            }else if (status==1) {//存在不是最新的
                 AppDelegate *app = [AppDelegate shareIntance];
                 __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
                 progress.labelText = @"正在更新历史记录包，请稍后...";
@@ -313,93 +336,35 @@
                         if (!dicData || dicData.count <= 0) {
                             [Utility errorAlert:@"下载历史记录包失败"];
                         }else{
-                            if (typeObj.homeworkTypeIsFinished) {
-                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
-                                alert.tag = 1001;
-                                [alert show];
-                            }else{
-                                [DataService sharedService].isHistory = NO;
-                                [self presentViewController:homeworkContainer animated:YES completion:^{
-                                    [self.selectedDailyController.collectionView reloadData];
-                                }];
-                            }
+                            [self showAlertWith:typeObj];
                         }
                         [MBProgressHUD hideHUDForView:app.window animated:YES];
                     });
                 });
             }else {
-                //判断卡包
-                if ([DataService sharedService].cardsCount >20) {
-                    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                    alert.tag = 999;
-                    [alert show];
-                }else {
-                    if (typeObj.homeworkTypeIsFinished) {
-                        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
-                        alert.tag = 1001;
-                        [alert show];
-                    }else{
-                        [DataService sharedService].isHistory = NO;
-                        [self presentViewController:homeworkContainer animated:YES completion:^{
-                            [self.selectedDailyController.collectionView reloadData];
-                        }];
-                    }
-                }
-            }
-        }else if (status==1) {//存在不是最新的
-            AppDelegate *app = [AppDelegate shareIntance];
-            __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
-            progress.labelText = @"正在更新历史记录包，请稍后...";
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (!dicData || dicData.count <= 0) {
-                        [Utility errorAlert:@"下载历史记录包失败"];
-                    }else{
-                        //判断卡包
-                        if ([DataService sharedService].cardsCount >20) {
-                            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-                            alert.tag = 999;
-                            [alert show];
+                if (!self.isShowHistory) {
+                    NSString *path = [Utility returnPath];
+                    NSString *documentDirectory = [path stringByAppendingPathComponent:task.taskStartDate];
+                    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
+                    NSError *error = nil;
+                    Class JSONSerialization = [Utility JSONParserClass];
+                    NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
+                    int isSuccess = [[dataObject objectForKey:@"isSuccessToUpload"]integerValue];
+                    if (isSuccess == 1) {
+                        [self showAlertWith:typeObj];
+                    }else {
+                        if (self.appDel.isReachable == NO) {
+                            [Utility errorAlert:@"暂无网络!"];
                         }else {
-                            if (typeObj.homeworkTypeIsFinished) {
-                                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
-                                alert.tag = 1001;
-                                [alert show];
-                            }else{
-                                [DataService sharedService].isHistory = NO;
-                                [self presentViewController:homeworkContainer animated:YES completion:^{
-                                    [self.selectedDailyController.collectionView reloadData];
-                                }];
-                            }
+                            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                            self.postInter = [[BasePostInterface alloc]init];
+                            self.postInter.delegate = self;
+                            [self.postInter postAnswerFileWith:task.taskStartDate];
                         }
                     }
-                    [MBProgressHUD hideHUDForView:app.window animated:YES];
-                });
-            });
-        }else {
-            if (!self.isShowHistory) {
-                NSString *path = [Utility returnPath];
-                NSString *documentDirectory = [path stringByAppendingPathComponent:task.taskStartDate];
-                NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
-                NSError *error = nil;
-                Class JSONSerialization = [Utility JSONParserClass];
-                NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
-                int isSuccess = [[dataObject objectForKey:@"isSuccessToUpload"]integerValue];
-                if (isSuccess == 1) {
-                    [self showAlertWith:typeObj];
                 }else {
-                    if (self.appDel.isReachable == NO) {
-                        [Utility errorAlert:@"暂无网络!"];
-                    }else {
-                        [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-                        self.postInter = [[BasePostInterface alloc]init];
-                        self.postInter.delegate = self;
-                        [self.postInter postAnswerFileWith:task.taskStartDate];
-                    }
+                    [self showAlertWith:typeObj];
                 }
-            }else {
-                [self showAlertWith:typeObj];
             }
         }
     }else{

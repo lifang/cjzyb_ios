@@ -131,11 +131,11 @@ static BOOL isCanUpLoad = NO;
     self.preBtn.frame = CGRectMake(122, frame.origin.y+Textfield_Height+Textfield_Space_Height*5, 200, 80);
     self.restartBtn.frame = CGRectMake(445, frame.origin.y+Textfield_Height+Textfield_Space_Height*5, 200, 80);
     
-    [self.wordsContainerView setFrame:CGRectMake(-768, 130, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
+    [self.wordsContainerView setFrame:CGRectMake(-768, 55, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
     [self.view addSubview:self.wordsContainerView];
     
     [UIView animateWithDuration:0.5 animations:^{
-        [self.wordsContainerView setFrame:CGRectMake(0, 130, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
+        [self.wordsContainerView setFrame:CGRectMake(0, 55, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
     } completion:^(BOOL finished){
         if (finished) {
             [UIView animateWithDuration:0.25 animations:^{
@@ -298,7 +298,9 @@ static BOOL isCanUpLoad = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-self.historyView.hidden=YES;
+    self.right_number = 0;
+    self.count_number = 0;
+    self.historyView.hidden=YES;
     NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSDictionary *sortDic = [dic objectForKey:@"sort"];
     self.questionArray = [NSMutableArray arrayWithArray:[sortDic objectForKey:@"questions"]];
@@ -594,6 +596,19 @@ self.historyView.hidden=YES;
     }else {
         [self.homeControl stopTimer];
         self.homeControl.appearCorrectButton.enabled=NO;
+
+        for (int i=0; i<self.orgArray.count; i++) {
+            UIButton *answerBtn = (UIButton *)[self.wordsContainerView viewWithTag:i+CP_Answer_Button_Tag_Offset];
+            NSString *text = answerBtn.titleLabel.text;
+            if ([text isEqualToString:[self.orgArray objectAtIndex:i]]) {
+                self.branchScore++;
+                self.right_number +=1;
+                [answerBtn setTitleColor:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] forState:UIControlStateNormal];
+            }else {
+                [answerBtn setTitleColor:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1] forState:UIControlStateNormal];
+            }
+        }
+        
         for (UIView *vv in [self.wordsContainerView subviews]) {
             if ([vv isKindOfClass:[UIButton class]]) {
                 UIButton *btn = (UIButton *)vv;
@@ -601,16 +616,6 @@ self.historyView.hidden=YES;
             }
         }
         
-        for (int i=0; i<self.orgArray.count; i++) {
-            UIButton *answerBtn = (UIButton *)[self.wordsContainerView viewWithTag:i+CP_Answer_Button_Tag_Offset];
-            NSString *text = answerBtn.titleLabel.text;
-            if ([text isEqualToString:[self.orgArray objectAtIndex:i]]) {
-                self.branchScore++;
-                [answerBtn setTitleColor:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] forState:UIControlStateNormal];
-            }else {
-                [answerBtn setTitleColor:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1] forState:UIControlStateNormal];
-            }
-        }
         if (self.branchScore == self.orgArray.count) {
             TRUESOUND;
         }else {

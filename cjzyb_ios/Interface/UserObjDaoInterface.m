@@ -149,6 +149,7 @@
             ClassObject *grade = [[ClassObject alloc]init];
             grade.classId = [gradeDic objectForKey:@"class_id"];
             grade.name = [gradeDic objectForKey:@"class_name"];
+            grade.expireTime = [gradeDic objectForKey:@"period_of_validity"];
             [classArr addObject:grade];
         }
         dispatch_async(dispatch_get_main_queue(), ^{

@@ -291,6 +291,8 @@ static BOOL isCanUpLoad = NO;
 {
     [super viewDidLoad];
     self.historyView.hidden=YES;
+    self.right_number = 0;
+    self.count_number = 0;
     NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSDictionary *sortDic = [dic objectForKey:@"lining"];
     self.questionArray = [NSMutableArray arrayWithArray:[sortDic objectForKey:@"questions"]];
@@ -387,12 +389,7 @@ static BOOL isCanUpLoad = NO;
     }else {
         [self.homeControl stopTimer];
         self.homeControl.appearCorrectButton.enabled=NO;
-        for (UIView *vv in [self.wordsContainerView subviews]) {
-            if ([vv isKindOfClass:[UIButton class]]) {
-                UIButton *btn = (UIButton *)vv;
-                btn.enabled = NO;
-            }
-        }
+        
         
         NSString *content = [self.branchQuestionDic objectForKey:@"content"];
         for (int i=0; i<self.leftArray.count; i++) {
@@ -408,14 +405,20 @@ static BOOL isCanUpLoad = NO;
             }
             NSRange range = [content rangeOfString:text];
             if (range.location == NSNotFound) {
-                leftBtn.backgroundColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
-                rightBtn.backgroundColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
-                
+                [leftBtn setTitleColor:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1] forState:UIControlStateNormal];
+                [rightBtn setTitleColor:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1] forState:UIControlStateNormal];
             }else {
                 self.branchScore++;
+                self.right_number +=1;
             }
         }
         
+        for (UIView *vv in [self.wordsContainerView subviews]) {
+            if ([vv isKindOfClass:[UIButton class]]) {
+                UIButton *btn = (UIButton *)vv;
+                btn.enabled = NO;
+            }
+        }
         if (self.branchScore == self.leftArray.count) {
             TRUESOUND;
         }else {

@@ -14,6 +14,8 @@
 #import "InitViewController.h"
 #import "Reachability.h"
 
+
+@class DRLeftTabBarViewController;
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 
@@ -35,6 +37,9 @@
 @property (nonatomic, assign) NSInteger the_class_id;
 @property (nonatomic, assign) NSInteger the_student_id;
 @property (nonatomic, strong) NSString *the_class_name;
+
+
+@property (nonatomic, strong) DRLeftTabBarViewController *tabBarController;
 - (void)showRootView;
 +(AppDelegate *)shareIntance;
 

@@ -15,12 +15,13 @@
 /**
  *  完形填空
  */
-@interface SelectedViewController : UIViewController<ClozeViewDelegate,TenSecChallengeResultViewDelegate,PostDelegate,UIAlertViewDelegate>
+@interface SelectedViewController : UIViewController<ClozeViewDelegate,TenSecChallengeResultViewDelegate,PostDelegate,UIAlertViewDelegate,UIScrollViewDelegate>
 
 @property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) BasePostInterface *postInter;
 
 @property (nonatomic, strong) ClozeView *clozeVV;
+@property (nonatomic, strong) IBOutlet UIScrollView *myScroll;
 
 @property (nonatomic, strong) NSDictionary *clozeDic;//整个题目－－－－代表完形填空
 @property (nonatomic, assign) NSInteger number;//记录第几题--大题
@@ -49,7 +50,9 @@
 //道具
 @property (nonatomic, strong) NSMutableArray *propsArray;
 
-
+///再次挑战
+@property (nonatomic, assign) NSInteger right_number;
+@property (nonatomic, assign) NSInteger count_number;
 
 
 
@@ -62,4 +65,7 @@
 
 -(void)exitClozeView;
 @property (nonatomic, assign) NSInteger postNumber;
+
+
+
 @end

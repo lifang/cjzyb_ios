@@ -694,7 +694,7 @@
                 //标注正确答案
                 optionIsRightAnswer = YES;
                 SelectingChallengeOptionCell *cell = (SelectingChallengeOptionCell *)[self.optionTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-                cell.optionLabel.textColor = [UIColor greenColor];
+                cell.optionLabel.textColor = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
             }
         }
         if (!optionIsRightAnswer) {
@@ -702,7 +702,7 @@
             for(NSString *selectedOptionIndex in self.currentSelectedOptions){
                 if (i == selectedOptionIndex.integerValue) {
                     SelectingChallengeOptionCell *cell = (SelectingChallengeOptionCell *)[self.optionTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-                    cell.optionLabel.textColor = [UIColor redColor];
+                    cell.optionLabel.textColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
                 }
             }
         }
@@ -716,14 +716,14 @@
             if ([option isEqualToString:rightAnswer]) {
                 //标注正确答案
                 optionIsRightAnswer = YES;
-                cell.optionLabel.textColor = [UIColor greenColor];
+                cell.optionLabel.textColor = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
             }
         }
         if (!optionIsRightAnswer) {
             //错误答案是否是被选中的
             for(NSString *selectedOptionIndex in self.currentSelectedOptions){
                 if (cell.indexPath.row == selectedOptionIndex.integerValue) {
-                    cell.optionLabel.textColor = [UIColor redColor];
+                    cell.optionLabel.textColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
                 }
             }
         }
@@ -813,10 +813,14 @@
 
 //点击退出按钮
 -(void)seQuitButtonClicked:(id)sender{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [alert show];
-    });
+    if (self.isViewingHistory) {
+        [parentVC dismissViewControllerAnimated:YES completion:nil];
+    }else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [alert show];
+        });
+    }
 }
 
 //真正退出

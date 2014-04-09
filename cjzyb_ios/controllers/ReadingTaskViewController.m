@@ -190,28 +190,21 @@
     }
     [DataService sharedService].number_reduceTime--;
     parentVC.spendSecond = parentVC.spendSecond > 5 ? parentVC.spendSecond - 5 : 0;
-//    __weak ReadingTaskViewController *weakSelf = self;
-//    TaskObj *task = [DataService sharedService].taskObj;
-//    NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
-//    [ParseAnswerJsonFileTool writePropsToJsonFile:path withQuestionId:[NSString stringWithFormat:@"%d",self.currentSentenceIndex] withPropsType:@"1" withSuccess:^{
-//        ReadingTaskViewController *tempSelf = weakSelf ;
-//        if (tempSelf) {
-//        
-//        }
-//    } withFailure:^(NSError *error) {
-//        ReadingTaskViewController *tempSelf = weakSelf ;
-//        if (tempSelf) {
-//            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-//        }
-//    }];
 }
 
 //TODO:退出作业界面
 -(void)exithomeworkUI{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"退出", nil];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [alert show];
-    });
+    if (!self.isFirst) {
+        [parentVC dismissViewControllerAnimated:YES completion:^{
+            
+        }];
+    }else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"退出", nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [alert show];
+        });
+    }
+    
 }
 
 -(void)quitNow{
