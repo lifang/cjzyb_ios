@@ -352,6 +352,7 @@
         }
         if (itemType < self.childenControllerArray.count) {
             [self changeFromController:self.currentViewController toController:[self.childenControllerArray objectAtIndex:itemType]];
+            self.isHiddleLeftTabBar = !self.isHiddleLeftTabBar;
         }
     }
 }

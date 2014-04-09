@@ -9,7 +9,7 @@
 #import "RecognizerFactory.h"
 #import "iflyMSC/IFlySpeechRecognizer.h"
 
-#define APPID @"533e6dc2"
+#define APPID @"533e6dc2"
 #define TIMEOUT         @"20000"            // timeout      连接超时的时间，以ms为单位
 
 @implementation RecognizerFactory

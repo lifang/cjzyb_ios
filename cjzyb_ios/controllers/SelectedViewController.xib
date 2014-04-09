@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="historyAnswer" destination="sbd-1c-CO2" id="ZTO-jA-Arp"/>
                 <outlet property="historyView" destination="yfQ-td-8nP" id="FAY-UM-ANl"/>
+                <outlet property="myScroll" destination="OfQ-4b-SZQ" id="9MM-Zc-5tf"/>
                 <outlet property="view" destination="2" id="3"/>
             </connections>
         </placeholder>
@@ -17,6 +18,13 @@
             <rect key="frame" x="0.0" y="0.0" width="768" height="874"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OfQ-4b-SZQ">
+                    <rect key="frame" x="0.0" y="0.0" width="768" height="874"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Pek-et-7Ou"/>
+                    </connections>
+                </scrollView>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yfQ-td-8nP" userLabel="historyView">
                     <rect key="frame" x="0.0" y="723" width="768" height="151"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

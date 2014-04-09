@@ -247,23 +247,23 @@
                     }
                 });
             });
-
+            
         }
     }else
-    if (alertView.tag == 1001) {
-        if (buttonIndex == 0) {//查看历史记录
-            [DataService sharedService].isHistory = YES;
-            [self presentViewController:self.homeworkContainer animated:YES completion:^{
-                [self.selectedDailyController.collectionView reloadData];
-            }];
-        }else
-        if (buttonIndex == 1) {//重新答题
-            [DataService sharedService].isHistory = NO;
-            [self presentViewController:self.homeworkContainer animated:YES completion:^{
-                [self.selectedDailyController.collectionView reloadData];
-            }];
+        if (alertView.tag == 1001) {
+            if (buttonIndex == 0) {//查看历史记录
+                [DataService sharedService].isHistory = YES;
+                [self presentViewController:self.homeworkContainer animated:YES completion:^{
+                    [self.selectedDailyController.collectionView reloadData];
+                }];
+            }else
+                if (buttonIndex == 1) {//重新答题
+                    [DataService sharedService].isHistory = NO;
+                    [self presentViewController:self.homeworkContainer animated:YES completion:^{
+                        [self.selectedDailyController.collectionView reloadData];
+                    }];
+                }
         }
-    }
 }
 #pragma mark --
 -(void)showAlertWith:(HomeworkTypeObj *)typeObj {

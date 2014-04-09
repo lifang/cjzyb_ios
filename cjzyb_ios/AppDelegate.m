@@ -259,7 +259,6 @@
         }
     }
 
-//    [self showHomework];
     [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
 
     
@@ -271,18 +270,14 @@
 //    [DataService sharedService].user.studentId = @"89";
 //    
 //    [DataService sharedService].theClass = [[ClassObject alloc]init];
-//    [DataService sharedService].theClass.classId = @"90";
+//    [DataService sharedService].theClass.classId = @"106";
 //    [DataService sharedService].theClass.name = @"大结局";
-//    [DataService sharedService].theClass.tId = @"68";
+//    [DataService sharedService].theClass.tId = @"75";
 //    [DataService sharedService].theClass.tName = @"黄河";
-//    
-//    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-//    HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
-//    LHLNotificationContainerVC *notificationView = [[LHLNotificationContainerVC alloc]initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
-//    CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
-//    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-//    tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
-//    self.window.rootViewController = tabBarController;
+//    [DataService sharedService].theClass.expireTime = @"2014-04-26 23:59:59";
+//
+//    [self showMainController];
+    
     [self.window makeKeyAndVisible];
 
     return YES;

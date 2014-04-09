@@ -21,4 +21,5 @@
 @property (nonatomic, strong) NSMutableArray *modelArray;
 @property (nonatomic, assign) NSInteger number;//记录换行
 - (void)setText:(NSString*)text;
+
 @end

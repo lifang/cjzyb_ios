@@ -9,7 +9,8 @@
 #import "ClozeView.h"
 
 #define UnderLab_tag 1234567
-#define UnderLab_width 100
+#define UnderLab_width 180
+
 @implementation ClozeView
 
 - (id)initWithFrame:(CGRect)frame
@@ -128,6 +129,7 @@
                 [self addSubview:label3];
             }
         }
+        
         //空格
         frame.origin.x += frame.size.width;
         if (frame.origin.x+UnderLab_width>768) {//换行
@@ -148,6 +150,9 @@
         underLab.shouldUnderline = YES;
         [underLab addTarget:self action:@selector(labelClicked:)];
         [self addSubview:underLab];
+        
+        
+        
         
         
         frame.origin.x += frame.size.width;
@@ -205,6 +210,8 @@
     CGRect frame2 = self.frame;
     frame2.size.height = frame.origin.y+frame.size.height +180;
     [self setFrame:frame2];
+    AppDelegate *appDel = [AppDelegate shareIntance];
+    [MBProgressHUD hideHUDForView:appDel.window animated:YES];
 }
 
 -(void)labelClicked:(id)sender {
@@ -213,4 +220,5 @@
         [self.delegate pressedLabel:control];
     }
 }
+
 @end
