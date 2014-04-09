@@ -53,6 +53,8 @@
 
 ///点击开始听内容
 - (IBAction)listeningButtonClicked:(id)sender;
+
+@property (nonatomic,assign) BOOL currentSentencePassed; //当前题目是否及格
 @end
 
 @implementation ReadingTaskViewController
@@ -115,6 +117,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.currentSentencePassed = NO;
     self.shouldUpload = NO;
     // 创建识别对象
     _iFlySpeechRecognizer = [RecognizerFactory CreateRecognizer:self Domain:@"iat"];
@@ -249,8 +252,9 @@
             [self hiddlePrePlayControllerWithAnimation:YES];
         }else{
             //切换到下一题
-            if (self.currentSentence.readingSentenceRatio.floatValue >= minRecoginLevel || self.readingCount >= minRecoginCount) {
+            if (self.currentSentencePassed || self.readingCount >= minRecoginCount) {
                 self.readingCount = 0;
+                self.currentSentencePassed = NO;
                 [self.tipBackView setHidden:YES];
                 if (self.currentSentenceIndex+1 < self.currentHomework.readingHomeworkSentenceObjArray.count) {
                     [ self updateNextSentence];
@@ -783,24 +787,27 @@
         self.readingTextView.attributedText = nil;
         self.readingTextView.attributedText = spellAttriString;
         self.readingCount++;
-        self.currentSentence.readingErrorWordArray = [NSMutableArray arrayWithArray:errorWordArray];
-        self.currentSentence.readingSentenceRatio = [NSString stringWithFormat:@"%0.2f",matchScore];
         [self.tipBackView setHidden:NO];
         NSString *tip = @"";
-        if (matchScore >= 0.5) {
+        if (matchScore >= minRecoginLevel) {
             tip = @"你的发音真的很不错哦,让我们再来读读其它的句子吧！";
+            self.currentSentencePassed = YES;
         }else
         {
             tip = @"看到红色的这些词了吗,你的发音还不够标准哦,在来试试吧！";
         }
         if (self.readingCount <= 1 && self.isFirst) {//计入成绩
+            //存内存中
+            self.currentSentence.readingErrorWordArray = [NSMutableArray arrayWithArray:errorWordArray];
+            self.currentSentence.readingSentenceRatio = [NSString stringWithFormat:@"%0.2f",matchScore];
+            //保存JSON
             __weak ReadingTaskViewController *weakSelf = self;
             self.currentSentence.isFinished = YES;
             if (self.currentSentenceIndex == self.currentHomework.readingHomeworkSentenceObjArray.count-1) {
                 self.currentHomework.isFinished = YES;
             }
             NSIndexPath *indexPath = [self findNextIndexWithHomeworkIndex:self.currentHomeworkIndex andSentenceIndex:self.currentSentenceIndex];
-            //TODO:此处保存的是已经被做过的题目号码
+            //TODO:此处保存的是下一题的对应index
             [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path
                                                         withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond]
                                                   withQuestionIndex:indexPath.section
