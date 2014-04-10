@@ -386,8 +386,8 @@ static NSInteger tmpPage = 0;
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             NSArray *arrayTag = [result objectForKey:@"tags"];
+            [DataService sharedService].tagsArray = [[NSMutableArray alloc]init];
             if (arrayTag.count>0) {
-                [DataService sharedService].tagsArray = [[NSMutableArray alloc]init];
                 for (int i=0; i<arrayTag.count; i++) {
                     NSDictionary *dic = [arrayTag objectAtIndex:i];
                     TagObject *tagObj = [TagObject tagFromDictionary:dic];

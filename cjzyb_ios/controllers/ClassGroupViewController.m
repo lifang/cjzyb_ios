@@ -43,7 +43,7 @@
     __weak ClassGroupViewController *weakSelf = self;
     DataService *data = [DataService sharedService];
     
-    [ModelTypeViewController presentTypeViewWithTipString:@"请输入班级验证码：" withFinishedInput:^(NSString *inputString) {
+    [ModelTypeViewController presentTypeViewWithTipString:@"请输入班级验证码:" withFinishedInput:^(NSString *inputString) {
         AppDelegate *app = [AppDelegate shareIntance];
 
         NSString *msgStr = @"";

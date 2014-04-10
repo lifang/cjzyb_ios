@@ -166,7 +166,7 @@ static BOOL isCanUpLoad = NO;
 -(void)setHistoryUI {
     self.tmpLeftArray=nil;self.tmpRightArray=nil;self.cancelTmpLeftArray=nil;self.cancelTmpRightArray=nil;
     
-    if (self.number==self.history_questionArray.count-1) {
+    if (self.number==self.history_questionArray.count-1 && self.branchNumber==self.history_branchQuestionArray.count-1) {
         [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
         [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
         [self.checkHomeworkButton addTarget:self action:@selector(finishHistoryQuestion:) forControlEvents:UIControlEventTouchUpInside];
@@ -269,18 +269,21 @@ static BOOL isCanUpLoad = NO;
         NSMutableString *string = [NSMutableString string];
         NSString *content = [self.history_branchQuestionDic objectForKey:@"answer"];
         NSArray *array = [content componentsSeparatedByString:@";||;"];
-        for (int i=0; i<array.count; i++) {
-            NSString *str = [array objectAtIndex:i];
-            NSArray *subArray = [str componentsSeparatedByString:@"<=>"];
-            if (i==array.count-1) {
-                [string appendFormat:@"%@ %@",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
-            }else {
-                [string appendFormat:@"%@ %@    ",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+        
+        if (array.count==1) {
+            [string appendFormat:@"%@",content];
+        }else {
+            for (int i=0; i<array.count; i++) {
+                NSString *str = [array objectAtIndex:i];
+                NSArray *subArray = [str componentsSeparatedByString:@"<=>"];
+                if (i==array.count-1) {
+                    [string appendFormat:@"%@ %@",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+                }else {
+                    [string appendFormat:@"%@ %@    ",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+                }
             }
         }
-        
-        NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
-        self.historyAnswer.text = [NSString stringWithFormat:@"你的排序: %@",txt];
+        self.historyAnswer.text = [NSString stringWithFormat:@"你的排序: %@",string];
         
         [self setHistoryUI];
     }else {
@@ -291,8 +294,8 @@ static BOOL isCanUpLoad = NO;
 {
     [super viewDidLoad];
     self.historyView.hidden=YES;
-    self.right_number = 0;
-    self.count_number = 0;
+    self.again_radio=0;
+    
     NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
     NSDictionary *sortDic = [dic objectForKey:@"lining"];
     self.questionArray = [NSMutableArray arrayWithArray:[sortDic objectForKey:@"questions"]];
@@ -308,8 +311,55 @@ static BOOL isCanUpLoad = NO;
     self.answerDic = [Utility returnAnswerDictionaryWithName:LINING andDate:[DataService sharedService].taskObj.taskStartDate];
     int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
     
+    if ([DataService sharedService].taskObj.isExpire == YES) {//作业过期时间
+        
+        NSMutableArray *h_questions = [[NSMutableArray alloc]init];
+        for (int i=0; i<self.questionArray.count; i++) {
+            NSMutableDictionary *question = [[NSMutableDictionary alloc]init];
+            NSDictionary *dic = [self.questionArray objectAtIndex:i];
+            NSArray *b_array = [dic objectForKey:@"branch_questions"];
+            NSMutableArray *h_b_question = [[NSMutableArray alloc]init];
+            for (int k=0; k<b_array.count; k++) {
+                NSDictionary *b_dic = [b_array objectAtIndex:k];
+                NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:[b_dic objectForKey:@"id"],@"id",@"0",@"ratio",@"您未作答",@"answer", nil];
+                [h_b_question addObject:answer_dic];
+            }
+            [question setObject:[dic objectForKey:@"id"] forKey:@"id"];
+            [question setObject:h_b_question forKey:@"branch_questions"];
+            [h_questions addObject:question];
+        }
+        if (number_question<0) {//没有过往记录
+            [self.answerDic setObject:h_questions forKey:@"questions"];
+        }else {
+            NSMutableArray *a_question =[NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
+            for (int i=0; i<h_questions.count; i++) {
+                NSDictionary *dic = [h_questions objectAtIndex:i];
+                NSArray *b_array = [dic objectForKey:@"branch_questions"];
+                
+                if (i<=a_question.count-1) {
+                    NSMutableDictionary *a_dic = [NSMutableDictionary dictionaryWithDictionary:[a_question objectAtIndex:i]];
+                    NSMutableArray *a_array = [NSMutableArray arrayWithArray:[a_dic objectForKey:@"branch_questions"]];
+                    
+                    for (int k=0; k<b_array.count; k++) {
+                        NSDictionary *b_dic = [b_array objectAtIndex:k];
+                        if (k<=a_array.count-1) {
+                            
+                        }else {
+                            [a_array addObject:b_dic];
+                        }
+                    }
+                    [a_dic setObject:a_array forKey:@"branch_questions"];
+                    [a_question replaceObjectAtIndex:i withObject:a_dic];
+                }else {
+                    [a_question addObject:dic];
+                }
+            }
+            [self.answerDic setObject:a_question forKey:@"questions"];
+        }
+    }
+    
     if ([DataService sharedService].isHistory==YES) {
-        if (number_question<0) {
+        if (number_question<0 && [DataService sharedService].taskObj.isExpire == NO) {
             [Utility errorAlert:@"暂无历史记录!"];
         }else {
             self.historyView.hidden=NO;
@@ -338,7 +388,7 @@ static BOOL isCanUpLoad = NO;
         int status = [[self.answerDic objectForKey:@"status"]intValue];
         if (status == 1) {
             
-        }else {
+        }else if ([DataService sharedService].taskObj.isExpire == NO){
             
                 self.isFirst= YES;
                 if ([DataService sharedService].number_reduceTime>0) {
@@ -409,7 +459,7 @@ static BOOL isCanUpLoad = NO;
                 [rightBtn setTitleColor:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1] forState:UIControlStateNormal];
             }else {
                 self.branchScore++;
-                self.right_number +=1;
+                
             }
         }
         
@@ -420,6 +470,7 @@ static BOOL isCanUpLoad = NO;
             }
         }
         if (self.branchScore == self.leftArray.count) {
+            self.again_radio += 100;
             TRUESOUND;
         }else {
             FALSESOUND;
@@ -439,18 +490,20 @@ static BOOL isCanUpLoad = NO;
             [self.checkHomeworkButton addTarget:self action:@selector(nextQuestion:) forControlEvents:UIControlEventTouchUpInside];
         }
         //TODO:写入json
-        int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
-        int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
-        if (number_question>self.number) {
-            //表示已经做过这道题
-        }else if (number_question==self.number){
-            if (number_branch_question>=self.branchNumber) {
+        if (self.isFirst==YES) {
+            int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
+            int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
+            if (number_question>self.number) {
                 //表示已经做过这道题
+            }else if (number_question==self.number){
+                if (number_branch_question>=self.branchNumber) {
+                    //表示已经做过这道题
+                }else {
+                    [self writeToAnswerJsonWithString:anserString];
+                }
             }else {
                 [self writeToAnswerJsonWithString:anserString];
             }
-        }else {
-            [self writeToAnswerJsonWithString:anserString];
         }
     }
 }
@@ -789,45 +842,55 @@ static BOOL isCanUpLoad = NO;
         }
     }
     
-    NSString *path = [Utility returnPath];
-    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
-    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     
-    NSError *error = nil;
-    Class JSONSerialization = [Utility JSONParserClass];
-    NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
-    
-    NSMutableDictionary *answerDic = [dataObject objectForKey:LINING];
-    NSArray *questionArray = [answerDic objectForKey:@"questions"];
-    
-    CGFloat score_radio=0;int count =0;
-    for (int i=0; i<questionArray.count; i++) {
-        NSDictionary *question_dic = [questionArray objectAtIndex:i];
-        NSArray *branchArray = [question_dic objectForKey:@"branch_questions"];
-        
-        for (int j=0; j<branchArray.count; j++) {
-            count++;
-            NSDictionary *branch_dic = [branchArray objectAtIndex:j];
-            CGFloat radio = [[branch_dic objectForKey:@"ratio"]floatValue];
-            score_radio += radio;
-        }
-    }
-    score_radio = score_radio/count;
     
     NSArray *viewArray = [[NSBundle mainBundle] loadNibNamed:@"TenSecChallengeResultView" owner:self options:nil];
     self.resultView = (TenSecChallengeResultView *)[viewArray objectAtIndex:0];
     self.resultView.delegate = self;
     self.resultView.timeCount = self.homeControl.spendSecond;
-    self.resultView.ratio = (NSInteger)score_radio;
     if (self.isFirst == YES) {
+        NSString *path = [Utility returnPath];
+        NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
+        NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
+        
+        NSError *error = nil;
+        Class JSONSerialization = [Utility JSONParserClass];
+        NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
+        
+        NSMutableDictionary *answerDic = [dataObject objectForKey:LINING];
+        NSArray *questionArray = [answerDic objectForKey:@"questions"];
+        
+        CGFloat score_radio=0;int count =0;
+        for (int i=0; i<questionArray.count; i++) {
+            NSDictionary *question_dic = [questionArray objectAtIndex:i];
+            NSArray *branchArray = [question_dic objectForKey:@"branch_questions"];
+            
+            for (int j=0; j<branchArray.count; j++) {
+                count++;
+                NSDictionary *branch_dic = [branchArray objectAtIndex:j];
+                CGFloat radio = [[branch_dic objectForKey:@"ratio"]floatValue];
+                score_radio += radio;
+            }
+        }
+        score_radio = score_radio/count;
+        
         self.resultView.resultBgView.hidden=NO;
         self.resultView.noneArchiveView.hidden=YES;
-        
+        self.resultView.ratio = (NSInteger)score_radio;
         self.resultView.timeLimit = self.specified_time;
         self.resultView.isEarly = [Utility compareTime];
     }else {
+        int count =0;
+        for (int i=0; i<self.questionArray.count; i++) {
+            NSDictionary *question_dic = [self.questionArray objectAtIndex:i];
+            NSArray *branchArray = [question_dic objectForKey:@"branch_questions"];
+            for (int j=0; j<branchArray.count; j++) {
+                count++;
+            }
+        }
         self.resultView.noneArchiveView.hidden=NO;
         self.resultView.resultBgView.hidden=YES;
+        self.resultView.ratio = (NSInteger)(self.again_radio/count);
     }
     
     [self.resultView initView];

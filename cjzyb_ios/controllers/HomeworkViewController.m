@@ -304,9 +304,28 @@
         [DataService sharedService].taskObj = task;
         //0:不存在answer文件   1:存在不是最新的  2:最新的
         if (task.isExpire == NO) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
-            alert.tag = 1001;
-            [alert show];
+            if (status==1) {//存在不是最新的
+                AppDelegate *app = [AppDelegate shareIntance];
+                __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
+                progress.labelText = @"正在更新历史记录包，请稍后...";
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                    NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (!dicData || dicData.count <= 0) {
+                            [Utility errorAlert:@"下载历史记录包失败"];
+                        }else{
+                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
+                            alert.tag = 1001;
+                            [alert show];
+                        }
+                        [MBProgressHUD hideHUDForView:app.window animated:YES];
+                    });
+                });
+            }else {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
+                alert.tag = 1001;
+                [alert show];
+            }
         }else {
             if (status == 0) {
                 if (![task.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && task.taskAnswerFileDownloadURL.length>10) {
