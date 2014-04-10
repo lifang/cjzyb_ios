@@ -47,6 +47,35 @@
 
 ///重新加载数据
 -(void)reloadDataWithTaskId:(NSString*)taskId withHomeworkType:(HomeworkType)homeworkType{
+    NSString *titleString;
+    switch (homeworkType) {
+        case HomeworkType_quick:
+            titleString = @"十速挑战当日排名";
+            break;
+        case HomeworkType_fillInBlanks:
+            titleString = @"完形填空当日排名";
+            break;
+        case HomeworkType_line:
+            titleString = @"连线挑战当日排名";
+            break;
+        case HomeworkType_listeningAndWrite:
+            titleString = @"听写挑战当日排名";
+            break;
+        case HomeworkType_reading:
+            titleString = @"朗读挑战当日排名";
+            break;
+        case HomeworkType_select:
+            titleString = @"选择挑战当日排名";
+            break;
+        case HomeworkType_sort:
+            titleString = @"排序挑战当日排名";
+            break;
+            
+        default:
+            break;
+    }
+    self.titleLabel.text = titleString;
+    
     __weak HomeworkRankingViewController *weakSelf = self;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     [HomeworkDaoInterface downloadHomeworkRankingWithTaskId:taskId withHomeworkType:homeworkType withSuccess:^(NSArray *rankingObjArr) {

@@ -402,7 +402,6 @@
     [self presentViewController:rankingController animated:YES completion:^{
         
     }];
-//    rankingController.view.layer.cornerRadius = 10;
     HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
     [rankingController reloadDataWithTaskId:controller.taskObj.taskID withHomeworkType:typeObj.homeworkType];
 }
