@@ -81,6 +81,11 @@
         [Utility errorAlert:@"无法读取问题资料!"];
     }
     [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"selecting" andDate:[DataService sharedService].taskObj.taskStartDate]];
+    
+    if ([DataService sharedService].taskObj.isExpire) {
+        self.answerStatus = @"1";
+    }
+    
     self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.taskStartDate];
 }
 
@@ -504,6 +509,7 @@
 #pragma mark 被调方法
 //创建问题显示
 -(void)createQuestionView{
+    [self.view setHidden:NO];
     dispatch_async(dispatch_get_main_queue(), ^{
         switch (self.selectingType) {
             case SelectingTypeDefault:
@@ -512,7 +518,7 @@
                 self.questionPlayButton.hidden = YES;
                 self.questionTextView.hidden = NO;
                 
-                self.questionTextView.frame = (CGRect){38,17,650,100};
+                self.questionTextView.frame = (CGRect){38,17,650,200};
                 self.optionTable.frame = (CGRect){38,117,650,874 - 117 - (self.isViewingHistory ? 155 : 0)};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
@@ -588,7 +594,7 @@
             }
         }
     }
-    self.historyYourChoiceLabel.text = yourChoiceString;
+    self.historyYourChoiceLabel.text = yourChoiceString.length > 0 ? yourChoiceString : @"未完成本小题";
 }
 
 #pragma mark 被调方法

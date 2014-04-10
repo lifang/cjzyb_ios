@@ -289,7 +289,7 @@
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller didSelectedAtIndexPath:(NSIndexPath *)path{
     HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
     TaskObj *task = controller.taskObj;
-    [DataService sharedService].taskObj = task;
+    
     [DataService sharedService].number_reduceTime = task.taskReduceTimeCount;
     [DataService sharedService].number_correctAnswer=task.taskTipCorrectAnswer;
     self.selectedDailyController = controller;

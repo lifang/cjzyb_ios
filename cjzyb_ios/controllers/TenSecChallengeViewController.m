@@ -34,6 +34,7 @@
 @property (assign,nonatomic) BOOL isReDoingChallenge; //是否为重新挑战
 @property (assign,nonatomic) BOOL shouldUploadJSON;  //是否需要上传JSON
 @property (assign,nonatomic) BOOL haveUploadedJSON; //是否已上传JSON
+//@property (assign,nonatomic) BOOL runningWithoutAnswer; //进入未做过的历史题时,标记的状态
 @property (strong,nonatomic) NSUserDefaults *userDefaults;
 @end
 
@@ -87,6 +88,10 @@
     
     //载入answer文件
     [self parseAnswerDic:[Utility returnAnswerDictionaryWithName:@"time_limit" andDate:[DataService sharedService].taskObj.taskStartDate]];
+    if ([DataService sharedService].taskObj.isExpire) {
+        self.answerStatus = @"1";
+    }
+    
     
     //重新挑战次数
     if (![self.userDefaults stringForKey:@"reChallengeTimesLeft"]) {
@@ -456,7 +461,8 @@
         OrdinaryAnswerObject *answer = self.answerArray[self.currentNO];
         self.historyYourChoiceLabel.text = [NSString stringWithFormat:@"你的答案:%@",answer.answerAnswer];
     }else{
-        [Utility errorAlert:@"历史答案错误!"];
+//        [Utility errorAlert:@"历史答案错误!"];
+        self.historyYourChoiceLabel.text = @"未完成本小题";
     }
 }
 
@@ -499,6 +505,7 @@
 //调整某个label的字体,使其适合长度
 - (void)handleLabelFont:(UILabel *)label withBeginningSize:(CGFloat)size{
     UIFont *font = [UIFont systemFontOfSize:size];
+    label.numberOfLines = 0;
     for (CGFloat fontSize = font.pointSize; fontSize > 14; fontSize -- ) {
         CGSize size = [Utility getTextSizeWithString:label.text withFont:[UIFont systemFontOfSize:fontSize]];
         if (size.width < label.frame.size.width - 8) {
