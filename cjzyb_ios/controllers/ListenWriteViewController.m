@@ -550,6 +550,10 @@ static int numberOfMusic =0;
 #pragma mark - 做题
 //检查
 -(void)checkAnswer:(id)sender {
+    if (self.appDel.avPlayer) {
+        [self.appDel.avPlayer stop];
+        self.appDel.avPlayer=nil;
+    }
     self.branchScore = 0;
     NSString *str = @"";
     NSMutableString *anserString = [NSMutableString string];
@@ -769,8 +773,13 @@ static int numberOfMusic =0;
     }else {
         int count =0;
         for (int i=0; i<self.questionArray.count; i++) {
-            count++;
+            NSDictionary *question_dic = [self.questionArray objectAtIndex:i];
+            NSArray *branchArray = [question_dic objectForKey:@"branch_questions"];
+            for (int j=0; j<branchArray.count; j++) {
+                count++;
+            }
         }
+        
         self.resultView.noneArchiveView.hidden=NO;
         self.resultView.resultBgView.hidden=YES;
         self.resultView.ratio = (NSInteger)(self.again_radio/count);
@@ -782,7 +791,6 @@ static int numberOfMusic =0;
 }
 -(void)finishQuestion:(id)sender {
     self.homeControl.reduceTimeButton.enabled=NO;
-
 
     if (self.isFirst==YES) {
         self.postNumber = 0;
@@ -884,6 +892,10 @@ static int numberOfMusic =0;
 
 -(void)exitListenView {
     if (self.isFirst==NO) {
+        if (self.appDel.avPlayer) {
+            [self.appDel.avPlayer stop];
+            self.appDel.avPlayer=nil;
+        }
         [self.homeControl dismissViewControllerAnimated:YES completion:nil];
     }else {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
@@ -906,6 +918,10 @@ static int numberOfMusic =0;
                     [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
                 }
             }else {
+                if (self.appDel.avPlayer) {
+                    [self.appDel.avPlayer stop];
+                    self.appDel.avPlayer=nil;
+                }
                 [self.homeControl dismissViewControllerAnimated:YES completion:nil];
             }
         }

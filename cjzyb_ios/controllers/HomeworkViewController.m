@@ -303,7 +303,7 @@
         NSInteger status = [Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task];
         
         //0:不存在answer文件   1:存在不是最新的  2:最新的
-        if (task.isExpire == NO) {
+        if (task.isExpire == YES) {
             if (status==1) {//存在不是最新的
                 AppDelegate *app = [AppDelegate shareIntance];
                 __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
