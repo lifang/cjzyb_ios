@@ -69,6 +69,5 @@
 @property (nonatomic, assign) NSInteger postNumber;
 
 ///再次挑战
-@property (nonatomic, assign) NSInteger right_number;
-@property (nonatomic, assign) NSInteger count_number;
+@property (nonatomic, assign) CGFloat again_radio;
 @end

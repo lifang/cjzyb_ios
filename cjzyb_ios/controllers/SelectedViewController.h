@@ -31,7 +31,7 @@
 
 @property (nonatomic, strong) NSMutableArray *answerArray;
 
-@property (nonatomic, strong) NSArray *orgArray;
+
 
 @property (nonatomic, assign) NSInteger tmpTag;
 
@@ -51,8 +51,7 @@
 @property (nonatomic, strong) NSMutableArray *propsArray;
 
 ///再次挑战
-@property (nonatomic, assign) NSInteger right_number;
-@property (nonatomic, assign) NSInteger count_number;
+@property (nonatomic, assign) CGFloat again_radio;
 
 
 
