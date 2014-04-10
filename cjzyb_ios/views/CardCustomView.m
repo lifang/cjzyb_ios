@@ -65,11 +65,7 @@
     return range;
 }
 -(void)setSubView {
-    if (![self.aCard.resource_url isKindOfClass:[NSNull class]] && self.aCard.resource_url!=nil && self.aCard.resource_url.length>0) {
-        self.cardSecond.voiceBtn.hidden=NO;
-    }else {
-        self.cardSecond.voiceBtn.hidden=YES;
-    }
+
     [self.cardFirst setTagNameArray:self.aCard.tagArray];
     
     switch (self.aCard.mistake_types) {
@@ -99,6 +95,7 @@
     int type = [self.aCard.types integerValue];
     
     if (type==0) {//听力
+        self.cardSecond.voiceBtn.hidden=NO;
         [self.cardSecond.rtLab setText:self.aCard.content];
         NSArray *yourArray = [self.aCard.your_answer componentsSeparatedByString:@";||;"];
         NSString *wrongStr = [yourArray objectAtIndex:0];
@@ -118,6 +115,7 @@
         [self.cardSecond.rtLab setLine];
         
     }else if (type==1) {//朗读
+        self.cardSecond.voiceBtn.hidden=NO;
         [self.cardSecond.rtLab setText:self.aCard.content];
         NSMutableString *string = [NSMutableString string];
         NSArray *answerArray = [self.aCard.your_answer componentsSeparatedByString:@";||;"];
@@ -135,6 +133,7 @@
         [self.cardSecond.rtLab setLine];
         
     }else if (type==2) {//十速挑战
+        self.cardSecond.voiceBtn.hidden=YES;
         self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
         self.cardFirst.rightLetterLab.text = self.aCard.answer;
         [self.cardSecond.rtLab setText:self.aCard.content];
@@ -170,14 +169,15 @@
         [self.cardSecond.rtLab removeFromSuperview];
         
         NSRange range = [self.aCard.content rangeOfString:@"</file>"];
-        if (range.location != NSNotFound) {
+        if (range.location != NSNotFound && range.length!=NSNotFound) {
             self.cardSecond.titleLab.hidden = YES;
             NSArray *array = [self.aCard.content componentsSeparatedByString:@"</file>"];
             NSString *title_sub  =[array objectAtIndex:0];
             NSString *title=[title_sub stringByReplacingOccurrencesOfString:@"<file>" withString:@""];
             
             NSRange range2 = [title rangeOfString:@".jpg"];
-            if (range2.location != NSNotFound) {//图片
+            if (range2.location != NSNotFound && range2.length != NSNotFound) {//图片
+                self.cardSecond.voiceBtn.hidden=YES;
                 self.cardSecond.imgView = [self returnImageView];
                 NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",title]];
                 [self.cardSecond.imgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"UserHeaderImageBox"]];
@@ -193,6 +193,7 @@
                 self.cardSecond.cardSecondTable.frame = CGRectMake(20, 110, 292, 212);
                 
             }else {//语音
+                self.cardSecond.voiceBtn.hidden=NO;
                 self.cardSecond.cardSecondTable.frame = CGRectMake(20, 50, 292, 212);
             }
             
@@ -208,7 +209,7 @@
         }
         
     }else if (type==4) {//连线
-
+        self.cardSecond.voiceBtn.hidden=YES;
         NSMutableString *wrongStr = [NSMutableString string];
         NSString *wrongContent = self.aCard.your_answer;
         NSArray *wrongArray = [wrongContent componentsSeparatedByString:@";||;"];
@@ -242,6 +243,7 @@
         [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:answerStr.length];
         [self.cardSecond.rtLab setLine];
     }else if (type==5) {//完型填空
+        self.cardSecond.voiceBtn.hidden=YES;
         self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
         
         int index = [self.aCard.content integerValue];
@@ -276,6 +278,7 @@
         [self.cardSecond.rtLab setLine];
         
     }else if (type==6) {//排序
+        self.cardSecond.voiceBtn.hidden=YES;
         [Utility shared].isOrg = NO;
         [Utility shared].rangeArray = [[NSMutableArray alloc]init];
         [self.cardSecond.rtLab setText:self.aCard.content];

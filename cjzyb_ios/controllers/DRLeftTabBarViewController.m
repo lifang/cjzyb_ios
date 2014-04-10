@@ -329,11 +329,11 @@
         if ([fileManage fileExistsAtPath:filename2]) {
             [fileManage removeItemAtPath:filename2 error:nil];
         }
+        NSString *str = [NSString stringWithFormat:@"%d",-1];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"changePlayerByView" object:str];
         
         AppDelegate *appDel = [AppDelegate shareIntance];
         [appDel showRootView];
-        
-        
     }else {
         if (itemType == LeftTabBarItemType_userGroup ) {
             if (tabBarView.userGroupTabBarItem.isSelected) {
@@ -342,9 +342,17 @@
             }else{
                 [self hiddleStudentListViewController:self.studentListViewController];
             }
+            NSString *str = [NSString stringWithFormat:@"%d",-1];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"changePlayerByView" object:str];
             return;
         }
         else{
+            if (itemType == LeftTabBarItemType_carBag) {
+                
+            }else {
+                NSString *str = [NSString stringWithFormat:@"%d",-1];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"changePlayerByView" object:str];
+            }
             if (tabBarView.userGroupTabBarItem.isSelected) {
                 tabBarView.userGroupTabBarItem.isSelected = NO;
                 [self hiddleStudentListViewController:self.studentListViewController];

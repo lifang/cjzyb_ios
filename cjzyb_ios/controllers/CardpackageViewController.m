@@ -68,10 +68,16 @@ static NSInteger tmpPage = 0;
     [UIView commitAnimations];
 }
 - (void)changePlayerByView:(NSNotification *)notification {
-    NSString *postStr = [notification object];
-    if (self.arrSelSection.count>0) {
-        NSInteger tmpTag = [[self.arrSelSection objectAtIndex:0]integerValue];
-        if ([postStr integerValue] == tmpTag) {
+    NSInteger postStr = [[notification object]integerValue];
+    if (postStr>=0) {
+        if (self.arrSelSection.count>0) {
+            NSInteger tmpTag = [[self.arrSelSection objectAtIndex:0]integerValue];
+            if (postStr == tmpTag) {
+                [self stop];
+            }
+        }
+    }else {
+        if (self.arrSelSection.count>0) {
             [self stop];
         }
     }
@@ -425,13 +431,43 @@ static NSInteger tmpPage = 0;
 
 #pragma mark 
 #pragma mark - 第二个页面
+-(void)myMovieFinishedCallback:(NSNotification*)notify
+{
+    //销毁播放通知
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:MPMoviePlayerPlaybackDidFinishNotification
+                                                  object:self.appDel.player];
+    
+    [self.appDel.player stop];
+    self.appDel.player = nil;
+    [self.arrSelSection removeAllObjects];
+}
+
+
 -(void)playWithTag:(NSInteger)tag {
     CardObject *card = [self.cardArray objectAtIndex:tag];
     
+    NSURL *url;
+    int type = [card.types integerValue];
+    if (type==3) {
+        NSArray *array = [card.content componentsSeparatedByString:@"</file>"];
+        NSString *title_sub  =[array objectAtIndex:0];
+        NSString *title=[title_sub stringByReplacingOccurrencesOfString:@"<file>" withString:@""];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,title]];
+    }else {
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,card.resource_url]];
+    }
+    
     self.appDel.player = nil;
     self.appDel.player = [[MPMoviePlayerController alloc]
-                          initWithContentURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,card.resource_url]]];
+                          initWithContentURL:url];
     [self.appDel.player play];
+    // 注册一个播放结束的通知
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(myMovieFinishedCallback:)
+                                                 name:MPMoviePlayerPlaybackDidFinishNotification
+                                               object:self.appDel.player];
+    
     [self.arrSelSection addObject:[NSString stringWithFormat:@"%d",tag]];
 }
 -(void)stop {
@@ -440,8 +476,6 @@ static NSInteger tmpPage = 0;
     [self.arrSelSection removeAllObjects];
 }
 -(void)pressedVoiceBtn:(UIButton *)btn {
-    NSLog(@"tag = %d",btn.tag);
-    
     if (self.arrSelSection.count>0) {
         NSInteger tmpTag = [[self.arrSelSection objectAtIndex:0]integerValue];
         if (tmpTag == btn.tag) {
