@@ -101,7 +101,11 @@
                                     obj.seContent = [contentArrayClear lastObject];
                                 }else{
                                     [Utility errorAlert:@"这到底是什么题型?"];
+                                    obj.seType = SelectingTypeDefault;
                                 }
+                            }else{
+                                [Utility errorAlert:@"问题没有内容?"];
+                                obj.seType = SelectingTypeDefault;
                             }
                             //选项
                             NSString *options = [question objectForKey:@"options"];

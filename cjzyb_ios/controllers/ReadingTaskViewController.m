@@ -194,22 +194,14 @@
 
 //TODO:退出作业界面
 -(void)exithomeworkUI{
-    if (!self.isFirst) {
-        [parentVC dismissViewControllerAnimated:YES completion:^{
-            
-        }];
-    }else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"退出", nil];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [alert show];
-        });
-    }
-    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"退出", nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [alert show];
+    });
 }
 
 -(void)quitNow{
-    
-//    if (!self.isPrePlay && ![DataService sharedService].isHistory && self.isFirst && shouldUpload) {
+    [self.avPlayer stop];
     if (![DataService sharedService].isHistory && self.isFirst && self.shouldUpload) {
         //第一次做题且需上传
         __weak ReadingTaskViewController *weakSelf = self;

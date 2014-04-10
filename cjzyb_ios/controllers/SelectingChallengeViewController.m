@@ -460,30 +460,6 @@
     return _answerArray;
 }
 
-//-(UIButton *)propOfReduceTime{
-//    if (!_propOfReduceTime) {
-//        _propOfReduceTime = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [_propOfReduceTime setImage:[UIImage imageNamed:@"propOfTime.png"] forState:UIControlStateNormal];
-//        [_propOfReduceTime addTarget:self action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
-//        _propOfReduceTime.frame = (CGRect){146,10,50.5,50.5};
-//        [self.itemsView addSubview:_propOfReduceTime];
-//    }
-//    return _propOfReduceTime;
-//}
-
-
-
-//-(UIButton *)propOfShowingAnswer{
-//    if (!_propOfShowingAnswer) {
-//        _propOfShowingAnswer = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [_propOfShowingAnswer setImage:[UIImage imageNamed:@"propOfAnswer.png"] forState:UIControlStateNormal];
-//        [_propOfShowingAnswer addTarget:self action:@selector(propOfShowingAnswerClicked:) forControlEvents:UIControlEventTouchUpInside];
-//        _propOfShowingAnswer.frame = (CGRect){90,10,50.5,50.5};
-//        [self.itemsView addSubview:_propOfShowingAnswer];
-//    }
-//    return _propOfShowingAnswer;
-//}
-
 -(NSString *)timeCountString{
     NSString *str;
     NSInteger i = (NSInteger)self.timeCount;
@@ -819,18 +795,17 @@
 
 //点击退出按钮
 -(void)seQuitButtonClicked:(id)sender{
-    if (self.isViewingHistory) {
-        [parentVC dismissViewControllerAnimated:YES completion:nil];
-    }else {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [alert show];
-        });
-    }
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [alert show];
+    });
 }
 
 //真正退出
 -(void)quitNow:(id)sender{
+    [[AppDelegate shareIntance].avPlayer stop];
+    [AppDelegate shareIntance].avPlayer = nil;
+    
     if (self.haveUploadedJSON || self.isReDoingChallenge || self.isViewingHistory || !self.shouldUploadJSON) {
         [parentVC dismissViewControllerAnimated:YES completion:nil];
     }else{

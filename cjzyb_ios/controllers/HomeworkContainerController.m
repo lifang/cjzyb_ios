@@ -81,7 +81,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    NSLog(@"%@--%@--%@",[DataService sharedService].user.userId,[DataService sharedService].user.studentId,[DataService sharedService].theClass.classId);
 //    [DataService sharedService].isHistory = YES;
     //TODO:判断做题历史 or  做题
     if ([DataService sharedService].isHistory==YES) {

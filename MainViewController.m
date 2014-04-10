@@ -62,11 +62,11 @@
 //TODO:测试数据
 - (void)makeFakeUserInfo{
     UserObject *user = [[UserObject alloc] init];
-    user.userId = @"89";
-    user.studentId = @"150";
+    user.userId = @"150";
+    user.studentId = @"89";
     [DataService sharedService].user = user;
     ClassObject *class = [[ClassObject alloc] init];
-    class.classId = @"90";
+    class.classId = @"106";
     [DataService sharedService].theClass = class;
 }
 - (void)viewDidLoad
@@ -74,7 +74,7 @@
     [super viewDidLoad];
     //TODO:
     NSLog(@"%@--%@--%@",[DataService sharedService].user.userId,[DataService sharedService].user.studentId,[DataService sharedService].theClass.classId);
-    [self makeFakeUserInfo];
+//    [self makeFakeUserInfo];
     
     if (platform>=7.0) {
         AppDelegate *appDel = [AppDelegate shareIntance];

@@ -289,9 +289,10 @@
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller didSelectedAtIndexPath:(NSIndexPath *)path{
     HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
     TaskObj *task = controller.taskObj;
-    
+    [DataService sharedService].taskObj = task;
     [DataService sharedService].number_reduceTime = task.taskReduceTimeCount;
     [DataService sharedService].number_correctAnswer=task.taskTipCorrectAnswer;
+    [DataService sharedService].cardsCount = task.taskKnowlegeCount;
     self.selectedDailyController = controller;
     HomeworkContainerController *homeworkContainer = [[HomeworkContainerController alloc ] initWithNibName:@"HomeworkContainerController" bundle:nil];
     homeworkContainer.homeworkType = typeObj.homeworkType;
@@ -300,8 +301,7 @@
     
     if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {//存在question
         NSInteger status = [Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task];
-        task.taskStatus = status;
-        [DataService sharedService].taskObj = task;
+        
         //0:不存在answer文件   1:存在不是最新的  2:最新的
         if (task.isExpire == NO) {
             if (status==1) {//存在不是最新的
