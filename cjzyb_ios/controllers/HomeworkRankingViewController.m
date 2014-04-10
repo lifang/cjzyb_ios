@@ -28,13 +28,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"HomeworkRankingTableViewCell" bundle:nil] forCellReuseIdentifier:@"cell"];
     self.titleLabel.layer.cornerRadius = 10;
     self.tableBackView.layer.cornerRadius = 10;
     self.tableBackView.backgroundColor = [UIColor colorWithRed:24./255. green:139./255. blue:79./255. alpha:1.];
     
     
-    self.view.layer.cornerRadius = 10;
+//    self.view.layer.cornerRadius = 10;
     // Do any additional setup after loading the view from its nib.
 }
 
@@ -79,7 +80,7 @@
     cell.scoreLabel.text = rank.rankingScore;
     
     cell.contentView.backgroundColor = [UIColor colorWithRed:24./255. green:139./255. blue:79./255. alpha:1.];
-    self.view.layer.cornerRadius = 10;
+//    self.view.layer.cornerRadius = 10;
     return cell;
 }
 
