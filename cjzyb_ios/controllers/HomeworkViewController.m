@@ -398,7 +398,7 @@
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller rankingButtonClickedAtIndexPath:(NSIndexPath *)path{
     HomeworkRankingViewController *rankingController = [[HomeworkRankingViewController alloc] initWithNibName:@"HomeworkRankingViewController" bundle:nil];
     rankingController.modalPresentationStyle = UIModalPresentationFormSheet;
-    rankingController.view.frame = (CGRect){0,0,514,450};
+    rankingController.view.frame = (CGRect){0,0,514,350};
     [self presentViewController:rankingController animated:YES completion:^{
         
     }];

@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeworkRankingViewController">
             <connections>
+                <outlet property="tableBackView" destination="29M-dU-IR7" id="BFh-15-Mx6"/>
                 <outlet property="tableView" destination="F9E-3l-FFe" id="cAO-9H-HyR"/>
                 <outlet property="titleLabel" destination="KYR-be-oiB" id="00G-Pz-tGi"/>
                 <outlet property="view" destination="2" id="3"/>
@@ -32,21 +33,35 @@
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="十速挑战当日排名" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KYR-be-oiB">
                     <rect key="frame" x="74" y="38" width="367" height="48"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.074509806931018829" green="0.56078433990478516" blue="0.34117648005485535" alpha="0.66000000000000003" colorSpace="deviceRGB"/>
+                    <color key="backgroundColor" red="0.074509806930000005" green="0.56078433989999998" blue="0.34117648010000001" alpha="0.66000000000000003" colorSpace="deviceRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="27"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="F9E-3l-FFe">
-                    <rect key="frame" x="24" y="112" width="466" height="318"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" red="0.074509806930000005" green="0.56078433989999998" blue="0.34117648010000001" alpha="0.66000000000000003" colorSpace="deviceRGB"/>
-                    <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </tableView>
                 <view contentMode="scaleToFill" id="9WZ-rM-7KY">
-                    <rect key="frame" x="20" y="97" width="482" height="1"/>
+                    <rect key="frame" x="20" y="94" width="474" height="1"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.074509806930000005" green="0.56078433989999998" blue="0.34117648010000001" alpha="1" colorSpace="deviceRGB"/>
+                </view>
+                <view contentMode="scaleToFill" id="29M-dU-IR7" userLabel="tableBackView">
+                    <rect key="frame" x="20" y="114" width="474" height="316"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="F9E-3l-FFe">
+                            <rect key="frame" x="0.0" y="12" width="474" height="292"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="sectionIndexColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="HEo-X7-x48"/>
+                                <outlet property="delegate" destination="-1" id="xAS-H6-c6a"/>
+                            </connections>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.074509806930000005" green="0.56078433989999998" blue="0.34117648010000001" alpha="0.66000000000000003" colorSpace="deviceRGB"/>
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.18039216101169586" green="0.78431379795074463" blue="0.51764708757400513" alpha="0.84999999999999998" colorSpace="deviceRGB"/>

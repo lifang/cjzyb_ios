@@ -201,6 +201,7 @@
 }
 
 -(void)quitNow{
+    [self.preReadingController.avPlayer stop];
     [self.avPlayer stop];
     if (![DataService sharedService].isHistory && self.isFirst && self.shouldUpload) {
         //第一次做题且需上传

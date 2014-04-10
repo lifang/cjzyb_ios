@@ -10,6 +10,7 @@
 
 @interface HomeworkRankingViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIView *tableBackView;
 
 @end
 
@@ -29,7 +30,10 @@
     [super viewDidLoad];
     [self.tableView registerNib:[UINib nibWithNibName:@"HomeworkRankingTableViewCell" bundle:nil] forCellReuseIdentifier:@"cell"];
     self.titleLabel.layer.cornerRadius = 10;
-    self.tableView.layer.cornerRadius = 10;
+    self.tableBackView.layer.cornerRadius = 10;
+    self.tableBackView.backgroundColor = [UIColor colorWithRed:24./255. green:139./255. blue:79./255. alpha:1.];
+    
+    
     self.view.layer.cornerRadius = 10;
     // Do any additional setup after loading the view from its nib.
 }
@@ -47,7 +51,7 @@
     [HomeworkDaoInterface downloadHomeworkRankingWithTaskId:taskId withHomeworkType:homeworkType withSuccess:^(NSArray *rankingObjArr) {
         HomeworkRankingViewController *tempSelf = weakSelf;
         if (tempSelf) {
-            tempSelf.rankingUserArray = rankingObjArr;
+            tempSelf.rankingUserArray = [NSArray arrayWithArray:rankingObjArr];
             [tempSelf.tableView reloadData];
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         }
@@ -68,10 +72,14 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     HomeworkRankingTableViewCell *cell = (HomeworkRankingTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"cell"];
     RankingObject *rank = [self.rankingUserArray objectAtIndex:indexPath.row];
-    [cell.headerImageView setImageWithURL:[NSURL URLWithString:rank.rankingHeaderURL]];
+    [cell.headerImageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,rank.rankingHeaderURL]]];
     cell.nameLabel.text = rank.rankingName;
-    cell.rankLabel.text = rank.rankingNumber;
+//    cell.rankLabel.text = rank.rankingNumber;
+    cell.rankLabel.text = [self rankTextFromRowNumber:indexPath.row];
     cell.scoreLabel.text = rank.rankingScore;
+    
+    cell.contentView.backgroundColor = [UIColor colorWithRed:24./255. green:139./255. blue:79./255. alpha:1.];
+    self.view.layer.cornerRadius = 10;
     return cell;
 }
 
@@ -84,6 +92,24 @@
     return self.rankingUserArray.count;
 }
 
+//根据indexPath计算排名文字
+- (NSString *)rankTextFromRowNumber:(NSInteger )row{
+    NSInteger number = row + 1;
+    NSString *rankText;
+    if (number == 1) {
+        rankText = @"1st";
+    }
+    if (number == 2) {
+        rankText = @"2nd";
+    }
+    if (number == 3) {
+        rankText = @"3rd";
+    }
+    if (number > 3) {
+        rankText = [NSString stringWithFormat:@"%dth",number];
+    }
+    return rankText;
+}
 
 #pragma mark --
 - (IBAction)exitButtonClicked:(id)sender {

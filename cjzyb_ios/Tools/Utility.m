@@ -1655,14 +1655,16 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     //下载文件
     NSString *fullAdress = [NSString stringWithFormat:@"%@%@",kHOST,address];
     answerData = [NSData dataWithContentsOfURL:[NSURL URLWithString:fullAdress] options:NSDataReadingMappedIfSafe error:&error];
+    NSMutableDictionary *jsonDic;
     if (!error) {
-        //此处认为下载的answerXXX.js自带update字段,故不必添加该字段
-        [answerData writeToFile:answerPath atomically:YES];
+        jsonDic = [NSJSONSerialization JSONObjectWithData:answerData options:NSJSONReadingAllowFragments error:&error];
+        //写入update字段 ,解决服务器update时间和json中的时间不一致的问题
+        [jsonDic removeObjectForKey:@"update"];
+        [jsonDic setObject:[DataService sharedService].taskObj.taskAnswerFileUpdateDate forKey:@"update"];
+        [jsonDic writeToFile:answerPath atomically:YES];
     }else{
-        answerData = [NSData dataWithContentsOfFile:answerPath options:NSDataReadingMappedIfSafe error:&error];
+        //报告下载错误
     }
-    
-    NSDictionary *jsonDic = [NSJSONSerialization JSONObjectWithData:answerData options:NSJSONReadingAllowFragments error:&error];
     return jsonDic;
 }
 
