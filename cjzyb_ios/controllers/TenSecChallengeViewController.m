@@ -32,7 +32,7 @@
 @property (assign,nonatomic) NSInteger lastTimeCurrentNO;  //文件中记载的答题记录
 @property (strong,nonatomic) NSString *answerStatus;    //文件中记载的完成状态
 @property (assign,nonatomic) BOOL isReDoingChallenge; //是否为重新挑战
-@property (assign,nonatomic) BOOL shouldUploadJSON;  //是否需要上传JSON
+@property (assign,nonatomic) BOOL shouldUploadJSON;  //是否需要上传JSON  (于保存answerJSON时置真)
 @property (assign,nonatomic) BOOL haveUploadedJSON; //是否已上传JSON
 //@property (assign,nonatomic) BOOL runningWithoutAnswer; //进入未做过的历史题时,标记的状态
 @property (strong,nonatomic) NSUserDefaults *userDefaults;

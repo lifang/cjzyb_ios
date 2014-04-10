@@ -548,7 +548,8 @@
                 self.optionTable.frame = (CGRect){38,317,650,874 - 317 - (self.isViewingHistory ? 155 : 0)};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
-                NSData *imageData = [NSData dataWithContentsOfFile:[[DataService sharedService].taskObj.taskFolderPath stringByAppendingString:self.currentQuestion.seContentAttachment]];
+                NSString *path = [[DataService sharedService].taskObj.taskFolderPath stringByAppendingPathComponent:self.currentQuestion.seContentAttachment];
+                NSData *imageData = [NSData dataWithContentsOfFile:path];
                 self.questionImageView.image = [[UIImage imageWithData:imageData] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0) resizingMode:UIImageResizingModeStretch];
             }
                 break;
@@ -868,6 +869,8 @@
         cell.optionSelected = YES;
     }
     for (int i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
+        NSString *option = self.currentQuestion.seOptionsArray[i];
+        CGSize textSize = [Utility getTextSizeWithString:option withFont:[UIFont systemFontOfSize:35.0] withWidth:self.optionTable.frame.size.width - 75 - 54];
         if (cell.maxLabelWidth <=  textSize.width) {
             cell.maxLabelWidth = textSize.width;
         }

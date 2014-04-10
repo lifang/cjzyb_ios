@@ -58,9 +58,23 @@
     
     self.pagesContainer.viewControllers = [NSArray arrayWithObjects:firstView,secondView,fourthView,thirdView, nil];
 }
+
+//TODO:测试数据
+- (void)makeFakeUserInfo{
+    UserObject *user = [[UserObject alloc] init];
+    user.userId = @"89";
+    user.studentId = @"150";
+    [DataService sharedService].user = user;
+    ClassObject *class = [[ClassObject alloc] init];
+    class.classId = @"90";
+    [DataService sharedService].theClass = class;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //TODO:
+    NSLog(@"%@--%@--%@",[DataService sharedService].user.userId,[DataService sharedService].user.studentId,[DataService sharedService].theClass.classId);
+    [self makeFakeUserInfo];
     
     if (platform>=7.0) {
         AppDelegate *appDel = [AppDelegate shareIntance];

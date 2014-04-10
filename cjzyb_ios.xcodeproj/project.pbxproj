@@ -223,7 +223,6 @@
 		630DBDD718D15936009DA0EB /* notificationTabBarItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 630DBDD118D15936009DA0EB /* notificationTabBarItem@2x.png */; };
 		630DBDD818D15936009DA0EB /* tabBarItemBack@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 630DBDD218D15936009DA0EB /* tabBarItemBack@2x.png */; };
 		630DBDD918D15936009DA0EB /* userGroupItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 630DBDD318D15936009DA0EB /* userGroupItem@2x.png */; };
-		630DBDDC18D1596F009DA0EB /* arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 630DBDDA18D1596F009DA0EB /* arrow@2x.png */; };
 		630DBDDD18D1596F009DA0EB /* navigationBarLeftItem@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 630DBDDB18D1596F009DA0EB /* navigationBarLeftItem@2x.png */; };
 		630DBDE918D15A95009DA0EB /* addClass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 630DBDDE18D15A94009DA0EB /* addClass@2x.png */; };
 		630DBDEA18D15A95009DA0EB /* jiezu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 630DBDDF18D15A94009DA0EB /* jiezu@2x.png */; };
@@ -704,7 +703,6 @@
 		630DBDD118D15936009DA0EB /* notificationTabBarItem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "notificationTabBarItem@2x.png"; sourceTree = "<group>"; };
 		630DBDD218D15936009DA0EB /* tabBarItemBack@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabBarItemBack@2x.png"; sourceTree = "<group>"; };
 		630DBDD318D15936009DA0EB /* userGroupItem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "userGroupItem@2x.png"; sourceTree = "<group>"; };
-		630DBDDA18D1596F009DA0EB /* arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow@2x.png"; sourceTree = "<group>"; };
 		630DBDDB18D1596F009DA0EB /* navigationBarLeftItem@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationBarLeftItem@2x.png"; sourceTree = "<group>"; };
 		630DBDDE18D15A94009DA0EB /* addClass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "addClass@2x.png"; sourceTree = "<group>"; };
 		630DBDDF18D15A94009DA0EB /* jiezu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jiezu@2x.png"; sourceTree = "<group>"; };
@@ -1916,7 +1914,6 @@
 		639657D018C0389C002F2A90 /* tabBar */ = {
 			isa = PBXGroup;
 			children = (
-				630DBDDA18D1596F009DA0EB /* arrow@2x.png */,
 				630DBDDB18D1596F009DA0EB /* navigationBarLeftItem@2x.png */,
 				630DBDCE18D15936009DA0EB /* carBarItem@2x.png */,
 				630DBDCF18D15936009DA0EB /* homeworkTabBarItem@2x.png */,
@@ -2231,7 +2228,6 @@
 				0EEF4BD918C561570058606A /* CardFirstView.xib in Resources */,
 				630DBDF118D15A95009DA0EB /* userGroup@2x.png in Resources */,
 				189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */,
-				630DBDDC18D1596F009DA0EB /* arrow@2x.png in Resources */,
 				630DBE0818D15BF4009DA0EB /* propOfAnswer@2x.png in Resources */,
 				187C4AC718D304AC0006461D /* 10_02@2x.png in Resources */,
 				630DBDFC18D15AFB009DA0EB /* jiezu_yellow@2x.png in Resources */,

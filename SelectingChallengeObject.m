@@ -50,20 +50,40 @@
                             
                             //content的解析,要得出类型,题面,附件三个字段
                             NSString *questionContent = [question objectForKey:@"content"];
-                            questionContent = [questionContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                            NSMutableString *str = [NSMutableString stringWithString:questionContent];
-                            [str replaceOccurrencesOfString:@"</file>" withString:@"<file>" options:NSLiteralSearch range:NSMakeRange(0, str.length)];
-                            NSMutableArray *contentArray = [NSMutableArray arrayWithArray:[str componentsSeparatedByString:@"<file>"]];//拆分
-                            //去除空字符串 @""
-                            NSMutableArray *contentArrayClear = [NSMutableArray array];
-                            for(NSString *part in contentArray){
-                                if ([part isEqualToString:@""]) {
-                                    continue;
+                            if ([questionContent isKindOfClass:[NSString class]]) {
+                                questionContent = [questionContent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                                NSMutableString *str = [NSMutableString stringWithString:questionContent];
+                                [str replaceOccurrencesOfString:@"</file>" withString:@"<file>" options:NSLiteralSearch range:NSMakeRange(0, str.length)];
+                                NSMutableArray *contentArray = [NSMutableArray arrayWithArray:[str componentsSeparatedByString:@"<file>"]];//拆分
+                                //去除空字符串 @""
+                                NSMutableArray *contentArrayClear = [NSMutableArray array];
+                                for(NSString *part in contentArray){
+                                    if ([part isEqualToString:@""]) {
+                                        continue;
+                                    }
+                                    [contentArrayClear addObject:part];
                                 }
-                                [contentArrayClear addObject:part];
-                            }
-                            if (contentArrayClear.count == 1) {
-                                if ([str rangeOfString:@"<file>"].length > 0) {  //有附件
+                                if (contentArrayClear.count == 1) {
+                                    if ([str rangeOfString:@"<file>"].length > 0) {  //有附件
+                                        NSString *attachmentString = [contentArrayClear firstObject];
+                                        NSArray *attachmentArray = [attachmentString componentsSeparatedByString:@"/"];
+                                        NSString *fileString = [attachmentArray lastObject];
+                                        obj.seContentAttachment = fileString;
+                                        //判断后缀
+                                        NSArray *fileStringArray = [fileString componentsSeparatedByString:@"."];
+                                        NSString *extensionName = [fileStringArray lastObject];//扩展名
+                                        extensionName = [extensionName uppercaseString];
+                                        if ([@".BMP.BMPF.ICO.CUR.XBM.GIF.JPEG.JPG.PNG.TIFF.TIF" rangeOfString:extensionName].length > 0) {
+                                            //图片
+                                            obj.seType = SelectingTypeWatching;
+                                        }else{
+                                            obj.seType = SelectingTypeListening;
+                                        }
+                                    }else{
+                                        obj.seContent = [contentArrayClear firstObject];
+                                        obj.seType = SelectingTypeDefault;
+                                    }
+                                }else if (contentArrayClear.count == 2){     //字符串分为两段
                                     NSString *attachmentString = [contentArrayClear firstObject];
                                     NSArray *attachmentArray = [attachmentString componentsSeparatedByString:@"/"];
                                     NSString *fileString = [attachmentArray lastObject];
@@ -78,30 +98,11 @@
                                     }else{
                                         obj.seType = SelectingTypeListening;
                                     }
+                                    obj.seContent = [contentArrayClear lastObject];
                                 }else{
-                                    obj.seContent = [contentArrayClear firstObject];
-                                    obj.seType = SelectingTypeDefault;
+                                    [Utility errorAlert:@"这到底是什么题型?"];
                                 }
-                            }else if (contentArrayClear.count == 2){     //字符串分为两段
-                                NSString *attachmentString = [contentArrayClear firstObject];
-                                NSArray *attachmentArray = [attachmentString componentsSeparatedByString:@"/"];
-                                NSString *fileString = [attachmentArray lastObject];
-                                obj.seContentAttachment = fileString;
-                                //判断后缀
-                                NSArray *fileStringArray = [fileString componentsSeparatedByString:@"."];
-                                NSString *extensionName = [fileStringArray lastObject];//扩展名
-                                extensionName = [extensionName uppercaseString];
-                                if ([@".BMP.BMPF.ICO.CUR.XBM.GIF.JPEG.JPG.PNG.TIFF.TIF" rangeOfString:extensionName].length > 0) {
-                                    //图片
-                                    obj.seType = SelectingTypeWatching;
-                                }else{
-                                    obj.seType = SelectingTypeListening;
-                                }
-                                obj.seContent = [contentArrayClear lastObject];
-                            }else{
-                                [Utility errorAlert:@"这到底是什么题型?"];
                             }
-                            
                             //选项
                             NSString *options = [question objectForKey:@"options"];
                             obj.seOptionsArray = [options componentsSeparatedByString:@";||;"];
