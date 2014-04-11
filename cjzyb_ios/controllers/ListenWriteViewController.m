@@ -18,8 +18,11 @@ static BOOL isCanUpLoad = NO;
 #define Textfield_Tag 76734789
 #define Textfield_Width  180
 #define Textfield_Height  60
-#define Textfield_Space_Width 25
+#define Textfield_Space_Width 30
 #define Textfield_Space_Height 60
+
+#define Left_button_tag 987
+#define Right_button_tag 123
 
 @implementation ListenWriteViewController
 
@@ -48,6 +51,13 @@ static BOOL isCanUpLoad = NO;
     txt.font = [UIFont systemFontOfSize:33];
     [txt.layer setMasksToBounds:YES];
     [txt.layer setCornerRadius:8];
+    
+    //输入框添加观察者
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textFieldChanged:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:txt];
+    
     return txt;
 }
 -(UILabel *)returnHistoryLabel {
@@ -57,6 +67,29 @@ static BOOL isCanUpLoad = NO;
     label.numberOfLines = 0;
     label.lineBreakMode = NSLineBreakByCharWrapping;
     return label;
+}
+-(UILabel *)returnPointLabel {
+    UILabel *label = [[UILabel alloc]init];
+    label.font = [UIFont systemFontOfSize:18];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor blackColor];
+    return label;
+}
+-(UIButton *)leftButton {
+    if (!_leftButton) {
+        _leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_leftButton setImage:[UIImage imageNamed:@"left"] forState:UIControlStateNormal];
+        [_leftButton addTarget:self action:@selector(leftBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _leftButton;
+}
+-(UIButton *)rightButton {
+    if (!_rightButton) {
+        _rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_rightButton setImage:[UIImage imageNamed:@"right"] forState:UIControlStateNormal];
+        [_rightButton addTarget:self action:@selector(rightBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _rightButton;
 }
 -(void)setUI {
     self.homeControl.quitHomeworkButton.enabled = YES;
@@ -70,9 +103,15 @@ static BOOL isCanUpLoad = NO;
     self.wordsContainerView = [[UIView alloc]init];
     self.wordsContainerView.backgroundColor = [UIColor clearColor];
     
-    CGRect frame = CGRectMake(0, 0, Textfield_Width*1.2, Textfield_Height*1.2);
+    CGRect frame = CGRectMake(0, 0, Textfield_Width, Textfield_Height);
+    CGRect point_frame = CGRectMake(0, 0, 20, 20);
+    
     NSString *content = [self.branchQuestionDic objectForKey:@"content"];
+    
+    [Utility shared].isOrg = NO;
+    [Utility shared].rangeArray = [[NSMutableArray alloc]init];
     self.orgArray = [Utility handleTheString:content];
+    
     self.metaphoneArray = [Utility metaphoneArray:self.orgArray];
     self.tmpArray = nil;
     
@@ -83,13 +122,53 @@ static BOOL isCanUpLoad = NO;
         frame.origin.y = 10+(Textfield_Height+Textfield_Space_Height)*(i/3);
         text.frame = frame;
         [self.wordsContainerView addSubview:text];
+        
+        NSTextCheckingResult *math = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:i];
+        NSRange range = [math rangeAtIndex:0];
+        if (i==0 && range.location != 0) {//第一位出现标点的情况
+            NSString *str = [content substringWithRange:NSMakeRange(0, range.location)];
+            UILabel *label = [self returnPointLabel];
+            point_frame.origin.x = 0;
+            point_frame.origin.y = frame.origin.y+frame.size.height-20;
+            label.frame = point_frame;
+            label.text = str;
+            [self.wordsContainerView addSubview:label];
+        }else if (i<self.orgArray.count-1){
+            NSTextCheckingResult *math2 = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:i+1];
+            NSRange range2 = [math2 rangeAtIndex:0];
+            
+            NSString *str = [content substringWithRange:NSMakeRange(range.location+range.length, range2.location-range.location-range.length)];
+            str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+            if (str.length>0) {
+                UILabel *label = [self returnPointLabel];
+                point_frame.origin.x = frame.origin.x+frame.size.width+10;
+                point_frame.origin.y = frame.origin.y+frame.size.height-20 ;
+                label.frame = point_frame;
+                label.text = str;
+                [self.wordsContainerView addSubview:label];
+            }
+        }else {
+            int number = content.length - range.location - range.length;
+            if (number>0) {
+                NSString *str = [content substringWithRange:NSMakeRange(range.location+range.length, number)];
+                str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+                if (str.length>0) {
+                    UILabel *label = [self returnPointLabel];
+                    point_frame.origin.x = frame.origin.x+frame.size.width+10;
+                    point_frame.origin.y = frame.origin.y+frame.size.height-20 ;
+                    label.frame = point_frame;
+                    label.text = str;
+                    [self.wordsContainerView addSubview:label];
+                }
+            }
+        }
     }
-    
+    [Utility shared].rangeArray = nil;[Utility shared].isOrg = YES;
     self.wordsContainerView.frame = CGRectMake(768, 53, 640, frame.origin.y+Textfield_Height+Textfield_Space_Height);
     [self.view addSubview:self.wordsContainerView];
     
     [UIView animateWithDuration:0.5 animations:^{
-        [self.wordsContainerView setFrame:CGRectMake(108, 53, 640, frame.origin.y+Textfield_Height+Textfield_Space_Height)];
+        [self.wordsContainerView setFrame:CGRectMake(98, 53, 640, frame.origin.y+Textfield_Height+Textfield_Space_Height)];
     } completion:^(BOOL finished){
         if (finished) {
             
@@ -110,8 +189,8 @@ static BOOL isCanUpLoad = NO;
         }
     }];
 }
-
--(void)setHistoryUI {
+-(void)setHistoryUI
+{
     if (self.branchNumber==self.history_branchQuestionArray.count-1 && self.number==self.history_questionArray.count-1) {
         [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
         [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
@@ -151,21 +230,21 @@ static BOOL isCanUpLoad = NO;
     NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
     NSArray *array = [txt componentsSeparatedByString:@";||;"];
     NSString *originString =[array objectAtIndex:0];
+    [Utility shared].isOrg = NO;
     NSArray *array1 = [Utility handleTheString:originString];
     NSArray *array2 = [Utility metaphoneArray:array1];
-    self.resultDic = [Utility listenCompareWithArray:array1 andArray:array2 WithArray:self.orgArray andArray:self.metaphoneArray];
+    [Utility shared].sureArray = [[NSMutableArray alloc]init];
+    [Utility shared].greenArray = [[NSMutableArray alloc]init];
+    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
+    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
+    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
+    [Utility shared].firstpoint = 0;
+    self.resultDic = [Utility listenCompareWithArray:array1 andArray:array2 WithArray:self.orgArray andArray:self.metaphoneArray WithRange:[Utility shared].rangeArray];
     NSMutableString *remindString = [NSMutableString string];
     if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
         NSArray *sureArray = [self.resultDic objectForKey:@"sure"];
         for (int i=0; i<sureArray.count; i++) {
             [remindString appendFormat:@"%@  ",[sureArray objectAtIndex:i]];
-        }
-    }
-    if (![[self.resultDic objectForKey:@"wrong"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"wrong"]!=nil) {
-        NSMutableArray *yellow_array = [self.resultDic objectForKey:@"wrong"];
-        for (int i=0; i<yellow_array.count; i++) {
-            int index = [[yellow_array objectAtIndex:i]intValue];
-            [remindString appendFormat:@"%@  ",[self.orgArray objectAtIndex:index]];
         }
     }
     self.remindLab.text = remindString;
@@ -175,6 +254,7 @@ static BOOL isCanUpLoad = NO;
     } completion:^(BOOL finished){
     }];
 }
+
 -(void)nextHistoryQuestion:(id)sender {
     if (self.branchNumber == self.history_branchQuestionArray.count-1) {
         self.number++;self.branchNumber = 0;
@@ -467,9 +547,106 @@ static int numberOfMusic =0;
     lab.font = [UIFont systemFontOfSize:22];
     return lab;
 }
+
+#pragma mark
+#pragma mark textfield代理
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     textField.textColor = [UIColor blackColor];
+    
+    if (textField.text.length>0) {
+        CGRect frame = textField.frame;
+        CGRect button_frame = CGRectMake(0, 0, 33, 25);
+        int currentTag = textField.tag-Textfield_Tag;
+        BOOL isCanMove = NO;
+        //左边
+        for (int i=0; i<currentTag; i++) {
+            UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
+            if (textField.text.length==0) {
+                isCanMove=YES;
+                break;
+            }
+        }
+        
+        if (isCanMove==YES) {
+            button_frame.origin.x = frame.origin.x;
+            button_frame.origin.y = frame.origin.y+frame.size.height+5;
+            self.leftButton.frame = button_frame;
+            self.leftButton.tag = currentTag;
+            [self.wordsContainerView addSubview:self.leftButton];
+        }
+        //右边
+        isCanMove=NO;
+        for (int i=currentTag; i<self.orgArray.count; i++) {
+            UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
+            if (textField.text.length==0) {
+                isCanMove=YES;
+                break;
+            }
+        }
+        
+        if (isCanMove==YES) {
+            button_frame.origin.x = frame.origin.x+frame.size.width-33;
+            button_frame.origin.y = frame.origin.y+frame.size.height+5;
+            self.rightButton.frame = button_frame;
+            self.rightButton.tag = currentTag;
+            [self.wordsContainerView addSubview:self.rightButton];
+        }
+    }
 }
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [self.leftButton removeFromSuperview];
+    [self.rightButton removeFromSuperview];
+    self.leftButton=nil;self.rightButton=nil;
+}
+-(void)textFieldChanged:(NSNotification *)sender {
+    UITextField *txtField = (UITextField *)sender.object;
+    UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:txtField.tag];
+    if (textField.text.length>0) {
+        CGRect frame = textField.frame;
+        CGRect button_frame = CGRectMake(0, 0, 33, 25);
+        int currentTag = textField.tag-Textfield_Tag;
+        BOOL isCanMove = NO;
+        //左边
+        for (int i=0; i<currentTag; i++) {
+            UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
+            if (textField.text.length==0) {
+                isCanMove=YES;
+                break;
+            }
+        }
+        
+        if (isCanMove==YES) {
+            button_frame.origin.x = frame.origin.x;
+            button_frame.origin.y = frame.origin.y+frame.size.height+5;
+            self.leftButton.frame = button_frame;
+            self.leftButton.tag = currentTag;
+            [self.wordsContainerView addSubview:self.leftButton];
+        }
+        //右边
+        isCanMove=NO;
+        for (int i=currentTag; i<self.orgArray.count; i++) {
+            UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
+            if (textField.text.length==0) {
+                isCanMove=YES;
+                break;
+            }
+        }
+        
+        if (isCanMove==YES) {
+            button_frame.origin.x = frame.origin.x+frame.size.width-33;
+            button_frame.origin.y = frame.origin.y+frame.size.height+5;
+            self.rightButton.frame = button_frame;
+            self.rightButton.tag = currentTag;
+            [self.wordsContainerView addSubview:self.rightButton];
+        }
+    }else {
+        [self.leftButton removeFromSuperview];
+        [self.rightButton removeFromSuperview];
+        self.leftButton=nil;self.rightButton=nil;
+    }
+}
+#pragma mark
 //替换元音字母
 -(NSString *)replaceYYLetterWithString:(NSString *)str {
     NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:[Utility handleTheLetter:str]];
@@ -488,7 +665,7 @@ static int numberOfMusic =0;
     
     return string;
 }
--(void)resetUI {
+-(void)resetUIWith:(NSString *)string {
     NSArray *subViews = [self.wordsContainerView subviews];
     for (UIView *vv in subViews) {
         if ([vv isKindOfClass:[UILabel class]]) {
@@ -505,7 +682,12 @@ static int numberOfMusic =0;
         NSMutableArray *green_array = [self.resultDic objectForKey:@"green"];
         for (int i=0; i<green_array.count; i++) {
             self.branchScore += 1;
-            int index = [[green_array objectAtIndex:i]intValue];
+            
+            NSTextCheckingResult *math = (NSTextCheckingResult *)[green_array objectAtIndex:i];
+            NSRange range = [math rangeAtIndex:0];
+            NSString *str = [string substringWithRange:NSMakeRange(range.location, range.length)];
+            
+            int index = [self.tmpArray indexOfObject:str];
             UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:index+Textfield_Tag];
             textField.textColor = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
         }
@@ -517,7 +699,11 @@ static int numberOfMusic =0;
         for (int i=0; i<yellow_array.count; i++) {
             self.branchScore += 0;
             
-            int index = [[yellow_array objectAtIndex:i]intValue];
+            NSTextCheckingResult *math = (NSTextCheckingResult *)[yellow_array objectAtIndex:i];
+            NSRange range = [math rangeAtIndex:0];
+            NSString *str = [string substringWithRange:NSMakeRange(range.location, range.length)];
+            
+            int index = [self.tmpArray indexOfObject:str];
             UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:index+Textfield_Tag];
             textField.textColor = [UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1];
 
@@ -541,12 +727,62 @@ static int numberOfMusic =0;
     if (![[self.resultDic objectForKey:@"wrong"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"wrong"]!=nil) {
         NSMutableArray *yellow_array = [self.resultDic objectForKey:@"wrong"];
         for (int i=0; i<yellow_array.count; i++) {
-            int index = [[yellow_array objectAtIndex:i]intValue];
+            NSTextCheckingResult *math = (NSTextCheckingResult *)[yellow_array objectAtIndex:i];
+            NSRange range = [math rangeAtIndex:0];
+            NSString *str = [string substringWithRange:NSMakeRange(range.location, range.length)];
+            
+            int index = [self.tmpArray indexOfObject:str];
             UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:index+Textfield_Tag];
             textField.textColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
         }
     }
 }
+-(void)leftBtnPressed:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    int currentTag = btn.tag;
+    
+    int number = 0;
+    for (int i=currentTag-1; i>=0; i--) {
+        UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
+        if (textField.text.length==0) {
+            number=i;
+            break;
+        }
+    }
+    
+    for (int i=number+1; i<=currentTag; i++) {
+        UITextField *textField1 = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
+        UITextField *textField2 = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag-1];
+        textField2.text = textField1.text;
+        textField1.text = @"";
+    }
+    UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:currentTag+Textfield_Tag];
+    [textField resignFirstResponder];
+}
+-(void)rightBtnPressed:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    int currentTag = btn.tag;
+    
+    int number = 0;
+    for (int i=currentTag+1; i<=self.orgArray.count; i++) {
+        UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
+        if (textField.text.length==0) {
+            number=i;
+            break;
+        }
+    }
+    
+    for (int i=number-1; i>=currentTag; i--) {
+        UITextField *textField1 = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
+        UITextField *textField2 = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag+1];
+        textField2.text = textField1.text;
+        textField1.text = @"";
+    }
+    UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:currentTag+Textfield_Tag];
+    [textField resignFirstResponder];
+}
+
+static CGFloat tmp_ratio = -100;
 #pragma mark - 做题
 //检查
 -(void)checkAnswer:(id)sender {
@@ -555,107 +791,131 @@ static int numberOfMusic =0;
         self.appDel.avPlayer=nil;
     }
     self.branchScore = 0;
-    NSString *str = @"";
     NSMutableString *anserString = [NSMutableString string];
     NSMutableString *wrong_anserString = [NSMutableString string];
     
+    BOOL isFinish = YES;
     for (int i=0; i<self.orgArray.count; i++) {
         UITextField *txtField = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
         [txtField resignFirstResponder];
-        if (i==self.orgArray.count-1) {
-            [anserString appendFormat:@"%@",txtField.text];
-        }else {
-            [anserString appendFormat:@"%@ ",txtField.text];
-        }
         
-        if (txtField.text.length<=0) {
-            str = @"请填写完整!";
-            anserString = [NSMutableString string];
-            break;
+        if (txtField.text && txtField.text.length>0) {
+            int k=i+1;
+            NSMutableString *mutableStr = [NSMutableString string];
+            if (k<self.orgArray.count) {
+                while (k<self.orgArray.count) {
+                    UITextField *txtField2 = (UITextField *)[self.wordsContainerView viewWithTag:k+Textfield_Tag];
+                    [mutableStr appendString:txtField2.text];
+                    k++;
+                }
+            }
+            NSString *str = mutableStr;
+            str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+            if (str.length==0) {
+                [anserString appendFormat:@"%@",txtField.text?:@""];
+            }else {
+                [anserString appendFormat:@"%@ ",txtField.text?:@""];
+            }
+        }else {
+            isFinish = NO;
+        }
+    }
+    [self.homeControl stopTimer];
+    
+    [Utility shared].isOrg = NO;
+    NSArray *array = [anserString componentsSeparatedByString:@" "];
+    self.tmpArray = [NSMutableArray arrayWithArray:array];
+    NSString *originString = [self.tmpArray componentsJoinedByString:@" "];
+    NSArray *array1 = [Utility handleTheString:originString];
+    NSArray *array2 = [Utility metaphoneArray:array1];
+    
+    [Utility shared].sureArray = [[NSMutableArray alloc]init];
+    [Utility shared].greenArray = [[NSMutableArray alloc]init];
+    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
+    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
+    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
+    [Utility shared].firstpoint = 0;
+    
+    self.resultDic = [Utility listenCompareWithArray:array1 andArray:array2 WithArray:self.orgArray andArray:self.metaphoneArray WithRange:[Utility shared].rangeArray];
+    
+    [self resetUIWith:originString];
+    
+    self.scoreRadio = (self.branchScore/((float)self.orgArray.count))*100;
+    if (tmp_ratio<0) {
+        tmp_ratio = self.scoreRadio;//记录第一次的正确率
+    }
+    
+    BOOL isToJson = NO;//判断是否写入json
+    
+    if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
+        NSMutableArray *yellow_array = [self.resultDic objectForKey:@"yellow"];
+        for (int i=0; i<yellow_array.count; i++) {
+            NSTextCheckingResult *math = (NSTextCheckingResult *)[yellow_array objectAtIndex:i];
+            NSRange range = [math rangeAtIndex:0];
+            NSString *str = [originString substringWithRange:NSMakeRange(range.location, range.length)];
+            
+            int index = [self.tmpArray indexOfObject:str];
+            [wrong_anserString appendFormat:@"%@;||;",[self.orgArray objectAtIndex:index]];
         }
     }
     
-    if (str.length>0) {
-        [Utility errorAlert:str];
-    }else {
-        [self.homeControl stopTimer];
+    if (![[self.resultDic objectForKey:@"wrong"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"wrong"]!=nil) {
+        isToJson = NO;//还有错词不写入json
         
-        [Utility shared].isOrg = NO;
-        NSArray *array = [anserString componentsSeparatedByString:@" "];
-        self.tmpArray = [NSMutableArray arrayWithArray:array];
-        NSString *originString = [self.tmpArray componentsJoinedByString:@" "];
-        NSArray *array1 = [Utility handleTheString:originString];
-        NSArray *array2 = [Utility metaphoneArray:array1];
-        
-        [Utility shared].sureArray = [[NSMutableArray alloc]init];
-        [Utility shared].greenArray = [[NSMutableArray alloc]init];
-        [Utility shared].yellowArray = [[NSMutableArray alloc]init];
-        [Utility shared].wrongArray = [[NSMutableArray alloc]init];
-        
-        self.resultDic = [Utility listenCompareWithArray:array1 andArray:array2 WithArray:self.orgArray andArray:self.metaphoneArray];
-        [self resetUI];
-        
-        if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
-            NSMutableArray *yellow_array = [self.resultDic objectForKey:@"yellow"];
-            for (int i=0; i<yellow_array.count; i++) {
-                int index = [[yellow_array objectAtIndex:i]intValue];
+        NSMutableArray *yellow_array = [self.resultDic objectForKey:@"wrong"];
+        for (int i=0; i<yellow_array.count; i++) {
+            NSTextCheckingResult *math = (NSTextCheckingResult *)[yellow_array objectAtIndex:i];
+            NSRange range = [math rangeAtIndex:0];
+            NSString *str = [originString substringWithRange:NSMakeRange(range.location, range.length)];
+            
+            int index = [self.tmpArray indexOfObject:str];
+            if (i==yellow_array.count-1) {
+                [wrong_anserString appendFormat:@"%@",[self.orgArray objectAtIndex:index]];
+            }else {
                 [wrong_anserString appendFormat:@"%@;||;",[self.orgArray objectAtIndex:index]];
             }
         }
-
-        if (![[self.resultDic objectForKey:@"wrong"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"wrong"]!=nil) {
-            NSMutableArray *yellow_array = [self.resultDic objectForKey:@"wrong"];
-            for (int i=0; i<yellow_array.count; i++) {
-                int index = [[yellow_array objectAtIndex:i]intValue];
-                if (i==yellow_array.count-1) {
-                    [wrong_anserString appendFormat:@"%@",[self.orgArray objectAtIndex:index]];
-                }else {
-                    [wrong_anserString appendFormat:@"%@;||;",[self.orgArray objectAtIndex:index]];
-                }
-            }
+    }else if (isFinish == YES){
+        isToJson = YES;//没有错词写入json
+        if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
+            self.homeControl.reduceTimeButton.enabled=NO;
+            [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+            [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+            [self.checkHomeworkButton addTarget:self action:@selector(finishQuestion:) forControlEvents:UIControlEventTouchUpInside];
         }else {
-            if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
-                self.homeControl.reduceTimeButton.enabled=NO;
-                [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
-                [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
-                [self.checkHomeworkButton addTarget:self action:@selector(finishQuestion:) forControlEvents:UIControlEventTouchUpInside];
-            }else {
-                [self.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
-                [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
-                [self.checkHomeworkButton addTarget:self action:@selector(nextQuestion:) forControlEvents:UIControlEventTouchUpInside];
-            }
+            [self.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
+            [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+            [self.checkHomeworkButton addTarget:self action:@selector(nextQuestion:) forControlEvents:UIControlEventTouchUpInside];
         }
-        
-        
-        self.scoreRadio = (self.branchScore/((float)self.orgArray.count))*100;
-        if (self.again_first == YES) {
-            self.again_first=NO;
-            self.again_radio += self.scoreRadio;
-        }
-        if (self.scoreRadio-100>=0) {
-            TRUESOUND;
-        }else {
-            FALSESOUND;
-            if (self.isFirst==YES) {
+    }
+    
+    if (self.again_first == YES) {
+        self.again_first=NO;
+        self.again_radio += self.scoreRadio;
+    }
+    if (self.scoreRadio-100>=0) {
+        TRUESOUND;
+    }else {
+        FALSESOUND;
+        if (self.isFirst==YES && isToJson==YES) {
             [DataService sharedService].cardsCount += 1;
-            }
         }
-        if (self.isFirst==YES) {
-            NSString *answer = [NSString stringWithFormat:@"%@;||;%@",anserString,wrong_anserString];
-            //TODO:写入json
-            int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
-            int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
-            if (number_question>self.number) {
+    }
+    if (self.isFirst==YES && isToJson==YES) {
+        NSString *answer = [NSString stringWithFormat:@"%@;||;%@",anserString,wrong_anserString];
+        //TODO:写入json
+        int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
+        int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
+        if (number_question>self.number) {
+            //表示已经做过这道题
+        }else if (number_question==self.number){
+            if (number_branch_question>=self.branchNumber) {
                 //表示已经做过这道题
-            }else if (number_question==self.number){
-                if (number_branch_question>=self.branchNumber) {
-                    //表示已经做过这道题
-                }else {
-                    [self writeToAnswerJsonWithString:answer];
-                }
             }else {
                 [self writeToAnswerJsonWithString:answer];
             }
+        }else {
+            [self writeToAnswerJsonWithString:answer];
         }
     }
 }
@@ -675,8 +935,8 @@ static int numberOfMusic =0;
     [self.answerDic setObject:[NSString stringWithFormat:@"%lld",self.homeControl.spendSecond] forKey:@"use_time"];
     //一道题目------------------------------------------------------------------
     NSString *a_id = [NSString stringWithFormat:@"%@",[self.branchQuestionDic objectForKey:@"id"]];
-    NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.f%%",self.scoreRadio],@"ratio",string,@"answer", nil];
-    
+    NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.f%%",tmp_ratio],@"ratio",string,@"answer", nil];
+    tmp_ratio = -100;
     NSMutableArray *questions = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
     if (questions.count>0) {
         BOOL isExit = NO;
@@ -848,6 +1108,8 @@ static int numberOfMusic =0;
     self.homeControl.reduceTimeButton.enabled=NO;
     self.checkHomeworkButton.enabled=YES;
     self.number=0;self.branchNumber=0;self.isFirst = NO;
+    self.homeControl.spendSecond = 0;
+    [self.homeControl startTimer];
     [self listenMusicViewUI];
     ////////////////////////////////////////////////////////////////////////
 }
@@ -891,22 +1153,15 @@ static int numberOfMusic =0;
 
 
 -(void)exitListenView {
-    if (self.isFirst==NO) {
-        if (self.appDel.avPlayer) {
-            [self.appDel.avPlayer stop];
-            self.appDel.avPlayer=nil;
-        }
-        [self.homeControl dismissViewControllerAnimated:YES completion:nil];
-    }else {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
-        alert.tag = 100;
-        [alert show];
-    }
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+    alert.tag = 100;
+    [alert show];
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
     if (alertView.tag == 100) {
         if (buttonIndex==0) {
+            tmp_ratio=-100;
             if (self.isFirst==YES && isCanUpLoad==YES) {
                 self.postNumber = 1;
                 if (self.appDel.isReachable == NO) {

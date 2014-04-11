@@ -1095,9 +1095,10 @@ static BOOL isCanUpLoad = NO;
     
     self.checkHomeworkButton.enabled=YES;
     self.number=0;self.branchNumber=0;self.isFirst = NO;
-    
+    self.homeControl.spendSecond = 0;
     self.homeControl.reduceTimeButton.enabled=NO;
     self.homeControl.appearCorrectButton.enabled=NO;
+    [self.homeControl startTimer];
     [self getQuestionData];
 }
 
@@ -1131,13 +1132,9 @@ static BOOL isCanUpLoad = NO;
 
 
 -(void)exitLiningView {
-    if (self.isFirst==NO) {
-        [self.homeControl dismissViewControllerAnimated:YES completion:nil];
-    }else {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
-        alert.tag = 100;
-        [alert show];
-    }
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+    alert.tag = 100;
+    [alert show];
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];

@@ -93,7 +93,7 @@
     }
     //TYPES_NAME = {0 => "听力", 1 => "朗读",  2 => "十速挑战", 3 => "选择", 4 => "连线", 5 => "完型填空", 6 => "排序"}
     int type = [self.aCard.types integerValue];
-    
+    self.cardSecond.showFullText.hidden = YES;
     if (type==0) {//听力
         self.cardSecond.voiceBtn.hidden=NO;
         [self.cardSecond.rtLab setText:self.aCard.content];
@@ -272,6 +272,16 @@
                 UnderLineRange = range;
             }
         }
+        [full_context appendString:@"resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from"];
+        
+        CGSize size = [full_context sizeWithFont:[UIFont systemFontOfSize:22] constrainedToSize:CGSizeMake(292, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+        if (size.height>212) {
+            self.cardSecond.showFullText.hidden = NO;
+            self.cardSecond.fullText = full_context;
+        }else {
+            self.cardSecond.showFullText.hidden = YES;
+            self.cardSecond.fullText = nil;
+        }
         [self.cardSecond.rtLab setText:full_context];
         [self.cardSecond.rtLab setStyle:kCTUnderlineStyleSingle fromIndex:UnderLineRange.location length:UnderLineRange.length];
         [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:full_context.length];
@@ -281,6 +291,16 @@
         self.cardSecond.voiceBtn.hidden=YES;
         [Utility shared].isOrg = NO;
         [Utility shared].rangeArray = [[NSMutableArray alloc]init];
+        
+        CGSize size = [self.aCard.content sizeWithFont:[UIFont systemFontOfSize:22] constrainedToSize:CGSizeMake(292, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+        if (size.height>212) {
+            self.cardSecond.showFullText.hidden = NO;
+            self.cardSecond.fullText = self.aCard.content;
+        }else {
+            self.cardSecond.showFullText.hidden = YES;
+            self.cardSecond.fullText = nil;
+        }
+        
         [self.cardSecond.rtLab setText:self.aCard.content];
         NSArray *content_array = [Utility handleTheString:self.aCard.content];
         
@@ -324,6 +344,7 @@
     
     self.cardSecond.voiceBtn.tag = _viewtag;
     self.cardSecond.deleteBtn.tag = _viewtag;
+    self.cardSecond.showFullText.tag = _viewtag;
 }
 
 -(void)flipTouched {

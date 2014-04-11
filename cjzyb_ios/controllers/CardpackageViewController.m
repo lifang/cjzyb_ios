@@ -496,6 +496,29 @@ static NSInteger tmpPage = 0;
         [self.deleteInter getDeleteCardDelegateDelegateWithCardId:card.carId andTag:btn.tag];
     }
 }
+
+-(void)pressedShowFullText:(NSString *)fullText andBtn:(UIButton *)btn {
+    
+    self.fullTextView = [[FullText alloc]initWithNibName:@"FullText" bundle:nil];
+    [self.fullTextView setText:fullText];
+    
+    UIBarButtonItem *barItem = [[UIBarButtonItem alloc]initWithCustomView:btn];
+    __block UIBarButtonItem *barItemm = barItem;
+    self.poprController = [[WYPopoverController alloc] initWithContentViewController:self.fullTextView];
+    self.poprController.delegate = self;
+    self.poprController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.fillTopColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.theme.glossShadowColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.poprController.popoverContentSize = (CGSize){332,300};
+    [self.poprController presentPopoverFromBarButtonItem:barItem permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES completion:^{
+        barItemm=nil;
+    }];
+}
+- (void)popoverControllerDidDismissPopover:(WYPopoverController *)popoverController {
+    [self.fullTextView.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.fullTextView = nil;
+}
 #pragma mark
 #pragma mark - DeleteCardInterfaceDelegate
 -(void)getDeleteCardInfoDidFinished:(NSDictionary *)result andTag:(NSInteger)tag{

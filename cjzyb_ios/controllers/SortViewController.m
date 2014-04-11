@@ -69,7 +69,7 @@ static BOOL isCanUpLoad = NO;
             UIButton *btn3 = [self returnButton];
             btn3.tag = 3*i+CP_Answer_Button_Tag_Offset+k;
             frame.origin.x = Textfield_Space_Width+(Textfield_Width+Textfield_Space_Width)*k;
-            frame.origin.y = Textfield_Space_Height+(Textfield_Height+Textfield_Space_Height)*i;
+            frame.origin.y = (Textfield_Height+Textfield_Space_Height)*i;
             btn3.frame = frame;
             [btn3 setTitleColor:[UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1] forState:UIControlStateNormal];
             
@@ -131,11 +131,14 @@ static BOOL isCanUpLoad = NO;
     self.preBtn.frame = CGRectMake(122, frame.origin.y+Textfield_Height+Textfield_Space_Height*5, 200, 80);
     self.restartBtn.frame = CGRectMake(445, frame.origin.y+Textfield_Height+Textfield_Space_Height*5, 200, 80);
     
-    [self.wordsContainerView setFrame:CGRectMake(-768, 55, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
-    [self.view addSubview:self.wordsContainerView];
+    [self.wordsContainerView setFrame:CGRectMake(-768, 0, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
+    [self.myScroll addSubview:self.wordsContainerView];
+    self.myScroll.contentSize = CGSizeMake(768,self.wordsContainerView.frame.size.height+30);
+    [self.myScroll setScrollEnabled:YES];
+    
     
     [UIView animateWithDuration:0.5 animations:^{
-        [self.wordsContainerView setFrame:CGRectMake(0, 55, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
+        [self.wordsContainerView setFrame:CGRectMake(0, 0, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
     } completion:^(BOOL finished){
         if (finished) {
             [UIView animateWithDuration:0.25 animations:^{
@@ -202,7 +205,7 @@ static BOOL isCanUpLoad = NO;
             UIButton *btn3 = [self returnButton];
             btn3.tag = 3*i+CP_Answer_Button_Tag_Offset+k;
             frame.origin.x = Textfield_Space_Width+(Textfield_Width+Textfield_Space_Width)*k;
-            frame.origin.y = Textfield_Space_Height+(Textfield_Height+Textfield_Space_Height)*i;
+            frame.origin.y = (Textfield_Height+Textfield_Space_Height)*i;
             btn3.frame = frame;
             [btn3 setTitleColor:[UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1] forState:UIControlStateNormal];
             [btn3 setTitle:[tmpArray objectAtIndex:3*i+k] forState:UIControlStateNormal];
@@ -257,11 +260,15 @@ static BOOL isCanUpLoad = NO;
         [self.wordsContainerView addSubview:btn3];
     }
     
-    [self.wordsContainerView setFrame:CGRectMake(-768, 130, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
-    [self.view addSubview:self.wordsContainerView];
+    [self.wordsContainerView setFrame:CGRectMake(-768, 0, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
+    [self.myScroll addSubview:self.wordsContainerView];
+    
+    self.myScroll.contentSize = CGSizeMake(768,self.wordsContainerView.frame.size.height+80);
+    [self.myScroll setScrollEnabled:YES];
+    
     
     [UIView animateWithDuration:0.5 animations:^{
-        [self.wordsContainerView setFrame:CGRectMake(0, 130, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
+        [self.wordsContainerView setFrame:CGRectMake(0, 0, 768, frame.origin.y+Textfield_Height+Textfield_Space_Height*5+100)];
     } completion:^(BOOL finished){
         if (finished) {
             [UIView animateWithDuration:0.25 animations:^{
@@ -298,6 +305,7 @@ static BOOL isCanUpLoad = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.myScroll setContentOffset:CGPointMake(0, 0)];
     self.again_radio=0;
     
     self.historyView.hidden=YES;
@@ -556,7 +564,7 @@ static BOOL isCanUpLoad = NO;
     while (self.currentWordIndex!=(self.orgArray.count-1)) {
         self.currentWordIndex++;
         UIButton *ab = nil;
-        UIView *uk = [self.view viewWithTag:(self.currentWordIndex+CP_Answer_Button_Tag_Offset)];
+        UIView *uk = [self.myScroll viewWithTag:(self.currentWordIndex+CP_Answer_Button_Tag_Offset)];
         if([uk isKindOfClass:[UIButton class]]) {
             ab = (UIButton *)uk;
         }
@@ -829,7 +837,7 @@ static BOOL isCanUpLoad = NO;
     
     [self.resultView initView];
     
-    [self.view addSubview: self.resultView];
+    [self.myScroll addSubview: self.resultView];
 }
 
 -(void)finishQuestion:(id)sender {
@@ -892,9 +900,10 @@ static BOOL isCanUpLoad = NO;
     
     self.checkHomeworkButton.enabled=YES;
     self.number=0;self.branchNumber=0;self.isFirst = NO;
-    
+    self.homeControl.spendSecond = 0;
     self.homeControl.reduceTimeButton.enabled=NO;
     self.homeControl.appearCorrectButton.enabled=NO;
+    [self.homeControl startTimer];
     [self getQuestionData];
 }
 
@@ -1000,13 +1009,9 @@ static BOOL isCanUpLoad = NO;
 }
 
 -(void)exitSortView {
-    if (self.isFirst==NO) {
-        [self.homeControl dismissViewControllerAnimated:YES completion:nil];
-    }else {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
-        alert.tag = 100;
-        [alert show];
-    }
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+    alert.tag = 100;
+    [alert show];
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];

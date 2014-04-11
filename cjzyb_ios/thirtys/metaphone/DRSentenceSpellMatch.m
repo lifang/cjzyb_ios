@@ -41,15 +41,6 @@
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [Utility shared].isOrg = NO;
-        [Utility shared].sureArray = [[NSMutableArray alloc]init];
-         [Utility shared].correctArray = [[NSMutableArray alloc]init];
-        [Utility shared].noticeArray = [[NSMutableArray alloc]init];
-         [Utility shared].greenArray = [[NSMutableArray alloc]init];
-        [Utility shared].yellowArray = [[NSMutableArray alloc]init];
-        [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
-        [Utility shared].wrongArray = [[NSMutableArray alloc]init];
-        [Utility shared].firstpoint = 0;
-        
         [Utility shared].orgArray  = [Utility handleTheString:senStr];
         [Utility shared].metaphoneArray = [Utility metaphoneArray:[Utility shared].orgArray];
         NSArray *spellMatchRangeArr = [DRSentenceSpellMatch spellMatchWord:spellStr];

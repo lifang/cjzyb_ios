@@ -39,6 +39,14 @@
     }
 }
 
+
+-(IBAction)showFullTextPressed:(id)sender {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pressedShowFullText:andBtn:)]) {
+        [self.delegate pressedShowFullText:self.fullText andBtn:self.showFullText];
+    }
+}
+
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.cardSecondArray.count;
 }
