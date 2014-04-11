@@ -259,8 +259,8 @@
         }
     }
 
-//    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
-    [self showMainController];
+    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
+//    [self showMainController];
     
 //    [DataService sharedService].user = [[UserObject alloc]init];
 //    [DataService sharedService].user.nickName = @"大小姐";
