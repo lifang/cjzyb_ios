@@ -58,6 +58,7 @@
                 <outlet property="backImageView" destination="OMF-wf-59J" id="Enj-VO-LTj"/>
                 <outlet property="finishedFlagImageview" destination="h0R-Ax-dYb" id="BmL-Rd-LbH"/>
                 <outlet property="nameLabel" destination="360-JZ-uiF" id="mnl-Kp-y4g"/>
+                <outlet property="rankLabel" destination="fz7-OK-ecW" id="lx3-Hz-Y1W"/>
                 <outlet property="rankingButton" destination="iaj-mP-qHV" id="o3r-Z7-bvW"/>
             </connections>
         </collectionViewCell>

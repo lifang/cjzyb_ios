@@ -18,6 +18,7 @@
 @property (assign,nonatomic) BOOL isFinished;
 ///排名按钮
 @property (weak, nonatomic) IBOutlet UIButton *rankingButton;
+@property (strong, nonatomic) IBOutlet UILabel *rankLabel;
 ///排名按钮出现
 @property (assign,nonatomic) BOOL isShowRankingBtn;
 

@@ -917,11 +917,11 @@ static BOOL isCanUpLoad = NO;
     }
     NSMutableString *anserString = [NSMutableString string];
 
-    NSMutableDictionary *branch_propDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray objectAtIndex:0]];
+    NSMutableDictionary *branch_propDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray objectAtIndex:1]];
     NSMutableArray *branch_propArray = [NSMutableArray arrayWithArray:[branch_propDic objectForKey:@"branch_id"]];
     [branch_propArray addObject:[NSNumber numberWithInt:[[self.branchQuestionDic objectForKey:@"id"] intValue]]];
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
-    [self.propsArray replaceObjectAtIndex:0 withObject:branch_propDic];
+    [self.propsArray replaceObjectAtIndex:1 withObject:branch_propDic];
     [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
     
     self.branchScore = self.orgArray.count;
@@ -1000,11 +1000,11 @@ static BOOL isCanUpLoad = NO;
         [self.homeControl.view setUserInteractionEnabled:YES];
     }];
     
-    NSMutableDictionary *branch_propDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray objectAtIndex:1]];
+    NSMutableDictionary *branch_propDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray objectAtIndex:0]];
     NSMutableArray *branch_propArray = [NSMutableArray arrayWithArray:[branch_propDic objectForKey:@"branch_id"]];
     [branch_propArray addObject:[NSNumber numberWithInt:[[self.branchQuestionDic objectForKey:@"id"] intValue]]];
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
-    [self.propsArray replaceObjectAtIndex:1 withObject:branch_propDic];
+    [self.propsArray replaceObjectAtIndex:0 withObject:branch_propDic];
     [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 
