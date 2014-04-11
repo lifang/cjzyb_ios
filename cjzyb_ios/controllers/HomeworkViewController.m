@@ -268,11 +268,11 @@
 #pragma mark --
 -(void)showAlertWith:(HomeworkTypeObj *)typeObj {
     //判断卡包
-//    if ([DataService sharedService].cardsCount >20) {
-//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        alert.tag = 999;
-//        [alert show];
-//    }else {
+    if ([DataService sharedService].cardsCount >20) {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        alert.tag = 999;
+        [alert show];
+    }else {
         if (typeObj.homeworkTypeIsFinished) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
             alert.tag = 1001;
@@ -283,7 +283,7 @@
                 [self.selectedDailyController.collectionView reloadData];
             }];
         }
-//    }
+    }
 }
 #pragma mark HomeworkDailyCollectionViewControllerDelegate每一个题目类型cell代理
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller didSelectedAtIndexPath:(NSIndexPath *)path{
@@ -396,14 +396,19 @@
 }
 
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller rankingButtonClickedAtIndexPath:(NSIndexPath *)path{
-    HomeworkRankingViewController *rankingController = [[HomeworkRankingViewController alloc] initWithNibName:@"HomeworkRankingViewController" bundle:nil];
-    rankingController.modalPresentationStyle = UIModalPresentationFormSheet;
-    rankingController.view.frame = (CGRect){0,0,514,350};
-    [self presentViewController:rankingController animated:YES completion:^{
-        
-    }];
-    HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
-    [rankingController reloadDataWithTaskId:controller.taskObj.taskID withHomeworkType:typeObj.homeworkType];
+    TaskObj *task = controller.taskObj;
+    if (task.isExpire==YES){
+        HomeworkRankingViewController *rankingController = [[HomeworkRankingViewController alloc] initWithNibName:@"HomeworkRankingViewController" bundle:nil];
+        rankingController.modalPresentationStyle = UIModalPresentationFormSheet;
+        rankingController.view.frame = (CGRect){0,0,514,350};
+        [self presentViewController:rankingController animated:YES completion:^{
+            
+        }];
+        HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
+        [rankingController reloadDataWithTaskId:controller.taskObj.taskID withHomeworkType:typeObj.homeworkType];
+    }else {
+        [Utility errorAlert:@"暂无排名情况!"];
+    }
 }
 #pragma mark --
 

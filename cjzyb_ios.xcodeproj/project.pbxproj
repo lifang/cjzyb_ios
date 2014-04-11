@@ -161,6 +161,8 @@
 		1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */; };
 		182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */ = {isa = PBXBuildFile; fileRef = 187222BA18C87A5700BBE2D1 /* questions_lastest.js */; };
 		182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */; };
+		182AF15818F7B7E200EA5A7E /* FullText.m in Sources */ = {isa = PBXBuildFile; fileRef = 182AF15618F7B7E200EA5A7E /* FullText.m */; };
+		182AF15918F7B7E200EA5A7E /* FullText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 182AF15718F7B7E200EA5A7E /* FullText.xib */; };
 		182BEE4F18E12FA000FC0AA0 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 182BEE4518E12FA000FC0AA0 /* ioapi.c */; };
 		182BEE5018E12FA000FC0AA0 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 182BEE4718E12FA000FC0AA0 /* mztools.c */; };
 		182BEE5118E12FA000FC0AA0 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 182BEE4918E12FA000FC0AA0 /* unzip.c */; };
@@ -620,6 +622,9 @@
 		1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLTestInterface.m; sourceTree = "<group>"; };
 		182A89D718C977BC00CF4B30 /* OrdinaryAnswerObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdinaryAnswerObject.h; sourceTree = SOURCE_ROOT; };
 		182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdinaryAnswerObject.m; sourceTree = SOURCE_ROOT; };
+		182AF15518F7B7E200EA5A7E /* FullText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullText.h; sourceTree = "<group>"; };
+		182AF15618F7B7E200EA5A7E /* FullText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullText.m; sourceTree = "<group>"; };
+		182AF15718F7B7E200EA5A7E /* FullText.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FullText.xib; sourceTree = "<group>"; };
 		182BEE4418E12FA000FC0AA0 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		182BEE4518E12FA000FC0AA0 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		182BEE4618E12FA000FC0AA0 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -1168,6 +1173,9 @@
 				0EAABD7818CF136900CD2DE7 /* TagViewController.h */,
 				0EAABD7918CF136900CD2DE7 /* TagViewController.m */,
 				0EAABD7A18CF136900CD2DE7 /* TagViewController.xib */,
+				182AF15518F7B7E200EA5A7E /* FullText.h */,
+				182AF15618F7B7E200EA5A7E /* FullText.m */,
+				182AF15718F7B7E200EA5A7E /* FullText.xib */,
 			);
 			name = "卡包";
 			sourceTree = "<group>";
@@ -2286,6 +2294,7 @@
 				6396583418C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib in Resources */,
 				630DBEBE18D1B0F3009DA0EB /* ModelTypeViewController.xib in Resources */,
 				0EEF4BDB18C561570058606A /* CardSecondView.xib in Resources */,
+				182AF15918F7B7E200EA5A7E /* FullText.xib in Resources */,
 				630DBDFD18D15AFB009DA0EB /* jinque_yellow@2x.png in Resources */,
 				630DBDFB18D15AFB009DA0EB /* back@2x.png in Resources */,
 				0E9D68AA18CD685100EACFA3 /* card_back_selected@2x.png in Resources */,
@@ -2395,6 +2404,7 @@
 				0EEF4BEA18C561700058606A /* MessageInterface.m in Sources */,
 				182BEE5318E12FA000FC0AA0 /* ZipArchive.mm in Sources */,
 				6329556C18BC900600F2B78D /* UIImage+MultiFormat.m in Sources */,
+				182AF15818F7B7E200EA5A7E /* FullText.m in Sources */,
 				0E9D689018C9B7F400EACFA3 /* LogInterface.m in Sources */,
 				0E9C6E9D18D1977E00E807D1 /* SelectedViewController.m in Sources */,
 				0E9C6EA418D1B2C100E807D1 /* UnderLineLabel.m in Sources */,
