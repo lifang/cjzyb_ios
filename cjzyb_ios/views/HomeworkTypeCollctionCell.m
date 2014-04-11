@@ -41,6 +41,7 @@
 -(void)setIsShowRankingBtn:(BOOL)isShowRankingBtn {
     _isShowRankingBtn = isShowRankingBtn;
     [self.rankingButton setHidden:!isShowRankingBtn];
+    [self.rankLabel setHidden:!isShowRankingBtn];
 }
 -(void)setHomeworkType:(HomeworkType )homeworkType{
     _homeworkType = homeworkType;

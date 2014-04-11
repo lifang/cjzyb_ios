@@ -561,12 +561,12 @@ static BOOL isCanUpLoad = NO;
         self.homeControl.appearCorrectButton.enabled = NO;
     }
     //道具写入JSON
-    NSMutableDictionary *branch_propDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray objectAtIndex:0]];
+    NSMutableDictionary *branch_propDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray objectAtIndex:1]];
     NSMutableArray *branch_propArray = [NSMutableArray arrayWithArray:[branch_propDic objectForKey:@"branch_id"]];
     NSDictionary *branch_dic = [branch_questions objectAtIndex:self.prop_number];
     [branch_propArray addObject:[NSNumber numberWithInt:[[branch_dic objectForKey:@"id"] intValue]]];
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
-    [self.propsArray replaceObjectAtIndex:0 withObject:branch_propDic];
+    [self.propsArray replaceObjectAtIndex:1 withObject:branch_propDic];
     [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
     
     //显示正确答案
@@ -604,13 +604,13 @@ static BOOL isCanUpLoad = NO;
         [self.homeControl.view setUserInteractionEnabled:YES];
     }];
     
-    NSMutableDictionary *branch_propDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray objectAtIndex:1]];
+    NSMutableDictionary *branch_propDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray objectAtIndex:0]];
     NSMutableArray *branch_propArray = [NSMutableArray arrayWithArray:[branch_propDic objectForKey:@"branch_id"]];
     NSArray *branch_questions = [self.questionDic objectForKey:@"branch_questions"];
     NSDictionary *branch_dic = [branch_questions objectAtIndex:0];
     [branch_propArray addObject:[NSNumber numberWithInt:[[branch_dic objectForKey:@"id"] intValue]]];
     [branch_propDic setObject:branch_propArray forKey:@"branch_id"];
-    [self.propsArray replaceObjectAtIndex:1 withObject:branch_propDic];
+    [self.propsArray replaceObjectAtIndex:0 withObject:branch_propDic];
     [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
 }
 

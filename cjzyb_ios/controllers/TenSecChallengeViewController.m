@@ -332,7 +332,7 @@
 
 ///点击parentVC的退出按钮触发
 -(void)tenQuitButtonClicked:(id)sender{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"警告" message:@"确认退出挑战?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
     dispatch_async(dispatch_get_main_queue(), ^{
         [alert show];
     });
@@ -515,10 +515,10 @@
     if ([alertView.title isEqualToString:@"抱歉"]) {
         //挑战次数用完
         [parentVC dismissViewControllerAnimated:YES completion:nil];
-    }else if ([alertView.title isEqualToString:@"警告"]){
+    }else if ([alertView.title isEqualToString:@"作业提示"]){
         //退出警告
         NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
-        if ([title isEqualToString:@"退出"]) {
+        if ([title isEqualToString:@"确定"]) {
             [self quitNow:nil];
             return;
         }

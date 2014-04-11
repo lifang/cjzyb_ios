@@ -72,8 +72,6 @@
 		0E960FDC18F644C2004F222B /* user_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E960FDB18F644C2004F222B /* user_arrow@2x.png */; };
 		0E960FE018F69A49004F222B /* left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E960FDE18F69A49004F222B /* left@2x.png */; };
 		0E960FE118F69A49004F222B /* right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E960FDF18F69A49004F222B /* right@2x.png */; };
-		0E960FE518F797F2004F222B /* FullText.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E960FE318F797F2004F222B /* FullText.m */; };
-		0E960FE618F797F2004F222B /* FullText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E960FE418F797F2004F222B /* FullText.xib */; };
 		0E97C9CC18E2A17500890F60 /* logOut@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9CB18E2A17500890F60 /* logOut@2x.png */; };
 		0E97C9CE18E2A81700890F60 /* contact_message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9CD18E2A81700890F60 /* contact_message@2x.png */; };
 		0E97C9DC18E2BABB00890F60 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9DB18E2BABB00890F60 /* PushConfig.plist */; };
@@ -166,6 +164,8 @@
 		1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */; };
 		182A89D618C95D1D00CF4B30 /* questions_lastest.js in Resources */ = {isa = PBXBuildFile; fileRef = 187222BA18C87A5700BBE2D1 /* questions_lastest.js */; };
 		182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */; };
+		182AF15D18F7D7F300EA5A7E /* FullText.m in Sources */ = {isa = PBXBuildFile; fileRef = 182AF15B18F7D7F300EA5A7E /* FullText.m */; };
+		182AF15E18F7D7F300EA5A7E /* FullText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 182AF15C18F7D7F300EA5A7E /* FullText.xib */; };
 		182BEE4F18E12FA000FC0AA0 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = 182BEE4518E12FA000FC0AA0 /* ioapi.c */; };
 		182BEE5018E12FA000FC0AA0 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = 182BEE4718E12FA000FC0AA0 /* mztools.c */; };
 		182BEE5118E12FA000FC0AA0 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 182BEE4918E12FA000FC0AA0 /* unzip.c */; };
@@ -482,9 +482,6 @@
 		0E960FDB18F644C2004F222B /* user_arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_arrow@2x.png"; sourceTree = "<group>"; };
 		0E960FDE18F69A49004F222B /* left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "left@2x.png"; sourceTree = "<group>"; };
 		0E960FDF18F69A49004F222B /* right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right@2x.png"; sourceTree = "<group>"; };
-		0E960FE218F797F2004F222B /* FullText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullText.h; sourceTree = "<group>"; };
-		0E960FE318F797F2004F222B /* FullText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullText.m; sourceTree = "<group>"; };
-		0E960FE418F797F2004F222B /* FullText.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FullText.xib; sourceTree = "<group>"; };
 		0E97C9CB18E2A17500890F60 /* logOut@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logOut@2x.png"; sourceTree = "<group>"; };
 		0E97C9CD18E2A81700890F60 /* contact_message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact_message@2x.png"; sourceTree = "<group>"; };
 		0E97C9DB18E2BABB00890F60 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
@@ -631,6 +628,9 @@
 		1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLTestInterface.m; sourceTree = "<group>"; };
 		182A89D718C977BC00CF4B30 /* OrdinaryAnswerObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdinaryAnswerObject.h; sourceTree = SOURCE_ROOT; };
 		182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdinaryAnswerObject.m; sourceTree = SOURCE_ROOT; };
+		182AF15A18F7D7F300EA5A7E /* FullText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullText.h; sourceTree = "<group>"; };
+		182AF15B18F7D7F300EA5A7E /* FullText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullText.m; sourceTree = "<group>"; };
+		182AF15C18F7D7F300EA5A7E /* FullText.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FullText.xib; sourceTree = "<group>"; };
 		182BEE4418E12FA000FC0AA0 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		182BEE4518E12FA000FC0AA0 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		182BEE4618E12FA000FC0AA0 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -1182,9 +1182,9 @@
 				0EAABD7818CF136900CD2DE7 /* TagViewController.h */,
 				0EAABD7918CF136900CD2DE7 /* TagViewController.m */,
 				0EAABD7A18CF136900CD2DE7 /* TagViewController.xib */,
-				0E960FE218F797F2004F222B /* FullText.h */,
-				0E960FE318F797F2004F222B /* FullText.m */,
-				0E960FE418F797F2004F222B /* FullText.xib */,
+				182AF15A18F7D7F300EA5A7E /* FullText.h */,
+				182AF15B18F7D7F300EA5A7E /* FullText.m */,
+				182AF15C18F7D7F300EA5A7E /* FullText.xib */,
 			);
 			name = "卡包";
 			sourceTree = "<group>";
@@ -2253,7 +2253,7 @@
 				0E0E801E18E912BF0022AC57 /* first@2x.png in Resources */,
 				0E2B517C18DC27110056859D /* trueMusic.wav in Resources */,
 				630DBDF318D15A95009DA0EB /* youxiu@2x.png in Resources */,
-				0E960FE618F797F2004F222B /* FullText.xib in Resources */,
+				182AF15E18F7D7F300EA5A7E /* FullText.xib in Resources */,
 				187C4ACB18D304AC0006461D /* 10_06@2x.png in Resources */,
 				630DBE1D18D15CB1009DA0EB /* homework_line@2x.png in Resources */,
 				0E93C9B018D834630094AD7B /* ios-stop@2x.png in Resources */,
@@ -2416,7 +2416,7 @@
 				0EEF4BEA18C561700058606A /* MessageInterface.m in Sources */,
 				182BEE5318E12FA000FC0AA0 /* ZipArchive.mm in Sources */,
 				6329556C18BC900600F2B78D /* UIImage+MultiFormat.m in Sources */,
-				0E960FE518F797F2004F222B /* FullText.m in Sources */,
+				182AF15D18F7D7F300EA5A7E /* FullText.m in Sources */,
 				0E9D689018C9B7F400EACFA3 /* LogInterface.m in Sources */,
 				0E9C6E9D18D1977E00E807D1 /* SelectedViewController.m in Sources */,
 				0E9C6EA418D1B2C100E807D1 /* UnderLineLabel.m in Sources */,

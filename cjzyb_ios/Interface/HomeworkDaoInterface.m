@@ -98,14 +98,14 @@
         
         taskObj.taskHomeworkTypeArray = homeworkTypeList;
         
-        //道具
+        //道具 0减少时间   1显示正确答案
         NSArray *propsArr = [dicData objectForKey:@"props"];
         for (NSDictionary *propsDic in propsArr) {
             NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
             NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
-            if ([type isEqualToString:@"0"]) {
+            if ([type integerValue]==1) {
                 taskObj.taskTipCorrectAnswer = number ?number.intValue:0;
-            }else if ([type isEqualToString:@"1"]){
+            }else if ([type integerValue]==0){
                 taskObj.taskReduceTimeCount = number ?number.intValue:0;
             }
         }
@@ -230,14 +230,14 @@
             
             taskObj.taskHomeworkTypeArray = homeworkTypeList;
             
-            //道具
+            //道具 0减少时间   1显示正确答案
             NSArray *propsArr = [dicData objectForKey:@"props"];
             for (NSDictionary *propsDic in propsArr) {
                 NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
                 NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
-                if ([type isEqualToString:@"0"]) {
+                if ([type integerValue]==1) {
                     taskObj.taskTipCorrectAnswer = number ?number.intValue:0;
-                }else if ([type isEqualToString:@"1"]){
+                }else if ([type integerValue]==0){
                     taskObj.taskReduceTimeCount = number ?number.intValue:0;
                 }
             }
@@ -382,14 +382,14 @@
             
             taskObj.taskHomeworkTypeArray = homeworkTypeList;
             
-            //道具
+            //道具 0减少时间   1显示正确答案
             NSArray *propsArr = [dicData objectForKey:@"props"];
             for (NSDictionary *propsDic in propsArr) {
                 NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
                 NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
-                if ([type isEqualToString:@"0"]) {
+                if ([type integerValue]==1) {
                     taskObj.taskTipCorrectAnswer = number ?number.intValue:0;
-                }else if ([type isEqualToString:@"1"]){
+                }else if ([type integerValue]==0){
                     taskObj.taskReduceTimeCount = number ?number.intValue:0;
                 }
             }
