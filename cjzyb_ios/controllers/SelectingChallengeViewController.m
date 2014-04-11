@@ -811,8 +811,11 @@
         if (!self.checked) {
             //先检查
             [self checkChoice];
+            [self pauseChallenge];
         }else{
             [self loadNextQuestion];
+            self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
+            [parentVC startTimer];
         }
     }else{
         [self loadNextQuestion];

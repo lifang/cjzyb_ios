@@ -237,8 +237,15 @@
         TaskObj *task = [DataService sharedService].taskObj;
         NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
         
+        
         //先保存一次JSON
-        [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond] withQuestionIndex:self.currentHomeworkIndex withQuestionItemIndex:self.currentSentenceIndex withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
+        NSIndexPath *indexPath = [self findNextIndexWithHomeworkIndex:self.currentHomeworkIndex andSentenceIndex:self.currentSentenceIndex];
+            //如果没有读过,保存本题index ,如果读过了 ,保存下一题index
+        [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path
+                                                    withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond]
+                                              withQuestionIndex:self.readingCount > 0 ? indexPath.section : self.currentHomeworkIndex
+                                          withQuestionItemIndex:self.readingCount > 0 ? indexPath.row : self.currentSentenceIndex
+                                          withReadingHomworkArr:self.readingHomeworksArr withSuccess:^{
             ReadingTaskViewController *tempSelf = weakSelf ;
             if (tempSelf) {
                 //成功后上传
@@ -449,7 +456,23 @@
     self.isPrePlay = YES;
     [parentVC stopTimer];
     [parentVC.reduceTimeButton setEnabled:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        parentVC.djView.hidden = YES;
+        parentVC.view.backgroundColor = [UIColor whiteColor];
+    });
+    
     [self.tipBackView setHidden:YES];
+    if (animation) {
+        CATransition *animation = [CATransition animation];
+        [animation setType:kCATransitionPush];
+        [animation setSubtype:kCATransitionFromRight];
+        [animation setDuration:0.5];
+        [animation setRemovedOnCompletion:YES];
+        [animation setDelegate:self];
+        [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+        [self.view.layer addAnimation:animation forKey:@"PushLeft"];
+        [parentVC.djView.layer addAnimation:animation forKey:@"PushLeft"];
+    }
 }
 
 -(void)hiddlePrePlayControllerWithAnimation:(BOOL)animation{
@@ -459,6 +482,7 @@
     [self.preReadingController didMoveToParentViewController:nil];
     [self.preReadingController.avPlayer stop];
     [parentVC.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
+    parentVC.djView.hidden = NO;
     self.isPrePlay = NO;
     
     [parentVC startTimer];
@@ -466,6 +490,18 @@
         if (self.isFirst) {
             [parentVC.reduceTimeButton setEnabled:YES];
         }
+    }
+    
+    if (animation) {
+        CATransition *animation = [CATransition animation];
+        [animation setType:kCATransitionPush];
+        [animation setSubtype:kCATransitionFromRight];
+        [animation setDuration:0.5];
+        [animation setRemovedOnCompletion:YES];
+        [animation setDelegate:self];
+        [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+        [self.view.layer addAnimation:animation forKey:@"PushLeft"];
+        [parentVC.djView.layer addAnimation:animation forKey:@"PushLeft"];
     }
 }
 
@@ -841,7 +877,7 @@
                 self.currentSentence.isFinished = YES;
                 
                 NSIndexPath *indexPath = [self findNextIndexWithHomeworkIndex:self.currentHomeworkIndex andSentenceIndex:self.currentSentenceIndex];
-                //TODO:此处保存的是下一题的对应index
+                //TODO:此处已经完成本小题,保存的是下一题的对应index
                 [ParseAnswerJsonFileTool writeReadingHomeworkToJsonFile:path
                                                             withUseTime:[NSString stringWithFormat:@"%llu",parentVC.spendSecond]
                                                       withQuestionIndex:indexPath.section
