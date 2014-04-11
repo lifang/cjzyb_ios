@@ -12,7 +12,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "HomeworkContainerController.h"
 #import "ParseAnswerJsonFileTool.h"
-#import "ParseQuestionJsonFileTool.h"
+//#import "ParseQuestionJsonFileTool.h"
 #import "RecognizerFactory.h"//语音
 #import "PreReadingTaskViewController.h"
 

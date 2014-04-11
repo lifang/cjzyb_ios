@@ -166,7 +166,7 @@
     self.currentNO = 0;
     self.currentNOLabel.hidden = NO;
     //计算正确率
-    if (self.answerArray.count > 0 && self.answerArray.count == self.questionArray.count) {
+    if (self.answerArray.count > 0) {
         CGFloat numberOfRightAnswers = 0;
         for (NSInteger i = 0; i < self.answerArray.count; i ++) {
             OrdinaryAnswerObject *answer = self.answerArray[i];
@@ -177,8 +177,7 @@
         self.totalRatio = 100 * numberOfRightAnswers / self.answerArray.count;
         parentVC.rotioLabel.text = [NSString stringWithFormat:@"%d%@",self.totalRatio,@"%"];
     }else{
-        [Utility errorAlert:@"历史答案与题目不符!"];
-        return;
+        parentVC.rotioLabel.text = @"0";
     }
     parentVC.timeLabel.text = [NSString stringWithFormat:@"%@\"",self.timeCountString];
     
@@ -540,26 +539,33 @@
 
 //加载本题的历史回答情况
 -(void)refreshHistoryView{
-    //1,下方显示
+    //1,下方显示历史
     NSMutableString *yourChoiceString = [NSMutableString stringWithFormat:@"你的选择:"];
-    OrdinaryAnswerObject *currentAnswer = self.answerArray[self.currentNO - 1];
-    NSArray *myAnswers = [currentAnswer.answerAnswer componentsSeparatedByString:@";||;"];
-    
-    //转换成ABCD
-    NSMutableArray *myABCDAnswers = [NSMutableArray array];
-    for (NSInteger j = 0; j < myAnswers.count; j++) {
-        NSString *myAnswerString = myAnswers[j];
-        for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
-            NSString *option = self.currentQuestion.seOptionsArray[i];
-            if ([option isEqualToString:myAnswerString]) {
-                [myABCDAnswers addObject:[NSString stringWithFormat:@"%c",'A' + i]];
+    if (self.answerArray.count >= self.currentNO) {
+        //有历史答案
+        OrdinaryAnswerObject *currentAnswer = self.answerArray[self.currentNO - 1];
+        NSArray *myAnswers = [currentAnswer.answerAnswer componentsSeparatedByString:@";||;"];
+        
+        //转换成ABCD
+        NSMutableArray *myABCDAnswers = [NSMutableArray array];
+        for (NSInteger j = 0; j < myAnswers.count; j++) {
+            NSString *myAnswerString = myAnswers[j];
+            for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
+                NSString *option = self.currentQuestion.seOptionsArray[i];
+                if ([option isEqualToString:myAnswerString]) {
+                    [myABCDAnswers addObject:[NSString stringWithFormat:@"%c",'A' + i]];
+                }
             }
         }
+        
+        [yourChoiceString appendString:[myABCDAnswers componentsJoinedByString:@""]];
+    }else{
+        //未做过此题
+        [yourChoiceString appendString:@"未完成"];
     }
     
-    [yourChoiceString appendString:[myABCDAnswers componentsJoinedByString:@""]];
     
-    //2,选中选项
+    //2,选中正确选项
     for (NSInteger i = 0; i < self.currentQuestion.seOptionsArray.count; i ++) {
         NSString *option = self.currentQuestion.seOptionsArray[i];
         for(NSString *rightAnswer in self.currentQuestion.seRightAnswers){

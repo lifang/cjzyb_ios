@@ -46,16 +46,20 @@
     [ModelTypeViewController presentTypeViewWithTipString:@"请输入班级验证码:" withFinishedInput:^(NSString *inputString) {
         AppDelegate *app = [AppDelegate shareIntance];
 
-        NSString *msgStr = @"";
-        NSString *regexCall = @"[0-9]{10}";
-        NSPredicate *predicateCall = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regexCall];
-        if ([predicateCall evaluateWithObject:inputString]) {
-            
-        }else {
-            msgStr = @"班级验证码不能为空";
-        }
-        if (msgStr.length>0) {
-            [Utility errorAlert:msgStr];
+//        NSString *msgStr = @"";
+//        NSString *regexCall = @"[0-9]{1,}";
+//        NSPredicate *predicateCall = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regexCall];
+//        if ([predicateCall evaluateWithObject:inputString]) {
+//            
+//        }else {
+//            msgStr = @"班级验证码必须是10位数字";
+//        }
+//        if (msgStr.length>0) {
+//            [Utility errorAlert:msgStr];
+//            return ;
+//        }
+        if (inputString.length < 1 || inputString.length > 30) {
+            [Utility errorAlert:@"班级号码长度不符!"];
             return ;
         }
         

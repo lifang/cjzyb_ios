@@ -414,7 +414,6 @@
         OrdinaryAnswerObject *answer = self.answerArray[self.currentNO];
         self.historyYourChoiceLabel.text = [NSString stringWithFormat:@"你的答案:%@",answer.answerAnswer];
     }else{
-//        [Utility errorAlert:@"历史答案错误!"];
         self.historyYourChoiceLabel.text = @"未完成本小题";
     }
 }
