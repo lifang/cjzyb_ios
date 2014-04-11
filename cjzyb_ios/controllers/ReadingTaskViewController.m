@@ -89,8 +89,10 @@
                 tempSelf.currentSentenceIndex = 0;
                 tempSelf.currentHomeworkIndex = 0;
                 [tempSelf updateFirstSentence];
+                self.view.hidden = NO;
             }
         } withParseError:^(NSError *error) {
+            self.view.hidden = NO;
             [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
         }];
     }else{
@@ -129,7 +131,7 @@
     
     
     if ([DataService sharedService].isHistory) {
-        
+        self.view.hidden = YES;
     }else{
         self.preReadingController = [[PreReadingTaskViewController alloc] initWithNibName:@"PreReadingTaskViewController" bundle:nil];
         [self appearPrePlayControllerWithAnimation:YES];
@@ -156,14 +158,16 @@
     }
     self.currentSentence = currentSentence;//GO
     if (ani) {
-        CATransition *animation = [CATransition animation];
-        [animation setType:kCATransitionPush];
-        [animation setSubtype:kCATransitionFromRight];
-        [animation setDuration:0.5];
-        [animation setRemovedOnCompletion:YES];
-        [animation setDelegate:self];
-        [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-        [self.view.layer addAnimation:animation forKey:@"PushLeft"];
+        if (!(self.currentSentenceIndex == 0 && self.currentHomeworkIndex == 0)) {
+            CATransition *animation = [CATransition animation];
+            [animation setType:kCATransitionPush];
+            [animation setSubtype:kCATransitionFromRight];
+            [animation setDuration:0.5];
+            [animation setRemovedOnCompletion:YES];
+            [animation setDelegate:self];
+            [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+            [self.view.layer addAnimation:animation forKey:@"PushLeft"];
+        }
     }
     //设置"完成"按钮
     if (self.currentSentenceIndex +1 == self.currentHomework.readingHomeworkSentenceObjArray.count && self.currentHomeworkIndex +1 == self.readingHomeworksArr.count) {
