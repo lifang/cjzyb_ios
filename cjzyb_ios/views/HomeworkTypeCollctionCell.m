@@ -38,6 +38,10 @@
     _isFinished = isFinished;
     [self.finishedFlagImageview setHidden:!isFinished];
 }
+-(void)setIsShowRankingBtn:(BOOL)isShowRankingBtn {
+    _isShowRankingBtn = isShowRankingBtn;
+    [self.rankingButton setHidden:!isShowRankingBtn];
+}
 -(void)setHomeworkType:(HomeworkType )homeworkType{
     _homeworkType = homeworkType;
     switch (homeworkType) {

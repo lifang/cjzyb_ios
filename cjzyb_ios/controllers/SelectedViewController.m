@@ -542,7 +542,7 @@ static BOOL isCanUpLoad = NO;
     self.checkHomeworkButton.enabled=YES;
     self.homeControl.reduceTimeButton.enabled=NO;
     self.homeControl.appearCorrectButton.enabled=NO;
-    self.number=0;self.isFirst = NO;
+    self.number=0;self.isFirst = NO;self.again_radio=0;
     self.homeControl.spendSecond = 0;
     [self.homeControl startTimer];
     [self getQuestionData];

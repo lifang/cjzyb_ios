@@ -1095,7 +1095,7 @@ static BOOL isCanUpLoad = NO;
     
     self.checkHomeworkButton.enabled=YES;
     self.number=0;self.branchNumber=0;self.isFirst = NO;
-    self.homeControl.spendSecond = 0;
+    self.homeControl.spendSecond = 0;self.again_radio=0;
     self.homeControl.reduceTimeButton.enabled=NO;
     self.homeControl.appearCorrectButton.enabled=NO;
     [self.homeControl startTimer];

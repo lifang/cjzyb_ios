@@ -86,6 +86,12 @@
             }else {
                 type.homeworkTypeIsFinished = NO;
             }
+            if (taskObj.isExpire==YES) {
+                type.homeworkTypeIsRanking = YES;
+            }else {
+                type.homeworkTypeIsRanking = NO;
+            }
+            
             [homeworkTypeList addObject:type];
             type = nil;
         }
@@ -211,6 +217,13 @@
                 }else {
                     type.homeworkTypeIsFinished = NO;
                 }
+                
+                if (taskObj.isExpire==YES) {
+                    type.homeworkTypeIsRanking = YES;
+                }else {
+                    type.homeworkTypeIsRanking = NO;
+                }
+                
                 [homeworkTypeList addObject:type];
                 type = nil;
             }
@@ -357,6 +370,12 @@
                 }else {
                     type.homeworkTypeIsFinished = NO;
                 }
+                if (taskObj.isExpire==YES) {
+                    type.homeworkTypeIsRanking = YES;
+                }else {
+                    type.homeworkTypeIsRanking = NO;
+                }
+                
                 [homeworkTypeList addObject:type];
                 type = nil;
             }
