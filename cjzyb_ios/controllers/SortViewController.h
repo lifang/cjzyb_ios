@@ -13,7 +13,7 @@
 /**
  *  排序
  */
-@interface SortViewController : UIViewController<TenSecChallengeResultViewDelegate,PostDelegate,UIAlertViewDelegate>
+@interface SortViewController : UIViewController<TenSecChallengeResultViewDelegate,PostDelegate,UIAlertViewDelegate,UIScrollViewDelegate>
 
 @property (nonatomic, strong) AppDelegate *appDel;
 @property (nonatomic, strong) BasePostInterface *postInter;
@@ -24,7 +24,7 @@
 @property (nonatomic, strong) NSMutableArray *questionArray;
 @property (nonatomic, strong) NSDictionary *questionDic;
 
-
+@property (nonatomic, strong) IBOutlet UIScrollView *myScroll;
 @property (nonatomic, assign) NSInteger branchNumber;//记录第几题--大题
 @property (nonatomic, strong) NSMutableArray *branchQuestionArray;
 @property (nonatomic, strong) NSDictionary *branchQuestionDic;

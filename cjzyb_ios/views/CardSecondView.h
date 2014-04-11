@@ -13,6 +13,7 @@
 @protocol CardSecondViewDelegate <NSObject>
 -(void)pressedVoiceBtn:(UIButton *)btn;
 -(void)pressedDeleteBtn:(UIButton *)btn;
+-(void)pressedShowFullText:(NSString *)fullText andBtn:(UIButton *)btn;
 @end
 
 @interface CardSecondView : UIControl<UITableViewDataSource,UITableViewDelegate>
@@ -23,6 +24,10 @@
 
 @property (nonatomic, strong) IBOutlet CustomLabel *rtLab;
 @property (nonatomic, strong) IBOutlet UIButton *voiceBtn,*deleteBtn;
+
+//完形填空显示全文
+@property (nonatomic, strong) IBOutlet UIButton *showFullText;
+@property (nonatomic, strong) NSString *fullText;
 
 @property (nonatomic, strong) UIImageView *imgView;
 

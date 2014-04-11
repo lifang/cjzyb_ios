@@ -79,7 +79,7 @@
     LHLNotificationContainerVC *notificationView = [[LHLNotificationContainerVC alloc]initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
     self.tabBarController = [[DRLeftTabBarViewController alloc] init];
-    self.tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
+    self.tabBarController.childenControllerArray = @[cardView,main,homework,notificationView];
     
     self.tabBarController.currentPage = self.notification_type;
     

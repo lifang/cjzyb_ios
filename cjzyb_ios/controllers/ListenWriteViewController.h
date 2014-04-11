@@ -48,6 +48,7 @@
 @property (nonatomic, strong) HomeworkContainerController *homeControl;
 @property (strong, nonatomic) UIButton *checkHomeworkButton;
 
+//匹配
 @property (nonatomic, strong) NSMutableDictionary *answerDic;
 
 
@@ -78,4 +79,7 @@
 ///再次挑战
 @property (nonatomic, assign) CGFloat again_radio;
 @property (nonatomic, assign) BOOL again_first;
+
+@property (nonatomic, strong) UIButton *leftButton;
+@property (nonatomic, strong) UIButton *rightButton;
 @end

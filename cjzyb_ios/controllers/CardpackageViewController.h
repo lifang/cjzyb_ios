@@ -17,8 +17,8 @@
 #import "TagObject.h"
 #import "TagViewController.h"
 #import "CMRManager.h"
-
-@interface CardpackageViewController : UIViewController<CardFirstViewDelegate,CardSecondViewDelegate,CardInterfaceDelegate,UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,DeleteCardInterfaceDelegate>
+#import "FullText.h"
+@interface CardpackageViewController : UIViewController<CardFirstViewDelegate,CardSecondViewDelegate,CardInterfaceDelegate,UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,DeleteCardInterfaceDelegate,WYPopoverControllerDelegate>
 
 @property (strong, nonatomic) CardInterface *cardInter;
 @property (strong, nonatomic) DeleteCardInterface *deleteInter;
@@ -44,5 +44,5 @@
 @property (strong, nonatomic) MyPageControl *myPageControl;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+@property (nonatomic, strong) FullText *fullTextView;
 @end

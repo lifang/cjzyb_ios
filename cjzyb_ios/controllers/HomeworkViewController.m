@@ -268,11 +268,11 @@
 #pragma mark --
 -(void)showAlertWith:(HomeworkTypeObj *)typeObj {
     //判断卡包
-    if ([DataService sharedService].cardsCount >20) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        alert.tag = 999;
-        [alert show];
-    }else {
+//    if ([DataService sharedService].cardsCount >20) {
+//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//        alert.tag = 999;
+//        [alert show];
+//    }else {
         if (typeObj.homeworkTypeIsFinished) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
             alert.tag = 1001;
@@ -283,7 +283,7 @@
                 [self.selectedDailyController.collectionView reloadData];
             }];
         }
-    }
+//    }
 }
 #pragma mark HomeworkDailyCollectionViewControllerDelegate每一个题目类型cell代理
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller didSelectedAtIndexPath:(NSIndexPath *)path{

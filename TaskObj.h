@@ -40,6 +40,4 @@
 ///是否过期
 @property (nonatomic, assign) BOOL isExpire;
 
-///0:不存在answer文件   1:存在不是最新的  2:最新的
-@property (nonatomic, assign) NSInteger taskStatus;
 @end

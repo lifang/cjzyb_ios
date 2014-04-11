@@ -605,7 +605,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             return strAend -strAbegin +1;
         }
     }
-    if ([[[strA substringWithRange:NSMakeRange(strAbegin, 1)]uppercaseString] isEqualToString:[[strB substringWithRange:NSMakeRange(strBbegin, 1)]uppercaseString]]) {
+    if ([[strA substringWithRange:NSMakeRange(strAbegin, 1)] isEqualToString:[strB substringWithRange:NSMakeRange(strBbegin, 1)]]) {
         return [Utility DistanceBetweenTwoString:strA StrAbegin:strAbegin+1 StrAend:strAend StrB:strB StrBbegin: strBbegin+1 StrBend: strBend];
     }else {
         x = [Utility DistanceBetweenTwoString:strA StrAbegin:strAbegin+1 StrAend:strAend StrB:strB StrBbegin: strBbegin+1 StrBend: strBend];
@@ -617,93 +617,888 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 ///@"hello,will: can't.u project me serve?";
 //返回结果 arrA:输入文本的单词数组  /  arrAA:输入文本简化后的单词数组
 //        arrB:原文本单词数组    /   arrBB:原文本简化后的单词数组
-+(NSDictionary *)listenCompareWithArray:(NSArray *)arrA andArray:(NSArray *)arrAA WithArray:(NSArray *)arrB andArray:(NSArray *)arrBB {
++(NSDictionary *)listenCompareWithArray:(NSArray *)arrA andArray:(NSArray *)arrAA WithArray:(NSArray *)arrB andArray:(NSArray *)arrBB WithRange:(NSArray *)rangeArray{
     NSMutableArray *temp_arrA = [NSMutableArray arrayWithArray:arrA];//输入文本的单词数组
     NSMutableArray *temp_arrAA = [NSMutableArray arrayWithArray:arrAA];//输入文本简化后的单词数组
     NSMutableArray *temp_arrB = [NSMutableArray arrayWithArray:arrB];//原文本单词数组
     NSMutableArray *temp_arrBB = [NSMutableArray arrayWithArray:arrBB];//原文本简化后的单词数组
-
-    for (int i=0; i<arrA.count; i++) {
-        NSString *orgStringA = [temp_arrA objectAtIndex:i];
-        NSString *orgStringB = [temp_arrB objectAtIndex:i];
-        if ([[orgStringA uppercaseString] isEqualToString:[orgStringB uppercaseString]]) {
-            NSLog(@"完全正确");
-            [[Utility shared].greenArray addObject:[NSString stringWithFormat:@"%d",i]];
-        }//原文完全匹配
-        else {
-            NSString *strAA = [temp_arrAA objectAtIndex:i];
-            NSString *strBB = [temp_arrBB objectAtIndex:i];
-            if ([strAA isEqualToString:strBB]) {
-                int rotateDis = [Utility DistanceBetweenTwoString:orgStringA StrAbegin:0 StrAend:orgStringA.length-1 StrB:orgStringB StrBbegin:0 StrBend:orgStringB.length-1];
-                if (rotateDis == 0) {
-                    NSLog(@"完全正确");
-                    [[Utility shared].greenArray addObject:[NSString stringWithFormat:@"%d",i]];
-                }else if (rotateDis<= (abs(orgStringB.length-orgStringA.length)==0?1:2)) {
-                    NSLog(@"基本正确");
-                    [[Utility shared].yellowArray addObject:[NSString stringWithFormat:@"%d",i]];
-                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:i]];
-                }else {
-                    NSLog(@"黑户");
-                    [[Utility shared].wrongArray addObject:[NSString stringWithFormat:@"%d",i]];
-                }
-            }//简化文完全匹配－－计算原文的相似度
-            else {//简化文不同，原文不同
-                int m=0,n=0;
-                NSArray *arrayA = [Utility handleTheLetter:orgStringA];
-                NSArray *arrayB = [Utility handleTheLetter:orgStringB];
-                for (int k=0; k<arrayA.count; k++) {
-                    NSString *letter = [arrayA objectAtIndex:k];
-                    if ([arrayB containsObject:letter]) {
-                        n++;
-                    }
-                }
-                float y = (float)orgStringB.length/2;
-                if (n-y>=0){//原文部分匹配
-                    NSArray *arrayAA = [Utility handleTheLetter:strAA];
-                    NSArray *arrayBB = [Utility handleTheLetter:strBB];
-                    for (int k=0; k<arrayAA.count; k++) {
-                        NSString *letter = [arrayAA objectAtIndex:k];
-                        if ([arrayBB containsObject:letter]) {
-                            m++;
+    NSMutableArray *temp_range = [NSMutableArray arrayWithArray:rangeArray];
+    if (temp_arrAA.count>0 && temp_arrA.count>[Utility shared].firstpoint && temp_arrBB.count>0) {
+        NSString *strAA = [temp_arrAA objectAtIndex:[Utility shared].firstpoint];
+        if ([temp_arrBB containsObject:strAA]) {
+            NSUInteger index = [temp_arrBB indexOfObject:strAA];
+            if (index>[Utility shared].firstpoint) {//位置不同
+                //先比较2个数组中的第index个字符
+                if (temp_arrAA.count>index) {
+                    NSString *strAA2 = [temp_arrAA objectAtIndex:index];
+                    if ([strAA isEqualToString:strAA2]) {//index位置元素相同
+                        //比较相同后一位的相似度
+                        if (temp_arrBB.count>index+1) {//第一位与index＋1位
+                            NSString *strBB = [temp_arrBB objectAtIndex:index+1];
+                            NSString *strAA3 = [temp_arrAA objectAtIndex:[Utility shared].firstpoint+1];
+                            if ([temp_arrBB containsObject:strAA3]) {//arrAA里面后一位在arrBB里面
+                                NSUInteger index2 = [temp_arrBB indexOfObject:strAA3];
+                                if (index2>index) {//0位置与index位置对应
+                                    NSString *orgString = [temp_arrB objectAtIndex:index];
+                                    NSString *string = [temp_arrA objectAtIndex:[Utility shared].firstpoint];
+                                    int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                                    BOOL isSure = NO;
+                                    if (rotateDis == 0) {
+                                        NSLog(@"完全正确");
+                                        isSure = YES;
+                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                    }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {
+                                        NSLog(@"基本正确");
+                                        isSure = YES;
+                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                        
+//                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                                        [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                    }else {
+                                        NSLog(@"黑户");
+                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                        [Utility shared].firstpoint +=1;
+                                    }
+                                    if (isSure == YES) {
+                                        NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
+                                        NSRange range = [match rangeAtIndex:0];
+                                        NSString *str = [NSString stringWithFormat:@"%d_%d",range.location,index-[Utility shared].firstpoint];//从起点0开始到中点
+                                        [[Utility shared].spaceLineArray addObject:str];
+                                        
+                                        [temp_arrA removeObjectAtIndex:[Utility shared].firstpoint];
+                                        [temp_arrAA removeObjectAtIndex:[Utility shared].firstpoint];
+                                        if (index > [Utility shared].firstpoint) {
+                                            NSMutableArray *tempArrayB = [[NSMutableArray alloc]init];
+                                            NSMutableArray *tempArrayBB = [[NSMutableArray alloc]init];
+                                            for (int yy=[Utility shared].firstpoint; yy<=index; yy++) {
+                                                [tempArrayB addObject:[temp_arrB objectAtIndex:yy]];
+                                                [tempArrayBB addObject:[temp_arrBB objectAtIndex:yy]];
+                                            }
+                                            [temp_arrB removeObjectsInArray:tempArrayB];
+                                            [temp_arrBB removeObjectsInArray:tempArrayBB];
+                                        }else {
+                                            [temp_arrB removeObjectAtIndex:index];
+                                            [temp_arrBB removeObjectAtIndex:index];
+                                        }
+                                        [temp_range removeObjectAtIndex:[Utility shared].firstpoint];
+                                    }
+                                }
+                                else {//index位置与index位置对应
+                                    NSString *orgString = [temp_arrB objectAtIndex:index];
+                                    NSString *string = [temp_arrA objectAtIndex:index];
+                                    int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                                    BOOL isSure = NO;
+                                    if (rotateDis == 0) {
+                                        NSLog(@"完全正确");
+                                        isSure = YES;
+                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+                                    }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {
+                                        NSLog(@"基本正确");
+                                        isSure = YES;
+                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:index]];
+                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                        
+//                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                                        [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:index]];
+//                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+                                    }else {
+                                        NSLog(@"黑户");
+                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:index]];
+                                        [Utility shared].firstpoint +=1;
+                                    }
+                                    if (isSure == YES) {
+                                        [temp_arrA removeObjectAtIndex:index];
+                                        [temp_arrAA removeObjectAtIndex:index];
+                                        [temp_arrB removeObjectAtIndex:index];
+                                        [temp_arrBB removeObjectAtIndex:index];
+                                        [temp_range removeObjectAtIndex:index];
+                                    }
+                                }
+                            }
+                            else {//第一位与index＋1位是否部分匹配
+                                BOOL exit = NO;
+                                for (int i=0; i<temp_arrBB.count; i++) {
+                                    int m=0,n=0;
+                                    if (i!=index) {
+                                        NSString *strBB3 = [temp_arrBB objectAtIndex:i];
+                                        NSArray *arrayAA = [Utility handleTheLetter:strAA3];
+                                        NSArray *arrayBB = [Utility handleTheLetter:strBB3];
+                                        for (int k=0; k<arrayAA.count; k++) {
+                                            NSString *letter = [arrayAA objectAtIndex:k];
+                                            if ([arrayBB containsObject:letter]) {
+                                                m++;
+                                            }
+                                        }
+                                        float x = (float)strBB.length/2;
+                                        if (m-x>0) {//简化部分匹配
+                                            NSString *strA = [temp_arrA objectAtIndex:[Utility shared].firstpoint+1];
+                                            NSString *strB = [temp_arrB objectAtIndex:i];
+                                            NSArray *arrayA = [Utility handleTheLetter:strA];
+                                            NSArray *arrayB = [Utility handleTheLetter:strB];
+                                            for (int k=0; k<arrayA.count; k++) {
+                                                NSString *letter = [arrayA objectAtIndex:k];
+                                                if ([arrayB containsObject:letter]) {
+                                                    n++;
+                                                }
+                                            }
+                                            float y = (float)strB.length/2;
+                                            if (n-y>=0) {//原文部分匹配
+                                                exit = YES;
+                                                //i位置与第一位部分匹配
+                                                if (i>index) {//0位置与index位置对应
+                                                    NSString *orgString = [temp_arrB objectAtIndex:index];
+                                                    NSString *string = [temp_arrA objectAtIndex:[Utility shared].firstpoint+1];
+                                                    
+                                                    int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                                                    BOOL isSure = NO;
+                                                    if (rotateDis == 0) {//完全相同
+                                                        NSLog(@"完全正确");
+                                                        isSure = YES;
+                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                    }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
+                                                        NSLog(@"基本正确");
+                                                        isSure = YES;
+                                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        
+//                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                                                        [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                    }else {
+                                                        NSLog(@"黑户");
+                                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                        [Utility shared].firstpoint +=1;
+                                                    }
+                                                    if (isSure == YES) {
+                                                        NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
+                                                        NSRange range = [match rangeAtIndex:0];
+                                                        NSString *str = [NSString stringWithFormat:@"%d_%d",range.location,index-[Utility shared].firstpoint];//从起点0开始到中点
+                                                        [[Utility shared].spaceLineArray addObject:str];
+                                                        
+                                                        [temp_arrA removeObjectAtIndex:[Utility shared].firstpoint];
+                                                        [temp_arrAA removeObjectAtIndex:[Utility shared].firstpoint];
+                                                        if (index > [Utility shared].firstpoint) {
+                                                            NSMutableArray *tempArrayB = [[NSMutableArray alloc]init];
+                                                            NSMutableArray *tempArrayBB = [[NSMutableArray alloc]init];
+                                                            for (int yy=[Utility shared].firstpoint; yy<=index; yy++) {
+                                                                [tempArrayB addObject:[temp_arrB objectAtIndex:yy]];
+                                                                [tempArrayBB addObject:[temp_arrBB objectAtIndex:yy]];
+                                                            }
+                                                            [temp_arrB removeObjectsInArray:tempArrayB];
+                                                            [temp_arrBB removeObjectsInArray:tempArrayBB];
+                                                        }else {
+                                                            [temp_arrB removeObjectAtIndex:index];
+                                                            [temp_arrBB removeObjectAtIndex:index];
+                                                        }
+                                                        
+                                                        [temp_range removeObjectAtIndex:[Utility shared].firstpoint];
+                                                    }
+                                                    break;
+                                                }
+                                                else {//index位置与index位置对应
+                                                    NSString *orgString = [temp_arrB objectAtIndex:index];
+                                                    NSString *string = [temp_arrA objectAtIndex:index];
+                                                    int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                                                    BOOL isSure = NO;
+                                                    if (rotateDis == 0) {//完全相同
+                                                        NSLog(@"完全正确");
+                                                        isSure = YES;
+                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+                                                    }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
+                                                        NSLog(@"基本正确");
+                                                        isSure = YES;
+                                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:index]];
+                                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+//                                                        
+//                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                                                        [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:index]];
+//                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+                                                    }else {
+                                                        NSLog(@"黑户");
+                                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:index]];
+                                                        [Utility shared].firstpoint +=1;
+                                                    }
+                                                    if (isSure == YES) {
+                                                        [temp_arrA removeObjectAtIndex:index];
+                                                        [temp_arrAA removeObjectAtIndex:index];
+                                                        [temp_arrB removeObjectAtIndex:index];
+                                                        [temp_arrBB removeObjectAtIndex:index];
+                                                        [temp_range removeObjectAtIndex:index];
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                        }
+                                        if (index == temp_arrBB.count-1) {
+                                            if (i==temp_arrBB.count-2 && exit==NO) {//没有部分匹配index
+                                                NSString *orgString = [temp_arrB objectAtIndex:index];
+                                                NSString *string = [temp_arrA objectAtIndex:index];
+                                                int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                                                BOOL isSure = NO;
+                                                if (rotateDis == 0) {//完全相同
+                                                    NSLog(@"完全正确");
+                                                    isSure = YES;
+                                                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+                                                }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
+                                                    NSLog(@"基本正确");
+                                                    isSure = YES;
+                                                    [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:index]];
+                                                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                                    
+//                                                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                                                    [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:index]];
+//                                                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+                                                }else {
+                                                    NSLog(@"黑户");
+                                                    [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:index]];
+                                                    [Utility shared].firstpoint +=1;
+                                                }
+                                                if (isSure == YES) {
+                                                    [temp_arrA removeObjectAtIndex:index];
+                                                    [temp_arrAA removeObjectAtIndex:index];
+                                                    [temp_arrB removeObjectAtIndex:index];
+                                                    [temp_arrBB removeObjectAtIndex:index];
+                                                    [temp_range removeObjectAtIndex:index];
+                                                }
+                                            }
+                                        }else {
+                                            if (i==temp_arrBB.count-1 && exit==NO) {//没有部分匹配index
+                                                NSString *orgString = [temp_arrB objectAtIndex:index];
+                                                NSString *string = [temp_arrA objectAtIndex:index];
+                                                int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                                                BOOL isSure = NO;
+                                                if (rotateDis == 0) {//完全相同
+                                                    NSLog(@"完全正确");
+                                                    isSure = YES;
+                                                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+                                                }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
+                                                    NSLog(@"基本正确");
+                                                    isSure = YES;
+                                                    [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:index]];
+                                                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                                    
+//                                                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                                                    [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:index]];
+//                                                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+                                                }else {
+                                                    NSLog(@"黑户");
+                                                    [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:index]];
+                                                    [Utility shared].firstpoint +=1;
+                                                }
+                                                [temp_arrA removeObjectAtIndex:index];
+                                                [temp_arrAA removeObjectAtIndex:index];
+                                                [temp_arrB removeObjectAtIndex:index];
+                                                [temp_arrBB removeObjectAtIndex:index];
+                                                [temp_range removeObjectAtIndex:index];
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else {//index最后的位数
+                            NSString *orgString = [temp_arrB objectAtIndex:index];
+                            NSString *string = [temp_arrA objectAtIndex:index];
+                            int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                            BOOL isSure = NO;
+                            if (rotateDis == 0) {//完全相同
+                                NSLog(@"完全正确");
+                                isSure = YES;
+                                [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+                            }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
+                                NSLog(@"基本正确");
+                                isSure = YES;
+                                [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:index]];
+                                [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+//                                [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                                [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:index]];
+//                                [[Utility shared].greenArray addObject:[temp_range objectAtIndex:index]];
+                            }else {
+                                NSLog(@"黑户");
+                                [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:index]];
+                                [Utility shared].firstpoint +=1;
+                            }
+                            if (isSure == YES) {
+                                [temp_arrA removeObjectAtIndex:index];
+                                [temp_arrAA removeObjectAtIndex:index];
+                                [temp_arrB removeObjectAtIndex:index];
+                                [temp_arrBB removeObjectAtIndex:index];
+                                [temp_range removeObjectAtIndex:index];
+                            }
                         }
                     }
-                    float x = (float)strBB.length/2;
-                    if (m-x>0) {//简化部分匹配
-                        NSLog(@"部分匹配");
-                        [[Utility shared].yellowArray addObject:[NSString stringWithFormat:@"%d",i]];
-                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:i]];
+                    else {//index位置元素不同
+                        //比较>0位置
+                        if (temp_arrAA.count>[Utility shared].firstpoint+1) {
+                            for (int j=[Utility shared].firstpoint+1; j<temp_arrAA.count; j++) {
+                                BOOL exit = NO;
+                                NSString *str_AA = [temp_arrAA objectAtIndex:j];
+                                if ([str_AA isEqualToString:strAA]) {
+                                    for (int k=0; k<temp_arrBB.count; k++) {
+                                        if (k!=index) {
+                                            NSString *str_BB = [temp_arrBB objectAtIndex:k];
+                                            if ([str_BB isEqualToString:str_AA]) {
+                                                if (k>index) {
+                                                    exit = YES;
+                                                    NSString *orgString = [temp_arrB objectAtIndex:index];
+                                                    NSString *string = [temp_arrA objectAtIndex:[Utility shared].firstpoint];
+                                                    int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                                                    BOOL isSure = NO;
+                                                    if (rotateDis == 0) {//完全相同
+                                                        NSLog(@"完全正确");
+                                                        isSure = YES;
+                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                    }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
+                                                        NSLog(@"基本正确");
+                                                        isSure = YES;
+                                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        
+//                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                                                        [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                    }else {
+                                                        NSLog(@"黑户");
+                                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                        [Utility shared].firstpoint +=1;
+                                                    }
+                                                    if (isSure == YES) {
+                                                        NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
+                                                        NSRange range = [match rangeAtIndex:0];
+                                                        NSString *str = [NSString stringWithFormat:@"%d_%d",range.location,index-[Utility shared].firstpoint];//从起点0开始到中点
+                                                        [[Utility shared].spaceLineArray addObject:str];
+                                                        
+                                                        [temp_arrA removeObjectAtIndex:[Utility shared].firstpoint];
+                                                        [temp_arrAA removeObjectAtIndex:[Utility shared].firstpoint];
+                                                        if (index > [Utility shared].firstpoint) {
+                                                            NSMutableArray *tempArrayB = [[NSMutableArray alloc]init];
+                                                            NSMutableArray *tempArrayBB = [[NSMutableArray alloc]init];
+                                                            for (int yy=[Utility shared].firstpoint; yy<=index; yy++) {
+                                                                [tempArrayB addObject:[temp_arrB objectAtIndex:yy]];
+                                                                [tempArrayBB addObject:[temp_arrBB objectAtIndex:yy]];
+                                                            }
+                                                            [temp_arrB removeObjectsInArray:tempArrayB];
+                                                            [temp_arrBB removeObjectsInArray:tempArrayBB];
+                                                        }else {
+                                                            [temp_arrB removeObjectAtIndex:index];
+                                                            [temp_arrBB removeObjectAtIndex:index];
+                                                        }
+                                                        [temp_range removeObjectAtIndex:[Utility shared].firstpoint];
+                                                    }
+                                                    break;
+                                                }
+                                            }else {//j与index对应
+                                                if (index>j) {
+                                                    exit = YES;
+                                                    NSString *orgString = [temp_arrB objectAtIndex:index];
+                                                    NSString *string = [temp_arrA objectAtIndex:j];
+                                                    int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                                                    BOOL isSure = NO;
+                                                    if (rotateDis == 0) {//完全相同
+                                                        NSLog(@"完全正确");
+                                                        isSure = YES;
+                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:j]];
+                                                    }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
+                                                        NSLog(@"基本正确");
+                                                        isSure = YES;
+                                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:j]];
+                                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        
+//                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                                                        [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:j]];
+//                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:j]];
+                                                    }else {
+                                                        NSLog(@"黑户");
+                                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:j]];
+                                                        [Utility shared].firstpoint +=1;
+                                                    }
+                                                    
+                                                    if (isSure == YES) {
+                                                        NSTextCheckingResult *match = [temp_range objectAtIndex:j];
+                                                        NSRange range = [match rangeAtIndex:0];
+                                                        NSString *str = [NSString stringWithFormat:@"%d_%d",range.location,index-j];//从起点0开始到中点
+                                                        [[Utility shared].spaceLineArray addObject:str];
+                                                        
+                                                        [temp_arrA removeObjectAtIndex:j];
+                                                        [temp_arrAA removeObjectAtIndex:j];
+                                                        NSMutableArray *tempArrayB = [[NSMutableArray alloc]init];
+                                                        NSMutableArray *tempArrayBB = [[NSMutableArray alloc]init];
+                                                        for (int yy=j; yy<=index; yy++) {
+                                                            [tempArrayB addObject:[temp_arrB objectAtIndex:yy]];
+                                                            [tempArrayBB addObject:[temp_arrBB objectAtIndex:yy]];
+                                                        }
+                                                        [temp_arrB removeObjectsInArray:tempArrayB];
+                                                        [temp_arrBB removeObjectsInArray:tempArrayBB];
+                                                        [temp_range removeObjectAtIndex:j];
+                                                    }
+                                                    break;
+                                                }
+                                                else {
+                                                    exit = YES;
+                                                    //0与index对应
+                                                    NSString *orgString = [temp_arrB objectAtIndex:index];
+                                                    NSString *string = [temp_arrA objectAtIndex:[Utility shared].firstpoint];
+                                                    int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                                                    BOOL isSure = NO;
+                                                    if (rotateDis == 0) {//完全相同
+                                                        NSLog(@"完全正确");
+                                                        isSure = YES;
+                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                    }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
+                                                        NSLog(@"基本正确");
+                                                        isSure = YES;
+                                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                                        
+//                                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                                                        [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                    }else {
+                                                        NSLog(@"黑户");
+                                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                                        [Utility shared].firstpoint +=1;
+                                                    }
+                                                    if (isSure == YES) {
+                                                        NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
+                                                        NSRange range = [match rangeAtIndex:0];
+                                                        NSString *str = [NSString stringWithFormat:@"%d_%d",range.location,index-[Utility shared].firstpoint];//从起点0开始到中点
+                                                        [[Utility shared].spaceLineArray addObject:str];
+                                                        
+                                                        [temp_arrA removeObjectAtIndex:[Utility shared].firstpoint];
+                                                        [temp_arrAA removeObjectAtIndex:[Utility shared].firstpoint];
+                                                        if (index > [Utility shared].firstpoint) {
+                                                            NSMutableArray *tempArrayB = [[NSMutableArray alloc]init];
+                                                            NSMutableArray *tempArrayBB = [[NSMutableArray alloc]init];
+                                                            for (int yy=[Utility shared].firstpoint; yy<=index; yy++) {
+                                                                [tempArrayB addObject:[temp_arrB objectAtIndex:yy]];
+                                                                [tempArrayBB addObject:[temp_arrBB objectAtIndex:yy]];
+                                                            }
+                                                            [temp_arrB removeObjectsInArray:tempArrayB];
+                                                            [temp_arrBB removeObjectsInArray:tempArrayBB];
+                                                        }else {
+                                                            [temp_arrB removeObjectAtIndex:index];
+                                                            [temp_arrBB removeObjectAtIndex:index];
+                                                        }
+                                                        [temp_range removeObjectAtIndex:[Utility shared].firstpoint];
+                                                    }
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                if (j==temp_arrAA.count-1 && exit ==NO) {
+                                    NSString *orgString = [temp_arrB objectAtIndex:index];
+                                    NSString *string = [temp_arrA objectAtIndex:[Utility shared].firstpoint];
+                                    int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                                    BOOL isSure = NO;
+                                    if (rotateDis == 0) {//完全相同
+                                        NSLog(@"完全正确");
+                                        isSure = YES;
+                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                    }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
+                                        NSLog(@"基本正确");
+                                        isSure = YES;
+                                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                        
+//                                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                                        [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                    }else {
+                                        NSLog(@"黑户");
+                                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                        [Utility shared].firstpoint +=1;
+                                    }
+                                    if (isSure == YES) {
+                                        NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
+                                        NSRange range = [match rangeAtIndex:0];
+                                        NSString *str = [NSString stringWithFormat:@"%d_%d",range.location,index-[Utility shared].firstpoint];//从起点0开始到中点
+                                        [[Utility shared].spaceLineArray addObject:str];
+                                        
+                                        [temp_arrA removeObjectAtIndex:[Utility shared].firstpoint];
+                                        [temp_arrAA removeObjectAtIndex:[Utility shared].firstpoint];
+                                        if (index > [Utility shared].firstpoint) {
+                                            NSMutableArray *tempArrayB = [[NSMutableArray alloc]init];
+                                            NSMutableArray *tempArrayBB = [[NSMutableArray alloc]init];
+                                            for (int yy=[Utility shared].firstpoint; yy<=index; yy++) {
+                                                [tempArrayB addObject:[temp_arrB objectAtIndex:yy]];
+                                                [tempArrayBB addObject:[temp_arrBB objectAtIndex:yy]];
+                                            }
+                                            [temp_arrB removeObjectsInArray:tempArrayB];
+                                            [temp_arrBB removeObjectsInArray:tempArrayBB];
+                                        }else {
+                                            [temp_arrB removeObjectAtIndex:index];
+                                            [temp_arrBB removeObjectAtIndex:index];
+                                        }
+                                        [temp_range removeObjectAtIndex:[Utility shared].firstpoint];
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            //0与index对应
+                            NSString *orgString = [temp_arrB objectAtIndex:index];
+                            NSString *string = [temp_arrA objectAtIndex:[Utility shared].firstpoint];
+                            int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                            BOOL isSure = NO;
+                            if (rotateDis == 0) {//完全相同
+                                NSLog(@"完全正确");
+                                isSure = YES;
+                                [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                            }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
+                                NSLog(@"基本正确");
+                                isSure = YES;
+                                [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                                
+//                                [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                                [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                            }else {
+                                NSLog(@"黑户");
+                                [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                [Utility shared].firstpoint +=1;
+                            }
+                            
+                            if (isSure == YES) {
+                                NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
+                                NSRange range = [match rangeAtIndex:0];
+                                NSString *str = [NSString stringWithFormat:@"%d_%d",range.location,index-[Utility shared].firstpoint];//从起点0开始到中点
+                                [[Utility shared].spaceLineArray addObject:str];
+                                
+                                [temp_arrA removeObjectAtIndex:[Utility shared].firstpoint];
+                                [temp_arrAA removeObjectAtIndex:[Utility shared].firstpoint];
+                                if (index > [Utility shared].firstpoint) {
+                                    NSMutableArray *tempArrayB = [[NSMutableArray alloc]init];
+                                    NSMutableArray *tempArrayBB = [[NSMutableArray alloc]init];
+                                    for (int yy=[Utility shared].firstpoint; yy<=index; yy++) {
+                                        [tempArrayB addObject:[temp_arrB objectAtIndex:yy]];
+                                        [tempArrayBB addObject:[temp_arrBB objectAtIndex:yy]];
+                                    }
+                                    [temp_arrB removeObjectsInArray:tempArrayB];
+                                    [temp_arrBB removeObjectsInArray:tempArrayBB];
+                                }else {
+                                    [temp_arrB removeObjectAtIndex:index];
+                                    [temp_arrBB removeObjectAtIndex:index];
+                                }
+                                [temp_range removeObjectAtIndex:[Utility shared].firstpoint];
+                            }
+                        }
+                    }
+                }
+                else {//就是0位置与index位置对应
+                    NSString *orgString = [temp_arrB objectAtIndex:index];
+                    NSString *string = [temp_arrA objectAtIndex:[Utility shared].firstpoint];
+                    int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                    BOOL isSure = NO;
+                    if (rotateDis == 0) {//完全相同
+                        NSLog(@"完全正确");
+                        isSure = YES;
+                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                    }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
+                        NSLog(@"基本正确");
+                        isSure = YES;
+                        [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                        [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                        
+//                        [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                        [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                        [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                     }else {
                         NSLog(@"黑户");
-                        [[Utility shared].wrongArray addObject:[NSString stringWithFormat:@"%d",i]];
+                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                        [Utility shared].firstpoint +=1;
                     }
+                    
+                    if (isSure == YES) {
+                        NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
+                        NSRange range = [match rangeAtIndex:0];
+                        NSString *str = [NSString stringWithFormat:@"%d_%d",range.location,index-[Utility shared].firstpoint];
+                        [[Utility shared].spaceLineArray addObject:str];
+                        
+                        [temp_arrA removeObjectAtIndex:[Utility shared].firstpoint];
+                        [temp_arrAA removeObjectAtIndex:[Utility shared].firstpoint];
+                        if (index > [Utility shared].firstpoint) {
+                            NSMutableArray *tempArrayB = [[NSMutableArray alloc]init];
+                            NSMutableArray *tempArrayBB = [[NSMutableArray alloc]init];
+                            for (int yy=[Utility shared].firstpoint; yy<=index; yy++) {
+                                [tempArrayB addObject:[temp_arrB objectAtIndex:yy]];
+                                [tempArrayBB addObject:[temp_arrBB objectAtIndex:yy]];
+                            }
+                            [temp_arrB removeObjectsInArray:tempArrayB];
+                            [temp_arrBB removeObjectsInArray:tempArrayBB];
+                        }else {
+                            [temp_arrB removeObjectAtIndex:index];
+                            [temp_arrBB removeObjectAtIndex:index];
+                        }
+                        [temp_range removeObjectAtIndex:[Utility shared].firstpoint];
+                    }
+                }
+                return [Utility listenCompareWithArray:temp_arrA andArray:temp_arrAA WithArray:temp_arrB andArray:temp_arrBB WithRange:temp_range];
+            }
+            //输入句子长度大于原文本长度
+            else if (index <[Utility shared].firstpoint) {
+                NSString *orgString = [temp_arrB objectAtIndex:index];
+                NSString *string = [temp_arrA objectAtIndex:[Utility shared].firstpoint];
+                int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                BOOL isSure = NO;
+                if (rotateDis == 0) {//完全相同
+                    NSLog(@"完全正确");
+                    isSure = YES;
+                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {//基本正确
+                    NSLog(@"基本正确");
+                    isSure = YES;
+                    [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:index]];
+                    
+//                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:index]];
+//                    [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
                 }else {
                     NSLog(@"黑户");
-                    [[Utility shared].wrongArray addObject:[NSString stringWithFormat:@"%d",i]];
+                    [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                    [Utility shared].firstpoint +=1;
                 }
- 
+                if (isSure == YES) {
+                    [temp_arrA removeObjectAtIndex:[Utility shared].firstpoint];
+                    [temp_arrAA removeObjectAtIndex:[Utility shared].firstpoint];
+                    [temp_arrB removeObjectAtIndex:index];
+                    [temp_arrBB removeObjectAtIndex:index];
+                    [temp_range removeObjectAtIndex:[Utility shared].firstpoint];
+                }
+                return [Utility listenCompareWithArray:temp_arrA andArray:temp_arrAA WithArray:temp_arrB andArray:temp_arrBB WithRange:temp_range];
             }
+            else {//位置相同
+                NSString *orgString = [temp_arrB objectAtIndex:[Utility shared].firstpoint];
+                NSString *string = [temp_arrA objectAtIndex:[Utility shared].firstpoint];
+                int rotateDis = [Utility DistanceBetweenTwoString:string StrAbegin:0 StrAend:string.length-1 StrB:orgString StrBbegin:0 StrBend:orgString.length-1];
+                BOOL isSure = NO;
+                if (rotateDis == 0) {//完全相同
+                    NSLog(@"完全正确");
+                    isSure = YES;
+                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                }else if (rotateDis<= (abs(orgString.length-string.length)==0?1:2)) {
+                    NSLog(@"基本正确");
+                    isSure = YES;
+                    [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:[Utility shared].firstpoint]];
+                    
+//                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:[Utility shared].firstpoint]];
+//                    [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                }else {
+                    NSLog(@"黑户");
+                    [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                    [Utility shared].firstpoint +=1;
+                }
+                if (isSure == YES) {
+                    [temp_arrA removeObjectAtIndex:[Utility shared].firstpoint];
+                    [temp_arrAA removeObjectAtIndex:[Utility shared].firstpoint];
+                    [temp_arrB removeObjectAtIndex:[Utility shared].firstpoint];
+                    [temp_arrBB removeObjectAtIndex:[Utility shared].firstpoint];
+                    [temp_range removeObjectAtIndex:[Utility shared].firstpoint];
+                }
+                return [Utility listenCompareWithArray:temp_arrA andArray:temp_arrAA WithArray:temp_arrB andArray:temp_arrBB WithRange:temp_range];
+            }
+        }else {//不包含
+            BOOL exit = NO;
+            if (strAA.length>1) {
+                for (int i=0; i<temp_arrBB.count; i++) {
+                    int m=0,n=0;
+                    NSString *strBB = [temp_arrBB objectAtIndex:i];
+                    NSRange range = [strBB rangeOfString:strAA];
+                    if (range.location!=NSNotFound) {
+                        if (range.location==0 && range.length <strBB.length) {
+                            NSString *strLetter = [strBB substringFromIndex:range.length];
+                            if ([strLetter isEqualToString:@"S"]) {
+                                NSLog(@"基本正确");
+                                [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:i]];
+                                
+//                                [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:i]];
+//                                [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                if (i > [Utility shared].firstpoint) {
+                                    NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
+                                    NSRange range = [match rangeAtIndex:0];
+                                    NSString *str = [NSString stringWithFormat:@"%d_%d",range.location,i-[Utility shared].firstpoint];//从起点x开始之前少x个单词
+                                    [[Utility shared].spaceLineArray addObject:str];
+                                }
+                                [temp_arrA removeObjectAtIndex:[Utility shared].firstpoint];
+                                [temp_arrAA removeObjectAtIndex:[Utility shared].firstpoint];
+                                if (i>[Utility shared].firstpoint) {
+                                    NSMutableArray *tempArrayB = [[NSMutableArray alloc]init];
+                                    NSMutableArray *tempArrayBB = [[NSMutableArray alloc]init];
+                                    for (int yy=[Utility shared].firstpoint; yy<=i; yy++) {
+                                        [tempArrayB addObject:[temp_arrB objectAtIndex:yy]];
+                                        [tempArrayBB addObject:[temp_arrBB objectAtIndex:yy]];
+                                    }
+                                    [temp_arrB removeObjectsInArray:tempArrayB];
+                                    [temp_arrBB removeObjectsInArray:tempArrayBB];
+                                }else {
+                                    [temp_arrB removeObjectAtIndex:i];
+                                    [temp_arrBB removeObjectAtIndex:i];
+                                }
+                                
+                                [temp_range removeObjectAtIndex:[Utility shared].firstpoint];
+                                break;
+                            }
+                        }
+                    }
+                    else {
+                        NSRange range2 = [strAA rangeOfString:strBB];
+                        if (range2.location!=NSNotFound) {
+                            if (range2.location==0 && range2.length <strAA.length) {
+                                NSString *strLetter = [strAA substringFromIndex:range2.length];
+                                if ([strLetter isEqualToString:@"S"]) {
+                                    NSLog(@"基本正确");
+                                    [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:i]];
+                                    
+//                                    [[Utility shared].correctArray addObject:[temp_arrB objectAtIndex:i]];
+//                                    [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                    [[Utility shared].greenArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                    if (i > [Utility shared].firstpoint) {
+                                        NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
+                                        NSRange range = [match rangeAtIndex:0];
+                                        NSString *str = [NSString stringWithFormat:@"%d_%d",range.location,i-[Utility shared].firstpoint];//从起点x开始之前少x个单词
+                                        [[Utility shared].spaceLineArray addObject:str];
+                                    }
+                                    [temp_arrA removeObjectAtIndex:[Utility shared].firstpoint];
+                                    [temp_arrAA removeObjectAtIndex:[Utility shared].firstpoint];
+                                    if (i>[Utility shared].firstpoint) {
+                                        NSMutableArray *tempArrayB = [[NSMutableArray alloc]init];
+                                        NSMutableArray *tempArrayBB = [[NSMutableArray alloc]init];
+                                        for (int yy=[Utility shared].firstpoint; yy<=i; yy++) {
+                                            [tempArrayB addObject:[temp_arrB objectAtIndex:yy]];
+                                            [tempArrayBB addObject:[temp_arrBB objectAtIndex:yy]];
+                                        }
+                                        [temp_arrB removeObjectsInArray:tempArrayB];
+                                        [temp_arrBB removeObjectsInArray:tempArrayBB];
+                                    }else {
+                                        [temp_arrB removeObjectAtIndex:i];
+                                        [temp_arrBB removeObjectAtIndex:i];
+                                    }
+                                    
+                                    [temp_range removeObjectAtIndex:[Utility shared].firstpoint];
+                                    break;
+                                }
+                            }
+                        }else {
+                            //判断是否部分匹配
+                            NSArray *arrayAA = [Utility handleTheLetter:strAA];
+                            NSArray *arrayBB = [Utility handleTheLetter:strBB];
+                            for (int k=0; k<arrayAA.count; k++) {
+                                NSString *letter = [arrayAA objectAtIndex:k];
+                                if ([arrayBB containsObject:letter]) {
+                                    m++;
+                                }
+                            }
+                            
+                            float x = (float)strBB.length/2;
+                            if (m-x>0) {//简化部分匹配
+                                NSString *strA = [temp_arrA objectAtIndex:[Utility shared].firstpoint];
+                                NSString *strB = [temp_arrB objectAtIndex:i];
+                                NSArray *arrayA = [Utility handleTheLetter:strA];
+                                NSArray *arrayB = [Utility handleTheLetter:strB];
+                                for (int k=0; k<arrayA.count; k++) {
+                                    NSString *letter = [arrayA objectAtIndex:k];
+                                    if ([arrayB containsObject:letter]) {
+                                        n++;
+                                    }
+                                }
+                                float y = (float)strB.length/2;
+                                if (n-y>=0) {//原文部分匹配
+                                    exit = YES;
+                                    NSLog(@"部分匹配");
+                                    [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:i]];
+                                    
+//                                    [[Utility shared].yellowArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+//                                    [[Utility shared].sureArray addObject:[temp_arrB objectAtIndex:i]];
+//                                    [[Utility shared].noticeArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                                    if (i > [Utility shared].firstpoint) {
+                                        NSTextCheckingResult *match = [temp_range objectAtIndex:[Utility shared].firstpoint];
+                                        NSRange range = [match rangeAtIndex:0];
+                                        NSString *str = [NSString stringWithFormat:@"%d_%d",range.location,i-[Utility shared].firstpoint];//从起点x开始之前少x个单词
+                                        [[Utility shared].spaceLineArray addObject:str];
+                                    }
+                                    [temp_arrA removeObjectAtIndex:[Utility shared].firstpoint];
+                                    [temp_arrAA removeObjectAtIndex:[Utility shared].firstpoint];
+                                    if (i>[Utility shared].firstpoint) {
+                                        NSMutableArray *tempArrayB = [[NSMutableArray alloc]init];
+                                        NSMutableArray *tempArrayBB = [[NSMutableArray alloc]init];
+                                        for (int yy=[Utility shared].firstpoint; yy<=i; yy++) {
+                                            [tempArrayB addObject:[temp_arrB objectAtIndex:yy]];
+                                            [tempArrayBB addObject:[temp_arrBB objectAtIndex:yy]];
+                                        }
+                                        [temp_arrB removeObjectsInArray:tempArrayB];
+                                        [temp_arrBB removeObjectsInArray:tempArrayBB];
+                                    }else {
+                                        [temp_arrB removeObjectAtIndex:i];
+                                        [temp_arrBB removeObjectAtIndex:i];
+                                    }
+                                    
+                                    [temp_range removeObjectAtIndex:[Utility shared].firstpoint];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (i==temp_arrBB.count-1 && exit==NO) {//没有部分匹配
+                        NSLog(@"黑户");
+                        [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                        [Utility shared].firstpoint +=1;
+                    }
+                }
+            }else {
+                NSLog(@"黑户");
+                [[Utility shared].wrongArray addObject:[temp_range objectAtIndex:[Utility shared].firstpoint]];
+                [Utility shared].firstpoint +=1;
+            }
+            return [Utility listenCompareWithArray:temp_arrA andArray:temp_arrAA WithArray:temp_arrB andArray:temp_arrBB WithRange:temp_range];
         }
+    }else {
+        if (temp_arrBB.count>temp_arrAA.count) {
+            NSTextCheckingResult *match = [[Utility shared].rangeArray objectAtIndex:[Utility shared].rangeArray.count-1];
+            NSRange range = [match rangeAtIndex:0];
+            NSString *str = [NSString stringWithFormat:@"%d_%d",range.location+range.length,temp_arrBB.count-temp_arrAA.count];//从起点x开始之前少x个单词
+            [[Utility shared].spaceLineArray addObject:str];
+        }
+        NSMutableDictionary *mutableDic = [[NSMutableDictionary alloc]init];
+        if ([Utility shared].greenArray.count>0) {
+            [mutableDic setObject:[Utility shared].greenArray forKey:@"green"];
+        }
+        if ([Utility shared].yellowArray.count>0) {
+            [mutableDic setObject:[Utility shared].yellowArray forKey:@"yellow"];
+            [mutableDic setObject:[Utility shared].sureArray forKey:@"sure"];
+        }
+        if ([Utility shared].spaceLineArray.count>0) {
+            [mutableDic setObject:[Utility shared].spaceLineArray forKey:@"space"];
+        }
+        if ([Utility shared].noticeArray.count>0) {
+            [mutableDic setObject:[Utility shared].noticeArray forKey:@"notice"];
+            [mutableDic setObject:[Utility shared].correctArray forKey:@"correct"];
+        }
+        if ([Utility shared].wrongArray.count>0) {
+            [mutableDic setObject:[Utility shared].wrongArray forKey:@"wrong"];
+        }
+        [Utility shared].noticeArray = nil;
+        [Utility shared].correctArray = nil;
+        [Utility shared].greenArray = nil;
+        [Utility shared].yellowArray = nil;
+        [Utility shared].sureArray = nil;
+        [Utility shared].spaceLineArray = nil;
+        [Utility shared].wrongArray = nil;
+        return mutableDic;
     }
-    NSMutableDictionary *mutableDic = [[NSMutableDictionary alloc]init];
-    if ([Utility shared].greenArray.count>0) {
-        [mutableDic setObject:[Utility shared].greenArray forKey:@"green"];
-    }
-    if ([Utility shared].yellowArray.count>0) {
-        [mutableDic setObject:[Utility shared].yellowArray forKey:@"yellow"];
-        [mutableDic setObject:[Utility shared].sureArray forKey:@"sure"];
-    }
-
-    if ([Utility shared].wrongArray.count>0) {
-        [mutableDic setObject:[Utility shared].wrongArray forKey:@"wrong"];
-    }
-
-    [Utility shared].greenArray = nil;
-    [Utility shared].yellowArray = nil;
-    [Utility shared].sureArray = nil;
-    [Utility shared].wrongArray = nil;
-    return mutableDic;
-    
+    return nil;
 }
+
 +(NSDictionary *)compareWithArray:(NSArray *)arrA andArray:(NSArray *)arrAA WithArray:(NSArray *)arrB andArray:(NSArray *)arrBB WithRange:(NSArray *)rangeArray{
     NSMutableArray *temp_arrA = [NSMutableArray arrayWithArray:arrA];//输入文本的单词数组
     NSMutableArray *temp_arrAA = [NSMutableArray arrayWithArray:arrAA];//输入文本简化后的单词数组
