@@ -794,12 +794,14 @@ static CGFloat tmp_ratio = -100;
     NSMutableString *anserString = [NSMutableString string];
     NSMutableString *wrong_anserString = [NSMutableString string];
     
+    BOOL isCanCheck = NO;
     BOOL isFinish = YES;
     for (int i=0; i<self.orgArray.count; i++) {
         UITextField *txtField = (UITextField *)[self.wordsContainerView viewWithTag:i+Textfield_Tag];
         [txtField resignFirstResponder];
         
         if (txtField.text && txtField.text.length>0) {
+            isCanCheck = YES;
             int k=i+1;
             NSMutableString *mutableStr = [NSMutableString string];
             if (k<self.orgArray.count) {
@@ -820,103 +822,107 @@ static CGFloat tmp_ratio = -100;
             isFinish = NO;
         }
     }
-    [self.homeControl stopTimer];
     
-    [Utility shared].isOrg = NO;
-    NSArray *array = [anserString componentsSeparatedByString:@" "];
-    self.tmpArray = [NSMutableArray arrayWithArray:array];
-    NSString *originString = [self.tmpArray componentsJoinedByString:@" "];
-    NSArray *array1 = [Utility handleTheString:originString];
-    NSArray *array2 = [Utility metaphoneArray:array1];
-    
-    [Utility shared].sureArray = [[NSMutableArray alloc]init];
-    [Utility shared].greenArray = [[NSMutableArray alloc]init];
-    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
-    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
-    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
-    [Utility shared].firstpoint = 0;
-    
-    self.resultDic = [Utility listenCompareWithArray:array1 andArray:array2 WithArray:self.orgArray andArray:self.metaphoneArray WithRange:[Utility shared].rangeArray];
-    
-    [self resetUIWith:originString];
-    
-    self.scoreRadio = (self.branchScore/((float)self.orgArray.count))*100;
-    if (tmp_ratio<0) {
-        tmp_ratio = self.scoreRadio;//记录第一次的正确率
-    }
-    
-    BOOL isToJson = NO;//判断是否写入json
-    
-    if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
-        NSMutableArray *yellow_array = [self.resultDic objectForKey:@"yellow"];
-        for (int i=0; i<yellow_array.count; i++) {
-            NSTextCheckingResult *math = (NSTextCheckingResult *)[yellow_array objectAtIndex:i];
-            NSRange range = [math rangeAtIndex:0];
-            NSString *str = [originString substringWithRange:NSMakeRange(range.location, range.length)];
-            
-            int index = [self.tmpArray indexOfObject:str];
-            [wrong_anserString appendFormat:@"%@;||;",[self.orgArray objectAtIndex:index]];
-        }
-    }
-    
-    if (![[self.resultDic objectForKey:@"wrong"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"wrong"]!=nil) {
-        isToJson = NO;//还有错词不写入json
+    if (isCanCheck == YES) {
+        [self.homeControl stopTimer];
+        [Utility shared].isOrg = NO;
+        NSArray *array = [anserString componentsSeparatedByString:@" "];
+        self.tmpArray = [NSMutableArray arrayWithArray:array];
+        NSString *originString = [self.tmpArray componentsJoinedByString:@" "];
+        NSArray *array1 = [Utility handleTheString:originString];
+        NSArray *array2 = [Utility metaphoneArray:array1];
         
-        NSMutableArray *yellow_array = [self.resultDic objectForKey:@"wrong"];
-        for (int i=0; i<yellow_array.count; i++) {
-            NSTextCheckingResult *math = (NSTextCheckingResult *)[yellow_array objectAtIndex:i];
-            NSRange range = [math rangeAtIndex:0];
-            NSString *str = [originString substringWithRange:NSMakeRange(range.location, range.length)];
-            
-            int index = [self.tmpArray indexOfObject:str];
-            if (i==yellow_array.count-1) {
-                [wrong_anserString appendFormat:@"%@",[self.orgArray objectAtIndex:index]];
-            }else {
+        [Utility shared].sureArray = [[NSMutableArray alloc]init];
+        [Utility shared].greenArray = [[NSMutableArray alloc]init];
+        [Utility shared].yellowArray = [[NSMutableArray alloc]init];
+        [Utility shared].wrongArray = [[NSMutableArray alloc]init];
+        [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
+        [Utility shared].firstpoint = 0;
+        
+        self.resultDic = [Utility listenCompareWithArray:array1 andArray:array2 WithArray:self.orgArray andArray:self.metaphoneArray WithRange:[Utility shared].rangeArray];
+        
+        [self resetUIWith:originString];
+        
+        self.scoreRadio = (self.branchScore/((float)self.orgArray.count))*100;
+        if (tmp_ratio<0) {
+            tmp_ratio = self.scoreRadio;//记录第一次的正确率
+        }
+        
+        BOOL isToJson = NO;//判断是否写入json
+        
+        if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
+            NSMutableArray *yellow_array = [self.resultDic objectForKey:@"yellow"];
+            for (int i=0; i<yellow_array.count; i++) {
+                NSTextCheckingResult *math = (NSTextCheckingResult *)[yellow_array objectAtIndex:i];
+                NSRange range = [math rangeAtIndex:0];
+                NSString *str = [originString substringWithRange:NSMakeRange(range.location, range.length)];
+                
+                int index = [self.tmpArray indexOfObject:str];
                 [wrong_anserString appendFormat:@"%@;||;",[self.orgArray objectAtIndex:index]];
             }
         }
-    }else if (isFinish == YES){
-        isToJson = YES;//没有错词写入json
-        if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
-            self.homeControl.reduceTimeButton.enabled=NO;
-            [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
-            [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
-            [self.checkHomeworkButton addTarget:self action:@selector(finishQuestion:) forControlEvents:UIControlEventTouchUpInside];
+        
+        if (![[self.resultDic objectForKey:@"wrong"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"wrong"]!=nil) {
+            isToJson = NO;//还有错词不写入json
+            
+            NSMutableArray *yellow_array = [self.resultDic objectForKey:@"wrong"];
+            for (int i=0; i<yellow_array.count; i++) {
+                NSTextCheckingResult *math = (NSTextCheckingResult *)[yellow_array objectAtIndex:i];
+                NSRange range = [math rangeAtIndex:0];
+                NSString *str = [originString substringWithRange:NSMakeRange(range.location, range.length)];
+                
+                int index = [self.tmpArray indexOfObject:str];
+                if (i==yellow_array.count-1) {
+                    [wrong_anserString appendFormat:@"%@",[self.orgArray objectAtIndex:index]];
+                }else {
+                    [wrong_anserString appendFormat:@"%@;||;",[self.orgArray objectAtIndex:index]];
+                }
+            }
+        }else if (isFinish == YES){
+            isToJson = YES;//没有错词写入json
+            if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
+                self.homeControl.reduceTimeButton.enabled=NO;
+                [self.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+                [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+                [self.checkHomeworkButton addTarget:self action:@selector(finishQuestion:) forControlEvents:UIControlEventTouchUpInside];
+            }else {
+                [self.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
+                [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+                [self.checkHomeworkButton addTarget:self action:@selector(nextQuestion:) forControlEvents:UIControlEventTouchUpInside];
+            }
+        }
+        
+        if (self.again_first == YES) {
+            self.again_first=NO;
+            self.again_radio += self.scoreRadio;
+        }
+        if (self.scoreRadio-100>=0) {
+            TRUESOUND;
         }else {
-            [self.checkHomeworkButton setTitle:@"下一题" forState:UIControlStateNormal];
-            [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
-            [self.checkHomeworkButton addTarget:self action:@selector(nextQuestion:) forControlEvents:UIControlEventTouchUpInside];
+            FALSESOUND;
+            if (self.isFirst==YES && isToJson==YES) {
+                [DataService sharedService].cardsCount += 1;
+            }
         }
-    }
-    
-    if (self.again_first == YES) {
-        self.again_first=NO;
-        self.again_radio += self.scoreRadio;
-    }
-    if (self.scoreRadio-100>=0) {
-        TRUESOUND;
-    }else {
-        FALSESOUND;
         if (self.isFirst==YES && isToJson==YES) {
-            [DataService sharedService].cardsCount += 1;
-        }
-    }
-    if (self.isFirst==YES && isToJson==YES) {
-        NSString *answer = [NSString stringWithFormat:@"%@;||;%@",anserString,wrong_anserString];
-        //TODO:写入json
-        int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
-        int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
-        if (number_question>self.number) {
-            //表示已经做过这道题
-        }else if (number_question==self.number){
-            if (number_branch_question>=self.branchNumber) {
+            NSString *answer = [NSString stringWithFormat:@"%@;||;%@",anserString,wrong_anserString];
+            //TODO:写入json
+            int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
+            int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
+            if (number_question>self.number) {
                 //表示已经做过这道题
+            }else if (number_question==self.number){
+                if (number_branch_question>=self.branchNumber) {
+                    //表示已经做过这道题
+                }else {
+                    [self writeToAnswerJsonWithString:answer];
+                }
             }else {
                 [self writeToAnswerJsonWithString:answer];
             }
-        }else {
-            [self writeToAnswerJsonWithString:answer];
         }
+    }else {
+        [Utility errorAlert:@"请填写听到的单词!"];
     }
 }
 -(void)writeToAnswerJsonWithString:(NSString *)string {
@@ -1108,7 +1114,7 @@ static CGFloat tmp_ratio = -100;
     self.homeControl.reduceTimeButton.enabled=NO;
     self.checkHomeworkButton.enabled=YES;
     self.number=0;self.branchNumber=0;self.isFirst = NO;
-    self.homeControl.spendSecond = 0;
+    self.homeControl.spendSecond = 0;self.again_radio=0;
     [self.homeControl startTimer];
     [self listenMusicViewUI];
     ////////////////////////////////////////////////////////////////////////

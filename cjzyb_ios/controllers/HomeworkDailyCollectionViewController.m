@@ -72,6 +72,7 @@
     HomeworkTypeObj *obj = [self.taskObj.taskHomeworkTypeArray objectAtIndex:indexPath.item];
     cell.isFinished = obj.homeworkTypeIsFinished;
     cell.homeworkType = obj.homeworkType;
+    cell.isShowRankingBtn = obj.homeworkTypeIsRanking;
     cell.path = indexPath;
     cell.delegate = self;
     return cell;

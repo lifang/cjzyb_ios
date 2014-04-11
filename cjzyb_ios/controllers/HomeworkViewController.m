@@ -397,7 +397,11 @@
 
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller rankingButtonClickedAtIndexPath:(NSIndexPath *)path{
     TaskObj *task = controller.taskObj;
+<<<<<<< Updated upstream
     if (task.isExpire==YES){
+=======
+    if (task.isExpire==YES) {
+>>>>>>> Stashed changes
         HomeworkRankingViewController *rankingController = [[HomeworkRankingViewController alloc] initWithNibName:@"HomeworkRankingViewController" bundle:nil];
         rankingController.modalPresentationStyle = UIModalPresentationFormSheet;
         rankingController.view.frame = (CGRect){0,0,514,350};
@@ -411,13 +415,6 @@
     }
 }
 #pragma mark --
-
-//#pragma mark UICollectionViewDelegate
-//-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//}
-//#pragma mark --
-
 #pragma mark UICollectionViewDataSource
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     HomeworkHistoryCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];

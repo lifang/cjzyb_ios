@@ -40,4 +40,7 @@ typedef enum {
 @property (strong,nonatomic) NSString *homeworkTypeRanking;
 ///作业类型
 @property (assign,nonatomic) HomeworkType homeworkType;
+
+///当前类型任务是否有排名
+@property (assign,nonatomic) BOOL homeworkTypeIsRanking;
 @end

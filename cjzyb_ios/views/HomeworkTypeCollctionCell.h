@@ -18,6 +18,9 @@
 @property (assign,nonatomic) BOOL isFinished;
 ///排名按钮
 @property (weak, nonatomic) IBOutlet UIButton *rankingButton;
+///排名按钮出现
+@property (assign,nonatomic) BOOL isShowRankingBtn;
+
 @property (assign,nonatomic) HomeworkType homeworkType;
 @property (weak,nonatomic) id <HomeworkTypeCollctionCellDelegate> delegate;
 @property (nonatomic,strong) NSIndexPath *path;

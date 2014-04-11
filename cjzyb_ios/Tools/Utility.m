@@ -2456,7 +2456,9 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         //写入update字段 ,解决服务器update时间和json中的时间不一致的问题
         [jsonDic removeObjectForKey:@"update"];
         [jsonDic setObject:[DataService sharedService].taskObj.taskAnswerFileUpdateDate forKey:@"update"];
-        [jsonDic writeToFile:answerPath atomically:YES];
+        
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:jsonDic options:NSJSONWritingPrettyPrinted error:&error];
+        [jsonData writeToFile:answerPath atomically:YES];
     }else{
         //报告下载错误
     }

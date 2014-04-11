@@ -69,6 +69,11 @@
 		0E93C9BE18D9927E0094AD7B /* LininggViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9BC18D9927E0094AD7B /* LininggViewController.m */; };
 		0E93C9BF18D9927E0094AD7B /* LininggViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E93C9BD18D9927E0094AD7B /* LininggViewController.xib */; };
 		0E93C9D618DAE7C30094AD7B /* CustomLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E93C9D518DAE7C30094AD7B /* CustomLabel.m */; };
+		0E960FDC18F644C2004F222B /* user_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E960FDB18F644C2004F222B /* user_arrow@2x.png */; };
+		0E960FE018F69A49004F222B /* left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E960FDE18F69A49004F222B /* left@2x.png */; };
+		0E960FE118F69A49004F222B /* right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E960FDF18F69A49004F222B /* right@2x.png */; };
+		0E960FE518F797F2004F222B /* FullText.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E960FE318F797F2004F222B /* FullText.m */; };
+		0E960FE618F797F2004F222B /* FullText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E960FE418F797F2004F222B /* FullText.xib */; };
 		0E97C9CC18E2A17500890F60 /* logOut@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9CB18E2A17500890F60 /* logOut@2x.png */; };
 		0E97C9CE18E2A81700890F60 /* contact_message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9CD18E2A81700890F60 /* contact_message@2x.png */; };
 		0E97C9DC18E2BABB00890F60 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9DB18E2BABB00890F60 /* PushConfig.plist */; };
@@ -476,6 +481,12 @@
 		0E93C9BD18D9927E0094AD7B /* LininggViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LininggViewController.xib; sourceTree = "<group>"; };
 		0E93C9D418DAE7C30094AD7B /* CustomLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLabel.h; sourceTree = "<group>"; };
 		0E93C9D518DAE7C30094AD7B /* CustomLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLabel.m; sourceTree = "<group>"; };
+		0E960FDB18F644C2004F222B /* user_arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_arrow@2x.png"; sourceTree = "<group>"; };
+		0E960FDE18F69A49004F222B /* left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "left@2x.png"; sourceTree = "<group>"; };
+		0E960FDF18F69A49004F222B /* right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right@2x.png"; sourceTree = "<group>"; };
+		0E960FE218F797F2004F222B /* FullText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullText.h; sourceTree = "<group>"; };
+		0E960FE318F797F2004F222B /* FullText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullText.m; sourceTree = "<group>"; };
+		0E960FE418F797F2004F222B /* FullText.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FullText.xib; sourceTree = "<group>"; };
 		0E97C9CB18E2A17500890F60 /* logOut@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logOut@2x.png"; sourceTree = "<group>"; };
 		0E97C9CD18E2A81700890F60 /* contact_message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact_message@2x.png"; sourceTree = "<group>"; };
 		0E97C9DB18E2BABB00890F60 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
@@ -1060,6 +1071,8 @@
 		0E92657218BDACCE003ADEC3 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E960FDE18F69A49004F222B /* left@2x.png */,
+				0E960FDF18F69A49004F222B /* right@2x.png */,
 				18FAB37918F4F84700C2AB83 /* homework_refresh@2x.png */,
 				0E97C9CD18E2A81700890F60 /* contact_message@2x.png */,
 				0E97C9CB18E2A17500890F60 /* logOut@2x.png */,
@@ -1087,6 +1100,7 @@
 				0E5D1C8418C9A0FE008A13F2 /* logIn@2x.png */,
 				0EEF4C2118C562FD0058606A /* divider.png */,
 				0E92658718BDC546003ADEC3 /* comment@2x.png */,
+				0E960FDB18F644C2004F222B /* user_arrow@2x.png */,
 				0E92658518BDC528003ADEC3 /* focus@2x.png */,
 				0E92657318BDACDD003ADEC3 /* first_active@2x.png */,
 				0E92657418BDACDD003ADEC3 /* first@2x.png */,
@@ -1173,9 +1187,15 @@
 				0EAABD7818CF136900CD2DE7 /* TagViewController.h */,
 				0EAABD7918CF136900CD2DE7 /* TagViewController.m */,
 				0EAABD7A18CF136900CD2DE7 /* TagViewController.xib */,
+<<<<<<< Updated upstream
 				182AF15518F7B7E200EA5A7E /* FullText.h */,
 				182AF15618F7B7E200EA5A7E /* FullText.m */,
 				182AF15718F7B7E200EA5A7E /* FullText.xib */,
+=======
+				0E960FE218F797F2004F222B /* FullText.h */,
+				0E960FE318F797F2004F222B /* FullText.m */,
+				0E960FE418F797F2004F222B /* FullText.xib */,
+>>>>>>> Stashed changes
 			);
 			name = "卡包";
 			sourceTree = "<group>";
@@ -2238,10 +2258,13 @@
 				189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */,
 				630DBE0818D15BF4009DA0EB /* propOfAnswer@2x.png in Resources */,
 				187C4AC718D304AC0006461D /* 10_02@2x.png in Resources */,
+				0E960FDC18F644C2004F222B /* user_arrow@2x.png in Resources */,
 				630DBDFC18D15AFB009DA0EB /* jiezu_yellow@2x.png in Resources */,
+				0E960FE018F69A49004F222B /* left@2x.png in Resources */,
 				0E0E801E18E912BF0022AC57 /* first@2x.png in Resources */,
 				0E2B517C18DC27110056859D /* trueMusic.wav in Resources */,
 				630DBDF318D15A95009DA0EB /* youxiu@2x.png in Resources */,
+				0E960FE618F797F2004F222B /* FullText.xib in Resources */,
 				187C4ACB18D304AC0006461D /* 10_06@2x.png in Resources */,
 				630DBE1D18D15CB1009DA0EB /* homework_line@2x.png in Resources */,
 				0E93C9B018D834630094AD7B /* ios-stop@2x.png in Resources */,
@@ -2313,6 +2336,7 @@
 				638C04FB18E51D13009BFD40 /* HomeworkRankingViewController.xib in Resources */,
 				63289A2C18C595D300C0083E /* listening_stop@2x.png in Resources */,
 				630DBDCD18D15653009DA0EB /* DRNavigationBar.xib in Resources */,
+				0E960FE118F69A49004F222B /* right@2x.png in Resources */,
 				630DBE0918D15BF4009DA0EB /* propOfTime@2x.png in Resources */,
 				0E0E801F18E912BF0022AC57 /* send@2x.png in Resources */,
 				0E0E801D18E912BF0022AC57 /* second@2x.png in Resources */,
@@ -2404,7 +2428,11 @@
 				0EEF4BEA18C561700058606A /* MessageInterface.m in Sources */,
 				182BEE5318E12FA000FC0AA0 /* ZipArchive.mm in Sources */,
 				6329556C18BC900600F2B78D /* UIImage+MultiFormat.m in Sources */,
+<<<<<<< Updated upstream
 				182AF15818F7B7E200EA5A7E /* FullText.m in Sources */,
+=======
+				0E960FE518F797F2004F222B /* FullText.m in Sources */,
+>>>>>>> Stashed changes
 				0E9D689018C9B7F400EACFA3 /* LogInterface.m in Sources */,
 				0E9C6E9D18D1977E00E807D1 /* SelectedViewController.m in Sources */,
 				0E9C6EA418D1B2C100E807D1 /* UnderLineLabel.m in Sources */,
