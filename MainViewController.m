@@ -74,7 +74,7 @@
     [super viewDidLoad];
     //TODO:
     NSLog(@"%@--%@--%@",[DataService sharedService].user.userId,[DataService sharedService].user.studentId,[DataService sharedService].theClass.classId);
-    [self makeFakeUserInfo];
+//    [self makeFakeUserInfo];
     
     if (platform>=7.0) {
         AppDelegate *appDel = [AppDelegate shareIntance];
