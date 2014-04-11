@@ -47,5 +47,5 @@
 +(NSMutableArray*)getErrorWordArrayFromString:(NSString*)content;
 
 //TODO: 根据答案的json文件解析出朗读类型的做题记录
-+(void)parseAnswerJsonFile:(NSString*)jsonFilePath withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex,int status,NSString *updateTime,NSString *userTime,float ratio))questionArr withParseError:(void (^)(NSError *error))failure;
+//+(void)parseAnswerJsonFile:(NSString*)jsonFilePath withReadingHistoryArray:( void(^)(NSArray *readingQuestionArr,int currentQuestionIndex,int currentQuestionItemIndex,int status,NSString *updateTime,NSString *userTime,float ratio))questionArr withParseError:(void (^)(NSError *error))failure;
 @end

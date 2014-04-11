@@ -34,6 +34,7 @@
 ///读匹配次数
 @property (nonatomic,assign) int readingCount;
 
+@property (strong,nonatomic) NSMutableArray *propsArray;//道具
 
 ///是否在读内容
 @property (nonatomic,assign) BOOL isReading;
@@ -134,6 +135,7 @@
         [self appearPrePlayControllerWithAnimation:YES];
         [self loadHomeworkFromFile];
         [self updateFirstSentence];
+        self.propsArray = [Utility returnAnswerPropsandDate:[DataService sharedService].taskObj.taskStartDate];
         [self.preReadingController startPreListeningHomeworkSentence:self.currentHomework withPlayFinished:^(BOOL isSuccess) {
             
         }];
@@ -190,6 +192,32 @@
     }
     [DataService sharedService].number_reduceTime--;
     parentVC.spendSecond = parentVC.spendSecond > 5 ? parentVC.spendSecond - 5 : 0;
+    
+    //显示 "-5" 动画效果
+    UILabel *label = [[UILabel alloc] initWithFrame:(CGRect){self.view.frame.size.width/2,120,70,50}];
+    [label setFont:[UIFont systemFontOfSize:50]];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor orangeColor];
+    label.text = @"-5";
+    [parentVC.view addSubview:label];
+    [parentVC.view setUserInteractionEnabled:NO];
+    label.alpha = 1;
+    [UIView animateWithDuration:1 animations:^{
+        label.alpha = 0;
+    } completion:^(BOOL finished) {
+        [label removeFromSuperview];
+        [parentVC.view setUserInteractionEnabled:YES];
+    }];
+    
+    //存储道具记录JSON
+    if (self.propsArray.count > 0) {
+        NSMutableDictionary *timePropDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray firstObject]];
+        NSMutableArray *branchOfPropArray = [NSMutableArray arrayWithArray:[timePropDic objectForKey:@"branch_id"]];
+        [branchOfPropArray addObject:[NSNumber numberWithInteger:self.currentSentence.readingSentenceID.integerValue]];
+        [timePropDic setObject:branchOfPropArray forKey:@"branch_id"];
+        [self.propsArray replaceObjectAtIndex:0 withObject:timePropDic];
+        [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
+    }
 }
 
 //TODO:退出作业界面

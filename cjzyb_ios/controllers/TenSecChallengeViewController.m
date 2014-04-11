@@ -35,7 +35,6 @@
 @property (assign,nonatomic) BOOL shouldUploadJSON;  //是否需要上传JSON  (于保存answerJSON时置真)
 @property (assign,nonatomic) BOOL haveUploadedJSON; //是否已上传JSON
 //@property (assign,nonatomic) BOOL runningWithoutAnswer; //进入未做过的历史题时,标记的状态
-@property (strong,nonatomic) NSUserDefaults *userDefaults;
 @end
 
 @implementation TenSecChallengeViewController
@@ -91,12 +90,6 @@
     if ([DataService sharedService].taskObj.isExpire) {
         self.answerStatus = @"1";
     }
-    
-    
-    //重新挑战次数
-    if (![self.userDefaults stringForKey:@"reChallengeTimesLeft"]) {
-        [self.userDefaults setObject:@"3" forKey:@"reChallengeTimesLeft"];
-    }
 }
 
 #pragma mark -- 挑战的生命周期
@@ -128,26 +121,10 @@
     }else{
         if ([self.answerStatus isEqualToString:@"1"]) { //重新做题  ,此时应判断是否有重新做题的剩余次数
             self.isReDoingChallenge = YES;
-            NSString * timesLeft = [self.userDefaults stringForKey:@"reChallengeTimesLeft"];
-            if (timesLeft.integerValue < 1) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"抱歉" message:@"今日挑战次数已经用完" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:nil];
-                dispatch_async(dispatch_get_main_queue(),^{
-                    [alert show];
-                });
-                self.upperButton.enabled = NO;
-                self.lowerButton.enabled = NO;
-                [parentVC stopTimer];
-                return;
-            }else{
-                [self.userDefaults setObject:[NSString stringWithFormat:@"%d",timesLeft.integerValue - 1] forKey:@"reChallengeTimesLeft"];
-                [self.userDefaults synchronize];
-            }
             parentVC.spendSecond = 0;
             self.currentNO = 0;
             self.answerArray = [NSMutableArray array];
         }else{ //继续做题(第一遍做题)
-            [self.userDefaults setObject:@"3" forKey:@"reChallengeTimesLeft"];
-            [self.userDefaults synchronize];
             if (self.lastTimeCurrentNO > 1) {
                 self.currentNO = self.lastTimeCurrentNO;
             }
@@ -207,8 +184,6 @@
         }else{
             self.resultView.isEarly = NO;
         }
-        
-        self.resultView.challengeTimesLeft = [NSString stringWithFormat:@"%@",[self.userDefaults stringForKey:@"reChallengeTimesLeft"]];
         
         [self.resultView initView];
     }else{
@@ -476,12 +451,6 @@
 }
 
 #pragma mark -- property
-- (NSUserDefaults *)userDefaults{
-    if (!_userDefaults) {
-        _userDefaults = [NSUserDefaults standardUserDefaults];
-    }
-    return _userDefaults;
-}
 
 - (NSArray *)questionNumberImages{
     if (!_questionNumberImages || _questionNumberImages.count < 1) {

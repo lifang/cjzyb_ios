@@ -739,17 +739,36 @@
         self.timeCount -= 5.0;
     }
     parentVC.spendSecond = self.timeCount;
-    if ((-- [DataService sharedService].number_reduceTime) < 1) {
+    [DataService sharedService].number_reduceTime -- ;
+    if ([DataService sharedService].number_reduceTime < 1) {
         parentVC.reduceTimeButton.enabled = NO;
     }
     
+    //显示 "-5" 动画效果
+    UILabel *label = [[UILabel alloc] initWithFrame:(CGRect){self.view.frame.size.width/2,120,70,50}];
+    [label setFont:[UIFont systemFontOfSize:50]];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor orangeColor];
+    label.text = @"-5";
+    [parentVC.view addSubview:label];
+    [parentVC.view setUserInteractionEnabled:NO];
+    label.alpha = 1;
+    [UIView animateWithDuration:1 animations:^{
+        label.alpha = 0;
+    } completion:^(BOOL finished) {
+        [label removeFromSuperview];
+        [parentVC.view setUserInteractionEnabled:YES];
+    }];
+    
     //存储道具记录JSON
-    NSMutableDictionary *timePropDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray lastObject]];
-    NSMutableArray *branchOfPropArray = [NSMutableArray arrayWithArray:[timePropDic objectForKey:@"branch_id"]];
-    [branchOfPropArray addObject:[NSNumber numberWithInteger:self.currentQuestion.seID.integerValue]];
-    [timePropDic setObject:branchOfPropArray forKey:@"branch_id"];
-    [self.propsArray replaceObjectAtIndex:1 withObject:timePropDic];
-    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
+    if (self.propsArray.count > 0) {
+        NSMutableDictionary *timePropDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray firstObject]];
+        NSMutableArray *branchOfPropArray = [NSMutableArray arrayWithArray:[timePropDic objectForKey:@"branch_id"]];
+        [branchOfPropArray addObject:[NSNumber numberWithInteger:self.currentQuestion.seID.integerValue]];
+        [timePropDic setObject:branchOfPropArray forKey:@"branch_id"];
+        [self.propsArray replaceObjectAtIndex:0 withObject:timePropDic];
+        [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
+    }
 }
 
 //道具1
@@ -768,12 +787,14 @@
     parentVC.appearCorrectButton.enabled = NO;
     
     //存储道具记录JSON
-    NSMutableDictionary *rightAnswerPropDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray firstObject]];
-    NSMutableArray *branchOfPropArray = [NSMutableArray arrayWithArray:[rightAnswerPropDic objectForKey:@"branch_id"]];
-    [branchOfPropArray addObject:[NSNumber numberWithInteger:self.currentQuestion.seID.integerValue]];
-    [rightAnswerPropDic setObject:branchOfPropArray forKey:@"branch_id"];
-    [self.propsArray replaceObjectAtIndex:0 withObject:rightAnswerPropDic];
-    [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
+    if (self.propsArray.count > 1) {
+        NSMutableDictionary *rightAnswerPropDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray lastObject]];
+        NSMutableArray *branchOfPropArray = [NSMutableArray arrayWithArray:[rightAnswerPropDic objectForKey:@"branch_id"]];
+        [branchOfPropArray addObject:[NSNumber numberWithInteger:self.currentQuestion.seID.integerValue]];
+        [rightAnswerPropDic setObject:branchOfPropArray forKey:@"branch_id"];
+        [self.propsArray replaceObjectAtIndex:1 withObject:rightAnswerPropDic];
+        [Utility returnAnswerPathWithProps:self.propsArray andDate:[DataService sharedService].taskObj.taskStartDate];
+    }
 }
 
 - (void)nextButtonClicked:(id)sender {

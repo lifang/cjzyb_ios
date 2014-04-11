@@ -33,7 +33,7 @@
 @property (assign,nonatomic) long long timeCount; //用时(秒)
 @property (assign,nonatomic) NSInteger timeLimit; //时限(秒)
 @property (assign,nonatomic) BOOL isEarly;   //是否提前两小时完成挑战
-@property (strong,nonatomic) NSString *challengeTimesLeft;  //剩余挑战次数(十速挑战专用)
+//@property (strong,nonatomic) NSString *challengeTimesLeft;  //剩余挑战次数(十速挑战专用)
 //还少一个再次挑战的次数限制
 - (void) initView;  //赋予所有参数之后调用
 
