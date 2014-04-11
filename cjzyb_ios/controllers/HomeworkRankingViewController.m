@@ -59,10 +59,10 @@
             titleString = @"连线挑战当日排名";
             break;
         case HomeworkType_listeningAndWrite:
-            titleString = @"听写挑战当日排名";
+            titleString = @"听写任务当日排名";
             break;
         case HomeworkType_reading:
-            titleString = @"朗读挑战当日排名";
+            titleString = @"朗读任务当日排名";
             break;
         case HomeworkType_select:
             titleString = @"选择挑战当日排名";
