@@ -37,12 +37,12 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-   [self performSelector:@selector(showMainView) withObject:nil afterDelay:1];
+   [self performSelector:@selector(showMainView) withObject:nil afterDelay:2];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default-Landscape.png"]];
+     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default-Portrait.png"]];
 }
 
 - (void)didReceiveMemoryWarning

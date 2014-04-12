@@ -13,14 +13,14 @@
 
 @implementation PersonInfoInterface
 
--(void)getPersonInterfaceDelegateWithQQ:(NSString *)qq andNick:(NSString *)nick andName:(NSString *)name andCode:(NSString *)code {
+-(void)getPersonInterfaceDelegateWithQQ:(NSString *)qq andNick:(NSString *)nick andName:(NSString *)name andCode:(NSString *)code andKey:(NSString *)key{
     NSMutableDictionary *reqheaders = [[NSMutableDictionary alloc] init];
     
     [reqheaders setValue:[NSString stringWithFormat:@"%@",qq] forKey:@"open_id"];
     [reqheaders setValue:[NSString stringWithFormat:@"%@",nick] forKey:@"nickname"];
     [reqheaders setValue:[NSString stringWithFormat:@"%@",name] forKey:@"name"];
     [reqheaders setValue:[NSString stringWithFormat:@"%@",code] forKey:@"verification_code"];
-    
+    [reqheaders setValue:[NSString stringWithFormat:@"%@",key] forKey:@"key"];
     
     self.interfaceUrl =[NSString stringWithFormat:@"%@/api/students/record_person_info",kHOST];
     

@@ -8,9 +8,7 @@
 
 #import "LogInViewController.h"
 
-#define AppId @"101049069"
-#define Appkey @"5d1b7abdebfe75235ff57ffd6d4edb9d"
-
+#define AppId @"101003848"
 @interface LogInViewController ()
 
 @property (nonatomic, strong) TencentOAuth *tencentOAuth;
@@ -45,7 +43,7 @@
 {
     [super viewDidLoad];
     [self.navigationController.navigationBar setHidden:YES];
-    
+    self.pageIndex = 0;
     [self initTencentSession];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -113,18 +111,34 @@
         frame.origin.y -= xx;
         self.logoImg.frame = frame;
         
-        frame = self.nickTxt.frame;
-        frame.origin.y -= xx;
-        self.nickTxt.frame = frame;
-        
-        frame = self.nameTxt.frame;
-        frame.origin.y -= xx;
-        self.nameTxt.frame = frame;
-        
-        frame = self.classTxt.frame;
-        frame.origin.y -= xx;
-        self.classTxt.frame = frame;
-        
+        if (self.pageIndex==1) {//激活码页面
+            frame = self.activeTxt.frame;
+            frame.origin.y -= xx;
+            self.activeTxt.frame = frame;
+            
+            frame = self.activeSkipBtn.frame;
+            frame.origin.y -= xx;
+            self.activeSkipBtn.frame = frame;
+            
+        }else if (self.pageIndex==2){//班级验证码页面
+            frame = self.classTxt.frame;
+            frame.origin.y -= xx;
+            self.classTxt.frame = frame;
+
+        }else if (self.pageIndex==3){//完善信息页面
+            frame = self.nickTxt.frame;
+            frame.origin.y -= xx;
+            self.nickTxt.frame = frame;
+            
+            frame = self.nameTxt.frame;
+            frame.origin.y -= xx;
+            self.nameTxt.frame = frame;
+            
+            frame = self.classTxt.frame;
+            frame.origin.y -= xx;
+            self.classTxt.frame = frame;
+        }
+
         frame = self.detailBtn.frame;
         frame.origin.y -= xx;
         self.detailBtn.frame = frame;
@@ -142,18 +156,32 @@
         frame.origin.y += xx;
         self.logoImg.frame = frame;
         
-        frame = self.nickTxt.frame;
-        frame.origin.y += xx;
-        self.nickTxt.frame = frame;
-        
-        frame = self.nameTxt.frame;
-        frame.origin.y += xx;
-        self.nameTxt.frame = frame;
-        
-        frame = self.classTxt.frame;
-        frame.origin.y += xx;
-        self.classTxt.frame = frame;
-        
+        if (self.pageIndex==1) {//激活码页面
+            frame = self.activeTxt.frame;
+            frame.origin.y += xx;
+            self.activeTxt.frame = frame;
+            
+            frame = self.activeSkipBtn.frame;
+            frame.origin.y += xx;
+            self.activeSkipBtn.frame = frame;
+            
+        }else if (self.pageIndex==2){//班级验证码页面
+            frame = self.classTxt.frame;
+            frame.origin.y += xx;
+            self.classTxt.frame = frame;
+        }else if (self.pageIndex==3){//完善信息页面
+            frame = self.nickTxt.frame;
+            frame.origin.y += xx;
+            self.nickTxt.frame = frame;
+            
+            frame = self.nameTxt.frame;
+            frame.origin.y += xx;
+            self.nameTxt.frame = frame;
+            
+            frame = self.classTxt.frame;
+            frame.origin.y += xx;
+            self.classTxt.frame = frame;
+        }
         frame = self.detailBtn.frame;
         frame.origin.y += xx;
         self.detailBtn.frame = frame;
@@ -192,25 +220,97 @@
     [self.nickTxt resignFirstResponder];
     [self.nameTxt resignFirstResponder];
     [self.classTxt resignFirstResponder];
+    [self.activeTxt resignFirstResponder];
     
-    if ([self checkForm]) {
-        if ([[Utility isExistenceNetwork] isEqualToString:@"NotReachable"]) {
+    BOOL isCanPush = NO;
+    if (self.pageIndex==1) {//激活码页面
+        if (self.activeTxt.text.length==0) {
+            [Utility errorAlert:@"请输入激活码!"];
+        }else {
+            self.pageIndex=2;
+            self.classTxt.hidden = NO;
+            CGRect frame = self.classTxt.frame;
+            frame.origin.y = 526;
+            self.classTxt.frame = frame;
+            self.activeSkipBtn.hidden= YES;
+            self.activeTxt.hidden = YES;
+        }
+    }else if(self.pageIndex==2){//班级验证码页面
+        if (self.classTxt.text.length==0) {
+            [Utility errorAlert:@"请输入班级验证码!"];
+        }else {
+            isCanPush = YES;
+        }
+    }else if (self.pageIndex==3){//完善信息页面
+        NSString *msgStr = @"";
+        if (self.nickTxt.text.length == 0){
+            msgStr = @"请输入昵称!";
+        }else if (self.nameTxt.text.length == 0){
+            msgStr = @"请输入姓名!";
+        }else if (self.classTxt.text.length == 0){
+            msgStr = @"请输入班级验证码!";
+        }
+        if (msgStr.length > 0){
+            [Utility errorAlert:msgStr];
+        }else {
+            isCanPush=YES;
+        }
+    }
+    
+    if (isCanPush==YES) {
+        if (self.appDel.isReachable == NO) {
             [Utility errorAlert:@"暂无网络!"];
         }else {
-            if (self.appDel.isReachable == NO) {
-                [Utility errorAlert:@"暂无网络!"];
-            }else {
-                [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                [self.personInter getPersonInterfaceDelegateWithQQ:_tencentOAuth.openId andNick:self.nickTxt.text andName:self.nameTxt.text andCode:self.classTxt.text];
-            }
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            [self.personInter getPersonInterfaceDelegateWithQQ:_tencentOAuth.openId andNick:self.nickTxt.text andName:self.nameTxt.text andCode:self.classTxt.text andKey:self.activeTxt.text];
         }
     }
 }
 
-
 -(IBAction)backPressed:(id)sender {
-    self.logView.hidden = NO;
-    self.detailView.hidden = YES;
+    [self.nickTxt resignFirstResponder];
+    [self.nameTxt resignFirstResponder];
+    [self.classTxt resignFirstResponder];
+    [self.activeTxt resignFirstResponder];
+    
+    if (self.pageIndex==3 || self.pageIndex==2) {//完善信息页面//班级验证码页面
+        self.pageIndex=1;
+        
+        self.nickTxt.hidden = YES;
+        self.nameTxt.hidden = YES;
+        self.classTxt.hidden = YES;
+        self.activeTxt.hidden = NO;
+        self.activeSkipBtn.hidden = NO;
+        
+        CGRect frame = self.detailBtn.frame;
+        frame.origin.y = 650;
+        self.detailBtn.frame = frame;
+    }else if(self.pageIndex==1){
+        self.pageIndex=0;
+        self.logView.hidden = NO;
+        self.detailView.hidden = YES;
+    }
+}
+-(IBAction)skipPressed:(id)sender {
+    [self.nickTxt resignFirstResponder];
+    [self.nameTxt resignFirstResponder];
+    [self.classTxt resignFirstResponder];
+    [self.activeTxt resignFirstResponder];
+    
+    self.pageIndex = 3;
+    
+    self.nickTxt.hidden = NO;
+    self.nameTxt.hidden = NO;
+    self.classTxt.hidden = NO;
+    CGRect frame = self.classTxt.frame;
+    frame.origin.y = 650;
+    self.classTxt.frame = frame;
+    self.activeSkipBtn.hidden= YES;
+    self.activeTxt.hidden = YES;
+    
+    frame = self.detailBtn.frame;
+    frame.origin.y = 769;
+    self.detailBtn.frame = frame;
 }
 #pragma mark
 #pragma mark - LogInterfaceDelegate
@@ -252,8 +352,19 @@
                 
                 [_tencentOAuth logout:self];
             }else {
+                self.pageIndex = 1;//激活码页面
                 self.logView.hidden = YES;
                 self.detailView.hidden = NO;
+                
+                self.nickTxt.hidden = YES;
+                self.nameTxt.hidden = YES;
+                self.classTxt.hidden = YES;
+                self.activeTxt.hidden = NO;
+                self.activeSkipBtn.hidden = NO;
+                
+                CGRect frame = self.detailBtn.frame;
+                frame.origin.y = 650;
+                self.detailBtn.frame = frame;
             }
         });
     });

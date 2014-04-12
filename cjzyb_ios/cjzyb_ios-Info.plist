@@ -31,7 +31,7 @@
 			<string>tencentopenapi</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>tencent101049069</string>
+				<string>tencent101003848</string>
 			</array>
 		</dict>
 		<dict>
@@ -41,7 +41,7 @@
 			<string>tencentApiIdentifier</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>tencent101049069.content</string>
+				<string>tencent101003848.content</string>
 			</array>
 		</dict>
 	</array>

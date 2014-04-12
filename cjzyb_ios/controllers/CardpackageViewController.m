@@ -102,10 +102,19 @@ static NSInteger tmpPage = 0;
             if (card2.tagArray.count>0) {
                 NSMutableArray *tmpArray = [self compareArray:[DataService sharedService].tagsArray array:card2.tagArray];
                 [[CMRManager sharedService] DeleteContact:[card2.carId intValue]];
-                [[CMRManager sharedService] AddContact:[card2.carId intValue] name:card2.content phone:tmpArray];
+                if ([card2.types integerValue]==5) {
+                    [[CMRManager sharedService] AddContact:[card2.carId intValue] name:card2.full_text phone:tmpArray];
+                }else {
+                    [[CMRManager sharedService] AddContact:[card2.carId intValue] name:card2.content phone:tmpArray];
+                }
+                
             }else {
                 [[CMRManager sharedService] DeleteContact:[card2.carId intValue]];
-                [[CMRManager sharedService] AddContact:[card2.carId intValue] name:card2.content phone:nil];
+                if ([card2.types integerValue]==5) {
+                    [[CMRManager sharedService] AddContact:[card2.carId intValue] name:card2.full_text phone:nil];
+                }else {
+                    [[CMRManager sharedService] AddContact:[card2.carId intValue] name:card2.content phone:nil];
+                }
             }
             
             [self.cardArray replaceObjectAtIndex:i withObject:card];
@@ -445,9 +454,19 @@ static NSInteger tmpPage = 0;
                     
                     if (card.tagArray.count>0) {
                         NSMutableArray *tmpArray = [self compareArray:[DataService sharedService].tagsArray array:card.tagArray];
-                        [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.content phone:tmpArray];
+                        
+                        if ([card.types integerValue]==5) {
+                            [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.full_text phone:tmpArray];
+                        }else {
+                           [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.content phone:tmpArray];
+                        }
+                        
                     }else {
-                        [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.content phone:nil];
+                        if ([card.types integerValue]==5) {
+                            [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.full_text phone:nil];
+                        }else {
+                            [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.content phone:nil];
+                        }
                     }
                     
                     [self.cardArray addObject:card];
@@ -466,6 +485,12 @@ static NSInteger tmpPage = 0;
 
 #pragma mark 
 #pragma mark - 第二个页面
+-(void)myMovieStartPlay:(NSNotification*)notify {
+    [MBProgressHUD hideAllHUDsForView:self.appDel.window animated:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:MPMoviePlayerLoadStateDidChangeNotification
+                                                  object:self.appDel.player];
+}
 -(void)myMovieFinishedCallback:(NSNotification*)notify
 {
     //销毁播放通知
@@ -480,6 +505,7 @@ static NSInteger tmpPage = 0;
 
 
 -(void)playWithTag:(NSInteger)tag {
+    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
     CardObject *card = [self.cardArray objectAtIndex:tag];
     
     NSURL *url;
@@ -502,6 +528,11 @@ static NSInteger tmpPage = 0;
                                              selector:@selector(myMovieFinishedCallback:)
                                                  name:MPMoviePlayerPlaybackDidFinishNotification
                                                object:self.appDel.player];
+    //开始阶段的缓冲到准备完毕
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(myMovieStartPlay:)
+                                                 name:MPMoviePlayerLoadStateDidChangeNotification
+                                               object:self.appDel.player];
     
     [self.arrSelSection addObject:[NSString stringWithFormat:@"%d",tag]];
 }
@@ -516,6 +547,8 @@ static NSInteger tmpPage = 0;
         if (tmpTag == btn.tag) {
             [self stop];
         }else {
+            [self.appDel.player stop];
+            [self.arrSelSection removeAllObjects];
             [self playWithTag:btn.tag];
         }
     }else {
