@@ -48,6 +48,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *readingButton;
 ///点击开始听内容按钮
 @property (weak, nonatomic) IBOutlet UIButton *listeningButton;
+///显示当前题号 (3/5)
+@property (strong,nonatomic) UILabel *currentNOLabel;
 
 /// 点击开始录音
 - (IBAction)readingButtonClicked:(id)sender;
@@ -718,6 +720,23 @@
 #pragma mark --
 
 #pragma mark property
+///添加题号显示label
+- (UILabel *)currentNOLabel{
+    if (!_currentNOLabel) {
+        _currentNOLabel = [[UILabel alloc] initWithFrame:(CGRect){660,20,100,30}];
+        _currentNOLabel.font = [UIFont systemFontOfSize:26.0];
+        _currentNOLabel.textAlignment = NSTextAlignmentLeft;
+        _currentNOLabel.textColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+        [parentVC.djView addSubview:_currentNOLabel];
+    }
+    return _currentNOLabel;
+}
+
+////改变题号时,更改题号label显示数字
+//- (void)setCurrentSentenceIndex:(int)currentSentenceIndex{
+//    _currentSentenceIndex = currentSentenceIndex;
+//    
+//}
 
 -(void)setIsPrePlay:(BOOL)isPrePlay{
     _isPrePlay = isPrePlay;
@@ -777,6 +796,11 @@
          [self updateAllFrame];
         if (self.currentHomeworkIndex >= self.readingHomeworksArr.count && self.currentSentenceIndex >= ((ReadingHomeworkObj *)[self.readingHomeworksArr lastObject]).readingHomeworkSentenceObjArray.count) {
             [parentVC.checkHomeworkButton setTitle:@"完成" forState:UIControlStateNormal];
+        }
+        
+        //显示题号Label
+        if (self.currentSentenceIndex < self.currentHomework.readingHomeworkSentenceObjArray.count) {
+            self.currentNOLabel.text = [NSString stringWithFormat:@"%d/%d",self.currentSentenceIndex + 1,self.currentHomework.readingHomeworkSentenceObjArray.count];
         }
     }
 }

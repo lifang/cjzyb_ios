@@ -142,7 +142,7 @@
 - (void)reDoingChallenge{
     self.isViewingHistory = NO;
     self.isReDoingChallenge = YES;
-    self.currentNOLabel.hidden = YES;
+    self.currentNOLabel.hidden = NO;
     //改变按钮样式,及顶栏目样式
     [parentVC.checkHomeworkButton setTitle:@"检查" forState:UIControlStateNormal];
     parentVC.appearCorrectButton.enabled = NO;
@@ -194,7 +194,7 @@
 //继续做题   --初始化界面
 - (void)continueChallenge{
     self.isViewingHistory = NO;
-    self.currentNOLabel.hidden = YES;
+    self.currentNOLabel.hidden = NO;
     //改变按钮样式,及顶栏目样式
     parentVC.appearCorrectButton.enabled = YES;
     parentVC.reduceTimeButton.enabled = YES;
