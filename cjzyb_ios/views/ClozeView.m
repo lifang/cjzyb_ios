@@ -28,16 +28,44 @@
     return _modelArray;
 }
 
+-(void)deletelWithString:(NSString *)string {
+    NSMutableString *mutableString = [NSMutableString stringWithString:string];
+    
+    NSString *regTags = @"\\<.*?>";
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regTags
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:nil];
+    // 执行匹配的过程
+    NSArray *matches = [regex matchesInString:mutableString
+                                      options:0
+                                        range:NSMakeRange(0, [mutableString length])];
+    
+    
+    if (matches.count>0) {
+        NSTextCheckingResult *math = (NSTextCheckingResult *)[matches objectAtIndex:0];
+        NSRange range = [math rangeAtIndex:0];
+        
+        [mutableString deleteCharactersInRange:range];
+        
+        return [self deletelWithString:mutableString];
+    }
+    [self dealWithString:mutableString];
+    
+}
 -(void)dealWithString:(NSString *)string{
+    self.tmpText = string;
+    self.tmpText = [self.tmpText stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+    self.tmpText = [self.tmpText stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    
     self.modelArray = nil;
     NSString *regTags = @"\\[\\[.*?]]";
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regTags
                                                                            options:NSRegularExpressionCaseInsensitive
                                                                              error:nil];
     // 执行匹配的过程
-    NSArray *matches = [regex matchesInString:string
+    NSArray *matches = [regex matchesInString:self.tmpText
                                       options:0
-                                        range:NSMakeRange(0, [string length])];
+                                        range:NSMakeRange(0, [self.tmpText length])];
     self.modelArray = [NSMutableArray arrayWithArray:matches];
     self.number = 0;
     [self setUI];
@@ -46,7 +74,7 @@
 
 - (void)setText:(NSString*)text {
     _text = text;
-    [self dealWithString:_text];
+    [self deletelWithString:_text];
 }
 -(UILabel *)returnLabel {
     UILabel *lab = [[UILabel alloc]init];
@@ -81,52 +109,60 @@
     CGRect frame = CGRectMake(40, 10, 0, 40);
     NSInteger count = 0;
     UIFont *aFont = [UIFont systemFontOfSize:33];
-    NSMutableString *mutableString = [NSMutableString stringWithFormat:@"%@",self.text];
+    
+    NSMutableString *mutableString = [NSMutableString stringWithFormat:@"%@",self.tmpText];
     for (int i=0; i<self.modelArray.count; i++) {
         NSTextCheckingResult *math = (NSTextCheckingResult *)[self.modelArray objectAtIndex:i];
         NSRange range = [math rangeAtIndex:0];
         NSString *str = [mutableString substringWithRange:NSMakeRange(count, range.location-count)];
         
         if (str.length>0) {
-            CGSize size = [str sizeWithFont:aFont];
-            if (size.width+frame.origin.x>768) {//换行
-                while (![str isEqualToString:@" "] && str.length>0) {
-                    NSString *str_sub = [self handleWithString:str andFrame:frame];
-                    NSLog(@"str_sub = %@",str_sub);
-                    if (![str_sub isEqualToString:@" "] && str_sub.length>0) {
-                        UILabel *label = [self returnLabel];
-                        CGSize size1 = [str_sub sizeWithFont:aFont];
-                        frame.size.width = size1.width;
-                        label.frame = frame;
-                        label.text = str_sub;
-                        [self addSubview:label];
-                        
-                        str = [str substringWithRange:NSMakeRange(str_sub.length, str.length-str_sub.length)];
-                        if (![str isEqualToString:@" "] && str.length>0) {
-                            self.number += 1;
-                            frame.origin.x = 40;
-                            frame.origin.y = 10+60*self.number;
+            str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+            str = [str stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+            str = [str stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+            if (str.length>0) {
+                CGSize size = [str sizeWithFont:aFont];
+                if (size.width+frame.origin.x>768) {//换行
+                    while (![str isEqualToString:@" "] && str.length>0) {
+                        NSString *str_sub = [self handleWithString:str andFrame:frame];
+                        NSLog(@"str_sub = %@",str_sub);
+                        if (![str_sub isEqualToString:@" "] && str_sub.length>0) {
+                            UILabel *label = [self returnLabel];
+                            CGSize size1 = [str_sub sizeWithFont:aFont];
+                            frame.size.width = size1.width;
+                            label.frame = frame;
+                            label.text = str_sub;
+                            [self addSubview:label];
                             
-                            CGSize size2 = [str sizeWithFont:aFont];
-                            if (size2.width+frame.origin.x<768) {
-                                UILabel *label = [self returnLabel];
-                                CGSize size1 = [str sizeWithFont:aFont];
-                                frame.size.width = size1.width;
-                                label.frame = frame;
-                                label.text = str;
-                                [self addSubview:label];
+                            str = [str substringWithRange:NSMakeRange(str_sub.length, str.length-str_sub.length)];
+                            if (![str isEqualToString:@" "] && str.length>0) {
+                                self.number += 1;
+                                frame.origin.x = 40;
+                                frame.origin.y = 10+60*self.number;
                                 
-                                break;
+                                CGSize size2 = [str sizeWithFont:aFont];
+                                if (size2.width+frame.origin.x<768) {
+                                    UILabel *label = [self returnLabel];
+                                    CGSize size1 = [str sizeWithFont:aFont];
+                                    frame.size.width = size1.width;
+                                    label.frame = frame;
+                                    label.text = str;
+                                    [self addSubview:label];
+                                    
+                                    break;
+                                }
                             }
+                        }else {
+                            break;
                         }
                     }
+                }else {
+                    UILabel *label3 = [self returnLabel];
+                    frame.size.width = size.width;
+                    label3.frame = frame;
+                    label3.text = str;
+                    [self addSubview:label3];
                 }
-            }else {
-                UILabel *label3 = [self returnLabel];
-                frame.size.width = size.width;
-                label3.frame = frame;
-                label3.text = str;
-                [self addSubview:label3];
             }
         }
         

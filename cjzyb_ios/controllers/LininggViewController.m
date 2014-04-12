@@ -25,12 +25,17 @@ static BOOL isCanUpLoad = NO;
 
 
 -(UIButton *)returnUIButton {
-    UIButton *btn = [[UIButton alloc]init];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    btn.titleLabel.numberOfLines = 0;
+    btn.titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
+    btn.titleLabel.font = [UIFont systemFontOfSize:28];
+    btn.titleLabel.textColor = [UIColor whiteColor];
+    btn.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
+    
     [btn.layer setMasksToBounds:YES];
     [btn.layer setCornerRadius:8];
-    btn.titleLabel.font = [UIFont systemFontOfSize:33];
-    btn.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
-    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    
     [btn setExclusiveTouch :YES];
     return btn;
 }
@@ -114,6 +119,7 @@ static BOOL isCanUpLoad = NO;
         btn.tag = Left_button_tag+i;
         
         int index = arc4random() % count;
+        
         [btn setTitle:[tmpArray objectAtIndex:index] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(leftButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
         [tmpArray removeObjectAtIndex:index];
@@ -182,7 +188,7 @@ static BOOL isCanUpLoad = NO;
     self.wordsContainerView.backgroundColor = [UIColor clearColor];
     
     //TODO:左半部分
-    CGRect frame = CGRectMake(0, 0, BUTTON_WIDTH*1.5, BUTTON_WIDTH*1.5);
+    CGRect frame = CGRectMake(0, 0, BUTTON_WIDTH, BUTTON_WIDTH);
     for (int i=0; i<self.leftArray.count; i++) {
         UIButton *btn = [self returnUIButton];
         frame.origin.x = BUTTON_SPACE;
@@ -196,7 +202,7 @@ static BOOL isCanUpLoad = NO;
     }
     
     //TODO:右半部分
-    frame = CGRectMake(0, 0, BUTTON_WIDTH*1.5, BUTTON_WIDTH*1.5);
+    frame = CGRectMake(0, 0, BUTTON_WIDTH, BUTTON_WIDTH);
     for (int i=0; i<self.rightArray.count; i++) {
         UIButton *btn = [self returnUIButton];
         frame.origin.x = BUTTON_SPACE+BUTTON_SPACE+BUTTON_WIDTH;
@@ -285,10 +291,14 @@ static BOOL isCanUpLoad = NO;
         }
         self.historyAnswer.text = [NSString stringWithFormat:@"你的排序: %@",string];
         
+        self.homeControl.numberOfQuestionLabel.text = [NSString stringWithFormat:@"%d/%d",self.branchNumber+1,self.history_branchQuestionArray.count];
+        
         [self setHistoryUI];
     }else {
+        self.homeControl.numberOfQuestionLabel.text = [NSString stringWithFormat:@"%d/%d",self.branchNumber+1,self.branchQuestionArray.count];
         [self setUI];
     }
+    
 }
 - (void)viewDidLoad
 {
@@ -1132,7 +1142,7 @@ static BOOL isCanUpLoad = NO;
 
 
 -(void)exitLiningView {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
     alert.tag = 100;
     [alert show];
 }

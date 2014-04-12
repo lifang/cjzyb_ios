@@ -334,7 +334,8 @@
 
 ///点击parentVC的退出按钮触发
 -(void)tenQuitButtonClicked:(id)sender{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
     dispatch_async(dispatch_get_main_queue(), ^{
         [alert show];
     });

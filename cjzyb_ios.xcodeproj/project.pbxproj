@@ -72,6 +72,7 @@
 		0E960FDC18F644C2004F222B /* user_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E960FDB18F644C2004F222B /* user_arrow@2x.png */; };
 		0E960FE018F69A49004F222B /* left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E960FDE18F69A49004F222B /* left@2x.png */; };
 		0E960FE118F69A49004F222B /* right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E960FDF18F69A49004F222B /* right@2x.png */; };
+		0E96100218F8F25B004F222B /* card_btn_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E96100118F8F25B004F222B /* card_btn_active@2x.png */; };
 		0E97C9CC18E2A17500890F60 /* logOut@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9CB18E2A17500890F60 /* logOut@2x.png */; };
 		0E97C9CE18E2A81700890F60 /* contact_message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9CD18E2A81700890F60 /* contact_message@2x.png */; };
 		0E97C9DC18E2BABB00890F60 /* PushConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E97C9DB18E2BABB00890F60 /* PushConfig.plist */; };
@@ -482,6 +483,7 @@
 		0E960FDB18F644C2004F222B /* user_arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user_arrow@2x.png"; sourceTree = "<group>"; };
 		0E960FDE18F69A49004F222B /* left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "left@2x.png"; sourceTree = "<group>"; };
 		0E960FDF18F69A49004F222B /* right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "right@2x.png"; sourceTree = "<group>"; };
+		0E96100118F8F25B004F222B /* card_btn_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "card_btn_active@2x.png"; sourceTree = "<group>"; };
 		0E97C9CB18E2A17500890F60 /* logOut@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logOut@2x.png"; sourceTree = "<group>"; };
 		0E97C9CD18E2A81700890F60 /* contact_message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "contact_message@2x.png"; sourceTree = "<group>"; };
 		0E97C9DB18E2BABB00890F60 /* PushConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PushConfig.plist; sourceTree = "<group>"; };
@@ -1066,6 +1068,7 @@
 		0E92657218BDACCE003ADEC3 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E96100118F8F25B004F222B /* card_btn_active@2x.png */,
 				0E960FDE18F69A49004F222B /* left@2x.png */,
 				0E960FDF18F69A49004F222B /* right@2x.png */,
 				18FAB37918F4F84700C2AB83 /* homework_refresh@2x.png */,
@@ -2253,7 +2256,11 @@
 				0E0E801E18E912BF0022AC57 /* first@2x.png in Resources */,
 				0E2B517C18DC27110056859D /* trueMusic.wav in Resources */,
 				630DBDF318D15A95009DA0EB /* youxiu@2x.png in Resources */,
+
 				182AF15E18F7D7F300EA5A7E /* FullText.xib in Resources */,
+
+				0E96100218F8F25B004F222B /* card_btn_active@2x.png in Resources */,
+
 				187C4ACB18D304AC0006461D /* 10_06@2x.png in Resources */,
 				630DBE1D18D15CB1009DA0EB /* homework_line@2x.png in Resources */,
 				0E93C9B018D834630094AD7B /* ios-stop@2x.png in Resources */,

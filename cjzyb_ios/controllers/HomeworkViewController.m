@@ -268,7 +268,7 @@
 #pragma mark --
 -(void)showAlertWith:(HomeworkTypeObj *)typeObj {
     //判断卡包
-    if ([DataService sharedService].cardsCount >20) {
+    if ([DataService sharedService].cardsCount >=20) {
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         alert.tag = 999;
         [alert show];

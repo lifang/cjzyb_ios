@@ -14,6 +14,7 @@
                 <outlet property="djView" destination="Qjf-do-S1z" id="nJb-fB-9Wo"/>
                 <outlet property="label1" destination="2y7-Cm-tTr" id="IMr-BQ-sAy"/>
                 <outlet property="label2" destination="901-kj-ecX" id="k4I-y3-oOY"/>
+                <outlet property="numberOfQuestionLabel" destination="Vmy-Fl-Hwn" id="GUN-cg-aHf"/>
                 <outlet property="quitHomeworkButton" destination="iyg-oP-n5x" id="3EK-BX-2pu"/>
                 <outlet property="reduceTimeButton" destination="kBq-b5-iiz" id="i6K-Ov-mKN"/>
                 <outlet property="rotioLabel" destination="788-P2-hMq" id="dyh-oe-E5e"/>
@@ -138,6 +139,14 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                         </button>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Vmy-Fl-Hwn">
+                            <rect key="frame" x="652" y="0.0" width="116" height="75"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" red="0.86274516582489014" green="0.85490202903747559" blue="0.85490202903747559" alpha="1" colorSpace="deviceRGB"/>
                 </view>

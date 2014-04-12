@@ -47,6 +47,7 @@
 ///记录的秒数
 @property (assign,nonatomic) long long spendSecond;
 
+@property (nonatomic, strong) IBOutlet UILabel *numberOfQuestionLabel;
 ///开始计时
 -(void)startTimer;
 

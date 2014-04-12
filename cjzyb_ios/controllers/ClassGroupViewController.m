@@ -46,18 +46,6 @@
     [ModelTypeViewController presentTypeViewWithTipString:@"请输入班级验证码:" withFinishedInput:^(NSString *inputString) {
         AppDelegate *app = [AppDelegate shareIntance];
 
-//        NSString *msgStr = @"";
-//        NSString *regexCall = @"[0-9]{1,}";
-//        NSPredicate *predicateCall = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regexCall];
-//        if ([predicateCall evaluateWithObject:inputString]) {
-//            
-//        }else {
-//            msgStr = @"班级验证码必须是10位数字";
-//        }
-//        if (msgStr.length>0) {
-//            [Utility errorAlert:msgStr];
-//            return ;
-//        }
         if (inputString.length < 1 || inputString.length > 30) {
             [Utility errorAlert:@"班级号码长度不符!"];
             return ;
@@ -108,14 +96,16 @@
         [cell.textLabel setTextColor:[UIColor whiteColor]];
         cell.backgroundColor = [UIColor clearColor];
         cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.contentView.backgroundColor = [UIColor clearColor];
     }
-
-    // Configure the cell...
     DataService *data = [DataService sharedService];
     ClassObject *grade = [self.classArray objectAtIndex:indexPath.row];
+    
     cell.textLabel.text = grade.name;
-    if ([data.theClass.classId isEqualToString:grade.classId]) {
-        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"point.png"]];
+    if ([data.theClass.classId integerValue]==[grade.classId integerValue]) {
+        UIImageView *imgView  = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 10, 10)];
+        imgView.image = [UIImage imageNamed:@"point"];
+        cell.accessoryView = imgView;
     }else{
         cell.accessoryView = nil;
     }

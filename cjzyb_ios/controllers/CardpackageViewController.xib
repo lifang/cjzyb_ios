@@ -35,14 +35,17 @@
                             <rect key="frame" x="25" y="29" width="191" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" returnKeyType="search"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="Chm-6r-D5i"/>
+                            </connections>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBy-Ff-IiB">
                             <rect key="frame" x="568" y="28" width="86" height="34"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                             <state key="normal" title="选错" backgroundImage="card_btn.png">
-                                <color key="titleColor" white="0.69999999999999996" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" white="0.50017107660000004" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -53,8 +56,8 @@
                             <rect key="frame" x="662" y="29" width="86" height="34"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                            <state key="normal" title="默认" backgroundImage="card_btn.png">
-                                <color key="titleColor" white="0.69999999999999996" alpha="1" colorSpace="calibratedWhite"/>
+                            <state key="normal" title="默认" backgroundImage="card_btn_active.png">
+                                <color key="titleColor" white="0.50017107664233573" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -66,7 +69,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                             <state key="normal" title="拼错" backgroundImage="card_btn.png">
-                                <color key="titleColor" white="0.69999999999999996" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" white="0.50017107660000004" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -78,7 +81,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                             <state key="normal" title="读错" backgroundImage="card_btn.png">
-                                <color key="titleColor" white="0.69999999999999996" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" white="0.50017107660000004" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -101,7 +104,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                             <state key="normal" title="刷新" backgroundImage="card_btn.png">
-                                <color key="titleColor" white="0.69999999999999996" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" white="0.50017107660000004" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -134,6 +137,7 @@
     </objects>
     <resources>
         <image name="card_btn.png" width="85" height="33"/>
+        <image name="card_btn_active.png" width="85" height="33"/>
         <image name="card_searchBtn.png" width="32" height="32"/>
         <image name="card_searchText.png" width="231" height="48"/>
     </resources>

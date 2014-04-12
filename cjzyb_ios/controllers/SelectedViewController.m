@@ -146,8 +146,10 @@ static BOOL isCanUpLoad = NO;
         
         self.historyAnswer.text = [NSString stringWithFormat:@"你的选择: %@",answerStr];
         
+        self.homeControl.numberOfQuestionLabel.text = [NSString stringWithFormat:@"%d/%d",self.number+1,self.history_questionArray.count];
         [self setHistoryUI];
     }else {
+        self.homeControl.numberOfQuestionLabel.text = [NSString stringWithFormat:@"%d/%d",self.number+1,self.questionArray.count];
         [self setUI];
     }
 }
@@ -615,7 +617,7 @@ static BOOL isCanUpLoad = NO;
 }
 
 -(void)exitClozeView {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
     alert.tag = 100;
     [alert show];
 }

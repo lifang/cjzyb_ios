@@ -28,7 +28,7 @@ static NSInteger tmpPage = 0;
         [Utility errorAlert:@"暂无网络!"];
     }else {
         [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [self.cardInter getCardInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andType:@"4"];
+        [self.cardInter getCardInterfaceDelegateWithStudentId:[DataService sharedService].user.studentId andClassId:[DataService sharedService].theClass.classId andType:@"0"];
     }
 }
 
@@ -194,6 +194,7 @@ static NSInteger tmpPage = 0;
             [self.myScrollView setContentOffset:CGPointMake(tmpPage*768, 0)];
         }
     }else {
+        self.myPageControl.numberOfPages = 0;
         [self.myScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     }
 }
@@ -274,24 +275,14 @@ static NSInteger tmpPage = 0;
 }
 #pragma mark
 #pragma mark - 选择分类
-
-- (IBAction)redBtnTapped:(id)sender//0
+//MISTAKE_TYPES_NAME = {0 => "默认", 1 => "读错",2 => '写错',3 => '选错'}
+- (IBAction)redBtnTapped:(id)sender//1
 {
-    [self.searchTxt resignFirstResponder];
-    self.cardArray = nil;
-    if (self.dataArray.count>0) {
-        for (CardObject *card in self.dataArray) {
-            if (card.mistake_types == 0) {
-                [self.cardArray addObject:card];
-            }
-        }
-    }
-    tmpPage = 0;
-    [self displayNewView];
+    [self.redBtn setBackgroundImage:[UIImage imageNamed:@"card_btn_active"] forState:UIControlStateNormal];
+    [self.writeBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.selectedBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.defaultBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
     
-}
-- (IBAction)writeBtnTapped:(id)sender//1
-{
     [self.searchTxt resignFirstResponder];
     self.cardArray = nil;
     if (self.dataArray.count>0) {
@@ -303,9 +294,15 @@ static NSInteger tmpPage = 0;
     }
     tmpPage = 0;
     [self displayNewView];
+    
 }
-- (IBAction)selectedBtnTapped:(id)sender//2
+- (IBAction)writeBtnTapped:(id)sender//2
 {
+    [self.writeBtn setBackgroundImage:[UIImage imageNamed:@"card_btn_active"] forState:UIControlStateNormal];
+    [self.redBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.selectedBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.defaultBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    
     [self.searchTxt resignFirstResponder];
     self.cardArray = nil;
     if (self.dataArray.count>0) {
@@ -318,8 +315,32 @@ static NSInteger tmpPage = 0;
     tmpPage = 0;
     [self displayNewView];
 }
-- (IBAction)defaultBtnTapped:(id)sender//3
+- (IBAction)selectedBtnTapped:(id)sender//3
 {
+    [self.selectedBtn setBackgroundImage:[UIImage imageNamed:@"card_btn_active"] forState:UIControlStateNormal];
+    [self.writeBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.redBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.defaultBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    
+    [self.searchTxt resignFirstResponder];
+    self.cardArray = nil;
+    if (self.dataArray.count>0) {
+        for (CardObject *card in self.dataArray) {
+            if (card.mistake_types == 3) {
+                [self.cardArray addObject:card];
+            }
+        }
+    }
+    tmpPage = 0;
+    [self displayNewView];
+}
+- (IBAction)defaultBtnTapped:(id)sender//0
+{
+    [self.defaultBtn setBackgroundImage:[UIImage imageNamed:@"card_btn_active"] forState:UIControlStateNormal];
+    [self.writeBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.selectedBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.redBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    
     [self.searchTxt resignFirstResponder];
     self.cardArray = [NSMutableArray arrayWithArray:self.dataArray];
     tmpPage = 0;
@@ -348,28 +369,42 @@ static NSInteger tmpPage = 0;
 }
 - (IBAction)searchBtnTapped:(id)sender
 {
-    [self.searchTxt resignFirstResponder];
-    NSMutableArray *tempArray = [[NSMutableArray alloc]init];
-    NSMutableArray *tempArray2 = [[NSMutableArray alloc]init];
-    self.cardArray = nil;
-    [[CMRManager sharedService] Search:self.searchTxt.text searchArray:nil nameMatch:tempArray phoneMatch:tempArray2];;
+    NSString *str = self.searchTxt.text;
+    str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+    str = [str stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     
-    NSMutableArray *tmpArr = [self getDatafromArray:tempArray array:tempArray2];
-    if (tmpArr.count>0) {
-        for (int i=0; i<tmpArr.count; i++) {
-            NSInteger c_id = [[tmpArr objectAtIndex:i]integerValue];
-            
-            for (CardObject *card in self.dataArray) {
-                if ([card.carId integerValue] == c_id) {
-                    [self.cardArray addObject:card];
+    if (str.length==0) {
+        [Utility errorAlert:@"搜索内容不能为空!"];
+    }else {
+        [self.searchTxt resignFirstResponder];
+        NSMutableArray *tempArray = [[NSMutableArray alloc]init];
+        NSMutableArray *tempArray2 = [[NSMutableArray alloc]init];
+        self.cardArray = nil;
+        [[CMRManager sharedService] Search:self.searchTxt.text searchArray:nil nameMatch:tempArray phoneMatch:tempArray2];;
+        
+        NSMutableArray *tmpArr = [self getDatafromArray:tempArray array:tempArray2];
+        if (tmpArr.count>0) {
+            for (int i=0; i<tmpArr.count; i++) {
+                NSInteger c_id = [[tmpArr objectAtIndex:i]integerValue];
+                
+                for (CardObject *card in self.dataArray) {
+                    if ([card.carId integerValue] == c_id) {
+                        [self.cardArray addObject:card];
+                    }
                 }
             }
         }
+        tmpPage = 0;
+        [self displayNewView];
+        tempArray = nil;tempArray2 = nil;
     }
-    tmpPage = 0;
-    [self displayNewView];
-    tempArray = nil;tempArray2 = nil;
 }
+//点击键盘return键搜索
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self searchBtnTapped:nil];
+    return YES;
+}
+
 #pragma mark
 #pragma mark - CardInterfaceDelegate
 -(NSMutableArray *)compareArray:(NSMutableArray *)array1 array:(NSMutableArray *)array2 {
@@ -534,7 +569,7 @@ static NSInteger tmpPage = 0;
                 }
             }
             [self.cardArray removeObjectAtIndex:tag];
-            [DataService sharedService].cardsCount -= 1;
+            [DataService sharedService].taskObj.taskKnowlegeCount -= 1;
             [self displayNewView];
         });
     });
