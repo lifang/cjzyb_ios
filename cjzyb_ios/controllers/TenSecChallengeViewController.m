@@ -262,6 +262,7 @@
             answer.answerID = self.currentQuestion.tenID;
             answer.answerAnswer = self.upperOptionLabel.text;
             answer.answerRatio = [self.upperOptionLabel.text isEqualToString:self.currentQuestion.tenRightAnswer] ? @"100" : @"0";
+            [self playSound:[answer.answerRatio isEqualToString:@"100"]];//播放音效
             [self.answerArray addObject:answer];
             if (!self.isReDoingChallenge) {
                 [self makeAnswerJSON];
@@ -300,6 +301,7 @@
             answer.answerID = self.currentQuestion.tenID;
             answer.answerAnswer = self.lowerOptionLabel.text;
             answer.answerRatio = [self.lowerOptionLabel.text isEqualToString:self.currentQuestion.tenRightAnswer] ? @"100" : @"0";
+            [self playSound:[answer.answerRatio isEqualToString:@"100"]];//播放音效
             [self.answerArray addObject:answer];
             if (!self.isReDoingChallenge) {
                 [self makeAnswerJSON];
@@ -347,6 +349,26 @@
 }
 
 #pragma mark -- action
+-(void)playSound:(BOOL)isRight{
+    //播放声音
+    if (isRight) {
+        [AppDelegate shareIntance].avPlayer = nil;
+        [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"trueMusic" ofType:@"wav"]] error:nil];
+        [AppDelegate shareIntance].avPlayer.delegate = self;
+        [AppDelegate shareIntance].avPlayer.volume = 1;
+        if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
+            [[AppDelegate shareIntance].avPlayer play];
+        }
+    }else{
+        [AppDelegate shareIntance].avPlayer = nil;
+        [AppDelegate shareIntance].avPlayer = [[AVAudioPlayer alloc] initWithData:[NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"falseMusic" ofType:@"wav"]] error:nil];
+        [AppDelegate shareIntance].avPlayer.delegate = self;
+        [AppDelegate shareIntance].avPlayer.volume = 1;
+        if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
+            [[AppDelegate shareIntance].avPlayer play];
+        }
+    }
+}
 
 -(void)parseAnswerDic:(NSMutableDictionary *)dicc{
     self.answerArray = [NSMutableArray array];

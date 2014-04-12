@@ -519,6 +519,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     return [NSString stringWithCString:reslut encoding:NSUTF8StringEncoding];
 }
 
+///把单词Array 转化成 metaphone码Array
 +(NSArray *)metaphoneArray:(NSArray *)array {
     NSMutableArray *tempArray = [[NSMutableArray alloc]init];
     if (array.count>0) {

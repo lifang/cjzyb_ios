@@ -41,7 +41,7 @@
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [Utility shared].isOrg = NO;
-        [Utility shared].orgArray  = [Utility handleTheString:senStr];
+        [Utility shared].orgArray  = [Utility handleTheString:senStr];  //原句
         [Utility shared].metaphoneArray = [Utility metaphoneArray:[Utility shared].orgArray];
         NSArray *spellMatchRangeArr = [DRSentenceSpellMatch spellMatchWord:spellStr];
         NSMutableAttributedString *spellAttribute = [[NSMutableAttributedString alloc] initWithString:senStr];
@@ -76,7 +76,7 @@
 }
 
 
-
+///把读出的string拆分成metaphone数组,并与单例中的原句数组作比较
 +(NSArray*)spellMatchWord:(NSString*)spellString{
     NSMutableArray *spellsArr = [NSMutableArray array];
 
@@ -91,6 +91,7 @@
     [Utility shared].greenArray = [[NSMutableArray alloc]init];
     [Utility shared].yellowArray = [[NSMutableArray alloc]init];
     [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
+    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
     [Utility shared].firstpoint = 0;
     NSDictionary *dic = [Utility compareWithArray:[Utility shared].orgArray andArray:[Utility shared].metaphoneArray WithArray:array andArray:array2  WithRange:[Utility shared].rangeArray];
     
