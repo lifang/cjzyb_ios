@@ -839,8 +839,7 @@
  * @param   result      -[out] 识别结果，NSArray的第一个元素为NSDictionary，NSDictionary的key为识别结果，value为置信度
  * @see
  */
-- (void) onResults:(NSArray *) results
-{
+- (void) onResults:(NSArray *) results{
     [parentVC stopTimer];
     NSMutableString *result = [[NSMutableString alloc] init];
     NSDictionary *dic = [results objectAtIndex:0];
