@@ -25,7 +25,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <state key="normal" image="listening_start.png">
+                    <state key="normal" image="listening_stop.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -37,7 +37,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <state key="normal" image="reading_start.png">
+                    <state key="normal" image="reading_stop.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -77,7 +77,7 @@
     </objects>
     <resources>
         <image name="listen_back.png" width="537" height="234"/>
-        <image name="listening_start.png" width="63" height="63"/>
-        <image name="reading_start.png" width="194" height="194"/>
+        <image name="listening_stop.png" width="63" height="63"/>
+        <image name="reading_stop.png" width="194" height="194"/>
     </resources>
 </document>

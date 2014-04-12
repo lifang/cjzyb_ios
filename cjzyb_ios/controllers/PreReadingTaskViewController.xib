@@ -29,7 +29,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <state key="normal" image="ios-stop.png">
+                    <state key="normal" image="ios-playing.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -49,6 +49,6 @@
         </view>
     </objects>
     <resources>
-        <image name="ios-stop.png" width="193" height="193"/>
+        <image name="ios-playing.png" width="193" height="193"/>
     </resources>
 </document>

@@ -45,7 +45,7 @@
         [Utility shared].metaphoneArray = [Utility metaphoneArray:[Utility shared].orgArray];
         NSArray *spellMatchRangeArr = [DRSentenceSpellMatch spellMatchWord:spellStr];
         NSMutableAttributedString *spellAttribute = [[NSMutableAttributedString alloc] initWithString:senStr];
-        [spellAttribute addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0, spellAttribute.length)];
+        [spellAttribute addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:35] range:NSMakeRange(0, spellAttribute.length)];
         [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(0, spellAttribute.length)];
         int unMatch = 0;
         NSMutableArray *errorWordArr = [NSMutableArray array];
@@ -65,9 +65,9 @@
         if (unMatch != 0) {
             score = (spellMatchRangeArr.count - (float)unMatch)/(float)spellMatchRangeArr.count;
         }
-        if (score >= 0.7) {
-            [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(0, spellAttribute.length)];
-        }
+//        if (score >= 0.7) {
+//            [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(0, spellAttribute.length)];
+//        }
         dispatch_async(dispatch_get_main_queue(), ^{
             success(spellAttribute,score,errorWordArr.count>0 ?errorWordArr:nil);
         });
@@ -150,6 +150,7 @@
                         SpellMatchObj *spell = [[SpellMatchObj alloc] init];
                         spell.range = range;
                         spell.spellLevel = 0;
+                        spell.color = [UIColor redColor];
                         [spellsArr addObject:spell];
                     }
                 }
@@ -157,6 +158,7 @@
                 SpellMatchObj *spell = [[SpellMatchObj alloc] init];
                 spell.range = range;
                 spell.spellLevel = 0;
+                spell.color = [UIColor redColor];
                 [spellsArr addObject:spell];
             }
         }

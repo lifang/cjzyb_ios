@@ -110,7 +110,7 @@
         }
         
         if (self.isPrePlay) {
-            [parentVC.checkHomeworkButton setTitle:@"开始" forState:UIControlStateNormal];
+            [parentVC.checkHomeworkButton setTitle:@"继续" forState:UIControlStateNormal];
             [parentVC stopTimer];
             [parentVC.reduceTimeButton setEnabled:NO];
         }else{
@@ -131,6 +131,8 @@
     _popUpView = [[PopupView alloc]initWithFrame:CGRectMake(100, 100, 0, 0)];
     _popUpView.ParentView = self.view;
     
+    //KVO,为播放按钮切换图片
+    [self.readingButton addObserver:self forKeyPath:@"userInteractionEnabled" options:NSKeyValueObservingOptionNew context:nil];
     
     if ([DataService sharedService].isHistory) {
         self.view.hidden = YES;
@@ -145,11 +147,15 @@
         }];
     }
 
-    [self.listeningButton setImage:[UIImage imageNamed:@"listening_start.png"] forState:UIControlStateNormal];
-    [self.listeningButton setImage:[UIImage imageNamed:@"listening_stop.png"] forState:UIControlStateDisabled];
+    [self.listeningButton setImage:[UIImage imageNamed:@"listening_stop.png"] forState:UIControlStateNormal];
+    [self.listeningButton setImage:[UIImage imageNamed:@"listening_start.png"] forState:UIControlStateDisabled];
     
     self.isReading = NO;
     self.isListening = NO;
+}
+
+- (void)dealloc{
+    [self.readingButton removeObserver:self forKeyPath:@"userInteractionEnabled"];
 }
 
 #pragma mark exchange homework切换题目
@@ -228,7 +234,7 @@
 
 //TODO:退出作业界面
 -(void)exithomeworkUI{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"退出", nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
     dispatch_async(dispatch_get_main_queue(), ^{
         [alert show];
     });
@@ -458,7 +464,7 @@
     [self.view addSubview:self.preReadingController.view];
     [self addChildViewController:self.preReadingController];
     [self.preReadingController didMoveToParentViewController:self];
-    [parentVC.checkHomeworkButton setTitle:@"开始" forState:UIControlStateNormal];
+    [parentVC.checkHomeworkButton setTitle:@"继续" forState:UIControlStateNormal];
     self.isPrePlay = YES;
     [parentVC stopTimer];
     [parentVC.reduceTimeButton setEnabled:NO];
@@ -580,7 +586,7 @@
         [_popUpView setText: @"启动识别服务失败，请稍后重试"];//可能是上次请求未结束
         [self.view addSubview:_popUpView];
     }
-    [self.readingButton setEnabled:NO];
+    [self.readingButton setUserInteractionEnabled:NO];
     [self.listeningButton setUserInteractionEnabled:NO];
 }
 
@@ -757,10 +763,10 @@
 -(void)setIsReading:(BOOL)isReading{
     _isReading = isReading;
     if (!isReading) {
-        [self.readingButton setImage:[UIImage imageNamed:@"reading_start.png"] forState:UIControlStateNormal];
+        [self.readingButton setImage:[UIImage imageNamed:@"reading_stop.png"] forState:UIControlStateNormal];
         
     }else{
-        [self.readingButton setImage:[UIImage imageNamed:@"reading_stop.png"] forState:UIControlStateNormal];
+        [self.readingButton setImage:[UIImage imageNamed:@"reading_start.png"] forState:UIControlStateNormal];
     }
 }
 -(void)setIsListening:(BOOL)isListening{
@@ -808,7 +814,7 @@
 #pragma mark -- UIAlert Delegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSString *choice = [alertView buttonTitleAtIndex:buttonIndex];
-    if ([choice isEqualToString:@"确定"]) {
+    if ([choice isEqualToString:@"退出"]) {
         [self quitNow];
     }else if ([choice isEqualToString:@"取消"]){
         
@@ -819,6 +825,19 @@
     [_iFlySpeechRecognizer cancel];
     [_iFlySpeechRecognizer setDelegate: nil];
 }
+
+#pragma mark --
+#pragma mark - KVO
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+    if ([keyPath isEqualToString:@"userInteractionEnabled"]) {
+        if (self.readingButton.userInteractionEnabled == YES) {
+            [self.readingButton setImage:[UIImage imageNamed:@"reading_stop.png"] forState:UIControlStateNormal];
+        }else{
+            [self.readingButton setImage:[UIImage imageNamed:@"reading_start.png"] forState:UIControlStateNormal];
+        }
+    }
+}
+
 #pragma mark --
 #pragma mark - IFlySpeechRecognizerDelegate
 /**
@@ -845,7 +864,7 @@
 {
     
     [parentVC startTimer];
-    [self.readingButton setEnabled:YES];
+    [self.readingButton setUserInteractionEnabled:YES];
     NSString *text ;
     if (error.errorCode ==0 ) {
         text = @"识别成功";
@@ -872,7 +891,7 @@
     }
     NSLog(@"听写结果：%@",result);
     [_iFlySpeechRecognizer cancel];
-    [self.readingButton setEnabled:YES];
+    [self.readingButton setUserInteractionEnabled:YES];
     [self.listeningButton setUserInteractionEnabled:YES];
     [parentVC stopTimer];
     TaskObj *task = [DataService sharedService].taskObj;
