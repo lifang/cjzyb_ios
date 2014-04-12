@@ -228,7 +228,7 @@
 
 //TODO:退出作业界面
 -(void)exithomeworkUI{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"退出", nil];
     dispatch_async(dispatch_get_main_queue(), ^{
         [alert show];
     });

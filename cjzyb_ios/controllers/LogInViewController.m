@@ -177,14 +177,8 @@
         msgStr = @"请输入昵称!";
     }else if (nameStr.length == 0){
         msgStr = @"请输入姓名!";
-    }else {
-        NSString *regexCall = @"[0-9]{10}";
-        NSPredicate *predicateCall = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regexCall];
-        if ([predicateCall evaluateWithObject:classStr]) {
-            
-        }else {
-            msgStr = @"请输入班级验证码!";
-        }
+    }else if (classStr.length == 0){
+        msgStr = @"请输入班级验证码!";
     }
 
     if (msgStr.length > 0){

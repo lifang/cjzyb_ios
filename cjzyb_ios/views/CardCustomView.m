@@ -67,7 +67,7 @@
 -(void)setSubView {
 
     [self.cardFirst setTagNameArray:self.aCard.tagArray];
-    
+    //MISTAKE_TYPES_NAME = {0 => "默认", 1 => "读错",2 => '写错',3 => '选错'}
     switch (self.aCard.mistake_types) {
         case 1:
             self.cardFirst.titleLab1.text = @"读错词汇:";
@@ -175,24 +175,31 @@
             NSString *title_sub  =[array objectAtIndex:0];
             NSString *title=[title_sub stringByReplacingOccurrencesOfString:@"<file>" withString:@""];
             
-            NSRange range2 = [title rangeOfString:@".jpg"];
-            if (range2.location != NSNotFound && range2.length != NSNotFound) {//图片
+            
+            NSString *regTags = @"jpg|png|bmp|jpeg";
+            NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regTags
+                                                                                   options:NSRegularExpressionCaseInsensitive
+                                                                                     error:nil];
+            // 执行匹配的过程
+            NSArray *matches = [regex matchesInString:title
+                                              options:0
+                                                range:NSMakeRange(0, [title length])];
+            if (matches.count>0) {//图片
                 self.cardSecond.voiceBtn.hidden=YES;
                 self.cardSecond.imgView = [self returnImageView];
-                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@",title]];
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,title]];
                 [self.cardSecond.imgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"UserHeaderImageBox"]];
                 [self.cardSecond addSubview:self.cardSecond.imgView];
                 
                 if (array.count>1) {
                     self.cardSecond.label_title = [self returnLabel];
                     CGSize size = [self getSizeWithString:[array objectAtIndex:1] withWidth:212];
-                    self.cardSecond.label_title.frame = CGRectMake(90, 50, 212, size.height);
+                    self.cardSecond.label_title.frame = CGRectMake(120, 10, 212, size.height);
                     self.cardSecond.label_title.text = [array objectAtIndex:1];
                     [self.cardSecond addSubview:self.cardSecond.label_title];
                 }
                 self.cardSecond.cardSecondTable.frame = CGRectMake(20, 110, 292, 212);
-                
-            }else {//语音
+            }else {
                 self.cardSecond.voiceBtn.hidden=NO;
                 self.cardSecond.cardSecondTable.frame = CGRectMake(20, 50, 292, 212);
             }
@@ -272,7 +279,6 @@
                 UnderLineRange = range;
             }
         }
-        [full_context appendString:@"resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from resolve from"];
         
         CGSize size = [full_context sizeWithFont:[UIFont systemFontOfSize:22] constrainedToSize:CGSizeMake(292, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
         if (size.height>212) {
@@ -325,7 +331,7 @@
 
 }
 -(UIImageView *)returnImageView {
-    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 40, 70, 70)];
+    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 100, 100)];
     imgView.backgroundColor = [UIColor clearColor];
     return imgView;
 }

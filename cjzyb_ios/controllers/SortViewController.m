@@ -39,6 +39,8 @@ static BOOL isCanUpLoad = NO;
     btn.backgroundColor = [UIColor whiteColor];
     [btn.layer setMasksToBounds:YES];
     [btn.layer setCornerRadius:8];
+    btn.titleLabel.numberOfLines=0;
+    btn.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:33];
     return btn;
@@ -171,10 +173,13 @@ static BOOL isCanUpLoad = NO;
         NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
         self.historyAnswer.text = [NSString stringWithFormat:@"你的排序: %@",txt];
         
+        self.homeControl.numberOfQuestionLabel.text = [NSString stringWithFormat:@"%d/%d",self.branchNumber+1,self.history_branchQuestionArray.count];
         [self setHistoryUI];
     }else {
+        self.homeControl.numberOfQuestionLabel.text = [NSString stringWithFormat:@"%d/%d",self.branchNumber+1,self.branchQuestionArray.count];
         [self setUI];
     }
+    
 }
 -(void)setHistoryUI {
     if (self.branchNumber==self.history_branchQuestionArray.count-1 && self.number==self.history_questionArray.count-1) {
@@ -1009,7 +1014,7 @@ static BOOL isCanUpLoad = NO;
 }
 
 -(void)exitSortView {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"确定退出做题?" delegate:self cancelButtonTitle:@"退出" otherButtonTitles:@"取消", nil];
     alert.tag = 100;
     [alert show];
 }
