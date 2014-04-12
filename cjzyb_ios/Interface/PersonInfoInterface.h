@@ -13,7 +13,7 @@
 
 @property (nonatomic, assign) id <PersonInterfaceDelegate> delegate;
 
--(void)getPersonInterfaceDelegateWithQQ:(NSString *)qq andNick:(NSString *)nick andName:(NSString *)name andCode:(NSString *)code;
+-(void)getPersonInterfaceDelegateWithQQ:(NSString *)qq andNick:(NSString *)nick andName:(NSString *)name andCode:(NSString *)code andKey:(NSString *)key;
 @end
 
 @protocol PersonInterfaceDelegate <NSObject>

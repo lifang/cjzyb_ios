@@ -50,6 +50,30 @@
     return size;
 }
 
+-(void)deletelWithString:(NSString *)string {
+    NSMutableString *mutableString = [NSMutableString stringWithString:string];
+    
+    NSString *regTags = @"\\<.*?>";
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regTags
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:nil];
+    // 执行匹配的过程
+    NSArray *matches = [regex matchesInString:mutableString
+                                      options:0
+                                        range:NSMakeRange(0, [mutableString length])];
+    
+    
+    if (matches.count>0) {
+        NSTextCheckingResult *math = (NSTextCheckingResult *)[matches objectAtIndex:0];
+        NSRange range = [math rangeAtIndex:0];
+        
+        [mutableString deleteCharactersInRange:range];
+        
+        return [self deletelWithString:mutableString];
+    }
+    self.fullTextString = mutableString;
+    
+}
 -(NSRange)dealWithString:(NSString *)string{
     NSString *regTags = @"\\[\\[.*?]]";
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regTags
@@ -264,7 +288,12 @@
             }
         }
 
-        NSMutableString *full_context = [NSMutableString stringWithString:self.aCard.full_text];
+        [self deletelWithString:self.aCard.full_text];
+        
+        self.fullTextString = [self.fullTextString stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+        self.fullTextString = [self.fullTextString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+
+        NSMutableString *full_context = [NSMutableString stringWithString:self.fullTextString];
         
         NSRange UnderLineRange;
         

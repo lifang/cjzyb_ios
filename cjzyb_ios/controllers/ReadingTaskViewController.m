@@ -808,7 +808,7 @@
 #pragma mark -- UIAlert Delegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSString *choice = [alertView buttonTitleAtIndex:buttonIndex];
-    if ([choice isEqualToString:@"确定"]) {
+    if ([choice isEqualToString:@"退出"]) {
         [self quitNow];
     }else if ([choice isEqualToString:@"取消"]){
         

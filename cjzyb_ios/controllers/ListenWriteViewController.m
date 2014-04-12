@@ -329,9 +329,12 @@ static BOOL isCanUpLoad = NO;
     
     [self.appDel.avPlayer stop];
     self.appDel.avPlayer=nil;
-    self.listenBtn.enabled=YES;
+    self.listenBtn.tag = Music_tag_normal;
     self.homeControl.djView.hidden = NO;
     [self.homeControl startTimer];
+    
+    self.branch_listenBtn.tag = Music_tag_normal;
+    [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
     
     [self getQuestionData];
 }
@@ -531,27 +534,35 @@ static int numberOfMusic =0;
         }else {
             [self.appDel.avPlayer stop];
             self.appDel.avPlayer=nil;
-            self.branch_listenBtn.enabled=YES;
-            [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-stop"] forState:UIControlStateNormal];
+            [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
         }
         
     }
 }
 -(IBAction)branchListenMusic:(id)sender {
-    self.branch_listenBtn.enabled=NO;
-    [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
-    self.playMusicModel=1;
-    NSString *path = [Utility returnPath];
-    NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
     
-    NSString *nameString = [NSString stringWithFormat:@"%@/%@",documentDirectory,[self.branchQuestionDic objectForKey:@"resource_url"]];
-    
-    NSError *error;
-    self.appDel.avPlayer = nil;
-    self.appDel.avPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:nameString] error:&error];
-    self.appDel.avPlayer.volume = 1;
-    self.appDel.avPlayer.delegate = self;
-    [self.appDel.avPlayer play];
+    if (self.branch_listenBtn.tag == Music_tag_normal) {
+        self.branch_listenBtn.tag = Music_tag_play;
+        [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-stop"] forState:UIControlStateNormal];
+        self.playMusicModel=1;
+        NSString *path = [Utility returnPath];
+        NSString *documentDirectory = [path stringByAppendingPathComponent:[DataService sharedService].taskObj.taskStartDate];
+        
+        NSString *nameString = [NSString stringWithFormat:@"%@/%@",documentDirectory,[self.branchQuestionDic objectForKey:@"resource_url"]];
+        
+        NSError *error;
+        self.appDel.avPlayer = nil;
+        self.appDel.avPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:nameString] error:&error];
+        self.appDel.avPlayer.volume = 1;
+        self.appDel.avPlayer.delegate = self;
+        [self.appDel.avPlayer play];
+    }else if (self.branch_listenBtn.tag == Music_tag_play){
+        self.branch_listenBtn.tag = Music_tag_normal;
+        [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
+        [self.appDel.avPlayer stop];
+        self.appDel.avPlayer=nil;
+        
+    }
 }
 - (void)didReceiveMemoryWarning
 {
@@ -727,7 +738,15 @@ static int numberOfMusic =0;
             NSString *text = [self replaceYYLetterWithString:letterStr];
             self.remindLab.text = text;
         }
+    }else {
+        self.remindView.hidden=NO;
+        
+        int indexx = arc4random() % (self.orgArray.count);
+        NSString *letterStr = [self.orgArray objectAtIndex:indexx];
+        NSString *text = [self replaceYYLetterWithString:letterStr];
+        self.remindLab.text = text;
     }
+    
     
     //黄色－－部分匹配＋基本正确
     if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
@@ -820,6 +839,8 @@ static CGFloat tmp_ratio = -100;
     if (self.appDel.avPlayer) {
         [self.appDel.avPlayer stop];
         self.appDel.avPlayer=nil;
+        self.branch_listenBtn.tag = Music_tag_normal;
+        [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
     }
     self.branchScore = 0;
     NSMutableString *anserString = [NSMutableString string];
@@ -1015,14 +1036,18 @@ static CGFloat tmp_ratio = -100;
         self.appDel.avPlayer=nil;
     }
     self.remindLab.text = @"";
-    self.branch_listenBtn.enabled=YES;
     self.again_first=YES;self.remindView.hidden=YES;
-    [self.listenBtn setImage:[UIImage imageNamed:@"ios-stop"] forState:UIControlStateNormal];
-    
+
     if (self.branchNumber == self.branchQuestionArray.count-1) {
         self.number++;self.branchNumber = 0;
+        self.listenBtn.tag = Music_tag_normal;
+        [self.listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
+        
         [self listenMusicViewUI];
     }else {
+        self.branch_listenBtn.tag = Music_tag_normal;
+        [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
+        
         [self.homeControl startTimer];
         self.branchNumber++;
         [self getQuestionData];
@@ -1203,6 +1228,10 @@ static CGFloat tmp_ratio = -100;
     if (alertView.tag == 100) {
         if (buttonIndex==0) {
             tmp_ratio=-100;
+            if (self.appDel.avPlayer) {
+                [self.appDel.avPlayer stop];
+                self.appDel.avPlayer=nil;
+            }
             if (self.isFirst==YES && isCanUpLoad==YES) {
                 self.postNumber = 1;
                 if (self.appDel.isReachable == NO) {
@@ -1214,10 +1243,6 @@ static CGFloat tmp_ratio = -100;
                     [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
                 }
             }else {
-                if (self.appDel.avPlayer) {
-                    [self.appDel.avPlayer stop];
-                    self.appDel.avPlayer=nil;
-                }
                 [self.homeControl dismissViewControllerAnimated:YES completion:nil];
             }
         }

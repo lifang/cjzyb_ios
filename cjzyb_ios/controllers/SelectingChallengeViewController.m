@@ -941,7 +941,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     //退出警告
     NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
-    if ([title isEqualToString:@"确定"]) {
+    if ([title isEqualToString:@"退出"]) {
         [self quitNow:nil];
         return;
     }

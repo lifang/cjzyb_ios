@@ -17,6 +17,9 @@
 @property (nonatomic, assign) BOOL displayingPrimary;
 @property (nonatomic, strong) CardObject *aCard;
 @property (nonatomic, assign) NSInteger viewtag;
+
+
+@property (nonatomic, strong) NSString *fullTextString;
 -(void)flipTouched;
 
 - (id)initWithFrame:(CGRect)frame andFirst:(CardFirstView *)first andSecond:(CardSecondView *)second andObj:(CardObject *)object;
