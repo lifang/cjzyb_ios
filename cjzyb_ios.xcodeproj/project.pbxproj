@@ -196,14 +196,11 @@
 		187C4ACD18D304AC0006461D /* 10_08@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4AC318D304AC0006461D /* 10_08@2x.png */; };
 		187C4ACE18D304AC0006461D /* 10_09@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4AC418D304AC0006461D /* 10_09@2x.png */; };
 		187C4ACF18D304AC0006461D /* 10_10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4AC518D304AC0006461D /* 10_10@2x.png */; };
-		188ED74118CD850700D1210F /* right_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 188ED73F18CD850700D1210F /* right_sound.mp3 */; };
-		188ED74218CD850700D1210F /* wrong_sound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 188ED74018CD850700D1210F /* wrong_sound.mp3 */; };
 		189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */; };
 		189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */; };
 		189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */; };
 		189D1B7E18BDBA8C00C22D72 /* LHLNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7D18BDBA8C00C22D72 /* LHLNotificationCell.m */; };
 		18AA80B818BEFFFD00EC08CE /* bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80B718BEFFFD00EC08CE /* bg@2x.png */; };
-		18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80B918BF030200EC08CE /* smile@2x.png */; };
 		18AA80BD18BF04E800EC08CE /* LHLNotificationHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */; };
 		18AA80C418BF1A3300EC08CE /* LHLReplyNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */; };
 		18B3DD2C18F3924500F0F95C /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B3DD2B18F3924500F0F95C /* iflyMSC.framework */; };
@@ -668,8 +665,6 @@
 		187C4AC318D304AC0006461D /* 10_08@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_08@2x.png"; sourceTree = "<group>"; };
 		187C4AC418D304AC0006461D /* 10_09@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_09@2x.png"; sourceTree = "<group>"; };
 		187C4AC518D304AC0006461D /* 10_10@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_10@2x.png"; sourceTree = "<group>"; };
-		188ED73F18CD850700D1210F /* right_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = right_sound.mp3; sourceTree = "<group>"; };
-		188ED74018CD850700D1210F /* wrong_sound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wrong_sound.mp3; sourceTree = "<group>"; };
 		189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationViewController.h; sourceTree = SOURCE_ROOT; };
 		189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationViewController.m; sourceTree = SOURCE_ROOT; };
 		189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -677,7 +672,6 @@
 		189D1B7C18BDBA8C00C22D72 /* LHLNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationCell.h; sourceTree = SOURCE_ROOT; };
 		189D1B7D18BDBA8C00C22D72 /* LHLNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationCell.m; sourceTree = SOURCE_ROOT; };
 		18AA80B718BEFFFD00EC08CE /* bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg@2x.png"; sourceTree = "<group>"; };
-		18AA80B918BF030200EC08CE /* smile@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smile@2x.png"; sourceTree = "<group>"; };
 		18AA80BB18BF04E800EC08CE /* LHLNotificationHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationHeader.h; sourceTree = SOURCE_ROOT; };
 		18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationHeader.m; sourceTree = SOURCE_ROOT; };
 		18AA80C218BF1A3300EC08CE /* LHLReplyNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLReplyNotificationCell.h; sourceTree = SOURCE_ROOT; };
@@ -1354,9 +1348,6 @@
 			children = (
 				1833276A18CEB38000638107 /* smallTriangle@2x.png */,
 				18E01DA418CDB70B0016FA7D /* yourChoice@2x.png */,
-				188ED73F18CD850700D1210F /* right_sound.mp3 */,
-				188ED74018CD850700D1210F /* wrong_sound.mp3 */,
-				18AA80B918BF030200EC08CE /* smile@2x.png */,
 				18AA80B718BEFFFD00EC08CE /* bg@2x.png */,
 			);
 			name = LHLimage;
@@ -2189,7 +2180,6 @@
 				630DBE0718D15BF4009DA0EB /* homeworkTimer@2x.png in Resources */,
 				630DBE2318D15CB1009DA0EB /* homwwork_listenWrite@2x.png in Resources */,
 				0EAABD8018CF15C900CD2DE7 /* card_hasselected@2x.png in Resources */,
-				18AA80BA18BF030200EC08CE /* smile@2x.png in Resources */,
 				0E9D689818CD4E0D00EACFA3 /* SVPullToRefresh.bundle in Resources */,
 				63289A2D18C595D300C0083E /* reading_start@2x.png in Resources */,
 				0E96104618F92CAB004F222B /* left.png in Resources */,
@@ -2217,7 +2207,6 @@
 				630DBDD618D15936009DA0EB /* mainTabBarItem@2x.png in Resources */,
 				0E97C9CE18E2A81700890F60 /* contact_message@2x.png in Resources */,
 				187C4ACC18D304AC0006461D /* 10_07@2x.png in Resources */,
-				188ED74118CD850700D1210F /* right_sound.mp3 in Resources */,
 				0EAABD7C18CF136900CD2DE7 /* TagViewController.xib in Resources */,
 				0E93C9BF18D9927E0094AD7B /* LininggViewController.xib in Resources */,
 				0E9D68BA18CD6C5500EACFA3 /* card_btn@2x.png in Resources */,
@@ -2257,7 +2246,6 @@
 				0E9D68BC18CD6C5500EACFA3 /* card_searchText@2x.png in Resources */,
 				0E97C9DC18E2BABB00890F60 /* PushConfig.plist in Resources */,
 				0E5D1C6818C85FD5008A13F2 /* FourthViewController.xib in Resources */,
-				188ED74218CD850700D1210F /* wrong_sound.mp3 in Resources */,
 				0EAABDAD18D02DEC00CD2DE7 /* ListenWriteViewController.xib in Resources */,
 				6341536918C1C96C00DE4480 /* CalendarViewController.xib in Resources */,
 				63289A2518C594DB00C0083E /* ReadingTaskViewController.xib in Resources */,

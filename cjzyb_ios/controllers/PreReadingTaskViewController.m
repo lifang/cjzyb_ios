@@ -11,7 +11,7 @@
 @interface PreReadingTaskViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *startListeningBt;
 @property (weak, nonatomic) IBOutlet UITextView *sentenceTextView;
-
+@property (assign,nonatomic) BOOL shouldPlayLocalAudio;  //判断是否所有句子都有本地语音,如不是,则不读任何本地语音,全部采用TTS
 @property (assign,nonatomic) BOOL isPreListening;//是否开始预听
 @property (assign,nonatomic) BOOL ttsIsReady; //TTS转换是否完成
 
@@ -53,7 +53,17 @@
     self.sentenceTextView.attributedText = self.allAttriSentenceString;
 }
 
-
+//TODO:判断是否播放本地音频
+-(BOOL)decideShouldPlayLocalAudio:(ReadingHomeworkObj *)homework{
+    BOOL shouldPlayLocalAudio = YES;
+    NSFileManager *manager = [NSFileManager defaultManager];
+    for(ReadingSentenceObj *sentence in homework.readingHomeworkSentenceObjArray){
+        if (![manager fileExistsAtPath:sentence.readingSentenceLocalFileURL]) {
+            shouldPlayLocalAudio = NO;
+        }
+    }
+    return shouldPlayLocalAudio;
+}
 
 
 - (void)didReceiveMemoryWarning
@@ -93,7 +103,7 @@
     [self.allAttriSentenceString  addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:[self getSentenceRange:self.currentSentence withHomework:self.currentHomework]];
     self.sentenceTextView.attributedText = self.allAttriSentenceString;
     
-    if (self.currentSentence.readingSentenceLocalFileURL) {
+    if (self.currentSentence.readingSentenceLocalFileURL && self.shouldPlayLocalAudio) {
         if (self.avPlayer.isPlaying) {
             [self.avPlayer stop];
         }
@@ -144,7 +154,7 @@
         return;
     }
     if (self.isPreListening == NO) {
-        if (self.ttsIsReady) {
+        if (self.ttsIsReady || self.shouldPlayLocalAudio) {
             [self beginToPlayTTS];
         }else{
             [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -212,6 +222,7 @@
 #pragma mark property
 -(void)setCurrentHomework:(ReadingHomeworkObj *)currentHomework{
     _currentHomework = currentHomework;
+    self.shouldPlayLocalAudio = [self decideShouldPlayLocalAudio:_currentHomework];
     //初始化文本
     if (currentHomework && currentHomework.readingHomeworkSentenceObjArray.count > 0) {
         NSMutableString *sentenceStr = [NSMutableString string];

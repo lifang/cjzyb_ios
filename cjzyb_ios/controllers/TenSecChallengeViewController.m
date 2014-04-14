@@ -7,7 +7,7 @@
 //
 
 #import "TenSecChallengeViewController.h"
-#import "LHLTestInterface.h"
+//#import "LHLTestInterface.h"
 #import "HomeworkContainerController.h"
 
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
