@@ -11,11 +11,13 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 #import <AVFoundation/AVFoundation.h> 
-#import "InitViewController.h"
+
 #import "Reachability.h"
 
 
 @class DRLeftTabBarViewController;
+@class InitViewController;
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 
@@ -23,7 +25,7 @@
 @property (retain, nonatomic) Reachability *hostReach;
 //网络是否连接
 @property (assign, nonatomic) BOOL isReachable;
-
+@property (nonatomic, strong) InitViewController *loadingView;
 @property (nonatomic, strong) NSString *pushstr;
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong) MPMoviePlayerController *player;

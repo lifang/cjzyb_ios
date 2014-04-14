@@ -254,7 +254,7 @@
     self.poprController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
     self.poprController.theme.glossShadowColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
     
-    self.poprController.popoverContentSize = (CGSize){224,293};
+    self.poprController.popoverContentSize = (CGSize){224,329};
     CGRect rect = (CGRect){720,0,50,70};
     [self.poprController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES completion:^{
         [self.drNavigationBar.rightButtonItem setUserInteractionEnabled:YES];
@@ -303,12 +303,12 @@
         [self.view setUserInteractionEnabled:NO];
         [controller willMoveToParentViewController:self];
         [self addChildViewController:controller];
-        controller.view.frame = (CGRect){-CGRectGetWidth(controller.view.frame),CGRectGetMinY(self.leftTabBar.frame),200,CGRectGetHeight(self.leftTabBar.frame)};
+        controller.view.frame = (CGRect){-CGRectGetWidth(controller.view.frame),CGRectGetMinY(self.leftTabBar.frame),262,CGRectGetHeight(self.leftTabBar.frame)};
         [self.view addSubview:controller.view];
         [controller didMoveToParentViewController:self];
         [self.view bringSubviewToFront:self.leftTabBar];
         [UIView animateWithDuration:0.5 animations:^{
-            controller.view.frame = (CGRect){CGRectGetMaxX(self.leftTabBar.frame)-12,CGRectGetMinY(self.leftTabBar.frame),200,CGRectGetHeight(self.leftTabBar.frame)};
+            controller.view.frame = (CGRect){CGRectGetMaxX(self.leftTabBar.frame)-12,CGRectGetMinY(self.leftTabBar.frame),262,CGRectGetHeight(self.leftTabBar.frame)};
         } completion:^(BOOL finished) {
             [self.view setUserInteractionEnabled:YES];
         }];

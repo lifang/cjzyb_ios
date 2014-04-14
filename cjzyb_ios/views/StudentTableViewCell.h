@@ -15,4 +15,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *jinzhunLabel;
 @property (weak, nonatomic) IBOutlet UILabel *jiezuLabel;
 @property (weak, nonatomic) IBOutlet UILabel *xunsuLabel;
+@property (weak, nonatomic) IBOutlet UILabel *niuqiLabel;
 @end

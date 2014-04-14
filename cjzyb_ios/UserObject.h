@@ -25,6 +25,8 @@
 @property (assign,nonatomic) int jiezuScore;
 ///优异分数，满100升一级
 @property (assign,nonatomic) int youyiScore;
+///牛气分数，满100升一级
+@property (assign,nonatomic) int niuqiScore;
 
 ///同学列表界面使用
 @property (nonatomic,assign) BOOL isExtend;

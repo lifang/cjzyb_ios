@@ -35,7 +35,7 @@
  *
  * @return
  */
-+(void)downloadUserAchievementWithUserId:(NSString*)userId withGradeID:(NSString*)gradeID withSuccess:(void(^)(int youxi,int xunsu,int jiezu,int jingzhun))success withFailure:(void(^)(NSError *error))failure;
++(void)downloadUserAchievementWithUserId:(NSString*)userId withGradeID:(NSString*)gradeID withSuccess:(void(^)(int youxi,int xunsu,int jiezu,int jingzhun,int niuqi))success withFailure:(void(^)(NSError *error))failure;
 
 /*!
  * @brief 加入新班级

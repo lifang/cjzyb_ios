@@ -8,11 +8,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="1" customClass="StudentTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="220" height="130"/>
+            <rect key="frame" x="0.0" y="0.0" width="262" height="130"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" id="8l5-fK-Nab" userLabel="nameView">
-                    <rect key="frame" x="0.0" y="0.0" width="220" height="53"/>
+                    <rect key="frame" x="0.0" y="0.0" width="262" height="53"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MdG-p4-RbS" userLabel="userNameLabel - Label">
@@ -30,28 +30,28 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" id="qve-ze-CJ8" userLabel="achieveMentView">
-                    <rect key="frame" x="0.0" y="53" width="222" height="77"/>
+                    <rect key="frame" x="0.0" y="53" width="262" height="77"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrowBack.png" id="4Xn-6l-O9M">
-                            <rect key="frame" x="0.0" y="0.0" width="222" height="80"/>
+                            <rect key="frame" x="0.0" y="0.0" width="262" height="80"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </imageView>
                         <view contentMode="scaleToFill" id="Dg4-94-ILv" userLabel="youxiuView">
-                            <rect key="frame" x="18" y="15" width="35" height="48"/>
+                            <rect key="frame" x="13" y="15" width="44" height="58"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="youxiu_yellow.png" id="S8c-Ag-XnJ">
-                                    <rect key="frame" x="0.0" y="0.0" width="35" height="31"/>
+                                    <rect key="frame" x="2" y="2" width="40" height="36"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LTO-nT-KMV">
-                                    <rect key="frame" x="0.0" y="30" width="34" height="16"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV289" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LTO-nT-KMV">
+                                    <rect key="frame" x="0.0" y="42" width="44" height="16"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
                                     <color key="textColor" red="0.91539996599999995" green="0.86903310190000005" blue="0.39249454859999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -59,19 +59,19 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" id="axv-3B-z8H" userLabel="jinzhunView">
-                            <rect key="frame" x="66" y="15" width="35" height="48"/>
+                            <rect key="frame" x="61" y="15" width="44" height="58"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jinque_yellow.png" id="zzf-Kj-xG0">
-                                    <rect key="frame" x="0.0" y="0.0" width="35" height="31"/>
+                                    <rect key="frame" x="2" y="0.0" width="40" height="40"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="H3q-Yx-sFP">
-                                    <rect key="frame" x="0.0" y="30" width="34" height="16"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV278" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="H3q-Yx-sFP">
+                                    <rect key="frame" x="0.0" y="42" width="44" height="16"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
                                     <color key="textColor" red="0.91539996599999995" green="0.86903310190000005" blue="0.39249454859999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -79,19 +79,19 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" id="2lf-M3-acP" userLabel="jiezuView">
-                            <rect key="frame" x="117" y="15" width="35" height="48"/>
+                            <rect key="frame" x="109" y="15" width="44" height="58"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="jiezu_yellow.png" id="AnP-dr-bnW">
-                                    <rect key="frame" x="0.0" y="0.0" width="35" height="31"/>
+                                    <rect key="frame" x="2" y="0.0" width="40" height="40"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hxu-G5-ZHe">
-                                    <rect key="frame" x="0.0" y="30" width="34" height="16"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV222" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hxu-G5-ZHe">
+                                    <rect key="frame" x="0.0" y="42" width="44" height="16"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
                                     <color key="textColor" red="0.91539996599999995" green="0.86903310190000005" blue="0.39249454859999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -99,19 +99,39 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" id="DjX-gL-Eca" userLabel="xunsuView">
-                            <rect key="frame" x="169" y="15" width="35" height="48"/>
+                            <rect key="frame" x="157" y="15" width="44" height="58"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="xunsu_yellow.png" id="wCN-bC-EWo">
-                                    <rect key="frame" x="0.0" y="0.0" width="35" height="31"/>
+                                    <rect key="frame" x="2" y="0.0" width="40" height="40"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9Fm-n7-rno">
-                                    <rect key="frame" x="0.0" y="30" width="34" height="16"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV232" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9Fm-n7-rno">
+                                    <rect key="frame" x="0.0" y="42" width="44" height="16"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
+                                    <color key="textColor" red="0.91539996599999995" green="0.86903310190000005" blue="0.39249454859999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
+                        <view contentMode="scaleToFill" id="XZr-Lr-9so" userLabel="niuqiView">
+                            <rect key="frame" x="205" y="15" width="44" height="58"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="niuqi_yellow.png" id="IjD-Cz-pB4">
+                                    <rect key="frame" x="2" y="4" width="40" height="36"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </imageView>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LV288" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vaK-2Y-809">
+                                    <rect key="frame" x="0.0" y="42" width="44" height="16"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" heightSizable="YES"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
                                     <color key="textColor" red="0.91539996599999995" green="0.86903310190000005" blue="0.39249454859999999" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
@@ -127,6 +147,7 @@
             <connections>
                 <outlet property="jiezuLabel" destination="Hxu-G5-ZHe" id="WNG-ZE-Yef"/>
                 <outlet property="jinzhunLabel" destination="H3q-Yx-sFP" id="xWa-26-Ley"/>
+                <outlet property="niuqiLabel" destination="vaK-2Y-809" id="HQF-Uo-c3U"/>
                 <outlet property="userImageView" destination="w06-Ba-2qQ" id="IaC-7X-fAd"/>
                 <outlet property="userNameLabel" destination="MdG-p4-RbS" id="Y4o-Pk-Pwd"/>
                 <outlet property="xunsuLabel" destination="9Fm-n7-rno" id="fTT-Nw-ice"/>
@@ -138,6 +159,7 @@
         <image name="arrowBack.png" width="217" height="79"/>
         <image name="jiezu_yellow.png" width="37" height="37"/>
         <image name="jinque_yellow.png" width="37" height="37"/>
+        <image name="niuqi_yellow.png" width="37" height="37"/>
         <image name="xunsu_yellow.png" width="37" height="37"/>
         <image name="youxiu_yellow.png" width="37" height="37"/>
     </resources>

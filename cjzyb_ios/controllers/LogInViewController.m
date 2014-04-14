@@ -85,7 +85,7 @@
         if (self.appDel.isReachable == NO) {
             [Utility errorAlert:@"暂无网络!"];
         }else {
-            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             [self.logInter getLogInterfaceDelegateWithQQ:_tencentOAuth.openId];
         }
     }
@@ -106,8 +106,8 @@
 - (void)keyboardDidShow:(id)sender{
     [UIView beginAnimations:nil context:nil];
     CGRect frame = self.logoImg.frame;
-    if (frame.origin.y==200) {
-        NSInteger xx = 150;
+    if (frame.origin.y==92) {
+        NSInteger xx = 120;
         frame.origin.y -= xx;
         self.logoImg.frame = frame;
         
@@ -150,8 +150,8 @@
 - (void)keyboardDidHide:(id)sender{
     [UIView beginAnimations:nil context:nil];
     CGRect frame = self.logoImg.frame;
-    if (frame.origin.y==50) {
-        NSInteger xx = 150;
+    if (frame.origin.y==-28) {
+        NSInteger xx = 120;
         
         frame.origin.y += xx;
         self.logoImg.frame = frame;
@@ -313,6 +313,10 @@
     self.detailBtn.frame = frame;
 }
 #pragma mark
+-(void)showMainView {
+    [[AppDelegate shareIntance] showRootView];
+}
+#pragma mark
 #pragma mark - LogInterfaceDelegate
 
 -(void)getLogInfoDidFinished:(NSDictionary *)result {
@@ -320,6 +324,10 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             if ([[result objectForKey:@"status"]isEqualToString:@"success"]) {
+                self.logView.hidden = YES;
+                self.detailView.hidden = YES;
+                self.IconView.hidden = NO;
+                
                 NSFileManager *fileManage = [NSFileManager defaultManager];
                 NSString *path = [Utility returnPath];
                 NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
@@ -347,8 +355,8 @@
                 [DataService sharedService].user = [UserObject userFromDictionary:studentDic];
                 [NSKeyedArchiver archiveRootObject:studentDic toFile:filename2];
                 
-                AppDelegate *appDel = [AppDelegate shareIntance];
-                [appDel showRootView];
+                
+                [self performSelector:@selector(showMainView) withObject:nil afterDelay:3];
                 
                 [_tencentOAuth logout:self];
             }else {
@@ -381,6 +389,11 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
+            
+            self.logView.hidden = YES;
+            self.detailView.hidden = YES;
+            self.IconView.hidden = NO;
+            
             NSFileManager *fileManage = [NSFileManager defaultManager];
             NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
             NSString *filename = [Path stringByAppendingPathComponent:@"class.plist"];
@@ -407,8 +420,8 @@
             [DataService sharedService].user = [UserObject userFromDictionary:studentDic];
             [NSKeyedArchiver archiveRootObject:studentDic toFile:filename2];
             
-            AppDelegate *appDel = [AppDelegate shareIntance];
-            [appDel showRootView];
+            
+            [self performSelector:@selector(showMainView) withObject:nil afterDelay:3];
             
             [_tencentOAuth logout:self];
         });

@@ -33,7 +33,7 @@
 @property (nonatomic, assign) id <FirstCellDelegate> delegate;
 @property (nonatomic, strong) NSIndexPath *idxPath;
 @property (strong, nonatomic) UIButton *coverButton;
-
+@property (nonatomic, strong) UIImageView *praisedImg;
 @property (nonatomic, assign) BOOL isHiddenLoadButton;
 @property (nonatomic, strong) UIButton *loadButton;
 -(void)open;

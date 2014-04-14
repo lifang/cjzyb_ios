@@ -27,7 +27,8 @@
 @property (weak, nonatomic) IBOutlet DRProgressView *xunsuProgressView;
 ///捷足进度条
 @property (weak, nonatomic) IBOutlet DRProgressView *jiezuProgressView;
-
+///牛气进度条
+@property (weak, nonatomic) IBOutlet DRProgressView *niuqiProgressView;
 ///显示加入的班级列表
 - (IBAction)userClassButtonClicked:(id)sender;
 
@@ -58,17 +59,21 @@
     self.userClassNameLabel.text = data.theClass.name;
     [MBProgressHUD showHUDAddedTo:appDel.window animated:YES];
     __weak UserInfoPopViewController *weakSelf = self;
-    [UserObjDaoInterface downloadUserAchievementWithUserId:data.user.studentId withGradeID:data.theClass.classId withSuccess:^(int youxi, int xunsu, int jiezu, int jingzhun) {
+    [UserObjDaoInterface downloadUserAchievementWithUserId:data.user.studentId withGradeID:data.theClass.classId withSuccess:^(int youxi, int xunsu, int jiezu, int jingzhun,int niuqi) {
         UserInfoPopViewController *tempSelf = weakSelf;
         if (tempSelf) {
             data.user.youyiScore = youxi;
             data.user.xunsuScore = xunsu;
             data.user.jiezuScore = jiezu;
             data.user.jingzhunScore = jingzhun;
+            data.user.niuqiScore = niuqi;
+            
             [self.youyiProgressView updateContentWithScore:youxi];
             [self.xunsuProgressView updateContentWithScore:xunsu];
             [self.jiezuProgressView updateContentWithScore:jiezu];
             [self.jingzhunProgressView updateContentWithScore:jingzhun];
+            [self.niuqiProgressView updateContentWithScore:niuqi];
+            
             [MBProgressHUD hideHUDForView:appDel.window animated:YES];
         }
     } withFailure:^(NSError *error) {

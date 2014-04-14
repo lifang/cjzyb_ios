@@ -38,4 +38,9 @@
 
 ///0=QQ登录页面   1=激活码页面   2=班级验证码页面   3=完善信息页面
 @property (nonatomic, assign) NSInteger pageIndex;
+
+
+@property (nonatomic, strong) IBOutlet UIView *IconView;
+@property (nonatomic, strong) IBOutlet UILabel *visonLabel;
+@property (nonatomic, strong) IBOutlet UILabel *companyLabel;
 @end

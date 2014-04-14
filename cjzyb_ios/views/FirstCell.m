@@ -47,6 +47,12 @@
     [self.headImg.layer setMasksToBounds:YES];
     [self.actualContentView addSubview:self.headImg];
     
+    //赞
+    self.praisedImg = [[UIImageView alloc]initWithFrame:CGRectZero];
+    self.praisedImg.backgroundColor = [UIColor clearColor];
+    [self.actualContentView addSubview:self.praisedImg];
+    
+    
     self.loadButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.loadButton setTitle:@"点击加载更多..." forState:UIControlStateNormal];
     [self.loadButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -138,6 +144,8 @@
     self.nameToLab.frame = CGRectMake(self.huifuLab.frame.origin.x+self.huifuLab.frame.size.width+Insets, Space_Height, [self.aReplyMsg.reciver_name sizeWithFont:[UIFont systemFontOfSize:18]].width, Label_Height);
     
     self.timeLab.frame = CGRectMake(self.nameToLab.frame.origin.x+self.nameToLab.frame.size.width+Insets, Space_Height, [self.aReplyMsg.created_at sizeWithFont:[UIFont systemFontOfSize:18]].width, Label_Height);
+    
+    self.praisedImg.frame = CGRectMake(self.timeLab.frame.origin.x+self.timeLab.frame.size.width+Insets, Space_Height, 24, 24);
 
     if (self.msgStyle == ReplyMessageCellStyleMe) {
         self.deleteButton.hidden = NO;
@@ -171,6 +179,11 @@
 -(void)setAReplyMsg:(ReplyMessageObject *)aReplyMsg {
     _aReplyMsg = aReplyMsg;
 
+    if (_aReplyMsg.praised == 0) {
+        _praisedImg.hidden = YES;
+    }else {
+        _praisedImg.hidden = NO;
+    }
     _nameFromLab.text = _aReplyMsg.sender_name;
     _timeLab.text = _aReplyMsg.created_at;
     _contentLab.text = _aReplyMsg.content;

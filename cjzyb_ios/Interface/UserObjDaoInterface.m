@@ -41,8 +41,8 @@
 }
 
 ///获取用户成就信息
-+(void)downloadUserAchievementWithUserId:(NSString*)userId withGradeID:(NSString*)gradeID withSuccess:(void(^)(int youxi,int xunsu,int jiezu,int jingzhun))success withFailure:(void(^)(NSError *error))failure{
-//    kHOST/api/students/get_my_archivements?school_class_id=83&student_id=73
++(void)downloadUserAchievementWithUserId:(NSString*)userId withGradeID:(NSString*)gradeID withSuccess:(void(^)(int youxi,int xunsu,int jiezu,int jingzhun,int niuqi))success withFailure:(void(^)(NSError *error))failure{
+
     if (!userId || !gradeID || [[gradeID stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""]) {
         if (failure) {
             failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"请求参数不能为空"}]);
@@ -56,9 +56,9 @@
     [request setTimeOutSeconds:60];
     [request setRequestMethod:@"GET"];
     [Utility requestDataWithASIRequest:request withSuccess:^(NSDictionary *dicData) {
-        int youyi = 0,jingzhun = 0,xunsu = 0,jiezu = 0;
+        int youyi = 0,jingzhun = 0,xunsu = 0,jiezu = 0,niuqi=0;
         for (NSDictionary *scoreDic in [dicData objectForKey:@"archivements"]) {
-            //                    TYPES_NAME = {0 => "优异", 1 => "精准", 2 => "迅速", 3 => "捷足"}
+            //TYPES_NAME = {0 => "优异", 1 => "精准", 2 => "迅速", 3 => "捷足",4 => "牛气"}
             NSString *type = [Utility filterValue:[scoreDic objectForKey:@"archivement_types"]];
             if (type) {
                 switch (type.intValue) {
@@ -86,6 +86,12 @@
                         jiezu = score?score.intValue:0;
                     }
                         break;
+                    case 4:
+                    {
+                        NSString *score = [Utility filterValue:[scoreDic objectForKey:@"archivement_score"]];
+                        niuqi = score?score.intValue:0;
+                    }
+                        break;
                     default:
                         break;
                 }
@@ -94,7 +100,7 @@
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
-                success(youyi,xunsu,jiezu,jingzhun);
+                success(youyi,xunsu,jiezu,jingzhun,niuqi);
             }
         });
     } withFailure:failure];

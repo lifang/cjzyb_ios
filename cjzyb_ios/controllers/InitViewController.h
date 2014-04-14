@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface InitViewController : UIViewController<UITextFieldDelegate>
+@interface InitViewController : UIViewController
 
-@property (nonatomic, strong) IBOutlet UIActivityIndicatorView* activityView;
+@property (nonatomic, strong) IBOutlet UIImageView* loadingImg;
+@property (nonatomic, strong) IBOutlet UIView *IconView;
+@property (nonatomic, strong) IBOutlet UILabel *visonLabel;
+@property (nonatomic, strong) IBOutlet UILabel *companyLabel;
+
 @end

@@ -14,16 +14,13 @@
 #import "HomeworkViewController.h"//作业
 #import "LHLNotificationContainerVC.h" //通知
 #import "LogInViewController.h" //登录
-
 #import "ReadingTaskViewController.h"
-
 #import "HomeworkContainerController.h"//做题
 #import "CardpackageViewController.h"//卡包
 #import "TenSecChallengeViewController.h"
-
 #import "PreReadingTaskViewController.h"
-
 #import "DRSentenceSpellMatch.h"
+#import "InitViewController.h"
 @implementation AppDelegate
 -(void)loadTrueSound:(NSInteger)index {
     NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"trueMusic.wav"];
@@ -128,8 +125,8 @@
     NSFileManager *fileManage = [NSFileManager defaultManager];
     NSString *path = [Utility returnPath];
     NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
+    LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
     if (![fileManage fileExistsAtPath:filename]) {
-        LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
         self.window.rootViewController = logView;
     }else {
         NSDictionary *classDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
@@ -141,9 +138,9 @@
             filename = [path stringByAppendingPathComponent:@"student.plist"];
             [fileManage removeItemAtPath:filename error:nil];
             
-            LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
             self.window.rootViewController = logView;
         }else {
+            
             filename = [path stringByAppendingPathComponent:@"student.plist"];
             NSDictionary *userDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
             [DataService sharedService].user = [UserObject userFromDictionary:userDic];
@@ -153,7 +150,9 @@
                     [DataService sharedService].theClass.classId = [NSString stringWithFormat:@"%d",self.the_class_id];
                     [DataService sharedService].theClass.name = [NSString stringWithFormat:@"%@",self.the_class_name];
                     
-                    [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
+                    self.loadingView.loadingImg.hidden = YES;
+                    self.loadingView.IconView.hidden = NO;
+                    [self performSelector:@selector(showMainController) withObject:nil afterDelay:3];
                 }else {
                     NSFileManager *fileManage = [NSFileManager defaultManager];
                     NSString *path = [Utility returnPath];
@@ -165,11 +164,12 @@
                     if ([fileManage fileExistsAtPath:filename2]) {
                         [fileManage removeItemAtPath:filename2 error:nil];
                     }
-                    LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
                     self.window.rootViewController = logView;
                 }
             }else {
-                [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
+                self.loadingView.loadingImg.hidden = YES;
+                self.loadingView.IconView.hidden = NO;
+                [self performSelector:@selector(showMainController) withObject:nil afterDelay:3];
             }
         }
     }
@@ -196,8 +196,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    InitViewController *initView = [[InitViewController alloc]initWithNibName:@"InitViewController" bundle:nil];
-    self.window.rootViewController = initView;
+    self.loadingView = [[InitViewController alloc]initWithNibName:@"InitViewController" bundle:nil];
+    self.window.rootViewController = self.loadingView;
     self.window.backgroundColor = [UIColor whiteColor];
 
     self.the_class_id = -1;
@@ -259,24 +259,23 @@
         }
     }
 
-    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
-//    [self showMainController];
+//    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
     
-//    [DataService sharedService].user = [[UserObject alloc]init];
-//    [DataService sharedService].user.nickName = @"大小姐";
-//    [DataService sharedService].user.name = @"多少分";
-//    [DataService sharedService].user.headUrl = @"/avatars/students/2014-03/student_91";
-//    [DataService sharedService].user.userId = @"150";
-//    [DataService sharedService].user.studentId = @"89";
-//    
-//    [DataService sharedService].theClass = [[ClassObject alloc]init];
-//    [DataService sharedService].theClass.classId = @"106";
-//    [DataService sharedService].theClass.name = @"大结局";
-//    [DataService sharedService].theClass.tId = @"75";
-//    [DataService sharedService].theClass.tName = @"黄河";
-//    [DataService sharedService].theClass.expireTime = @"2014-04-26 23:59:59";
-//
-//    [self showMainController];
+    [DataService sharedService].user = [[UserObject alloc]init];
+    [DataService sharedService].user.nickName = @"大小姐";
+    [DataService sharedService].user.name = @"多少分";
+    [DataService sharedService].user.headUrl = @"/avatars/students/2014-03/student_91";
+    [DataService sharedService].user.userId = @"150";
+    [DataService sharedService].user.studentId = @"89";
+    
+    [DataService sharedService].theClass = [[ClassObject alloc]init];
+    [DataService sharedService].theClass.classId = @"106";
+    [DataService sharedService].theClass.name = @"大结局";
+    [DataService sharedService].theClass.tId = @"75";
+    [DataService sharedService].theClass.tName = @"黄河";
+    [DataService sharedService].theClass.expireTime = @"2014-04-26 23:59:59";
+
+    [self showMainController];
     
     [self.window makeKeyAndVisible];
 

@@ -108,6 +108,7 @@
         detailCell.xunsuLabel.text = [Utility formateLevelWithScore:st.xunsuScore];
         detailCell.jinzhunLabel.text = [Utility formateLevelWithScore:st.jingzhunScore];
         detailCell.youyiLabel.text = [Utility formateLevelWithScore:st.youyiScore];
+        detailCell.niuqiLabel.text = [Utility formateLevelWithScore:st.niuqiScore];
         return detailCell;
     }else{
         StudentSummaryCell *summaryCell = (StudentSummaryCell*)[tableView dequeueReusableCellWithIdentifier:@"cell"];

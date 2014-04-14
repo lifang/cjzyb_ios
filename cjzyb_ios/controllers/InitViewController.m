@@ -7,7 +7,6 @@
 //
 
 #import "InitViewController.h"
-#import "AppDelegate.h"
 
 @interface InitViewController ()
 
@@ -31,18 +30,16 @@
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    [self.activityView stopAnimating];
     
 }
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-   [self performSelector:@selector(showMainView) withObject:nil afterDelay:2];
+   [self performSelector:@selector(showMainView) withObject:nil afterDelay:3];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Default-Portrait.png"]];
 }
 
 - (void)didReceiveMemoryWarning
