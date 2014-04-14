@@ -488,6 +488,7 @@
 }
 
 -(void)hiddlePrePlayControllerWithAnimation:(BOOL)animation{
+    self.preReadingController.shouldInterrupt = YES;
     [self.preReadingController willMoveToParentViewController:nil];
     [self.preReadingController.view removeFromSuperview];
     [self.preReadingController removeFromParentViewController];

@@ -24,6 +24,9 @@
 ///播放音频界面
 @property (nonatomic,strong) AVAudioPlayer *avPlayer;
 
+///是否应打断转换音频+播放的流程
+@property (assign,nonatomic) BOOL shouldInterrupt;
+
 ///开始预听
 -(void)startPreListeningHomeworkSentence:(ReadingHomeworkObj*)homework withPlayFinished:(void (^)(BOOL isSuccess))finished;
 

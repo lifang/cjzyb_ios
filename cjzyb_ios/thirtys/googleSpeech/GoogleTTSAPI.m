@@ -51,7 +51,7 @@
 }
 
 + (void)textToSpeechWithText:(NSString *)text andLanguage:(NSString*) language success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure {
-    [GoogleTTSAPI textToSpeechWithText:text andLanguage:language cached:YES success:success failure:failure];
+    [GoogleTTSAPI textToSpeechWithText:text andLanguage:language cached:NO success:success failure:failure];
 }
 
 + (void)textToSpeechWithText:(NSString *)text andLanguage:(NSString*) language cached:(BOOL) cached success:(void(^)(NSData *data))success failure:(void(^)(NSError *error))failure {
@@ -190,6 +190,7 @@
 
 + (void) cacheData: (NSData*) data forText: (NSString*) text andLanguage: (NSString*) language {
     // Save file
+    // 此处单位是秒,如两次请求间隔小于1秒则有可能保存重复文件
     NSString *fileName = [NSString stringWithFormat:@"%d_%@",(int)[NSDate timeIntervalSinceReferenceDate],language];
     NSTimeInterval expirationDate = [[NSDate dateWithTimeIntervalSinceNow: 24 * 60 * 60] timeIntervalSinceReferenceDate];
     NSURL *fileURL = [GoogleTTSAPI fileURLWithFileName:fileName];
