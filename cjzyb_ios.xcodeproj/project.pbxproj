@@ -170,7 +170,6 @@
 		1818F6A618C561ED00DC6207 /* TenSecChallengeResultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1818F6A518C561ED00DC6207 /* TenSecChallengeResultView.xib */; };
 		181A786618C4206700D288D3 /* TenSecChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786418C4206700D288D3 /* TenSecChallengeViewController.m */; };
 		181A786A18C469AB00D288D3 /* TenSecChallengeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786918C469AB00D288D3 /* TenSecChallengeObject.m */; };
-		1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */; };
 		182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */; };
 		182AF15D18F7D7F300EA5A7E /* FullText.m in Sources */ = {isa = PBXBuildFile; fileRef = 182AF15B18F7D7F300EA5A7E /* FullText.m */; };
 		182AF15E18F7D7F300EA5A7E /* FullText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 182AF15C18F7D7F300EA5A7E /* FullText.xib */; };
@@ -210,10 +209,6 @@
 		18B3DD2C18F3924500F0F95C /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B3DD2B18F3924500F0F95C /* iflyMSC.framework */; };
 		18B3DD2F18F3938600F0F95C /* PopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B3DD2D18F3938600F0F95C /* PopupView.m */; };
 		18B3DD3218F3946E00F0F95C /* RecognizerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B3DD3118F3946E00F0F95C /* RecognizerFactory.m */; };
-		18B4EB7B18D29A1D00986766 /* LHLGetMyNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB7A18D29A1D00986766 /* LHLGetMyNoticeInterface.m */; };
-		18B4EB7E18D29D9F00986766 /* LHLGetSysNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB7D18D29D9F00986766 /* LHLGetSysNoticeInterface.m */; };
-		18B4EB8118D29DD800986766 /* LHLDeleteSysNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB8018D29DD800986766 /* LHLDeleteSysNoticeInterface.m */; };
-		18B4EB8418D29E0500986766 /* LHLDeleteMyNoticeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B4EB8318D29E0500986766 /* LHLDeleteMyNoticeInterface.m */; };
 		18CF139218E93B61001E3448 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92654E18BD9016003ADEC3 /* MainViewController.xib */; };
 		18CF139618E961CB001E3448 /* LHLNotificationContainerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CF139418E961CB001E3448 /* LHLNotificationContainerVC.m */; };
 		18CF139718E961CB001E3448 /* LHLNotificationContainerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18CF139518E961CB001E3448 /* LHLNotificationContainerVC.xib */; };
@@ -638,8 +633,6 @@
 		181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TenSecChallengeViewController.xib; sourceTree = "<group>"; };
 		181A786818C469AB00D288D3 /* TenSecChallengeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TenSecChallengeObject.h; sourceTree = SOURCE_ROOT; };
 		181A786918C469AB00D288D3 /* TenSecChallengeObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TenSecChallengeObject.m; sourceTree = SOURCE_ROOT; };
-		1821470918C6D26B0041A7E7 /* LHLTestInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLTestInterface.h; sourceTree = "<group>"; };
-		1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLTestInterface.m; sourceTree = "<group>"; };
 		182A89D718C977BC00CF4B30 /* OrdinaryAnswerObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdinaryAnswerObject.h; sourceTree = SOURCE_ROOT; };
 		182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdinaryAnswerObject.m; sourceTree = SOURCE_ROOT; };
 		182AF15A18F7D7F300EA5A7E /* FullText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullText.h; sourceTree = "<group>"; };
@@ -694,14 +687,6 @@
 		18B3DD2E18F3938600F0F95C /* PopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupView.h; sourceTree = "<group>"; };
 		18B3DD3018F3946E00F0F95C /* RecognizerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecognizerFactory.h; sourceTree = "<group>"; };
 		18B3DD3118F3946E00F0F95C /* RecognizerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecognizerFactory.m; sourceTree = "<group>"; };
-		18B4EB7918D29A1D00986766 /* LHLGetMyNoticeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLGetMyNoticeInterface.h; sourceTree = "<group>"; };
-		18B4EB7A18D29A1D00986766 /* LHLGetMyNoticeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLGetMyNoticeInterface.m; sourceTree = "<group>"; };
-		18B4EB7C18D29D9F00986766 /* LHLGetSysNoticeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLGetSysNoticeInterface.h; sourceTree = "<group>"; };
-		18B4EB7D18D29D9F00986766 /* LHLGetSysNoticeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLGetSysNoticeInterface.m; sourceTree = "<group>"; };
-		18B4EB7F18D29DD800986766 /* LHLDeleteSysNoticeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLDeleteSysNoticeInterface.h; sourceTree = "<group>"; };
-		18B4EB8018D29DD800986766 /* LHLDeleteSysNoticeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLDeleteSysNoticeInterface.m; sourceTree = "<group>"; };
-		18B4EB8218D29E0500986766 /* LHLDeleteMyNoticeInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLDeleteMyNoticeInterface.h; sourceTree = "<group>"; };
-		18B4EB8318D29E0500986766 /* LHLDeleteMyNoticeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLDeleteMyNoticeInterface.m; sourceTree = "<group>"; };
 		18CF139318E961CB001E3448 /* LHLNotificationContainerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationContainerVC.h; sourceTree = "<group>"; };
 		18CF139418E961CB001E3448 /* LHLNotificationContainerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationContainerVC.m; sourceTree = "<group>"; };
 		18CF139518E961CB001E3448 /* LHLNotificationContainerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationContainerVC.xib; sourceTree = "<group>"; };
@@ -1260,8 +1245,6 @@
 				0E660F1C18E0249E0074454C /* PostImage.m */,
 				0EEF4BE018C561700058606A /* InterfaceCache.h */,
 				0EEF4BE118C561700058606A /* InterfaceCache.m */,
-				1821470918C6D26B0041A7E7 /* LHLTestInterface.h */,
-				1821470A18C6D26B0041A7E7 /* LHLTestInterface.m */,
 				0EEF4BE218C561700058606A /* MessageInterface.h */,
 				0EEF4BE318C561700058606A /* MessageInterface.m */,
 				0EEF4BE418C561700058606A /* PageMessageInterface.h */,
@@ -1288,14 +1271,6 @@
 				0E9D68C018CD8CDF00EACFA3 /* CardInterface.m */,
 				0EAABD6318CEAC2C00CD2DE7 /* DeleteCardInterface.h */,
 				0EAABD6418CEAC2C00CD2DE7 /* DeleteCardInterface.m */,
-				18B4EB7918D29A1D00986766 /* LHLGetMyNoticeInterface.h */,
-				18B4EB7A18D29A1D00986766 /* LHLGetMyNoticeInterface.m */,
-				18B4EB7C18D29D9F00986766 /* LHLGetSysNoticeInterface.h */,
-				18B4EB7D18D29D9F00986766 /* LHLGetSysNoticeInterface.m */,
-				18B4EB7F18D29DD800986766 /* LHLDeleteSysNoticeInterface.h */,
-				18B4EB8018D29DD800986766 /* LHLDeleteSysNoticeInterface.m */,
-				18B4EB8218D29E0500986766 /* LHLDeleteMyNoticeInterface.h */,
-				18B4EB8318D29E0500986766 /* LHLDeleteMyNoticeInterface.m */,
 				0EAABD8618CF1F6300CD2DE7 /* TagInterface.h */,
 				0EAABD8718CF1F6300CD2DE7 /* TagInterface.m */,
 				0EAABDA618D0062100CD2DE7 /* SelectedTagInterface.h */,
@@ -2410,7 +2385,6 @@
 				63DD5C7918C9E9F60034512D /* ReadingTaskViewControllerView.m in Sources */,
 				6396577718C036B1002F2A90 /* ClassGroupViewController.m in Sources */,
 				0E9D68D918CDC28700EACFA3 /* MyPageControl.m in Sources */,
-				18B4EB8118D29DD800986766 /* LHLDeleteSysNoticeInterface.m in Sources */,
 				0E9D68C718CD966400EACFA3 /* Array.mm in Sources */,
 				0EEF4C1518C5622F0058606A /* FirstViewController.m in Sources */,
 				6329551E18BC8AA700F2B78D /* ASICloudFilesObjectRequest.m in Sources */,
@@ -2477,7 +2451,6 @@
 				18DF866018E2C697009BEB58 /* LHLTableView.m in Sources */,
 				6341536118C1C90300DE4480 /* NSMutableArray+convenience.m in Sources */,
 				0E5D1C6718C85FD5008A13F2 /* FourthViewController.m in Sources */,
-				18B4EB7E18D29D9F00986766 /* LHLGetSysNoticeInterface.m in Sources */,
 				18FAB37618F4DE4E00C2AB83 /* InitViewController.m in Sources */,
 				0E9D68A118CD671F00EACFA3 /* CardObject.m in Sources */,
 				18CF139B18E96402001E3448 /* LHLReplyNotificationViewController.m in Sources */,
@@ -2558,7 +2531,6 @@
 				18B3DD3218F3946E00F0F95C /* RecognizerFactory.m in Sources */,
 				6329556A18BC900600F2B78D /* UIButton+WebCache.m in Sources */,
 				0E9265BF18C028A9003ADEC3 /* ComtomTxt.m in Sources */,
-				18B4EB7B18D29A1D00986766 /* LHLGetMyNoticeInterface.m in Sources */,
 				6329551518BC8AA700F2B78D /* ASIHTTPRequest.m in Sources */,
 				630DBEBD18D1B0F3009DA0EB /* ModelTypeViewController.m in Sources */,
 				6329551B18BC8AA700F2B78D /* ASICloudFilesContainerRequest.m in Sources */,
@@ -2576,13 +2548,11 @@
 				6341536818C1C96C00DE4480 /* CalendarViewController.m in Sources */,
 				638C04FA18E51D13009BFD40 /* HomeworkRankingViewController.m in Sources */,
 				0E660F1D18E0249E0074454C /* PostImage.m in Sources */,
-				18B4EB8418D29E0500986766 /* LHLDeleteMyNoticeInterface.m in Sources */,
 				0EEF4BDA18C561570058606A /* CardSecondView.m in Sources */,
 				0E9D689318C9C00B00EACFA3 /* PersonInfoInterface.m in Sources */,
 				1802DC3818C065320016F110 /* NotificationObject.m in Sources */,
 				63DB921818CDABFB00157D74 /* LiningItemButton.m in Sources */,
 				63B81C4F18CF05F900004745 /* HomeworkContainerController.m in Sources */,
-				1821470B18C6D26B0041A7E7 /* LHLTestInterface.m in Sources */,
 				0EAABD8518CF1B5500CD2DE7 /* CMRManager.mm in Sources */,
 				6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */,
 				182BEE5118E12FA000FC0AA0 /* unzip.c in Sources */,
