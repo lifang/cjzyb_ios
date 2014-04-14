@@ -94,10 +94,14 @@
                     ReadingSentenceObj *sentence = [[ReadingSentenceObj alloc] init];
                     sentence.readingSentenceID = [Utility filterValue:[subSentenceDic objectForKey:@"id"]];
                     sentence.readingSentenceContent = [Utility filterValue:[subSentenceDic objectForKey:@"content"]];
-                    NSString *fileName = [Utility filterValue:[subSentenceDic objectForKey:@"resource_url"]];
-                    if (fileName) {
+                    NSString *filePath = [Utility filterValue:[subSentenceDic objectForKey:@"resource_url"]];
+                    NSString *fileName;
+                    if (filePath) {
+                        fileName = [filePath lastPathComponent];
+                    }
+                    if (fileName.length > 0) {
                         NSString *path = [[jsonFilePath stringByDeletingLastPathComponent] stringByAppendingPathComponent:fileName];
-                        sentence.readingSentenceLocalFileURL = path;
+                        sentence.readingSentenceLocalFileURL = path; //包含task路径的全路径
                     }
                     
                     [readingSentenceList addObject:sentence];

@@ -98,6 +98,7 @@
             [self.avPlayer stop];
         }
         NSError *playerError = nil;
+        //此处为全路径
         self.avPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:self.currentSentence.readingSentenceLocalFileURL] error:&playerError];
         self.avPlayer.delegate = self;
         if (!playerError && [self.avPlayer prepareToPlay]) {
