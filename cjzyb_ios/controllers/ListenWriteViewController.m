@@ -512,6 +512,7 @@ static int numberOfMusic =0;
         [self.listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
         self.listenBtn.tag = Music_tag_pause;
         [self.appDel.avPlayer pause];
+        
     }else if (self.listenBtn.tag == Music_tag_pause){
         [self.listenBtn setImage:[UIImage imageNamed:@"ios-stop"] forState:UIControlStateNormal];
         self.listenBtn.tag = Music_tag_play;
@@ -523,7 +524,7 @@ static int numberOfMusic =0;
         if (self.playMusicModel==0) {
             numberOfMusic++;
             if (numberOfMusic<self.urlArray.count) {
-                [self performSelector:@selector(playMusic) withObject:nil afterDelay:2];
+                [self performSelectorOnMainThread:@selector(playMusic) withObject:nil waitUntilDone:NO];
             }else {
                 numberOfMusic = 0;
                 [self.appDel.avPlayer stop];
@@ -633,7 +634,12 @@ static int numberOfMusic =0;
 -(void)textFieldChanged:(NSNotification *)sender {
     UITextField *txtField = (UITextField *)sender.object;
     UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:txtField.tag];
-    if (textField.text.length>0) {
+    NSString *str = textField.text;
+    str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+    str = [str stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+    str = [str stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    
+    if (str.length>0) {
         CGRect frame = textField.frame;
         CGRect button_frame = CGRectMake(0, 0, 33, 25);
         int currentTag = textField.tag-Textfield_Tag;
@@ -672,6 +678,7 @@ static int numberOfMusic =0;
             [self.wordsContainerView addSubview:self.rightButton];
         }
     }else {
+        textField.text = nil;
         [self.leftButton removeFromSuperview];
         [self.rightButton removeFromSuperview];
         self.leftButton=nil;self.rightButton=nil;
@@ -905,7 +912,7 @@ static CGFloat tmp_ratio = -100;
         NSString *originString = [self.tmpArray componentsJoinedByString:@" "];
         NSArray *array1 = [Utility handleTheString:originString];
         NSArray *array2 = [Utility metaphoneArray:array1];
-        
+        self.tmpArray = [NSMutableArray arrayWithArray:array1];
         [Utility shared].correctArray = [[NSMutableArray alloc]init];
         [Utility shared].sureArray = [[NSMutableArray alloc]init];
         [Utility shared].greenArray = [[NSMutableArray alloc]init];

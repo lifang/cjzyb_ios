@@ -188,7 +188,7 @@
         if (!taskArr || taskArr.count <= 0) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (failure) {
-                    failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"当前没有任务"}]);
+                    failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"没有历史任务"}]);
                 }
             });
             return;

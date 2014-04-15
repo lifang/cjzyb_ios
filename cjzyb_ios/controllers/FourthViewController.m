@@ -76,10 +76,6 @@
                                                  selector:@selector(keyboardWillHideFourth:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
-        
-//        if (self.fourthArray.count == 0) {
-//            [self getMyfocusData];
-//        }
     }
 }
 -(void)viewWillDisappear:(BOOL)animated {
@@ -89,13 +85,10 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 -(void)getMyfocusData {
-    if (self.appDel.isReachable == NO) {
-//        [Utility errorAlert:@"暂无网络!"];
-    }else {
-        self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [self.mFocusInter getMyFocusInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId andPage:1];
-    }
+    self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [self.mFocusInter getMyFocusInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.studentId andPage:1];
+    
 }
 #pragma mark -
 #pragma mark - property

@@ -53,7 +53,6 @@
 
 -(void)changeGradeNtificationNotification{
     [self.appDel showRootView];
-
 }
 #pragma mark --
 
@@ -333,7 +332,7 @@
         [[NSNotificationCenter defaultCenter]postNotificationName:@"changePlayerByView" object:str];
         
         AppDelegate *appDel = [AppDelegate shareIntance];
-        [appDel showRootView];
+        [appDel showLogInView];
     }else {
         if (itemType == LeftTabBarItemType_userGroup ) {
             if (tabBarView.userGroupTabBarItem.isSelected) {

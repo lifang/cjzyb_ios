@@ -60,7 +60,7 @@
     if (tip) {
         controller.tipLabel.text = tip;
     }else{
-    controller.tipLabel.text = @"请输入：";
+    controller.tipLabel.text = @"请输入:";
     }
     [controller.textView becomeFirstResponder];
 }
@@ -127,6 +127,7 @@
 }
 
 - (IBAction)cancelButtonClicked:(id)sender {
+    self.isFinished = NO;
     self.presentWindow = nil;
 }
 

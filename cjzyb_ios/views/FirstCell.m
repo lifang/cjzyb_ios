@@ -50,6 +50,7 @@
     //赞
     self.praisedImg = [[UIImageView alloc]initWithFrame:CGRectZero];
     self.praisedImg.backgroundColor = [UIColor clearColor];
+    self.praisedImg.image = [UIImage imageNamed:@"praised"];
     [self.actualContentView addSubview:self.praisedImg];
     
     
@@ -145,7 +146,7 @@
     
     self.timeLab.frame = CGRectMake(self.nameToLab.frame.origin.x+self.nameToLab.frame.size.width+Insets, Space_Height, [self.aReplyMsg.created_at sizeWithFont:[UIFont systemFontOfSize:18]].width, Label_Height);
     
-    self.praisedImg.frame = CGRectMake(self.timeLab.frame.origin.x+self.timeLab.frame.size.width+Insets, Space_Height, 24, 24);
+    self.praisedImg.frame = CGRectMake(self.timeLab.frame.origin.x+self.timeLab.frame.size.width+Insets*4, Space_Height, 24, 24);
 
     if (self.msgStyle == ReplyMessageCellStyleMe) {
         self.deleteButton.hidden = NO;
