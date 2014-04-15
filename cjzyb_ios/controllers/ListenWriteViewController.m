@@ -677,6 +677,28 @@ static int numberOfMusic =0;
         self.leftButton=nil;self.rightButton=nil;
     }
 }
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    if ([string isEqualToString:@" "]) {
+        int tag = (textField.tag + 1);
+        UITextField *firstTextField;
+        for (UIView *view in self.wordsContainerView.subviews) {
+            if (view.tag == Textfield_Tag) {
+                firstTextField = (UITextField *)view;
+            }
+            if (view.tag == tag) {
+                [view becomeFirstResponder];
+                return NO;
+            }
+        }
+        if (firstTextField) {
+            [firstTextField becomeFirstResponder];
+        }
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark
 //替换元音字母
 -(NSString *)replaceYYLetterWithString:(NSString *)str {
