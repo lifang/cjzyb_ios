@@ -38,24 +38,11 @@
         if ([jsonObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *jsonData=(NSDictionary *)jsonObject;
             if (jsonData) {
-                if ([[jsonData objectForKey:@"status"]isEqualToString:@"success"]) {
-                    @try {
-                        [self.delegate getPersonInfoDidFinished:jsonData];
-                    }
-                    @catch (NSException *exception) {
-                        [self.delegate getPersonInfoDidFailed:@"获取数据失败!"];
-                    }
-                }else {
-                    [self.delegate getPersonInfoDidFailed:[jsonData objectForKey:@"notice"]];
-                }
+                [self.delegate getPersonInfoDidFinished:jsonData];
             }else {
                 [self.delegate getPersonInfoDidFailed:@"获取数据失败!"];
             }
-        }else{
-            [self.delegate getPersonInfoDidFailed:@"服务器连接失败，请稍后再试!"];
         }
-    }else{
-        [self.delegate getPersonInfoDidFailed:@"服务器连接失败，请稍后再试!"];
     }
 }
 -(void)requestIsFailed:(NSError *)error{

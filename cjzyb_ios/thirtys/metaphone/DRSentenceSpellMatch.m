@@ -34,7 +34,7 @@
     if ([senStr isEqualToString:spellStr]) {
         NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:senStr];
         [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0, attri.length)];
-        [attri addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(0, attri.length)];
+        [attri addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:NSMakeRange(0, attri.length)];
         success(attri,1,nil);
         return;
     }
@@ -54,11 +54,11 @@
                 continue;
             }
             if (obj.spellLevel == 1 || obj.spellLevel == 0.5) {
-                [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:obj.range];
+                [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:obj.range];
             }else{
                 unMatch++;
                 [errorWordArr addObject:[senStr substringWithRange:obj.range]];
-                [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:obj.range];
+                [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1] range:obj.range];
             }
         }
         float score = 1;
@@ -116,7 +116,7 @@
             NSTextCheckingResult *math = (NSTextCheckingResult *)[green_array objectAtIndex:i];
             NSRange range = [math rangeAtIndex:0];
             spell.range = range;
-            spell.color = [UIColor greenColor];
+            spell.color = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
             spell.spellLevel = 1;
             [spellsArr addObject:spell];
         }
@@ -150,7 +150,7 @@
                         SpellMatchObj *spell = [[SpellMatchObj alloc] init];
                         spell.range = range;
                         spell.spellLevel = 0;
-                        spell.color = [UIColor redColor];
+                        spell.color = [UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1];
                         [spellsArr addObject:spell];
                     }
                 }
@@ -158,7 +158,7 @@
                 SpellMatchObj *spell = [[SpellMatchObj alloc] init];
                 spell.range = range;
                 spell.spellLevel = 0;
-                spell.color = [UIColor redColor];
+                spell.color = [UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1];
                 [spellsArr addObject:spell];
             }
         }

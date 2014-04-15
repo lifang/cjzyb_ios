@@ -477,40 +477,75 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
             
-            self.logView.hidden = YES;
-            self.detailView.hidden = YES;
-            self.IconView.hidden = NO;
-            
-            NSFileManager *fileManage = [NSFileManager defaultManager];
-            NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-            NSString *filename = [Path stringByAppendingPathComponent:@"class.plist"];
-            if ([fileManage fileExistsAtPath:filename]) {
-                [fileManage removeItemAtPath:filename error:nil];
-            }
-            NSDictionary *classDic = [result objectForKey:@"class"];
-            [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
-            [NSKeyedArchiver archiveRootObject:classDic toFile:filename];
-            
-            //小红点
-            if (![[self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]isKindOfClass:[NSNull class]] && [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]!=nil) {
+            if ([[result objectForKey:@"status"] isEqualToString: @"success"]) {
+                self.logView.hidden = YES;
+                self.detailView.hidden = YES;
+                self.IconView.hidden = NO;
                 
-            }else {
-                NSArray *array = [[NSArray alloc]initWithObjects:@"0",@"0",@"0", nil];
-                [self.appDel.notification_dic setObject:array forKey:[DataService sharedService].theClass.classId];
+                NSFileManager *fileManage = [NSFileManager defaultManager];
+                NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                NSString *filename = [Path stringByAppendingPathComponent:@"class.plist"];
+                if ([fileManage fileExistsAtPath:filename]) {
+                    [fileManage removeItemAtPath:filename error:nil];
+                }
+                NSDictionary *classDic = [result objectForKey:@"class"];
+                [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
+                [NSKeyedArchiver archiveRootObject:classDic toFile:filename];
+                
+                //小红点
+                if (![[self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]isKindOfClass:[NSNull class]] && [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]!=nil) {
+                    
+                }else {
+                    NSArray *array = [[NSArray alloc]initWithObjects:@"0",@"0",@"0", nil];
+                    [self.appDel.notification_dic setObject:array forKey:[DataService sharedService].theClass.classId];
+                }
+                
+                NSString *filename2 = [Path stringByAppendingPathComponent:@"student.plist"];
+                if ([fileManage fileExistsAtPath:filename2]) {
+                    [fileManage removeItemAtPath:filename2 error:nil];
+                }
+                NSDictionary *studentDic = [result objectForKey:@"student"];
+                [DataService sharedService].user = [UserObject userFromDictionary:studentDic];
+                [NSKeyedArchiver archiveRootObject:studentDic toFile:filename2];
+                
+                
+                [self performSelector:@selector(showMainView) withObject:nil afterDelay:3];
+                
+                [_tencentOAuth logout:self];
+            }else if ([[result objectForKey:@"status"] isEqualToString: @"error"]) {//班级验证码错误
+                [Utility errorAlert:[result objectForKey:@"notice"]];
+                
+                if (self.pageIndex == 3) {
+                    
+                }else {
+                    self.pageIndex = 2;
+                    
+                    self.pageIndex=2;
+                    self.classTxt.hidden = NO;
+                    CGRect frame = self.classTxt.frame;
+                    frame.origin.y = 526;
+                    self.classTxt.frame = frame;
+                    self.activeSkipBtn.hidden= YES;
+                    self.activeTxt.hidden = YES;
+                }
+                
+            }else if ([[result objectForKey:@"status"] isEqualToString: @"error_code"]) {//激活码错误
+                [Utility errorAlert:[result objectForKey:@"notice"]];
+                self.pageIndex = 1;
+                
+                self.logView.hidden = YES;
+                self.detailView.hidden = NO;
+                
+                self.nickTxt.hidden = YES;
+                self.nameTxt.hidden = YES;
+                self.classTxt.hidden = YES;
+                self.activeTxt.hidden = NO;
+                self.activeSkipBtn.hidden = NO;
+                
+                CGRect frame = self.detailBtn.frame;
+                frame.origin.y = 650;
+                self.detailBtn.frame = frame;
             }
-            
-            NSString *filename2 = [Path stringByAppendingPathComponent:@"student.plist"];
-            if ([fileManage fileExistsAtPath:filename2]) {
-                [fileManage removeItemAtPath:filename2 error:nil];
-            }
-            NSDictionary *studentDic = [result objectForKey:@"student"];
-            [DataService sharedService].user = [UserObject userFromDictionary:studentDic];
-            [NSKeyedArchiver archiveRootObject:studentDic toFile:filename2];
-            
-            
-            [self performSelector:@selector(showMainView) withObject:nil afterDelay:3];
-            
-            [_tencentOAuth logout:self];
         });
     });
 }

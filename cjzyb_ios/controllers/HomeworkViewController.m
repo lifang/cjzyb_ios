@@ -431,7 +431,7 @@
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"今日作业截止时间为 %@",self.taskObj.taskEndDate?:@""]];
         [str addAttribute:NSFontAttributeName value:self.endTaskTimeLabel.font range:NSMakeRange(0, str.length)];
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, 9)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(9, str.length - 9)];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1] range:NSMakeRange(9, str.length - 9)];
         self.endTaskTimeLabel.attributedText = str;
     }
     return cell;

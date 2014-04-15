@@ -40,11 +40,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 +(id)defaultModelTypeViewController{
-    static ModelTypeViewController *modelController = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        modelController = [[ModelTypeViewController alloc] initWithNibName:@"ModelTypeViewController" bundle:nil];
-    });
+    ModelTypeViewController *  modelController = [[ModelTypeViewController alloc] initWithNibName:@"ModelTypeViewController" bundle:nil];
     modelController.presentWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     modelController.presentWindow.rootViewController = modelController;
     modelController.presentWindow.windowLevel = UIWindowLevelAlert;
@@ -74,7 +70,6 @@
     self.textView.layer.cornerRadius = 5;
     self.textView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     [self.textView becomeFirstResponder];
-    // Do any additional setup after loading the view from its nib.
 }
 
 -(void)keyBoardUP:(NSNotification*)notification{

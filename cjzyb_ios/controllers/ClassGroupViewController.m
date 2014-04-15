@@ -22,14 +22,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    [self.classArray addObject:@"夏洛克三班"];
-//    [self.classArray addObject:@"好基友五班级"];
+
     self.tableView.separatorColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"line.png"]];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,8 +52,7 @@
                 data.user = userObj;
                 data.theClass = gradeObj;
                 [data.theClass archiverClass];
-                //退回到主界面
-//                [tempSelf.tableView reloadData];
+
                 [MBProgressHUD hideHUDForView:app.window animated:YES];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kChangeGradeNotification object:nil];
             }
@@ -97,6 +90,7 @@
         cell.backgroundColor = [UIColor clearColor];
         cell.textLabel.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor = [UIColor clearColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     DataService *data = [DataService sharedService];
     ClassObject *grade = [self.classArray objectAtIndex:indexPath.row];
@@ -117,13 +111,11 @@
 }
 
 #pragma mark - Table view delegate
-
-// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DataService *data = [DataService sharedService];
     ClassObject *grade = [self.classArray objectAtIndex:indexPath.row];
-    if ([data.theClass.classId isEqualToString:grade.classId]) {
+    if ([data.theClass.classId integerValue]==[grade.classId integerValue]) {
         return;
     }
     //TODO:切换班级

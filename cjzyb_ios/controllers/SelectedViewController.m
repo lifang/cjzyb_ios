@@ -402,7 +402,7 @@ static BOOL isCanUpLoad = NO;
                     }
                     
                     NSString *a_id = [NSString stringWithFormat:@"%@",[a_dic objectForKey:@"id"]];
-                    NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.2f",ratio],@"ratio",label.text,@"answer", nil];
+                    NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.f",ratio],@"ratio",label.text,@"answer", nil];
                     [branch_questions addObject:answer_dic];
                 }
                 

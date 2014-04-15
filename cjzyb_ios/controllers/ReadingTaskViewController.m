@@ -84,7 +84,7 @@
             ReadingTaskViewController *tempSelf = weakSelf;
             if (tempSelf) {
                 parentVC.timeLabel.text = [NSString stringWithFormat:@"%@",[Utility  formateDateStringWithSecond:userTime.intValue]];
-                parentVC.rotioLabel.text = [NSString stringWithFormat:@"%0.0f%@",ratio * 100,@"%"];
+                parentVC.rotioLabel.text = [NSString stringWithFormat:@"%.f%%",ratio * 100];
                 [parentVC.checkHomeworkButton setTitle:@"下一个" forState:UIControlStateNormal];
                 tempSelf.readingHomeworksArr = readingQuestionArr;
                 tempSelf.isFirst = NO;
@@ -913,7 +913,7 @@
         if (self.readingCount <= 1) {//计入成绩
             //存内存中
             self.currentSentence.readingErrorWordArray = [NSMutableArray arrayWithArray:errorWordArray];
-            self.currentSentence.readingSentenceRatio = [NSString stringWithFormat:@"%0.2f",matchScore];
+            self.currentSentence.readingSentenceRatio = [NSString stringWithFormat:@"%.f",matchScore];
             //标志本大题完成
             if (self.currentSentenceIndex == self.currentHomework.readingHomeworkSentenceObjArray.count-1) {
                 self.currentHomework.isFinished = YES;
