@@ -82,7 +82,6 @@
         [self getMessageData];
     }
     
-    
     //下拉刷新
     __block FirstViewController *firstView = self;
     __block UITableView *table = self.firstTable;

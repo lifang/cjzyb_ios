@@ -22,7 +22,7 @@
     [obj setSender_id:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"sender_id"]]]];
     [obj setSender_name:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"sender_name"]]]];
     [obj setSender_types:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"sender_types"]]]];
-    [obj setPraised:[[aDic objectForKey:@"sender_types"] integerValue]];//赞
+    [obj setPraised:[[aDic objectForKey:@"praise"] integerValue]];//赞
     return obj;
 }
 @end

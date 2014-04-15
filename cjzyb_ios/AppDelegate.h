@@ -43,11 +43,11 @@
 
 @property (nonatomic, strong) DRLeftTabBarViewController *tabBarController;
 - (void)showRootView;
+-(void)showLogInView;
 +(AppDelegate *)shareIntance;
 
 -(void)loadTrueSound:(NSInteger)index;
 -(void)loadFalseSound:(NSInteger)index;
-
 
 @property (nonatomic, assign) BOOL isReceiveTask,isReceiveNotificationReply,isReceiveNotificationSystem;
 @end

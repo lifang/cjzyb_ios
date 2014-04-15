@@ -137,8 +137,6 @@
             data.theClass = gradeObj;
             [data.theClass archiverClass];
             
-            //退回到主界面
-//            [tempSelf.tableView reloadData];
             [MBProgressHUD hideHUDForView:app.window animated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:kChangeGradeNotification object:nil];
         }

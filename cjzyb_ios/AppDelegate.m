@@ -53,23 +53,6 @@
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
 }
 
-//TODO:显示朗读的预听界面
--(void)showPreReadingHomework{
-    ReadingHomeworkObj *homework = [[ReadingHomeworkObj alloc] init];
-    NSMutableArray *senArr = [NSMutableArray array];
-    for (int i =0 ; i < 10; i++) {
-        ReadingSentenceObj *sentence = [[ReadingSentenceObj alloc] init];
-        sentence.readingSentenceContent = @"how are you";
-        [senArr addObject:sentence];
-    }
-    homework.readingHomeworkSentenceObjArray = senArr;
-    PreReadingTaskViewController *preReadingController = [[PreReadingTaskViewController alloc] initWithNibName:@"PreReadingTaskViewController" bundle:nil];
-    [preReadingController startPreListeningHomeworkSentence:homework withPlayFinished:^(BOOL isSuccess) {
-        
-    }];
-    self.window.rootViewController = preReadingController;
-}
-
 -(void)showMainController{
     MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
     HomeworkViewController *homework = [[HomeworkViewController alloc]initWithNibName:@"HomeworkViewController" bundle:nil];
@@ -83,23 +66,6 @@
     self.window.rootViewController = self.tabBarController;
 }
 
--(void)showHomework{
-    HomeworkContainerController *container = [[HomeworkContainerController alloc] initWithNibName:@"HomeworkContainerController" bundle:nil];
-    self.window.rootViewController = container;
-    container.homeworkType = HomeworkType_line;
-}
-
--(void)showHomeworkType{
-    HomeworkViewController *cv = [[HomeworkViewController alloc] initWithNibName:@"HomeworkViewController" bundle:nil];
-    self.window.rootViewController = cv;
-}
-
--(void)showTabBarController{
-    MainViewController *main = [[MainViewController alloc] initWithNibName:@"MainViewController" bundle:nil];
-    DRLeftTabBarViewController *tabBarController = [[DRLeftTabBarViewController alloc] init];
-    tabBarController.childenControllerArray = @[main];
-    self.window.rootViewController = tabBarController;
-}
 //比较时间
 -(BOOL)compareTimeWithString:(NSString *)string {
     
@@ -120,8 +86,15 @@
     }else
         return NO;
 }
+- (void)showRootView {
+    [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
+}
+-(void)showLogInView {
+    LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
+    self.window.rootViewController = logView;
+}
+/*
 - (void)showRootView{
-    
     NSFileManager *fileManage = [NSFileManager defaultManager];
     NSString *path = [Utility returnPath];
     NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
@@ -152,7 +125,9 @@
                     
                     self.loadingView.loadingImg.hidden = YES;
                     self.loadingView.IconView.hidden = NO;
-                    [self performSelector:@selector(showMainController) withObject:nil afterDelay:3];
+                    
+                    [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
+                    
                 }else {
                     NSFileManager *fileManage = [NSFileManager defaultManager];
                     NSString *path = [Utility returnPath];
@@ -169,36 +144,15 @@
             }else {
                 self.loadingView.loadingImg.hidden = YES;
                 self.loadingView.IconView.hidden = NO;
-                [self performSelector:@selector(showMainController) withObject:nil afterDelay:3];
+                [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
             }
         }
     }
 }
-
-
-//TODO:显示作业类型
--(void)showDailyhomeworkType{
-    
-    TaskObj *task = [[TaskObj alloc] init];
-    NSMutableArray *homeworkType = [NSMutableArray array];
-    for (int i=0; i < 10; i++) {
-        HomeworkTypeObj *type = [[HomeworkTypeObj alloc] init];
-        type.homeworkType = HomeworkType_line;
-        [homeworkType addObject:type];
-    }
-    task.taskHomeworkTypeArray = homeworkType;
-    HomeworkDailyCollectionViewController *controller = [[HomeworkDailyCollectionViewController alloc] initWithNibName:@"HomeworkDailyCollectionViewController" bundle:nil];
-    controller.taskObj = task;
-    self.window.rootViewController = controller;
-     [self.window makeKeyAndVisible];
-}
-
+*/
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.loadingView = [[InitViewController alloc]initWithNibName:@"InitViewController" bundle:nil];
-    self.window.rootViewController = self.loadingView;
-    self.window.backgroundColor = [UIColor whiteColor];
 
     self.the_class_id = -1;
 
@@ -258,24 +212,27 @@
             }
         }
     }
-
-//    [self performSelectorOnMainThread:@selector(showRootView) withObject:nil waitUntilDone:NO];
     
-    [DataService sharedService].user = [[UserObject alloc]init];
-    [DataService sharedService].user.nickName = @"大小姐";
-    [DataService sharedService].user.name = @"多少分";
-    [DataService sharedService].user.headUrl = @"/avatars/students/2014-03/student_91";
-    [DataService sharedService].user.userId = @"150";
-    [DataService sharedService].user.studentId = @"89";
+//    [DataService sharedService].user = [[UserObject alloc]init];
+//    [DataService sharedService].user.nickName = @"大小姐";
+//    [DataService sharedService].user.name = @"多少分";
+//    [DataService sharedService].user.headUrl = @"/avatars/students/2014-03/student_91";
+//    [DataService sharedService].user.userId = @"150";
+//    [DataService sharedService].user.studentId = @"89";
+//    
+//    [DataService sharedService].theClass = [[ClassObject alloc]init];
+//    [DataService sharedService].theClass.classId = @"106";
+//    [DataService sharedService].theClass.name = @"大结局";
+//    [DataService sharedService].theClass.tId = @"75";
+//    [DataService sharedService].theClass.tName = @"黄河";
+//    [DataService sharedService].theClass.expireTime = @"2014-04-26 23:59:59";
+//
+//    [self showMainController];
     
-    [DataService sharedService].theClass = [[ClassObject alloc]init];
-    [DataService sharedService].theClass.classId = @"106";
-    [DataService sharedService].theClass.name = @"大结局";
-    [DataService sharedService].theClass.tId = @"75";
-    [DataService sharedService].theClass.tName = @"黄河";
-    [DataService sharedService].theClass.expireTime = @"2014-04-26 23:59:59";
-
-    [self showMainController];
+    LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
+    self.window.rootViewController = logView;
+    
+    self.window.backgroundColor = [UIColor whiteColor];
     
     [self.window makeKeyAndVisible];
 

@@ -60,6 +60,7 @@
         [table.pullToRefreshView performSelector:@selector(stopAnimating) withObject:nil afterDelay:1];
     }];
 
+    [self getMymessageData];
 }
 - (void)reloadSecondArrayByImage:(NSNotification *)notification {
     [self.secondTable reloadData];
@@ -97,9 +98,6 @@
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
         
-        if (self.secondArray.count == 0) {
-            [self getMymessageData];
-        }
     }
 }
 -(void)viewWillDisappear:(BOOL)animated {
@@ -111,13 +109,9 @@
 }
 //获取我的主消息
 -(void)getMymessageData {
-    if (self.appDel.isReachable == NO) {
-        [Utility errorAlert:@"暂无网络!"];
-    }else {
-        self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        [self.mMessageInter getMyMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.userId andPage:1];
-    }
+    self.headerArray= nil;self.cellArray= nil;self.arrSelSection=nil;
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    [self.mMessageInter getMyMessageInterfaceDelegateWithClassId:[DataService sharedService].theClass.classId andUserId:[DataService sharedService].user.userId andPage:1];
 }
 #pragma mark -
 #pragma mark - property
@@ -898,10 +892,7 @@
                     [self.secondArray addObject:message];
                 }
                 [self.secondTable reloadData];
-            }else {
-                [Utility errorAlert:@"暂无数据!"];
             }
-            
         });
     });
 }
