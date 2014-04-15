@@ -37,6 +37,7 @@
 @property (nonatomic, strong) NSArray *orgArray;
 @property (nonatomic, strong) NSArray *metaphoneArray;
 @property (nonatomic, strong) NSMutableArray *tmpArray;
+@property (nonatomic, strong) NSMutableArray *tmpIndexArray;
 @property (nonatomic, strong) NSDictionary *resultDic;
 
 @property (nonatomic, assign) BOOL isFirst;

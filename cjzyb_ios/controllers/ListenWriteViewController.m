@@ -118,7 +118,7 @@ static BOOL isCanUpLoad = NO;
     self.orgArray = [Utility handleTheString:content];
     
     self.metaphoneArray = [Utility metaphoneArray:self.orgArray];
-    self.tmpArray = nil;
+    self.tmpArray = nil;self.tmpIndexArray = nil;
     
     for (int i=0; i<self.orgArray.count; i++) {
         UITextField *text = [self returnTextField];
@@ -475,6 +475,12 @@ static BOOL isCanUpLoad = NO;
     }
     return _tmpArray;
 }
+-(NSMutableArray *)tmpIndexArray {
+    if (!_tmpIndexArray) {
+        _tmpIndexArray = [[NSMutableArray alloc]init];
+    }
+    return _tmpIndexArray;
+}
 -(NSMutableArray *)urlArray {
     if (!_urlArray) {
         _urlArray = [[NSMutableArray alloc]init];
@@ -748,7 +754,8 @@ static int numberOfMusic =0;
             NSString *str = [string substringWithRange:NSMakeRange(range.location, range.length)];
             
             int index = [self.tmpArray indexOfObject:str];
-            UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:index+Textfield_Tag];
+            int tag = [[self.tmpIndexArray objectAtIndex:index]integerValue];
+            UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:tag];
             textField.textColor = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
         }
         
@@ -788,7 +795,9 @@ static int numberOfMusic =0;
             NSString *str = [string substringWithRange:NSMakeRange(range.location, range.length)];
             
             int index = [self.tmpArray indexOfObject:str];
-            UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:index+Textfield_Tag];
+            int tag = [[self.tmpIndexArray objectAtIndex:index]integerValue];
+            
+            UITextField *textField = (UITextField *)[self.wordsContainerView viewWithTag:tag];
             textField.textColor = [UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1];
 
             NSArray *sureArray = [self.resultDic objectForKey:@"sure"];
@@ -865,6 +874,7 @@ static CGFloat tmp_ratio = -100;
 #pragma mark - 做题
 //检查
 -(void)checkAnswer:(id)sender {
+    self.tmpIndexArray = nil;
     if (self.appDel.avPlayer) {
         [self.appDel.avPlayer stop];
         self.appDel.avPlayer=nil;
@@ -882,6 +892,7 @@ static CGFloat tmp_ratio = -100;
         [txtField resignFirstResponder];
         
         if (txtField.text && txtField.text.length>0) {
+            [self.tmpIndexArray addObject:[NSString stringWithFormat:@"%d",i+Textfield_Tag]];//记录坐标
             isCanCheck = YES;
             int k=i+1;
             NSMutableString *mutableStr = [NSMutableString string];

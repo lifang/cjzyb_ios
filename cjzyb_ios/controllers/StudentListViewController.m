@@ -58,7 +58,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor colorWithRed:47/255.0 green:54/255.0 blue:62/255.0 alpha:1];
+    self.view.backgroundColor = [UIColor colorWithRed:54/255.0 green:62/255.0 blue:71/255.0 alpha:1];
     self.tableView.backgroundColor = [UIColor clearColor];
     [self.tableView registerNib:[UINib nibWithNibName:@"StudentSummaryCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"cell"];
     [self.tableView registerNib:[UINib nibWithNibName:@"StudentTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"detailCell"];
@@ -83,6 +83,10 @@
     }
     
 }
+-(void)roundView: (UIView *) view{
+    [view.layer setCornerRadius: (view.frame.size.height/2)];
+    [view.layer setMasksToBounds:YES];
+}
 #pragma mark --
 
 #pragma mark UITableViewDataSource
@@ -97,11 +101,10 @@
     }else{
         st = [self.studentArray objectAtIndex:indexPath.row];
     }
-    
-    
     if (st.isExtend) {
         StudentTableViewCell *detailCell = (StudentTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"detailCell"];
         detailCell.backgroundColor = self.tableView.backgroundColor;
+        [self roundView:detailCell.userImageView];
         [detailCell.userImageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,st.headUrl]]];
         detailCell.userNameLabel.text = st.name;
         detailCell.jiezuLabel.text = [Utility formateLevelWithScore:st.jiezuScore];
@@ -112,6 +115,11 @@
         return detailCell;
     }else{
         StudentSummaryCell *summaryCell = (StudentSummaryCell*)[tableView dequeueReusableCellWithIdentifier:@"cell"];
+        if (indexPath.section == 0) {
+            summaryCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        [self roundView:summaryCell.userImageView];
         [summaryCell.userImageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,st.headUrl]]];
         summaryCell.userNameLabel.text = st.name;
         summaryCell.backgroundColor = [UIColor clearColor];
@@ -148,11 +156,11 @@
     UILabel *header = [[UILabel alloc] initWithFrame:(CGRect){0,0,CGRectGetWidth(tableView.bounds),50}];
     [header setTextColor:[UIColor lightGrayColor]];
     header.backgroundColor = self.view.backgroundColor;
-    [header setFont:[UIFont systemFontOfSize:20]];
+    [header setFont:[UIFont boldSystemFontOfSize:20]];
     if (section == 0) {
-        header.text = @"  我的班主任";
+        header.text = @"     我的班主任";
     }else{
-      header.text = @"  我的同学";
+      header.text = @"     我的同学";
     }
     return header;
 }

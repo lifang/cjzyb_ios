@@ -49,49 +49,49 @@
         case HomeworkType_quick:
         {
             self.nameLabel.text = @"十速挑战";
-            self.backImageView.image = [UIImage imageNamed:@"homework_quik.png"];
+            self.backImageView.image = [UIImage imageNamed:@"homework_quik"];
         }
             break;
         case HomeworkType_reading:
         {
             self.nameLabel.text = @"朗读任务";
-            self.backImageView.image = [UIImage imageNamed:@"homework_reading.png"];
+            self.backImageView.image = [UIImage imageNamed:@"homework_reading"];
         }
             break;
         case HomeworkType_listeningAndWrite:
         {
             self.nameLabel.text = @"听写任务";
-            self.backImageView.image = [UIImage imageNamed:@"homwwork_listenWrite.png"];
+            self.backImageView.image = [UIImage imageNamed:@"homwwork_listenWrite"];
         }
             break;
         case HomeworkType_select:
         {
             self.nameLabel.text = @"选择挑战";
-            self.backImageView.image = [UIImage imageNamed:@"homework_select.png"];
+            self.backImageView.image = [UIImage imageNamed:@"homework_select"];
         }
             break;
         case HomeworkType_line:
         {
             self.nameLabel.text = @"连线挑战";
-            self.backImageView.image = [UIImage imageNamed:@"homework_line.png"];
+            self.backImageView.image = [UIImage imageNamed:@"homework_line"];
         }
             break;
         case HomeworkType_fillInBlanks:
         {
             self.nameLabel.text = @"完形填空";
-            self.backImageView.image = [UIImage imageNamed:@"homework_blank.png"];
+            self.backImageView.image = [UIImage imageNamed:@"homework_blank"];
         }
             break;
         case HomeworkType_sort:
         {
             self.nameLabel.text = @"排序挑战";
-            self.backImageView.image = [UIImage imageNamed:@"homework_sort.png"];
+            self.backImageView.image = [UIImage imageNamed:@"homework_sort"];
         }
             break;
         case HomeworkType_other:
         {
             self.nameLabel.text = @"其他题型";
-            self.backImageView.image = [UIImage imageNamed:@"homework_quik.png"];
+            self.backImageView.image = [UIImage imageNamed:@"homework_quik"];
         }
             break;
         default:

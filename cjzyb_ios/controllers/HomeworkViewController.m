@@ -448,7 +448,9 @@
         return 1;
     }
 }
-
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    return self.collectionView.frame.size;
+}
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     if (self.isShowHistory) {

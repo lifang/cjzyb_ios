@@ -40,7 +40,7 @@
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" red="0.15294117647058825" green="0.18823529411764706" blue="0.22352941176470587" alpha="1" colorSpace="deviceRGB"/>
+            <color key="backgroundColor" red="0.21176470588235294" green="0.24313725490196078" blue="0.27843137254901962" alpha="1" colorSpace="deviceRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>

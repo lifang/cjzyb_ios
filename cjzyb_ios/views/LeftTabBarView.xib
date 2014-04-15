@@ -15,9 +15,9 @@
             </userGuides>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="PeA-oS-wwk" userLabel="backImageView">
-                    <rect key="frame" x="0.0" y="0.0" width="110" height="957"/>
+                    <rect key="frame" x="0.0" y="0.0" width="108" height="957"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" red="0.15294117647058825" green="0.18823529411764706" blue="0.22352941176470587" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.24705882352941178" green="0.28235294117647058" blue="0.32549019607843138" alpha="1" colorSpace="calibratedRGB"/>
                 </imageView>
                 <view contentMode="scaleToFill" id="oev-oA-zNa" userLabel="mainItem" customClass="LeftTabBarItem">
                     <rect key="frame" x="0.0" y="0.0" width="120" height="90"/>
@@ -212,7 +212,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="userGroupItem.png" id="ouu-bP-Fqs" userLabel="tagImageView">
-                            <rect key="frame" x="30" y="18" width="79" height="41"/>
+                            <rect key="frame" x="29" y="18" width="79" height="41"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="作业" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nrl-l1-JiX" userLabel="tagTitleLabel">
@@ -309,7 +309,7 @@
         <image name="logOut.png" width="27" height="26"/>
         <image name="mainTabBarItem.png" width="37" height="37"/>
         <image name="notificationTabBarItem.png" width="37" height="37"/>
-        <image name="tabBarItemBack.png" width="145" height="89"/>
+        <image name="tabBarItemBack.png" width="117" height="72"/>
         <image name="userGroupItem.png" width="98" height="50"/>
     </resources>
 </document>

@@ -95,6 +95,7 @@
     DataService *data = [DataService sharedService];
     ClassObject *grade = [self.classArray objectAtIndex:indexPath.row];
     
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:20];
     cell.textLabel.text = grade.name;
     if ([data.theClass.classId integerValue]==[grade.classId integerValue]) {
         UIImageView *imgView  = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 10, 10)];

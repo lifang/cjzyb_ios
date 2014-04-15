@@ -24,14 +24,6 @@
 -(void)defaultSelected{
     [self unSelectedAllItems];
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 -(void)unSelectedAllItems{
     self.mainTabBarItem.isSelected = NO;
@@ -39,11 +31,9 @@
     self.notificationTabBarItem.isSelected = NO;
     self.carBarTabBarItem.isSelected = NO;
     self.logOutItem.isSelected = NO;
-//    self.userGroupTabBarItem.isSelected = NO;
 }
 
 - (IBAction)userGroupItemClicked:(id)sender {
-//    [self unSelectedAllItems];
     self.userGroupTabBarItem.isSelected = !self.userGroupTabBarItem.isSelected;
     [self.userGroupTabBarItem setUserInteractionEnabled:YES];
     if (self.delegate && [self.delegate respondsToSelector:@selector(leftTabBar:selectedItem:)]) {
