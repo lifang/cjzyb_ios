@@ -305,7 +305,10 @@
                 for (int i = 0; i < reading.readingHomeworkSentenceObjArray.count && i < questionArr.count; i++) {
                     NSDictionary *sentenceDic = [questionArr objectAtIndex:i];
                     ReadingSentenceObj *sentence = [reading.readingHomeworkSentenceObjArray objectAtIndex:i];
-                    sentence.readingSentenceRatio = [Utility filterValue:[sentenceDic objectForKey:@"ratio"]];
+                    int intRatio = ((NSString *)[Utility filterValue:[sentenceDic objectForKey:@"ratio"]]).intValue;
+                    float ratio = ((float)intRatio) / 100.0;
+                    sentence.readingSentenceRatio = [NSString stringWithFormat:@"%0.2f",ratio];
+//                    sentence.readingSentenceRatio = [Utility filterValue:[sentenceDic objectForKey:@"ratio"]];
                     sentence.readingErrorWordArray = [ParseAnswerJsonFileTool getErrorWordArrayFromString:[sentenceDic objectForKey:@"answer"]];
                 }
             }

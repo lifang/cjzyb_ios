@@ -238,7 +238,8 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (self.successBlock) {
-            self.successBlock(@"上传成功");
+            NSString *timeStr = [result objectForKey:@"updated_time"];
+            self.successBlock(timeStr);
         }
     });
 }

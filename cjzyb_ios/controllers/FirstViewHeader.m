@@ -88,7 +88,7 @@
         [self.actualContentView addSubview:self.contentLab];
         
         self.contextMenuView = [[UIView alloc] initWithFrame:CGRectZero];
-        self.contextMenuView.backgroundColor = [UIColor colorWithRed:0.8235 green:0.8275 blue:0.8314 alpha:1];
+        self.contextMenuView.backgroundColor = [UIColor colorWithRed:209/255.0 green:209/255.0 blue:209/255.0 alpha:1];
         [self insertSubview:self.contextMenuView belowSubview:self.actualContentView];
     }
     return self;

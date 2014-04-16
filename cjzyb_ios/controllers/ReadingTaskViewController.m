@@ -438,6 +438,7 @@
     TaskObj *task = [DataService sharedService].taskObj;
     NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
     [parentVC  uploadAnswerJsonFileWithPath:path withSuccess:^(NSString *success) {
+         [Utility returnAnswerPAthWithString:success];
         //退出或显示成绩界面
         if (self.currentHomeworkIndex+1 >= self.readingHomeworksArr.count && self.currentSentenceIndex+1 >= self.currentHomework.readingHomeworkSentenceObjArray.count && ![DataService sharedService].isHistory) {
             [self showResultView];
@@ -909,12 +910,12 @@
             self.currentSentencePassed = YES;
         }else
         {
-            tip = @"看到红色的这些词了吗,发音还不够标准哦,再来试试吧！";
+            tip = @"看到橘黄色的这些词了吗,发音还不够标准哦,再来试试吧！";
         }
         if (self.readingCount <= 1) {//计入成绩
             //存内存中
             self.currentSentence.readingErrorWordArray = [NSMutableArray arrayWithArray:errorWordArray];
-            self.currentSentence.readingSentenceRatio = [NSString stringWithFormat:@"%.f",matchScore];
+            self.currentSentence.readingSentenceRatio = [NSString stringWithFormat:@"%0.2f",matchScore];
             //标志本大题完成
             if (self.currentSentenceIndex == self.currentHomework.readingHomeworkSentenceObjArray.count-1) {
                 self.currentHomework.isFinished = YES;

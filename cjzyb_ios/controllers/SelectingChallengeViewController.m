@@ -384,6 +384,9 @@
     NSString *answerJSONPath = [[DataService sharedService].taskObj.taskFolderPath stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
     [parentVC uploadAnswerJsonFileWithPath:answerJSONPath withSuccess:^(NSString *success) {
         self.haveUploadedJSON = YES;
+        
+         [Utility returnAnswerPAthWithString:success];
+        
         //如果已完成就显示结果
         if (self.answerArray.count == self.questionArray.count) {
             [self showResultView];

@@ -46,28 +46,41 @@
         NSArray *spellMatchRangeArr = [DRSentenceSpellMatch spellMatchWord:spellStr];
         NSMutableAttributedString *spellAttribute = [[NSMutableAttributedString alloc] initWithString:senStr];
         [spellAttribute addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:35] range:NSMakeRange(0, spellAttribute.length)];
-        [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(0, spellAttribute.length)];
+        
+        //默认全部染红
+        [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.941 green:0.525 blue:0.161 alpha:1.000] range:NSMakeRange(0, spellAttribute.length)];
+        //除字母之外全部染绿
+        NSRange leftRange = NSMakeRange(0, spellAttribute.length);
+        while (YES) {
+            NSRange findRange = [senStr rangeOfCharacterFromSet:[[NSCharacterSet letterCharacterSet] invertedSet] options:NSLiteralSearch range:leftRange];
+            if (findRange.length > 0) {
+                if (findRange.location + findRange.length <= spellAttribute.length) {
+                    [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:findRange];
+                }
+                leftRange = NSMakeRange(findRange.length + findRange.location, spellAttribute.length - (findRange.length + findRange.location));
+            }else{
+                break;
+            }
+        }
+        
         int unMatch = 0;
+        int matched = 0;
         NSMutableArray *errorWordArr = [NSMutableArray array];
         for (SpellMatchObj *obj in spellMatchRangeArr) {
             if (obj.range.location + obj.range.length > spellAttribute.length) {
                 continue;
             }
             if (obj.spellLevel == 1 || obj.spellLevel == 0.5) {
+                matched ++;
                 [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:obj.range];
             }else{
                 unMatch++;
                 [errorWordArr addObject:[senStr substringWithRange:obj.range]];
-                [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1] range:obj.range];
+                [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.941 green:0.525 blue:0.161 alpha:1.000] range:obj.range];
             }
         }
-        float score = 1;
-        if (unMatch != 0) {
-            score = (spellMatchRangeArr.count - (float)unMatch)/(float)spellMatchRangeArr.count;
-        }
-//        if (score >= 0.7) {
-//            [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor greenColor] range:NSMakeRange(0, spellAttribute.length)];
-//        }
+        float score = (float)matched/(float)[Utility shared].orgArray.count;
+
         dispatch_async(dispatch_get_main_queue(), ^{
             success(spellAttribute,score,errorWordArr.count>0 ?errorWordArr:nil);
         });

@@ -227,10 +227,13 @@ static BOOL isCanUpLoad = NO;
     [self.view addSubview:self.wordsContainerView];
     
     [Utility shared].isOrg = NO;
+    [Utility shared].correctArray = [[NSMutableArray alloc]init];
     [Utility shared].sureArray = [[NSMutableArray alloc]init];
     [Utility shared].greenArray = [[NSMutableArray alloc]init];
     [Utility shared].yellowArray = [[NSMutableArray alloc]init];
     [Utility shared].wrongArray = [[NSMutableArray alloc]init];
+    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
+    [Utility shared].firstpoint = 0;
     
     NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
     NSArray *array = [txt componentsSeparatedByString:@";||;"];
@@ -302,6 +305,9 @@ static BOOL isCanUpLoad = NO;
     self.again_first=YES;
     self.remindView.hidden=YES;
     self.listenBtn.tag = Music_tag_normal;
+    self.branch_listenBtn.tag = Music_tag_normal;
+    [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
+    
     [self roundView:self.listenBtn];
     self.historyView.hidden=YES;
     NSDictionary * dic = [Utility initWithJSONFile:[DataService sharedService].taskObj.taskStartDate];
@@ -332,9 +338,6 @@ static BOOL isCanUpLoad = NO;
     self.listenBtn.tag = Music_tag_normal;
     self.homeControl.djView.hidden = NO;
     [self.homeControl startTimer];
-    
-    self.branch_listenBtn.tag = Music_tag_normal;
-    [self.branch_listenBtn setImage:[UIImage imageNamed:@"ios-playing"] forState:UIControlStateNormal];
     
     [self getQuestionData];
 }
@@ -1037,7 +1040,7 @@ static CGFloat tmp_ratio = -100;
     [self.answerDic setObject:[NSString stringWithFormat:@"%lld",self.homeControl.spendSecond] forKey:@"use_time"];
     //一道题目------------------------------------------------------------------
     NSString *a_id = [NSString stringWithFormat:@"%@",[self.branchQuestionDic objectForKey:@"id"]];
-    NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.f%%",tmp_ratio],@"ratio",string,@"answer", nil];
+    NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%.f",tmp_ratio],@"ratio",string,@"answer", nil];
     tmp_ratio = -100;
     NSMutableArray *questions = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
     if (questions.count>0) {

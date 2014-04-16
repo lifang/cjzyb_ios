@@ -72,8 +72,8 @@
             for (int i = 0; i < reading.readingHomeworkSentenceObjArray.count && i < questionArr.count; i++) {
                 NSDictionary *sentenceDic = [questionArr objectAtIndex:i];
                 ReadingSentenceObj *sentence = [reading.readingHomeworkSentenceObjArray objectAtIndex:i];
-                //李宏亮修改
-                int intRatio = [Utility filterValue:[sentenceDic objectForKey:@"ratio"]].intValue;
+                //李宏亮修改 ,从answerJSON中读取值
+                int intRatio = ((NSString *)[Utility filterValue:[sentenceDic objectForKey:@"ratio"]]).intValue;
                 float ratio = ((float)intRatio) / 100.0;
                 sentence.readingSentenceRatio = [NSString stringWithFormat:@"%0.2f",ratio];
                 
@@ -130,14 +130,15 @@
             [sentenceDic setValue:[ParseAnswerJsonFileTool getErrorWordContentFromErrorArray:sentence.readingErrorWordArray] forKey:@"answer"];
             
             //李宏亮添加
+            NSString *ratioString;
             if (sentence.readingSentenceRatio) {
                 float ratio = sentence.readingSentenceRatio.floatValue;
-                ratio = ratio * 100.;
+                ratio = ratio <= 1.0 ? ratio * 100. : ratio;
                 int intRatio = (int)ratio;
-                sentence.readingSentenceRatio = [NSString stringWithFormat:@"%d",intRatio];
+                ratioString = [NSString stringWithFormat:@"%d",intRatio];
             }
             
-            [sentenceDic setValue:sentence.readingSentenceRatio forKey:@"ratio"];
+            [sentenceDic setValue:ratioString forKey:@"ratio"];
             [sentenceArr addObject:sentenceDic];
         }
         [homeworkDic setValue:sentenceArr forKey:@"branch_questions"];

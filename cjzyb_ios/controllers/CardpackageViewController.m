@@ -287,9 +287,13 @@ static NSInteger tmpPage = 0;
 //MISTAKE_TYPES_NAME = {0 => "默认", 1 => "读错",2 => '写错',3 => '选错'}
 - (IBAction)redBtnTapped:(id)sender//1
 {
+    [self.redBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.redBtn setBackgroundImage:[UIImage imageNamed:@"card_btn_active"] forState:UIControlStateNormal];
+    [self.writeBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
     [self.writeBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.selectedBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
     [self.selectedBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.defaultBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
     [self.defaultBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
     
     [self.searchTxt resignFirstResponder];
@@ -307,9 +311,13 @@ static NSInteger tmpPage = 0;
 }
 - (IBAction)writeBtnTapped:(id)sender//2
 {
+    [self.writeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.writeBtn setBackgroundImage:[UIImage imageNamed:@"card_btn_active"] forState:UIControlStateNormal];
+    [self.redBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
     [self.redBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.selectedBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
     [self.selectedBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.defaultBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
     [self.defaultBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
     
     [self.searchTxt resignFirstResponder];
@@ -326,9 +334,13 @@ static NSInteger tmpPage = 0;
 }
 - (IBAction)selectedBtnTapped:(id)sender//3
 {
+    [self.selectedBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.selectedBtn setBackgroundImage:[UIImage imageNamed:@"card_btn_active"] forState:UIControlStateNormal];
+    [self.writeBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
     [self.writeBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.redBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
     [self.redBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.defaultBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
     [self.defaultBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
     
     [self.searchTxt resignFirstResponder];
@@ -345,9 +357,13 @@ static NSInteger tmpPage = 0;
 }
 - (IBAction)defaultBtnTapped:(id)sender//0
 {
+    [self.defaultBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.defaultBtn setBackgroundImage:[UIImage imageNamed:@"card_btn_active"] forState:UIControlStateNormal];
+    [self.writeBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
     [self.writeBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.selectedBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
     [self.selectedBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
+    [self.redBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
     [self.redBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
     
     [self.searchTxt resignFirstResponder];

@@ -67,6 +67,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="imageView" destination="ld0-DM-gpx" id="hpo-sv-EZ0"/>
                 <outlet property="rightLetterLab" destination="gfZ-iH-T8u" id="MoD-Di-U10"/>
                 <outlet property="scrollView" destination="d1u-oV-TrQ" id="mgx-Yo-DAU"/>
                 <outlet property="titleLab1" destination="auY-0Y-Efv" id="bAX-Jn-xr4"/>

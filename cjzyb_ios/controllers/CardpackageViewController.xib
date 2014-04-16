@@ -45,7 +45,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                             <state key="normal" title="选错" backgroundImage="card_btn.png">
-                                <color key="titleColor" white="0.50017107660000004" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="0.2470588235" green="0.28235294119999998" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -57,7 +57,6 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                             <state key="normal" title="默认" backgroundImage="card_btn_active.png">
-                                <color key="titleColor" white="0.50017107664233573" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -69,7 +68,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                             <state key="normal" title="拼错" backgroundImage="card_btn.png">
-                                <color key="titleColor" white="0.50017107660000004" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="0.2470588235" green="0.28235294119999998" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -81,7 +80,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                             <state key="normal" title="读错" backgroundImage="card_btn.png">
-                                <color key="titleColor" white="0.50017107660000004" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="0.2470588235" green="0.28235294119999998" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -104,7 +103,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                             <state key="normal" title="刷新" backgroundImage="card_btn.png">
-                                <color key="titleColor" white="0.50017107660000004" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="0.2470588235" green="0.28235294119999998" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -123,7 +122,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ka2-ye-ReN">
-                    <rect key="frame" x="0.0" y="149" width="768" height="738"/>
+                    <rect key="frame" x="8" y="144" width="768" height="738"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" red="0.86274509799999999" green="0.86274509799999999" blue="0.86274509799999999" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>

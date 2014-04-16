@@ -213,6 +213,8 @@
                 self.cardSecond.imgView = [self returnImageView];
                 NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,title]];
                 [self.cardSecond.imgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"UserHeaderImageBox"]];
+                
+                [self.cardSecond.imgView addDetailShow];
                 [self.cardSecond addSubview:self.cardSecond.imgView];
                 
                 if (array.count>1) {

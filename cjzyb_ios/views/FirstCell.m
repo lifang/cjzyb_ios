@@ -101,7 +101,7 @@
     [self.actualContentView addSubview:self.arrowImg];
     
     self.contextMenuView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.contextMenuView.backgroundColor = [UIColor colorWithRed:0.8235 green:0.8275 blue:0.8314 alpha:1];
+    self.contextMenuView.backgroundColor = [UIColor colorWithRed:104/255.0 green:104/255.0 blue:104/255.0 alpha:1];
     [self.contentView insertSubview:self.contextMenuView belowSubview:self.actualContentView];
 
 }
@@ -148,14 +148,23 @@
     
     self.praisedImg.frame = CGRectMake(self.timeLab.frame.origin.x+self.timeLab.frame.size.width+Insets*4, Space_Height, 24, 24);
 
-    if (self.msgStyle == ReplyMessageCellStyleMe) {
+    //主消息
+    if (self.messageStyle == MessageCellStyleMe) {
         self.deleteButton.hidden = NO;
         self.commentButton.frame = CGRectMake(CELL_WIDTH-Custom_Width+(Custom_Width-Button_Size)/2, (CELL_HEIGHT-Button_Size*2)/3, Button_Size, Button_Size);
         self.deleteButton.frame = CGRectMake(CELL_WIDTH-Custom_Width+(Custom_Width-Button_Size)/2, (CELL_HEIGHT-Button_Size*2)/3*2+Button_Size, Button_Size, Button_Size);
     }else {
-        self.deleteButton.hidden = YES;
-        self.commentButton.frame = CGRectMake(CELL_WIDTH-Custom_Width+(Custom_Width-Button_Size)/2, (CELL_HEIGHT-Button_Size)/2, Button_Size, Button_Size);
+        //子消息
+        if (self.msgStyle == ReplyMessageCellStyleMe) {
+            self.deleteButton.hidden = NO;
+            self.commentButton.frame = CGRectMake(CELL_WIDTH-Custom_Width+(Custom_Width-Button_Size)/2, (CELL_HEIGHT-Button_Size*2)/3, Button_Size, Button_Size);
+            self.deleteButton.frame = CGRectMake(CELL_WIDTH-Custom_Width+(Custom_Width-Button_Size)/2, (CELL_HEIGHT-Button_Size*2)/3*2+Button_Size, Button_Size, Button_Size);
+        }else {
+            self.deleteButton.hidden = YES;
+            self.commentButton.frame = CGRectMake(CELL_WIDTH-Custom_Width+(Custom_Width-Button_Size)/2, (CELL_HEIGHT-Button_Size)/2, Button_Size, Button_Size);
+        }
     }
+    
     
     CGSize size = [self getSizeWithString:self.contentLab.text];
     self.contentLab.frame = CGRectMake(54+Head_Size+Space_head_text, Space_Height+Label_Height+Insets, size.width, size.height);

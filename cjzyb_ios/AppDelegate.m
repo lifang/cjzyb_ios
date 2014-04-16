@@ -49,6 +49,19 @@
     
     [self.falsePlayer play];
 }
+-(void)loadRemoteNotificationSound:(NSInteger)index {
+    NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"trueMusic.wav"];
+    NSError *error;
+    if(self.noticationPlayer==nil)
+    {
+        self.noticationPlayer=[[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
+    }
+    if(index==0)
+        self.noticationPlayer.volume=0.0f;
+    else
+        self.noticationPlayer.volume=1.0f;
+    [self.noticationPlayer play];
+}
 +(AppDelegate *)shareIntance {
     return (AppDelegate *)[[UIApplication sharedApplication] delegate];
 }
@@ -93,63 +106,6 @@
     LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
     self.window.rootViewController = logView;
 }
-/*
-- (void)showRootView{
-    NSFileManager *fileManage = [NSFileManager defaultManager];
-    NSString *path = [Utility returnPath];
-    NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
-    LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
-    if (![fileManage fileExistsAtPath:filename]) {
-        self.window.rootViewController = logView;
-    }else {
-        NSDictionary *classDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-        [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
-        
-        BOOL isExpire = [self compareTimeWithString:[DataService sharedService].theClass.expireTime];
-        if (isExpire==NO) {
-            [fileManage removeItemAtPath:filename error:nil];
-            filename = [path stringByAppendingPathComponent:@"student.plist"];
-            [fileManage removeItemAtPath:filename error:nil];
-            
-            self.window.rootViewController = logView;
-        }else {
-            
-            filename = [path stringByAppendingPathComponent:@"student.plist"];
-            NSDictionary *userDic = [NSKeyedUnarchiver unarchiveObjectWithFile:filename];
-            [DataService sharedService].user = [UserObject userFromDictionary:userDic];
-            
-            if (self.the_class_id>0) {
-                if (self.the_student_id == [[DataService sharedService].user.studentId integerValue]) {//学生student—id相同
-                    [DataService sharedService].theClass.classId = [NSString stringWithFormat:@"%d",self.the_class_id];
-                    [DataService sharedService].theClass.name = [NSString stringWithFormat:@"%@",self.the_class_name];
-                    
-                    self.loadingView.loadingImg.hidden = YES;
-                    self.loadingView.IconView.hidden = NO;
-                    
-                    [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
-                    
-                }else {
-                    NSFileManager *fileManage = [NSFileManager defaultManager];
-                    NSString *path = [Utility returnPath];
-                    NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
-                    if ([fileManage fileExistsAtPath:filename]) {
-                        [fileManage removeItemAtPath:filename error:nil];
-                    }
-                    NSString *filename2 = [path stringByAppendingPathComponent:@"student.plist"];
-                    if ([fileManage fileExistsAtPath:filename2]) {
-                        [fileManage removeItemAtPath:filename2 error:nil];
-                    }
-                    self.window.rootViewController = logView;
-                }
-            }else {
-                self.loadingView.loadingImg.hidden = YES;
-                self.loadingView.IconView.hidden = NO;
-                [self performSelectorOnMainThread:@selector(showMainController) withObject:nil waitUntilDone:NO];
-            }
-        }
-    }
-}
-*/
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -212,22 +168,6 @@
             }
         }
     }
-    
-//    [DataService sharedService].user = [[UserObject alloc]init];
-//    [DataService sharedService].user.nickName = @"大小姐";
-//    [DataService sharedService].user.name = @"多少分";
-//    [DataService sharedService].user.headUrl = @"/avatars/students/2014-03/student_91";
-//    [DataService sharedService].user.userId = @"150";
-//    [DataService sharedService].user.studentId = @"89";
-//    
-//    [DataService sharedService].theClass = [[ClassObject alloc]init];
-//    [DataService sharedService].theClass.classId = @"106";
-//    [DataService sharedService].theClass.name = @"大结局";
-//    [DataService sharedService].theClass.tId = @"75";
-//    [DataService sharedService].theClass.tName = @"黄河";
-//    [DataService sharedService].theClass.expireTime = @"2014-04-26 23:59:59";
-//
-//    [self showMainController];
     
     LogInViewController *logView = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
     self.window.rootViewController = logView;
@@ -308,8 +248,8 @@
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    //接收到push  会震动
-	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+	NOTIFICATIONSOUND;
+    
     int type = [[userInfo objectForKey:@"type"] intValue];//推送类型
     NSString * classId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"class_id"]];//推送班级
     NSString * studentId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"student_id"]];//推送学生
@@ -361,11 +301,10 @@
 
 
 #ifdef __IPHONE_7_0
+//0:系统，1：回复，2：作业
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:[userInfo debugDescription] delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
-    [alert show];
-    //接收到push  会震动
-	AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    NOTIFICATIONSOUND;
+    
     int type = [[userInfo objectForKey:@"type"] intValue];//推送类型
     NSString * classId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"class_id"]];//推送班级
     NSString * studentId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"student_id"]];//推送学生
@@ -382,7 +321,6 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *isOn = [defaults objectForKey:@"isOn"];
     if ([isOn intValue] == 1) {//app登录
-        
         BOOL isPush = NO;
         if (type==2) {
             if ([classId integerValue] == [[DataService sharedService].theClass.classId integerValue]) {//班级相同
