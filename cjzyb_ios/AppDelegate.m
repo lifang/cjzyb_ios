@@ -309,6 +309,10 @@
     NSString * classId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"class_id"]];//推送班级
     NSString * studentId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"student_id"]];//推送学生
     
+    NSString *str = [NSString stringWithFormat:@"student_id=%@,class_id=%@,type=%d,%@",studentId,classId,type,[userInfo debugDescription]];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+    [alert show];
+    
     NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
     for (int i=0; i<3; i++) {
         if (i==type) {
