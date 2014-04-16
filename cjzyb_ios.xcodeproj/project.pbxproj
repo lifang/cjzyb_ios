@@ -2673,6 +2673,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/cjzyb_ios",
 					"$(PROJECT_DIR)/cjzyb_ios/thirtys",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cjzyb_ios/cjzyb_ios-Prefix.pch";
@@ -2711,6 +2712,7 @@
 					"$(inherited)",
 					"$(SRCROOT)/cjzyb_ios",
 					"$(PROJECT_DIR)/cjzyb_ios/thirtys",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cjzyb_ios/cjzyb_ios-Prefix.pch";
