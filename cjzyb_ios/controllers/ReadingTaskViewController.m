@@ -587,6 +587,7 @@
         [_popUpView setText: @"启动识别服务失败，请稍后重试"];//可能是上次请求未结束
         [self.view addSubview:_popUpView];
     }
+    self.isReading = YES;
     [self.readingButton setUserInteractionEnabled:NO];
     [self.listeningButton setUserInteractionEnabled:NO];
 }
@@ -834,7 +835,7 @@
         if (self.readingButton.userInteractionEnabled == YES) {
             [self.readingButton setImage:[UIImage imageNamed:@"reading_stop.png"] forState:UIControlStateNormal];
         }else{
-            [self.readingButton setImage:[UIImage imageNamed:@"reading_start.png"] forState:UIControlStateNormal];
+//            [self.readingButton setImage:[UIImage imageNamed:@"reading_start.png"] forState:UIControlStateNormal];
         }
     }
 }
@@ -895,12 +896,12 @@
     [self.readingButton setUserInteractionEnabled:YES];
     [self.listeningButton setUserInteractionEnabled:YES];
     [parentVC stopTimer];
+    self.readingCount++;
     TaskObj *task = [DataService sharedService].taskObj;
     NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
     [DRSentenceSpellMatch checkSentence:self.currentSentence.readingSentenceContent withSpellMatchSentence:result andSpellMatchAttributeString:^(NSAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray) {
         self.readingTextView.attributedText = nil;
         self.readingTextView.attributedText = spellAttriString;
-        self.readingCount++;
         [self.tipBackView setHidden:NO];
         NSString *tip = @"";
         if (matchScore >= minRecoginLevel) {

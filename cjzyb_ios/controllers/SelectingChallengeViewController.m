@@ -70,6 +70,7 @@
     self.shouldUploadJSON = NO;
     self.haveUploadedJSON = NO;
     self.isReDoingChallenge = NO;
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -504,11 +505,19 @@
             {
                 self.questionImageView.hidden = YES;
                 self.questionPlayButton.hidden = NO;
-                self.questionTextView.hidden = YES;
+                self.questionTextView.hidden = NO;
                 
                 self.questionPlayButton.frame = (CGRect){38,17,65,65};
-                self.optionTable.frame = (CGRect){118,17,570,874 - 17 - (self.isViewingHistory ? 155 : 0)};
                 
+                CGSize size = [Utility getTextSizeWithString:self.currentQuestion.seContent ? :@"" withFont:[UIFont systemFontOfSize:44.] withWidth:600];
+                CGFloat contentHeight = size.height;
+                contentHeight = contentHeight < 50 ? 50 : contentHeight;
+                contentHeight = contentHeight > 260 ? 260 : contentHeight;
+                self.questionTextView.frame = (CGRect){120,17,600,contentHeight + 10};
+                
+                self.optionTable.frame = (CGRect){38,CGRectGetMaxY(self.questionTextView.frame) + 15,570,874 - 17 - (self.isViewingHistory ? 155 : 0)};
+                
+                self.questionTextView.text = self.currentQuestion.seContent;
             }
                 break;
                 
