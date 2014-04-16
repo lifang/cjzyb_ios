@@ -2561,7 +2561,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         }else {
             NSMutableArray *array = [[NSMutableArray alloc]init];
             for (int i=0; i<2; i++) {
-                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",i],@"types",[NSMutableArray array],@"branch_id", nil];
+                NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",i],@"type",[NSMutableArray array],@"branch_id", nil];
                 [array addObject:dic];
             }
             return array;
@@ -2569,7 +2569,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     }else {
         NSMutableArray *array = [[NSMutableArray alloc]init];
         for (int i=0; i<2; i++) {
-            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",i],@"types",[NSMutableArray array],@"branch_id", nil];
+            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d",i],@"type",[NSMutableArray array],@"branch_id", nil];
             [array addObject:dic];
         }
         return array;
