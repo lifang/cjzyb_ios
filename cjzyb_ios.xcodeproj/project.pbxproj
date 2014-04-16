@@ -180,6 +180,7 @@
 		182BEE5318E12FA000FC0AA0 /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = 182BEE4E18E12FA000FC0AA0 /* ZipArchive.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1833276B18CEB38000638107 /* smallTriangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1833276A18CEB38000638107 /* smallTriangle@2x.png */; };
 		185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 181A786518C4206700D288D3 /* TenSecChallengeViewController.xib */; };
+		1860054C18FE5F7B004F6F9B /* UIImageView+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 1860054A18FE5F7B004F6F9B /* UIImageView+Addition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1867B53718D006AB0042A95D /* systemMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53618D006AB0042A95D /* systemMessage@2x.png */; };
 		1867B53A18D008C50042A95D /* trash_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53918D008C50042A95D /* trash_icon@2x.png */; };
 		1867B53C18D00D710042A95D /* replyMessage@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1867B53B18D00D710042A95D /* replyMessage@2x.png */; };
@@ -647,6 +648,8 @@
 		182BEE4D18E12FA000FC0AA0 /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
 		182BEE4E18E12FA000FC0AA0 /* ZipArchive.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZipArchive.mm; sourceTree = "<group>"; };
 		1833276A18CEB38000638107 /* smallTriangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smallTriangle@2x.png"; sourceTree = "<group>"; };
+		1860054A18FE5F7B004F6F9B /* UIImageView+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Addition.m"; sourceTree = "<group>"; };
+		1860054B18FE5F7B004F6F9B /* UIImageView+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Addition.h"; sourceTree = "<group>"; };
 		1867B53618D006AB0042A95D /* systemMessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "systemMessage@2x.png"; sourceTree = "<group>"; };
 		1867B53918D008C50042A95D /* trash_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "trash_icon@2x.png"; sourceTree = "<group>"; };
 		1867B53B18D00D710042A95D /* replyMessage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "replyMessage@2x.png"; sourceTree = "<group>"; };
@@ -1596,6 +1599,8 @@
 		632954C318BC879B00F2B78D /* thirtys */ = {
 			isa = PBXGroup;
 			children = (
+				1860054B18FE5F7B004F6F9B /* UIImageView+Addition.h */,
+				1860054A18FE5F7B004F6F9B /* UIImageView+Addition.m */,
 				18B3DD3018F3946E00F0F95C /* RecognizerFactory.h */,
 				18B3DD3118F3946E00F0F95C /* RecognizerFactory.m */,
 				18B3DD2B18F3924500F0F95C /* iflyMSC.framework */,
@@ -2422,6 +2427,7 @@
 				63D8723E18DFFF57006D94E5 /* ParseAnswerJsonFileTool.m in Sources */,
 				63CBCC1B18D2FA90006F7C3D /* UserObjDaoInterface.m in Sources */,
 				0EEF4BCF18C561300058606A /* DataService.m in Sources */,
+				1860054C18FE5F7B004F6F9B /* UIImageView+Addition.m in Sources */,
 				182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */,
 				0E9C6E9818D1496000E807D1 /* SortViewController.m in Sources */,
 				0E92654F18BD9016003ADEC3 /* MainViewController.m in Sources */,
@@ -2667,8 +2673,8 @@
 					armv7s,
 					armv7,
 				);
-				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.comdosoft.cjzyb";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development IOS Push Services: com.comdosoft.cjzyb";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/cjzyb_ios",
@@ -2692,7 +2698,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-fobjc-arc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3648D98D-E2B3-4CF9-965B-B6255A1E687B";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -2706,8 +2712,8 @@
 					armv7s,
 					armv7,
 				);
-				CODE_SIGN_IDENTITY = "Apple Production IOS Push Services: com.comdosoft.cjzyb";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Production IOS Push Services: com.comdosoft.cjzyb";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/cjzyb_ios",
@@ -2730,7 +2736,7 @@
 				);
 				OTHER_LDFLAGS = "-fobjc-arc";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "71AC9EAB-C76C-43DC-B85D-A15A1F2FEC59";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;

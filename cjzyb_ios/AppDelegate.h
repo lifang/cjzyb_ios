@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import <MediaPlayer/MediaPlayer.h>
-
+#import <TencentOpenAPI/TencentOAuth.h>
 #import <AVFoundation/AVFoundation.h>
 
 #import "Reachability.h"

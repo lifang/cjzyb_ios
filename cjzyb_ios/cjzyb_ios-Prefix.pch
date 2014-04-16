@@ -24,6 +24,7 @@
 
 #import "SVPullToRefresh.h"
 #import "UIImageView+WebCache.h"
+#import "UIImageView+Addition.h"
 #import "OrdinaryAnswerObject.h"
 #import "TenSecChallengeResultView.h"
 #endif

@@ -528,6 +528,7 @@
                 self.questionTextView.hidden = NO;
                 
                 self.questionImageView.frame = (CGRect){38,17,250,265};
+                [self.questionImageView addDetailShow];
                 self.questionTextView.frame = (CGRect){290,17,430,265};
                 self.optionTable.frame = (CGRect){38,317,650,874 - 317 - (self.isViewingHistory ? 155 : 0)};
                 
@@ -824,7 +825,9 @@
         }else{
             [self loadNextQuestion];
             self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
-            [parentVC startTimer];
+            if (!self.isLastQuestion) {
+                [parentVC startTimer];
+            }
         }
     }else{
         [self loadNextQuestion];
