@@ -63,7 +63,7 @@
                                     }
                                     [contentArrayClear addObject:part];
                                 }
-                                if (contentArrayClear.count == 1) {
+                                if (contentArrayClear.count == 1) {//字符串被分为一段
                                     if ([str rangeOfString:@"<file>"].length > 0) {  //有附件
                                         NSString *attachmentString = [contentArrayClear firstObject];
                                         NSArray *attachmentArray = [attachmentString componentsSeparatedByString:@"/"];
@@ -80,6 +80,7 @@
                                             obj.seType = SelectingTypeListening;
                                         }
                                     }else{
+                                        //文字类型
                                         obj.seContent = [contentArrayClear firstObject];
                                         obj.seType = SelectingTypeDefault;
                                     }
