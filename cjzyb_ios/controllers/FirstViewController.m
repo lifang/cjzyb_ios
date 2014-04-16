@@ -352,6 +352,13 @@
     }
     
     MessageObject *message = (MessageObject *)[self.firstArray objectAtIndex:indexPath.section];
+    
+    if ([message.userId integerValue] == [[DataService sharedService].user.userId integerValue]) {
+        cell.messageStyle = MessageCellStyleMe;
+    }else {
+        cell.messageStyle = MessageCellStyleOther;
+    }
+    
     if (indexPath.row<message.replyMessageArray.count) {
         ReplyMessageObject *replyMessage = (ReplyMessageObject *)[message.replyMessageArray objectAtIndex:indexPath.row];
         if ([replyMessage.sender_id integerValue] == [[DataService sharedService].user.userId integerValue]) {

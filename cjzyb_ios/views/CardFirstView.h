@@ -27,6 +27,7 @@
 
 @property (nonatomic, strong) NSMutableArray *tagNameArray;
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, strong) IBOutlet UIImageView *imageView;
 
 -(void)setTagNameArray:(NSMutableArray *)tagNameArray;
 -(void)initData;

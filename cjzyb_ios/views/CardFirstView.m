@@ -78,7 +78,14 @@ const CGFloat kScroll1ObjHeight	= 40;
 }
 -(void)setTagNameArray:(NSMutableArray *)tagNameArray {
     _tagNameArray = tagNameArray;
-    [self initData];
+    if (_tagNameArray.count>0) {
+        self.imageView.hidden = NO;
+        self.scrollView.hidden = NO;
+        [self initData];
+    }else {
+        self.imageView.hidden = YES;
+        self.scrollView.hidden = YES;
+    }
 }
 -(IBAction)txtButtonPressed:(id)sender {
     if (self.delegate && [self.delegate respondsToSelector:@selector(pressedTxtBtn:)]) {

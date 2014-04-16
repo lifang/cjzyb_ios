@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ReplyMessageObject.h"
+#import "MessageObject.h"
 
 @protocol FirstCellDelegate;
 @interface FirstCell : UITableViewCell
@@ -36,6 +37,8 @@
 @property (nonatomic, strong) UIImageView *praisedImg;
 @property (nonatomic, assign) BOOL isHiddenLoadButton;
 @property (nonatomic, strong) UIButton *loadButton;
+
+@property (nonatomic, assign) enum MessageCellStyle messageStyle;
 -(void)open;
 -(void)close;
 @end

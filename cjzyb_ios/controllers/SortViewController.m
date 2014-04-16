@@ -734,7 +734,7 @@ static BOOL isCanUpLoad = NO;
         ratio = 100;
     }
     NSString *a_id = [NSString stringWithFormat:@"%@",[self.branchQuestionDic objectForKey:@"id"]];
-    NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%d%%",ratio],@"ratio",string,@"answer", nil];
+    NSDictionary *answer_dic = [NSDictionary dictionaryWithObjectsAndKeys:a_id,@"id",[NSString stringWithFormat:@"%d",ratio],@"ratio",string,@"answer", nil];
     
     NSMutableArray *questions = [NSMutableArray arrayWithArray:[self.answerDic objectForKey:@"questions"]];
     if (questions.count>0) {
