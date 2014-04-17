@@ -17,7 +17,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WYPopoverController.h"
 
-#define kHOST @"http://58.240.210.42:3004"
+#define kHOST @"http://116.255.202.123:3014"
 
 //修改用户昵称
 #define kModifyUserNickNameNotification @"kModifyUserNickNameNotification"

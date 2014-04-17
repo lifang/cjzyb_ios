@@ -84,7 +84,7 @@
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"Asia/Shanghai"]];
     NSDate *endDate = [dateFormatter dateFromString:string];
     
     NSDate *nowDate = [NSDate date];
@@ -112,7 +112,7 @@
 
     self.the_class_id = -1;
 
-    [DataService sharedService].notificationPage=1;
+    [DataService sharedService].notificationPage=0;
     self.notification_type = 0;
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
     //推送
@@ -149,9 +149,6 @@
 
     //点击推送进入App
     NSDictionary *pushDict = [launchOptions objectForKey:@"UIApplicationLaunchOptionsRemoteNotificationKey"];
-//    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:[pushDict debugDescription] delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
-//    [alert show];
-    
     if (pushDict) {
         int typeValue = [[pushDict objectForKey:@"type"]integerValue];
         self.the_class_id = [[pushDict objectForKey:@"class_id"]integerValue];
@@ -162,9 +159,9 @@
         }else {
             self.notification_type = 2;
             if (typeValue==0) {
-                [DataService sharedService].notificationPage=0;
-            }else {
                 [DataService sharedService].notificationPage=1;
+            }else {
+                [DataService sharedService].notificationPage=0;
             }
         }
     }
@@ -205,7 +202,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -309,9 +306,9 @@
     NSString * classId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"class_id"]];//推送班级
     NSString * studentId = [NSString stringWithFormat:@"%@",[userInfo objectForKey:@"student_id"]];//推送学生
     
-    NSString *str = [NSString stringWithFormat:@"student_id=%@,class_id=%@,type=%d,%@",studentId,classId,type,[userInfo debugDescription]];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
-    [alert show];
+//    NSString *str = [NSString stringWithFormat:@"student_id=%@,class_id=%@,type=%d,%@",studentId,classId,type,[userInfo debugDescription]];
+//    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:str delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+//    [alert show];
     
     NSMutableArray *mutableArray = [[NSMutableArray alloc]init];
     for (int i=0; i<3; i++) {
