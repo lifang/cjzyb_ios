@@ -55,7 +55,7 @@
             NSRange findRange = [senStr rangeOfCharacterFromSet:[[NSCharacterSet letterCharacterSet] invertedSet] options:NSLiteralSearch range:leftRange];
             if (findRange.length > 0) {
                 if (findRange.location + findRange.length <= spellAttribute.length) {
-                    [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:findRange];
+                    [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:findRange];
                 }
                 leftRange = NSMakeRange(findRange.length + findRange.location, spellAttribute.length - (findRange.length + findRange.location));
             }else{

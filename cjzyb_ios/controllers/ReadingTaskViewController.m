@@ -288,10 +288,12 @@
         }else{
             //切换到下一题
             if (self.currentSentencePassed || self.readingCount >= minRecoginCount) {
+                
                 self.readingCount = 0;
                 self.currentSentencePassed = NO;
                 [self.tipBackView setHidden:YES];
                 if (self.currentSentenceIndex+1 < self.currentHomework.readingHomeworkSentenceObjArray.count) {
+                    [parentVC startTimer];
                     [ self updateNextSentence];
                 }else{//已经是最后一个句子
                     if (self.currentHomeworkIndex+1 < self.readingHomeworksArr.count) {
@@ -580,6 +582,10 @@
 
 //TODO:开始识别语音
 - (IBAction)readingButtonClicked:(id)sender {
+    //启动计时
+    if (![DataService sharedService].isHistory) {
+        [parentVC startTimer];
+    }
     
     bool ret = [_iFlySpeechRecognizer startListening];
     if (ret) {
@@ -952,10 +958,10 @@
         [attriString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0,tip.length)];
         self.tipTextView.attributedText = attriString;
         [self updateAllFrame];
-        [parentVC startTimer];
+//        [parentVC startTimer];
     } orSpellMatchFailure:^(NSError *error) {
         [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-        [parentVC startTimer];
+//        [parentVC startTimer];
     }];
 }
 
