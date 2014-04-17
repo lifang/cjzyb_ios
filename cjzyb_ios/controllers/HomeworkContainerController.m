@@ -215,7 +215,6 @@
             [self.reduceTimeButton addTarget:self.selectingChallengeViewController action:@selector(propOfReduceTimeClicked:) forControlEvents:UIControlEventTouchUpInside];
             [self.quitHomeworkButton addTarget:self.selectingChallengeViewController action:@selector(seQuitButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             
-//            self.selectingChallengeViewController.isViewingHistory = YES;
             self.selectingChallengeViewController.isViewingHistory = [DataService sharedService].isHistory;
         }
             break;

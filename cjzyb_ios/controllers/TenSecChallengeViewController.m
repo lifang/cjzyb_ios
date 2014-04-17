@@ -453,7 +453,7 @@
 - (void)handleLabelFont:(UILabel *)label withBeginningSize:(CGFloat)size{
     UIFont *font = [UIFont systemFontOfSize:size];
     label.numberOfLines = 0;
-    for (CGFloat fontSize = font.pointSize; fontSize > 14; fontSize -- ) {
+    for (CGFloat fontSize = font.pointSize; fontSize > 24; fontSize -- ) {
         CGSize size = [Utility getTextSizeWithString:label.text withFont:[UIFont systemFontOfSize:fontSize]];
         if (size.width < label.frame.size.width - 8) {
             label.font = [UIFont systemFontOfSize:fontSize];

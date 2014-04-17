@@ -242,9 +242,13 @@
             //刷新道具按钮
             if([DataService sharedService].number_correctAnswer > 0){
                 parentVC.appearCorrectButton.enabled = YES;
+            }else{
+                parentVC.appearCorrectButton.enabled = NO;
             }
             if ([DataService sharedService].number_reduceTime > 0) {
                 parentVC.reduceTimeButton.enabled = YES;
+            }else{
+                parentVC.reduceTimeButton.enabled = NO;
             }
         }
         //动画效果,第一题不需要
