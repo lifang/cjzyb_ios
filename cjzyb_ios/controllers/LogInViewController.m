@@ -45,7 +45,7 @@
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"GMT"]];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"Asia/Shanghai"]];
     NSDate *endDate = [dateFormatter dateFromString:string];
     
     NSDate *nowDate = [NSDate date];
@@ -89,7 +89,14 @@
             [DataService sharedService].user = [UserObject userFromDictionary:userDic];
             
             if (self.appDel.the_class_id>0) {
-                if (self.appDel.the_student_id == [[DataService sharedService].user.studentId integerValue]) {//学生student—id相同
+                if (self.appDel.notification_type==1 && self.appDel.the_class_id == [[DataService sharedService].theClass.classId integerValue]) {//作业
+                    self.logView.hidden = YES;
+                    self.detailView.hidden = YES;
+                    self.IconView.hidden = NO;
+                    
+                    [self performSelector:@selector(showMainView) withObject:nil afterDelay:3];
+                }else if (self.appDel.notification_type==2 && self.appDel.the_student_id == [[DataService sharedService].user.studentId integerValue]) {//回复
+                    
                     [DataService sharedService].theClass.classId = [NSString stringWithFormat:@"%d",self.appDel.the_class_id];
                     [DataService sharedService].theClass.name = [NSString stringWithFormat:@"%@",self.appDel.the_class_name];
                     
@@ -98,7 +105,6 @@
                     self.IconView.hidden = NO;
                     
                     [self performSelector:@selector(showMainView) withObject:nil afterDelay:3];
-                    
                 }else {
                     NSFileManager *fileManage = [NSFileManager defaultManager];
                     NSString *path = [Utility returnPath];

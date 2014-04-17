@@ -164,7 +164,7 @@
         [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:self.aCard.content.length];
         [self.cardSecond.rtLab setLine];
     }else if (type==3) {//选择
-        
+        self.cardSecond.voiceBtn.hidden=YES;
         self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
         NSArray *answerArray = [self.aCard.answer componentsSeparatedByString:@";||;"];
         self.cardFirst.rightLetterLab.text = [answerArray componentsJoinedByString:@"  "];
@@ -209,7 +209,6 @@
                                               options:0
                                                 range:NSMakeRange(0, [title length])];
             if (matches.count>0) {//图片
-                self.cardSecond.voiceBtn.hidden=YES;
                 self.cardSecond.imgView = [self returnImageView];
                 NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,title]];
                 [self.cardSecond.imgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"UserHeaderImageBox"]];
@@ -387,7 +386,7 @@
 -(void)flipTouched {
     [UIView transitionFromView:(self.displayingPrimary ? self.cardFirst : self.cardSecond)
                         toView:(self.displayingPrimary ? self.cardSecond : self.cardFirst)
-                      duration: 1
+                      duration: .5
                        options: UIViewAnimationOptionTransitionFlipFromLeft+UIViewAnimationOptionCurveEaseInOut
                     completion:^(BOOL finished) {
                         if (finished) {

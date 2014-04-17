@@ -172,6 +172,8 @@
         NSArray *array = [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId];
         NSMutableArray *mutableArray = [NSMutableArray arrayWithArray:array];
         [mutableArray replaceObjectAtIndex:0 withObject:@"0"];
+        
+        [self.appDel.notification_dic setObject:mutableArray forKey:[DataService sharedService].theClass.classId];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:mutableArray];
     }
 }

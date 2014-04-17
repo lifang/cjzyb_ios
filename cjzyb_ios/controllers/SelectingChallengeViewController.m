@@ -501,8 +501,13 @@
                 self.questionPlayButton.hidden = YES;
                 self.questionTextView.hidden = NO;
                 
-                self.questionTextView.frame = (CGRect){38,17,650,200};
-                self.optionTable.frame = (CGRect){38,117,650,874 - 117 - (self.isViewingHistory ? 155 : 0)};
+                CGSize size = [Utility getTextSizeWithString:self.currentQuestion.seContent ? :@"" withFont:[UIFont systemFontOfSize:44.] withWidth:675];
+                CGFloat contentHeight = size.height;
+                contentHeight = contentHeight < 50 ? 50 : contentHeight;
+                contentHeight = contentHeight > 260 ? 260 : contentHeight;
+                self.questionTextView.frame = (CGRect){38,17,680,contentHeight + 10};
+                
+                self.optionTable.frame = (CGRect){38,CGRectGetMaxY(self.questionTextView.frame) + 15,650,874 - (CGRectGetMaxY(self.questionTextView.frame) + 15) - (self.isViewingHistory ? 155 : 0)};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
             }
@@ -522,7 +527,7 @@
                 contentHeight = contentHeight > 260 ? 260 : contentHeight;
                 self.questionTextView.frame = (CGRect){120,17,600,contentHeight + 10};
                 
-                self.optionTable.frame = (CGRect){38,CGRectGetMaxY(self.questionTextView.frame) + 15,570,874 - 17 - (self.isViewingHistory ? 155 : 0)};
+                self.optionTable.frame = (CGRect){38,CGRectGetMaxY(self.questionTextView.frame) + 15,570,874 - (CGRectGetMaxY(self.questionTextView.frame) + 15) - (self.isViewingHistory ? 155 : 0)};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
             }
