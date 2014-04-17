@@ -31,7 +31,7 @@
 
 @property (nonatomic, strong) NSMutableArray *answerArray;
 
-
+@property (nonatomic, assign) NSInteger wrongNumber;//记录错题
 
 @property (nonatomic, assign) NSInteger tmpTag;
 

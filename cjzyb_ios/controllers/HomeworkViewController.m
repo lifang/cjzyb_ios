@@ -290,9 +290,6 @@
     HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
     TaskObj *task = controller.taskObj;
     [DataService sharedService].taskObj = task;
-    [DataService sharedService].number_reduceTime = task.taskReduceTimeCount;
-    [DataService sharedService].number_correctAnswer=task.taskTipCorrectAnswer;
-    [DataService sharedService].cardsCount = task.taskKnowlegeCount;
     self.selectedDailyController = controller;
     HomeworkContainerController *homeworkContainer = [[HomeworkContainerController alloc ] initWithNibName:@"HomeworkContainerController" bundle:nil];
     homeworkContainer.homeworkType = typeObj.homeworkType;

@@ -55,7 +55,12 @@
 -(void)updateViewContents{
     AppDelegate *appDel = [AppDelegate shareIntance];
     DataService *data = [DataService sharedService];
-    self.userNameLabel.text = data.user.nickName;
+    if (data.user.s_no) {
+        self.userNameLabel.text = [NSString stringWithFormat:@"%@(%@)",data.user.nickName,data.user.s_no];
+    }else {
+        self.userNameLabel.text = [NSString stringWithFormat:@"%@",data.user.nickName];
+    }
+    
     self.userClassNameLabel.text = data.theClass.name;
     [MBProgressHUD showHUDAddedTo:appDel.window animated:YES];
     __weak UserInfoPopViewController *weakSelf = self;

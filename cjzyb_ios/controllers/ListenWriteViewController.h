@@ -58,7 +58,7 @@
 -(void)listenViewReduceTimeButtonClicked;
 //道具
 @property (nonatomic, strong) NSMutableArray *propsArray;
-
+@property (nonatomic, assign) NSInteger wrongNumber;//记录错题
 
 //提醒－－－
 @property (nonatomic, strong) IBOutlet UIView *remindView;

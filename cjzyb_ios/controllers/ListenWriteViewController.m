@@ -877,6 +877,7 @@ static CGFloat tmp_ratio = -100;
 #pragma mark - 做题
 //检查
 -(void)checkAnswer:(id)sender {
+    self.wrongNumber = 0;
     self.tmpIndexArray = nil;
     if (self.appDel.avPlayer) {
         [self.appDel.avPlayer stop];
@@ -997,9 +998,6 @@ static CGFloat tmp_ratio = -100;
                 TRUESOUND;
             }else {
                 FALSESOUND;
-                if (self.isFirst==YES && isToJson==YES) {
-                    [DataService sharedService].cardsCount += 1;
-                }
             }
             if (self.isFirst==YES && isToJson==YES) {
                 NSString *answer = [NSString stringWithFormat:@"%@;||;%@",anserString,wrong_anserString];
@@ -1181,6 +1179,8 @@ static CGFloat tmp_ratio = -100;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            
+            [DataService sharedService].cardsCount = [[result objectForKey:@"knowledges_cards_count"]integerValue];
             //上传answer.json文件之后返回的更新时间
             NSString *timeStr = [result objectForKey:@"updated_time"];
             [Utility returnAnswerPAthWithString:timeStr];

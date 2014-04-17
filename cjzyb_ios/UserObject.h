@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *nickName;
 @property (nonatomic, strong) NSString *headUrl;
 @property (nonatomic, strong) NSString *userId;
+@property (nonatomic, strong) NSString *s_no;//学号
 ///是否是老师
 @property (nonatomic,assign) BOOL isTeacher;
 ///精准分数，满100升一级

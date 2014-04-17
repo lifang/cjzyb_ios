@@ -34,7 +34,7 @@
 @property (nonatomic, assign) NSInteger number;//记录第几题--大题
 @property (nonatomic, strong) NSMutableArray *questionArray;
 @property (nonatomic, strong) NSDictionary *questionDic;
-
+@property (nonatomic, assign) NSInteger wrongNumber;//记录错题
 
 @property (nonatomic, assign) NSInteger branchNumber;//记录第几题--大题
 @property (nonatomic, strong) NSMutableArray *branchQuestionArray;

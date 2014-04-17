@@ -19,6 +19,10 @@
     [user setNickName:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"nickname"]]]];
     [user setHeadUrl:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"avatar_url"]]]];
     
+    if (![[aDic objectForKey:@"s_no"] isKindOfClass:[NSNull class]] && [aDic objectForKey:@"s_no"]!= nil) {
+        [user setS_no:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"s_no"]]];
+    }
+    
     return user;
 }
 

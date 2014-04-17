@@ -618,7 +618,7 @@ static NSInteger tmpPage = 0;
                 }
             }
             [self.cardArray removeObjectAtIndex:tag];
-            [DataService sharedService].taskObj.taskKnowlegeCount -= 1;
+            [DataService sharedService].cardsCount -= 1;
             [self displayNewView];
         });
     });
