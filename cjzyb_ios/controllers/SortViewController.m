@@ -294,6 +294,7 @@ static BOOL isCanUpLoad = NO;
 }
 
 -(void)nextHistoryQuestion:(id)sender {
+    [self.myScroll setContentOffset:CGPointMake(0, 0)];
     if (self.branchNumber == self.history_branchQuestionArray.count-1) {
         self.number++;self.branchNumber = 0;
     }else {
@@ -653,6 +654,7 @@ static BOOL isCanUpLoad = NO;
     if (str.length>0) {
         [Utility errorAlert:str];
     }else {
+        [self.myScroll setContentOffset:CGPointMake(0, 0)];
         [self.homeControl stopTimer];
         self.homeControl.appearCorrectButton.enabled=NO;
 
@@ -680,9 +682,6 @@ static BOOL isCanUpLoad = NO;
             TRUESOUND;
         }else {
             FALSESOUND;
-            if (self.isFirst==YES) {
-            [DataService sharedService].cardsCount += 1;
-            }
         }
         if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
             self.homeControl.reduceTimeButton.enabled=NO;
@@ -769,7 +768,7 @@ static BOOL isCanUpLoad = NO;
 }
 -(void)nextQuestion:(id)sender {
     [self.homeControl startTimer];
-
+[self.myScroll setContentOffset:CGPointMake(0, 0)];
     if ([DataService sharedService].number_correctAnswer>0) {
         self.homeControl.appearCorrectButton.enabled=YES;
     }
@@ -849,7 +848,7 @@ static BOOL isCanUpLoad = NO;
     self.homeControl.appearCorrectButton.enabled=NO;
     self.homeControl.reduceTimeButton.enabled=NO;
     
-
+[self.myScroll setContentOffset:CGPointMake(0, 0)];
     if (self.isFirst==YES) {
         self.postNumber = 0;
         if (self.appDel.isReachable == NO) {
@@ -872,6 +871,7 @@ static BOOL isCanUpLoad = NO;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            [DataService sharedService].cardsCount = [[result objectForKey:@"knowledges_cards_count"]integerValue];
             //上传answer.json文件之后返回的更新时间
             NSString *timeStr = [result objectForKey:@"updated_time"];
             [Utility returnAnswerPAthWithString:timeStr];

@@ -23,18 +23,13 @@
 @property (strong,nonatomic) NSString *taskFileDownloadURL;//question.json
 ///历史记录中答案的json文件下载路径
 @property (strong,nonatomic) NSString *taskAnswerFileDownloadURL;//answer.json
-///卡片数量
-@property (assign,nonatomic) int taskKnowlegeCount;
+
 ///这个任务包含的作业类型HomeworkTypeObj
 @property (strong,nonatomic) NSArray *taskHomeworkTypeArray;
 @property (nonatomic, strong) NSMutableArray *finish_types;//
 ///一个task理论上对应的文件夹
 @property (nonatomic,strong) NSString *taskFolderPath;
 
-///减少时间次数
-@property (assign,nonatomic) int taskReduceTimeCount;
-///提示正确答案次数
-@property (assign,nonatomic) int taskTipCorrectAnswer;
 +(TaskObj *)taskFromDictionary:(NSDictionary *)aDic;
 
 ///是否过期

@@ -121,6 +121,7 @@ static BOOL isCanUpLoad = NO;
     [self.myScroll addSubview:hud];
 }
 -(void)nextHistoryQuestion:(id)sender {
+    [self.myScroll setContentOffset:CGPointMake(0, 0)];
     self.number++;
     [self getQuestionData];
 }
@@ -335,6 +336,7 @@ static BOOL isCanUpLoad = NO;
         [Utility errorAlert:str];
     }else {
         [self.homeControl stopTimer];
+        [self.myScroll setContentOffset:CGPointMake(0, 0)];
         for (int i=0; i<self.answerArray.count; i++) {
             UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:i+UnderLab_tag];
             
@@ -345,9 +347,6 @@ static BOOL isCanUpLoad = NO;
                 self.branchScore++;
             }else {
                 label.textColor = [UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1];
-                if (self.isFirst==YES) {
-                [DataService sharedService].cardsCount += 1;
-                }
             }
             self.clozeVV.delegate = nil;
         }
@@ -420,6 +419,7 @@ static BOOL isCanUpLoad = NO;
 }
 
 -(void)nextQuestion:(id)sender {
+    [self.myScroll setContentOffset:CGPointMake(0, 0)];
     [self.homeControl startTimer];self.prop_number=-1;
     if ([DataService sharedService].number_correctAnswer>0) {
         self.homeControl.appearCorrectButton.enabled=YES;
@@ -487,7 +487,7 @@ static BOOL isCanUpLoad = NO;
 -(void)finishQuestion:(id)sender {
     self.homeControl.appearCorrectButton.enabled=NO;
     self.homeControl.reduceTimeButton.enabled=NO;
-    
+    [self.myScroll setContentOffset:CGPointMake(0, 0)];
 
     if (self.isFirst==YES) {
         self.postNumber = 0;
@@ -511,6 +511,7 @@ static BOOL isCanUpLoad = NO;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.appDel.window animated:YES];
+            [DataService sharedService].cardsCount = [[result objectForKey:@"knowledges_cards_count"]integerValue];
             //上传answer.json文件之后返回的更新时间
             NSString *timeStr = [result objectForKey:@"updated_time"];
             [Utility returnAnswerPAthWithString:timeStr];

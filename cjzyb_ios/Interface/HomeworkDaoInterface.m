@@ -71,7 +71,21 @@
         
         BOOL isExipre = [HomeworkDaoInterface compareTimeWithString:taskObj.taskEndDate];
         taskObj.isExpire = isExipre;
-        taskObj.taskKnowlegeCount = knowlegeCount?knowlegeCount.intValue:0;
+        
+        //道具 0减少时间   1显示正确答案
+        NSArray *propsArr = [dicData objectForKey:@"props"];
+        for (NSDictionary *propsDic in propsArr) {
+            NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
+            NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
+            if ([type integerValue]==1) {
+                [DataService sharedService].number_correctAnswer = number ?number.intValue:0;
+            }else if ([type integerValue]==0){
+                [DataService sharedService].number_reduceTime = number ?number.intValue:0;
+            }
+        }
+        
+        [DataService sharedService].cardsCount = knowlegeCount?knowlegeCount.intValue:0;
+        
         
         NSMutableArray *homeworkTypeList = [NSMutableArray array];
         NSArray *undoTypeArr = [taskDic objectForKey:@"question_types"];
@@ -97,18 +111,6 @@
         }
         
         taskObj.taskHomeworkTypeArray = homeworkTypeList;
-        
-        //道具 0减少时间   1显示正确答案
-        NSArray *propsArr = [dicData objectForKey:@"props"];
-        for (NSDictionary *propsDic in propsArr) {
-            NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
-            NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
-            if ([type integerValue]==1) {
-                taskObj.taskTipCorrectAnswer = number ?number.intValue:0;
-            }else if ([type integerValue]==0){
-                taskObj.taskReduceTimeCount = number ?number.intValue:0;
-            }
-        }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
@@ -202,7 +204,21 @@
             TaskObj *taskObj = [TaskObj taskFromDictionary:taskDic];
             BOOL isExipre = [HomeworkDaoInterface compareTimeWithString:taskObj.taskEndDate];
             taskObj.isExpire = isExipre;
-            taskObj.taskKnowlegeCount = knowlegeCount?knowlegeCount.intValue:0;
+            
+            
+            //道具 0减少时间   1显示正确答案
+            NSArray *propsArr = [dicData objectForKey:@"props"];
+            for (NSDictionary *propsDic in propsArr) {
+                NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
+                NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
+                if ([type integerValue]==1) {
+                    [DataService sharedService].number_correctAnswer = number ?number.intValue:0;
+                }else if ([type integerValue]==0){
+                    [DataService sharedService].number_reduceTime = number ?number.intValue:0;
+                }
+            }
+            
+            [DataService sharedService].cardsCount = knowlegeCount?knowlegeCount.intValue:0;
             
             NSMutableArray *homeworkTypeList = [NSMutableArray array];
             NSArray *undoTypeArr = [taskDic objectForKey:@"question_types"];
@@ -229,18 +245,6 @@
             }
             
             taskObj.taskHomeworkTypeArray = homeworkTypeList;
-            
-            //道具 0减少时间   1显示正确答案
-            NSArray *propsArr = [dicData objectForKey:@"props"];
-            for (NSDictionary *propsDic in propsArr) {
-                NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
-                NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
-                if ([type integerValue]==1) {
-                    taskObj.taskTipCorrectAnswer = number ?number.intValue:0;
-                }else if ([type integerValue]==0){
-                    taskObj.taskReduceTimeCount = number ?number.intValue:0;
-                }
-            }
             
             [taskList addObject:taskObj];
         }
@@ -355,7 +359,20 @@
             TaskObj *taskObj = [TaskObj taskFromDictionary:taskDic];
             BOOL isExipre = [HomeworkDaoInterface compareTimeWithString:taskObj.taskEndDate];
             taskObj.isExpire = isExipre;
-            taskObj.taskKnowlegeCount = knowlegeCount?knowlegeCount.intValue:0;
+            
+            //道具 0减少时间   1显示正确答案
+            NSArray *propsArr = [dicData objectForKey:@"props"];
+            for (NSDictionary *propsDic in propsArr) {
+                NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
+                NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
+                if ([type integerValue]==1) {
+                    [DataService sharedService].number_correctAnswer = number ?number.intValue:0;
+                }else if ([type integerValue]==0){
+                    [DataService sharedService].number_reduceTime = number ?number.intValue:0;
+                }
+            }
+            
+            [DataService sharedService].cardsCount = knowlegeCount?knowlegeCount.intValue:0;
             
             NSMutableArray *homeworkTypeList = [NSMutableArray array];
             NSArray *undoTypeArr = [taskDic objectForKey:@"question_types"];
@@ -381,18 +398,6 @@
             }
             
             taskObj.taskHomeworkTypeArray = homeworkTypeList;
-            
-            //道具 0减少时间   1显示正确答案
-            NSArray *propsArr = [dicData objectForKey:@"props"];
-            for (NSDictionary *propsDic in propsArr) {
-                NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
-                NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
-                if ([type integerValue]==1) {
-                    taskObj.taskTipCorrectAnswer = number ?number.intValue:0;
-                }else if ([type integerValue]==0){
-                    taskObj.taskReduceTimeCount = number ?number.intValue:0;
-                }
-            }
             
             [taskList addObject:taskObj];
         }
