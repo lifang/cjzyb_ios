@@ -385,7 +385,7 @@
     [parentVC uploadAnswerJsonFileWithPath:answerJSONPath withSuccess:^(NSString *success) {
         self.haveUploadedJSON = YES;
         
-         [Utility returnAnswerPAthWithString:success];
+        [Utility returnAnswerPAthWithString:success];
         
         //如果已完成就显示结果
         if (self.answerArray.count == self.questionArray.count) {
@@ -658,9 +658,6 @@
     [self showCheckResult];
     if (!self.isReDoingChallenge) {
         [self makeAnswerJSON];
-        if (!answerRatio) {
-            [DataService sharedService].cardsCount ++;
-        }
     }
     
     //播放声音
@@ -821,6 +818,8 @@
             [Utility errorAlert:@"请先答本题"];
             return;
         }
+        self.optionTable.contentOffset = CGPointMake(0, 0);
+        
         if (!self.checked) {
             //先检查
             [self checkChoice];

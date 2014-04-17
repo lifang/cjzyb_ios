@@ -237,9 +237,6 @@
                 [branchDic setObject:answer.answerID forKey:@"id"];
                 [branchDic setObject:answer.answerAnswer forKey:@"answer"];
                 [branchDic setObject:answer.answerRatio forKey:@"ratio"]; //正确:对-100  错-0
-                if ([answer.answerRatio isEqualToString:@"0"]) {
-                    [DataService sharedService].cardsCount ++;
-                }
                 [branches addObject:branchDic];
             }
     
