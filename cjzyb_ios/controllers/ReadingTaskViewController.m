@@ -299,7 +299,7 @@
                     if (self.currentHomeworkIndex+1 < self.readingHomeworksArr.count) {
                         [self updateNextHomework];
                         [self.preReadingController startPreListeningHomeworkSentence:self.currentHomework withPlayFinished:^(BOOL isSuccess) {
-                            [parentVC startTimer];
+                            
                         }];
                         [self appearPrePlayControllerWithAnimation:YES];
                     }else{

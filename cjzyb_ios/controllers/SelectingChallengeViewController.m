@@ -824,7 +824,7 @@
     
     if (!self.isViewingHistory) {
         if (self.currentSelectedOptions.count < 1) {
-            [Utility errorAlert:@"请先答本题"];
+            [Utility errorAlert:@"请先填写您的答案～"];
             return;
         }
         self.optionTable.contentOffset = CGPointMake(0, 0);

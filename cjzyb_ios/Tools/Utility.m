@@ -2627,13 +2627,14 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 
 //比较时间
 +(BOOL)compareTime {
-    
+    NSString *str = [Utility getNowDateFromatAnDate];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"Asia/Shanghai"]];
     NSDate *endDate = [dateFormatter dateFromString:[DataService sharedService].taskObj.taskEndDate];
     
-    NSDate *nowDate = [NSDate date];
+    NSDate *nowDate = [dateFormatter dateFromString:str];
+
     
     NSCalendar *cal = [NSCalendar currentCalendar];
     unsigned int unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;

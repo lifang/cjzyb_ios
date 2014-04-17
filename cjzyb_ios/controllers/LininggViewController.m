@@ -442,7 +442,7 @@ static BOOL isCanUpLoad = NO;
     NSMutableString *anserString = [NSMutableString string];
     
     if ((self.leftArray.count != self.tmpLeftArray.count) || (self.rightArray.count != self.tmpRightArray.count)) {
-        str = @"请填写完整!";
+        str = @"请先填写您的答案～";
     }
     if (str.length>0) {
         [Utility errorAlert:str];

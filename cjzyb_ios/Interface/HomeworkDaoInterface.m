@@ -11,15 +11,17 @@
 #import "ASIFormDataRequest.h"
 @implementation HomeworkDaoInterface
 
+
 //判断
 +(BOOL)compareTimeWithString:(NSString *)string {
+    
+    NSString *str = [Utility getNowDateFromatAnDate];
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"Asia/Shanghai"]];
     NSDate *endDate = [dateFormatter dateFromString:string];
-    
-    NSDate *nowDate = [NSDate date];
+    NSDate *nowDate = [dateFormatter dateFromString:str];;
     
     NSCalendar *cal = [NSCalendar currentCalendar];
     unsigned int unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
@@ -179,9 +181,8 @@
     if (currentTaskId) {
         urlString = [NSString stringWithFormat:@"%@/api/students/get_more_tasks?student_id=%@&school_class_id=%@&today_newer_id=%@",kHOST,userId,classID,currentTaskId];
     }else{
-    urlString = [NSString stringWithFormat:@"%@/api/students/get_more_tasks?student_id=%@&school_class_id=%@",kHOST,userId,classID];
+        urlString = [NSString stringWithFormat:@"%@/api/students/get_more_tasks?student_id=%@&school_class_id=%@",kHOST,userId,classID];
     }
-    DLog(@"获得班级同学信息url:%@",urlString);
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request setHTTPMethod:@"GET"];
     [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
