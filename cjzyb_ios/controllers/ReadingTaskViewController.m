@@ -872,7 +872,7 @@
 - (void) onError:(IFlySpeechError *) error
 {
     
-    [parentVC startTimer];
+//    [parentVC startTimer];
     [self.readingButton setUserInteractionEnabled:YES];
     NSString *text ;
     if (error.errorCode ==0 ) {
