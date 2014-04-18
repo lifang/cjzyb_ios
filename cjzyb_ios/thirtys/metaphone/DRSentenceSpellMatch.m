@@ -10,7 +10,8 @@
 #import "SpellMatchObj.h"
 
 @implementation DRSentenceSpellMatch
-+(void)checkSentence:(NSString*)sentence withSpellMatchSentence:(NSString*)spellSentence andSpellMatchAttributeString:(void(^)(NSAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray))success orSpellMatchFailure:(void(^)(NSError *error))failure{
++(void)checkSentence:(NSString*)sentence withSpellMatchSentence:(NSString*)spellSentence andSpellMatchAttributeString:(void(^)(NSMutableAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray,NSArray *rightWordArray))success orSpellMatchFailure:(void(^)(NSError *error))failure{
+    
     if (!sentence || !spellSentence) {
         if (failure) {
             failure([NSError errorWithDomain:@"" code:10010 userInfo:@{@"msg": @"要匹配对象不存在"}]);
@@ -32,9 +33,9 @@
     
     if ([senStr isEqualToString:spellStr]) {
         NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:senStr];
-        [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:25] range:NSMakeRange(0, attri.length)];
+        [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:35] range:NSMakeRange(0, attri.length)];
         [attri addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:NSMakeRange(0, attri.length)];
-        success(attri,1,nil);
+        success(attri,1,nil,@[senStr]);
         return;
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -48,7 +49,7 @@
         
         //默认全部染红
         [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0.941 green:0.525 blue:0.161 alpha:1.000] range:NSMakeRange(0, spellAttribute.length)];
-        //除字母之外全部染绿
+        //除字母之外全部染黑
         NSRange leftRange = NSMakeRange(0, spellAttribute.length);
         while (YES) {
             NSRange findRange = [senStr rangeOfCharacterFromSet:[[NSCharacterSet letterCharacterSet] invertedSet] options:NSLiteralSearch range:leftRange];
@@ -64,12 +65,14 @@
         int unMatch = 0;
         int matched = 0;
         NSMutableArray *errorWordArr = [NSMutableArray array];
+        NSMutableArray *rightWordArr = [NSMutableArray array];
         for (SpellMatchObj *obj in spellMatchRangeArr) {
             if (obj.range.location + obj.range.length > spellAttribute.length) {
                 continue;
             }
             if (obj.spellLevel == 1 || obj.spellLevel == 0.5) {
                 matched ++;
+                [rightWordArr addObject:[senStr substringWithRange:obj.range]];
                 [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:obj.range];
             }else{
                 unMatch++;
@@ -79,7 +82,7 @@
         }
         float score = (float)matched/(float)[Utility shared].orgArray.count;
         dispatch_async(dispatch_get_main_queue(), ^{
-            success(spellAttribute,score,errorWordArr.count>0 ?errorWordArr:nil);
+            success(spellAttribute,score,errorWordArr.count>0 ?errorWordArr:nil,rightWordArr);
         });
     });
 }

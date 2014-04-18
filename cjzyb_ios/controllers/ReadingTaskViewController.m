@@ -50,6 +50,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *listeningButton;
 ///显示当前题号 (3/5)
 @property (strong,nonatomic) UILabel *currentNOLabel;
+///当前小题已经读对的单词
+@property (strong,nonatomic) __block NSMutableArray *rightWordArray;
 
 /// 点击开始录音
 - (IBAction)readingButtonClicked:(id)sender;
@@ -810,6 +812,8 @@
             style.alignment = NSTextAlignmentCenter;
             [attriString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, content.length)];
             self.tipTextView.attributedText = attriString;
+        }else{
+            self.rightWordArray = [NSMutableArray array];
         }
         NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:currentSentence.readingSentenceContent];
         [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:35] range:NSMakeRange(0, attri.length)];
@@ -889,6 +893,8 @@
 - (void) onEndOfSpeech
 {
     [_popUpView setText: @"停止录音"];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"语音识别中";
     [self.view addSubview:_popUpView];
 }
 /**
@@ -900,13 +906,13 @@
 - (void) onError:(IFlySpeechError *) error
 {
     
-//    [parentVC startTimer];
     [self.readingButton setUserInteractionEnabled:YES];
     NSString *text ;
     if (error.errorCode ==0 ) {
         text = @"识别成功";
     }else {
         text = [NSString stringWithFormat:@"发生错误：%d %@",error.errorCode,error.errorDesc];
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     }
     [_popUpView setText: text];
     [self.view addSubview:_popUpView];
@@ -922,6 +928,7 @@
 - (void) onCancel
 {
     NSLog(@"识别取消");
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
 /**
  * @fn      onResults
@@ -949,14 +956,29 @@
     TaskObj *task = [DataService sharedService].taskObj;
     NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
     
-    [DRSentenceSpellMatch checkSentence:self.currentSentence.readingSentenceContent withSpellMatchSentence:result andSpellMatchAttributeString:^(NSAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray) {
+    [DRSentenceSpellMatch checkSentence:self.currentSentence.readingSentenceContent withSpellMatchSentence:result andSpellMatchAttributeString:^(NSMutableAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray,NSArray *rightWordArray) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+        //记录读对的词
+        for(NSString *rightWord in rightWordArray){
+            if (![self.rightWordArray containsObject:rightWord]) {
+                [self.rightWordArray addObject:rightWord];
+            }
+        }
         
-        NSLog(@"第1步");
+        NSMutableAttributedString *spellAttriStringFinally = [[NSMutableAttributedString alloc] initWithAttributedString:spellAttriString];
+        for(NSString *rightWord in self.rightWordArray){
+            NSRange greenRange = [spellAttriStringFinally.string rangeOfString:rightWord];
+            if (greenRange.length > 0) {
+                [spellAttriStringFinally addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:greenRange];
+            }
+        }
         self.readingTextView.attributedText = nil;
-        self.readingTextView.attributedText = spellAttriString;
+        self.readingTextView.attributedText = spellAttriStringFinally;
         [self.tipBackView setHidden:NO];
         NSString *tip = @"";
-        if (matchScore >= minRecoginLevel) {
+        float score = self.rightWordArray.count / (float)[Utility shared].orgArray.count;
+        NSLog(@"正确次数:%d ,总次数: %d",self.rightWordArray.count,[Utility shared].orgArray.count);
+        if (score >= minRecoginLevel) {
             tip = @"你的发音真的很不错哦,让我们再来读读其它的句子吧！";
             self.currentSentencePassed = YES;
         }else
@@ -966,7 +988,7 @@
         if (self.readingCount <= 1) {//计入成绩
             //存内存中
             self.currentSentence.readingErrorWordArray = [NSMutableArray arrayWithArray:errorWordArray];
-            self.currentSentence.readingSentenceRatio = [NSString stringWithFormat:@"%0.2f",matchScore];
+            self.currentSentence.readingSentenceRatio = [NSString stringWithFormat:@"%0.2f",score];
             //标志本大题完成
             if (self.currentSentenceIndex == self.currentHomework.readingHomeworkSentenceObjArray.count-1) {
                 self.currentHomework.isFinished = YES;
@@ -1004,6 +1026,7 @@
         self.tipTextView.attributedText = attriString;
         [self updateAllFrame];
     } orSpellMatchFailure:^(NSError *error) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
     }];
 }
