@@ -514,9 +514,13 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     if (!word) {
         return NULL;
     }
-     char *reslut = nil;
-    DoubleMetaphone([word UTF8String], &reslut);
-    return [NSString stringWithCString:reslut encoding:NSUTF8StringEncoding];
+//    char *reslut = nil;
+
+    NSString *string = [Metaphone2 metaphone:word];
+
+    return string;
+//    DoubleMetaphone([word UTF8String], &reslut);
+//    return [NSString stringWithCString:reslut encoding:NSUTF8StringEncoding];
 }
 
 ///把单词Array 转化成 metaphone码Array

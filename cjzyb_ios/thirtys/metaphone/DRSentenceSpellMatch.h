@@ -25,5 +25,7 @@
                  matchScore  匹配程度，取值范围0-1,
                  error  失败提示
  */
++(NSArray*)spellMatchWord:(NSString*)spellString;
+
 +(void)checkSentence:(NSString*)sentence withSpellMatchSentence:(NSString*)spellSentence andSpellMatchAttributeString:(void(^)(NSAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray))success orSpellMatchFailure:(void(^)(NSError *error))failure;
 @end

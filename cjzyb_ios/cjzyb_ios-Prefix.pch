@@ -28,6 +28,7 @@
 #import "OrdinaryAnswerObject.h"
 #import "TenSecChallengeResultView.h"
 #import "UIImageView+Addition.h"
+#import "Metaphone2.h"
 #endif
 
 #define TRUESOUND [(AppDelegate *)[[UIApplication sharedApplication]delegate] loadTrueSound:1];

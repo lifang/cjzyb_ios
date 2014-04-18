@@ -1163,11 +1163,10 @@ static CGFloat tmp_ratio = -100;
         if (self.appDel.isReachable == NO) {
             [Utility errorAlert:@"暂无网络!"];
         }else {
-            MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.appDel.window];
-            hud.dimBackground = NO;
-            hud.labelText = @"正在上传做题结果，请稍后...";
-            [hud showWhileExecuting:@selector(postAnswerJson) onTarget:self withObject:nil animated:YES];
-            [self.appDel.window addSubview:hud];
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+            self.postInter = [[BasePostInterface alloc]init];
+            self.postInter.delegate = self;
+            [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
         }
     }else {
         [self showResultView];
@@ -1267,11 +1266,7 @@ static CGFloat tmp_ratio = -100;
     alert.tag = 100;
     [alert show];
 }
--(void)postAnswerJson {
-    self.postInter = [[BasePostInterface alloc]init];
-    self.postInter.delegate = self;
-    [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
-}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
     if (alertView.tag == 100) {
@@ -1286,11 +1281,10 @@ static CGFloat tmp_ratio = -100;
                 if (self.appDel.isReachable == NO) {
                     [Utility errorAlert:@"暂无网络!"];
                 }else {
-                    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.appDel.window];
-                    hud.dimBackground = NO;
-                    hud.labelText = @"正在上传做题结果，请稍后...";
-                    [hud showWhileExecuting:@selector(postAnswerJson) onTarget:self withObject:nil animated:YES];
-                    [self.appDel.window addSubview:hud];
+                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    self.postInter = [[BasePostInterface alloc]init];
+                    self.postInter.delegate = self;
+                    [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
                     
                 }
             }else {

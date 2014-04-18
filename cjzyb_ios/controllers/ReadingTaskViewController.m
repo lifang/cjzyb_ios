@@ -16,7 +16,7 @@
 #import "RecognizerFactory.h"//语音
 #import "PreReadingTaskViewController.h"
 
-
+#import "SpellMatchObj.h"
 
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
 #define minRecoginCount 4
@@ -581,6 +581,9 @@
 }
 
 //TODO:开始识别语音
+/*
+ * @开始录音
+*/
 - (IBAction)readingButtonClicked:(id)sender {
     //启动计时
     if (![DataService sharedService].isHistory) {
@@ -589,11 +592,12 @@
     
     bool ret = [_iFlySpeechRecognizer startListening];
     if (ret) {
-        NSLog(@"111");
+        [_popUpView setText: @"开始录音"];
     }else {
         [_popUpView setText: @"启动识别服务失败，请稍后重试"];//可能是上次请求未结束
-        [self.view addSubview:_popUpView];
     }
+    [self.view addSubview:_popUpView];
+    
     self.isReading = YES;
     [self.readingButton setUserInteractionEnabled:NO];
     [self.listeningButton setUserInteractionEnabled:NO];
@@ -865,7 +869,28 @@
     [_popUpView setText: vol];
     [self.view addSubview:_popUpView];
 }
-
+/**
+ * @fn      onBeginOfSpeech
+ * @brief   开始识别回调
+ *
+ * @see
+ */
+- (void) onBeginOfSpeech
+{
+    [_popUpView setText: @"正在录音"];
+    [self.view addSubview:_popUpView];
+}
+/**
+ * @fn      onEndOfSpeech
+ * @brief   停止录音回调
+ *
+ * @see
+ */
+- (void) onEndOfSpeech
+{
+    [_popUpView setText: @"停止录音"];
+    [self.view addSubview:_popUpView];
+}
 /**
  * @fn      onError
  * @brief   识别结束回调
@@ -888,6 +913,17 @@
 }
 
 /**
+ * @fn      onCancel
+ * @brief   取消识别回调
+ * 当调用了`cancel`函数之后，会回调此函数，在调用了cancel函数和回调onError之前会有一个短暂时间，您可以在此函数中实现对这段时间的界面显示。
+ * @param
+ * @see
+ */
+- (void) onCancel
+{
+    NSLog(@"识别取消");
+}
+/**
  * @fn      onResults
  * @brief   识别结果回调
  *
@@ -902,14 +938,20 @@
         [result appendFormat:@"%@",key];
     }
     NSLog(@"听写结果：%@",result);
+    
+    [_iFlySpeechRecognizer stopListening];
     [_iFlySpeechRecognizer cancel];
+    
     [self.readingButton setUserInteractionEnabled:YES];
     [self.listeningButton setUserInteractionEnabled:YES];
     [parentVC stopTimer];
     self.readingCount++;
     TaskObj *task = [DataService sharedService].taskObj;
     NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
+    
     [DRSentenceSpellMatch checkSentence:self.currentSentence.readingSentenceContent withSpellMatchSentence:result andSpellMatchAttributeString:^(NSAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray) {
+        
+        NSLog(@"第1步");
         self.readingTextView.attributedText = nil;
         self.readingTextView.attributedText = spellAttriString;
         [self.tipBackView setHidden:NO];
@@ -961,10 +1003,8 @@
         [attriString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0,tip.length)];
         self.tipTextView.attributedText = attriString;
         [self updateAllFrame];
-//        [parentVC startTimer];
     } orSpellMatchFailure:^(NSError *error) {
         [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-//        [parentVC startTimer];
     }];
 }
 

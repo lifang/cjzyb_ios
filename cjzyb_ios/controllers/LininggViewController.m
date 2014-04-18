@@ -912,22 +912,17 @@ static BOOL isCanUpLoad = NO;
         if (self.appDel.isReachable == NO) {
             [Utility errorAlert:@"暂无网络!"];
         }else {
-            MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.appDel.window];
-            hud.dimBackground = NO;
-            hud.labelText = @"正在上传做题结果，请稍后...";
-            [hud showWhileExecuting:@selector(postAnswerJson) onTarget:self withObject:nil animated:YES];
-            [self.appDel.window addSubview:hud];
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+            self.postInter = [[BasePostInterface alloc]init];
+            self.postInter.delegate = self;
+            [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
         }
         
     }else {
         [self showResultView];
     }
 }
--(void)postAnswerJson {
-    self.postInter = [[BasePostInterface alloc]init];
-    self.postInter.delegate = self;
-    [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
-}
+
 #pragma mark
 #pragma mark - 道具
 //道具  显示正确答案
@@ -1160,11 +1155,10 @@ static BOOL isCanUpLoad = NO;
                 if (self.appDel.isReachable == NO) {
                     [Utility errorAlert:@"暂无网络!"];
                 }else {
-                    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.appDel.window];
-                    hud.dimBackground = NO;
-                    hud.labelText = @"正在上传做题结果，请稍后...";
-                    [hud showWhileExecuting:@selector(postAnswerJson) onTarget:self withObject:nil animated:YES];
-                    [self.appDel.window addSubview:hud];
+                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    self.postInter = [[BasePostInterface alloc]init];
+                    self.postInter.delegate = self;
+                    [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
                 }
             }else {
                 [self.homeControl dismissViewControllerAnimated:YES completion:nil];

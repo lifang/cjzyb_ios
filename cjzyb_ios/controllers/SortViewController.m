@@ -39,10 +39,9 @@ static BOOL isCanUpLoad = NO;
     btn.backgroundColor = [UIColor whiteColor];
     [btn.layer setMasksToBounds:YES];
     [btn.layer setCornerRadius:8];
-    btn.titleLabel.numberOfLines=0;
-    btn.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:33];
+    [btn setExclusiveTouch :YES];
     return btn;
 }
 -(void)setUI {
@@ -55,6 +54,7 @@ static BOOL isCanUpLoad = NO;
     [self.wordsContainerView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.wordsContainerView removeFromSuperview];
     self.wordsContainerView = [[UIView alloc]init];
+    self.wordsContainerView.tag = 873663;
     self.wordsContainerView.backgroundColor = [UIColor clearColor];
     
     CGRect frame = CGRectMake(0, 0, Textfield_Width*1.5, Textfield_Height*1.2);
@@ -76,6 +76,7 @@ static BOOL isCanUpLoad = NO;
             [btn3 setTitleColor:[UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1] forState:UIControlStateNormal];
             
             [btn3 addTarget:self action:@selector(answerButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
+            btn3.enabled = NO;
             [self.wordsContainerView addSubview:btn3];
         }
     }
@@ -89,7 +90,9 @@ static BOOL isCanUpLoad = NO;
         [btn3 setTitleColor:[UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1] forState:UIControlStateNormal];
         
         [btn3 addTarget:self action:@selector(answerButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
+        btn3.enabled = NO;
         [self.wordsContainerView addSubview:btn3];
+        
     }
     
     //TODO:下半部分
@@ -107,7 +110,7 @@ static BOOL isCanUpLoad = NO;
             [btn3 setTitle:[tmpArray objectAtIndex:index] forState:UIControlStateNormal];
             [tmpArray removeObjectAtIndex:index];
             count--;
-
+            
             [btn3 addTarget:self action:@selector(wordButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
             [self.wordsContainerView addSubview:btn3];
         }
@@ -125,7 +128,7 @@ static BOOL isCanUpLoad = NO;
         [btn3 setTitle:[tmpArray objectAtIndex:index] forState:UIControlStateNormal];
         [tmpArray removeObjectAtIndex:index];
         count--;
-
+        
         [btn3 addTarget:self action:@selector(wordButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
         [self.wordsContainerView addSubview:btn3];
     }
@@ -169,7 +172,7 @@ static BOOL isCanUpLoad = NO;
         self.history_questionDic = [self.history_questionArray objectAtIndex:self.number];
         self.history_branchQuestionArray = [self.history_questionDic objectForKey:@"branch_questions"];
         self.history_branchQuestionDic = [self.history_branchQuestionArray objectAtIndex:self.branchNumber];
-    
+        
         NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
         self.historyAnswer.text = [NSString stringWithFormat:@"你的排序: %@",txt];
         
@@ -191,7 +194,7 @@ static BOOL isCanUpLoad = NO;
         [self.checkHomeworkButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
         [self.checkHomeworkButton addTarget:self action:@selector(nextHistoryQuestion:) forControlEvents:UIControlEventTouchUpInside];
     }
-
+    
     [self.wordsContainerView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self.wordsContainerView removeFromSuperview];
     self.wordsContainerView = [[UIView alloc]init];
@@ -244,7 +247,7 @@ static BOOL isCanUpLoad = NO;
             [btn3 setTitle:[tmpArray objectAtIndex:index] forState:UIControlStateNormal];
             [tmpArray removeObjectAtIndex:index];
             count--;
-
+            
             [self.wordsContainerView addSubview:btn3];
         }
     }
@@ -261,7 +264,7 @@ static BOOL isCanUpLoad = NO;
         [btn3 setTitle:[tmpArray objectAtIndex:index] forState:UIControlStateNormal];
         [tmpArray removeObjectAtIndex:index];
         count--;
-
+        
         [self.wordsContainerView addSubview:btn3];
     }
     
@@ -412,31 +415,31 @@ static BOOL isCanUpLoad = NO;
             
         }else if ([DataService sharedService].taskObj.isExpire == NO){
             
-                self.isFirst= YES;
-                if ([DataService sharedService].number_reduceTime>0) {
-                    self.homeControl.reduceTimeButton.enabled = YES;
-                }
-                if ([DataService sharedService].number_correctAnswer>0) {
-                    self.homeControl.appearCorrectButton.enabled=YES;
+            self.isFirst= YES;
+            if ([DataService sharedService].number_reduceTime>0) {
+                self.homeControl.reduceTimeButton.enabled = YES;
+            }
+            if ([DataService sharedService].number_correctAnswer>0) {
+                self.homeControl.appearCorrectButton.enabled=YES;
+            }
+            
+            
+            int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
+            
+            if (number_question>=0) {
+                NSDictionary *dic = [self.questionArray objectAtIndex:number_question];
+                NSArray *array = [dic objectForKey:@"branch_questions"];
+                if (number_branch_question == array.count-1) {
+                    self.number = +1;self.branchNumber = 0;
+                }else {
+                    self.number = number_question;self.branchNumber = number_branch_question+1;
                 }
                 
-                
-                int number_branch_question = [[self.answerDic objectForKey:@"branch_item"]intValue];
-                
-                if (number_question>=0) {
-                    NSDictionary *dic = [self.questionArray objectAtIndex:number_question];
-                    NSArray *array = [dic objectForKey:@"branch_questions"];
-                    if (number_branch_question == array.count-1) {
-                        self.number = +1;self.branchNumber = 0;
-                    }else {
-                        self.number = number_question;self.branchNumber = number_branch_question+1;
-                    }
-                    
-                    int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
-                    self.homeControl.spendSecond = useTime;
-                    NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
-                    self.homeControl.timerLabel.text = timeStr;
-                }
+                int useTime = [[self.answerDic objectForKey:@"use_time"]integerValue];
+                self.homeControl.spendSecond = useTime;
+                NSString *timeStr = [Utility formateDateStringWithSecond:useTime];
+                self.homeControl.timerLabel.text = timeStr;
+            }
             
         }
         [self getQuestionData];
@@ -454,8 +457,10 @@ static BOOL isCanUpLoad = NO;
         [_preBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _preBtn.backgroundColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
         _preBtn.enabled = NO;
+        _preBtn.tag = 567;
         [_preBtn.layer setMasksToBounds:YES];
         [_preBtn.layer setCornerRadius:8];
+        [_preBtn setExclusiveTouch :YES];
         _preBtn.titleLabel.font = [UIFont systemFontOfSize:33];
         [_preBtn addTarget:self action:@selector(preButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
         [self.wordsContainerView addSubview:_preBtn];
@@ -469,6 +474,8 @@ static BOOL isCanUpLoad = NO;
         [_restartBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _restartBtn.backgroundColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
         _restartBtn.enabled = NO;
+        _restartBtn.tag = 854;
+        [_restartBtn setExclusiveTouch :YES];
         [_restartBtn.layer setMasksToBounds:YES];
         [_restartBtn.layer setCornerRadius:8];
         _restartBtn.titleLabel.font = [UIFont systemFontOfSize:33];
@@ -489,6 +496,7 @@ static BOOL isCanUpLoad = NO;
     }
     return _actionArray;
 }
+
 -(NSMutableArray *)propsArray {
     if (!_propsArray) {
         _propsArray = [[NSMutableArray alloc]init];
@@ -501,7 +509,7 @@ static BOOL isCanUpLoad = NO;
     }
     return _appDel;
 }
-#pragma mark - 
+#pragma mark -
 #pragma mark - button点击事件
 -(void)setPreButtonUI {
     if (self.actionArray.count>0) {
@@ -530,10 +538,15 @@ static BOOL isCanUpLoad = NO;
     if([btn.titleLabel.text length]>0){
         [btn setTitle:nil forState:UIControlStateNormal];
         btn.titleLabel.text = nil;
+        btn.enabled = NO;
         self.isRestart--;
         [self setRestartButtonUI];
         
-        int targetTag = [[self.maps objectForKey:[NSString stringWithFormat:@"%d",(btn.tag-CP_Answer_Button_Tag_Offset)]] intValue];
+        int targetTag = [[self.maps objectForKey:[NSString stringWithFormat:@"%d",btn.tag]] intValue];
+        [self.maps removeObjectForKey:[NSString stringWithFormat:@"%d",btn.tag]];
+
+        NSLog(@"btn-tag = %@",[NSString stringWithFormat:@"%d",btn.tag]);
+        NSLog(@"targetTag = %d",targetTag);
         UIButton *wordBtn = (UIButton *)[self.wordsContainerView viewWithTag:targetTag];
         wordBtn.enabled = YES;
         wordBtn.backgroundColor = [UIColor colorWithRed:39/255.0 green:48/255.0 blue:57/255.0 alpha:1];
@@ -541,43 +554,38 @@ static BOOL isCanUpLoad = NO;
         [self.actionArray addObject:[NSString stringWithFormat:@"%d_%d",btn.tag,wordBtn.tag]];
         [self setPreButtonUI];
         
-        if(self.currentWordIndex > (btn.tag - CP_Answer_Button_Tag_Offset))
+        if(self.currentWordIndex > (btn.tag - CP_Answer_Button_Tag_Offset)) {
             self.currentWordIndex = btn.tag - CP_Answer_Button_Tag_Offset;
+        }
     }
 }
 - (void)wordButtonSelected:(id)sender {
     UIButton *btn = (UIButton *)sender;
     NSString *text = btn.titleLabel.text;
     
-    UIView *unkonw = [self.wordsContainerView viewWithTag:(self.currentWordIndex+CP_Answer_Button_Tag_Offset)];
-    if ([unkonw isKindOfClass:[UIButton class]]) {
-        UIButton *answerBtn = (UIButton *)unkonw;
-        [answerBtn setTitle:text forState:UIControlStateNormal];
-        
-        [self.actionArray addObject:[NSString stringWithFormat:@"%d_%d",btn.tag,answerBtn.tag]];
-        [self setPreButtonUI];
-        
-        self.isRestart++;
-        [self setRestartButtonUI];
-    }
+    UIButton *answerBtn = (UIButton *)[self.wordsContainerView viewWithTag:(self.currentWordIndex+CP_Answer_Button_Tag_Offset)];
+    [answerBtn setTitle:text forState:UIControlStateNormal];
+    answerBtn.enabled = YES;
+    [self.actionArray addObject:[NSString stringWithFormat:@"%d_%d",btn.tag,answerBtn.tag]];
+    [self setPreButtonUI];
+    
+    self.isRestart++;
+    [self setRestartButtonUI];
+    
+    [self.maps setObject:[NSString stringWithFormat:@"%d",btn.tag] forKey:[NSString stringWithFormat:@"%d",answerBtn.tag]];
+    NSLog(@"maps = %@",self.maps);
     
     btn.backgroundColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
     btn.enabled = NO;
     
-    [self.maps setObject:[NSString stringWithFormat:@"%d",btn.tag] forKey:[NSString stringWithFormat:@"%d",self.currentWordIndex]];
-
     // 当前填的字不是最后一个，看下后面的字是否已经填了
     while (self.currentWordIndex!=(self.orgArray.count-1)) {
         self.currentWordIndex++;
-        UIButton *ab = nil;
-        UIView *uk = [self.myScroll viewWithTag:(self.currentWordIndex+CP_Answer_Button_Tag_Offset)];
-        if([uk isKindOfClass:[UIButton class]]) {
-            ab = (UIButton *)uk;
-        }
-        if([ab.titleLabel.text length]==0)
+        UIButton *ab = (UIButton *)[self.wordsContainerView viewWithTag:(self.currentWordIndex+CP_Answer_Button_Tag_Offset)];
+        if([ab.titleLabel.text length]==0){
             return;
+        }
     }
-
 }
 //后退一步
 -(void)preButtonSelected:(id)sender {
@@ -594,6 +602,10 @@ static BOOL isCanUpLoad = NO;
             UIButton *answerBtn = (UIButton *)[self.wordsContainerView viewWithTag:[tag2 intValue]];
             [answerBtn setTitle:nil forState:UIControlStateNormal];
             answerBtn.titleLabel.text = nil;
+            answerBtn.enabled = NO;
+            
+            [self.maps removeObjectForKey:tag2];
+            
             self.isRestart--;
             [self setRestartButtonUI];
             
@@ -605,15 +617,25 @@ static BOOL isCanUpLoad = NO;
             NSString *text = wordBtn.titleLabel.text;
             UIButton *answerBtn = (UIButton *)[self.wordsContainerView viewWithTag:[tag1 intValue]];
             [answerBtn setTitle:text forState:UIControlStateNormal];
+            answerBtn.enabled = YES;
+            [self.maps setObject:tag2 forKey:tag1];
             self.isRestart++;
             [self setRestartButtonUI];
         }
         
         [self.actionArray removeLastObject];
         [self setPreButtonUI];
-        self.currentWordIndex--;
-        if (self.currentWordIndex<0) {
-            self.currentWordIndex=0;
+        
+        //计算－－－currentWordIndex
+
+        for (int i=0; i<self.orgArray.count; i++) {
+            UIButton *answerBtn = (UIButton *)[self.wordsContainerView viewWithTag:(i+CP_Answer_Button_Tag_Offset)];
+            NSString *text = answerBtn.titleLabel.text;
+            
+            if (text.length==0) {
+                self.currentWordIndex = i;
+                break;
+            }
         }
     }
 }
@@ -643,7 +665,7 @@ static BOOL isCanUpLoad = NO;
         UIButton *answerBtn = (UIButton *)[self.wordsContainerView viewWithTag:i+CP_Answer_Button_Tag_Offset];
         NSString *text = answerBtn.titleLabel.text;
         [anserString appendFormat:@"%@ ",text];
-    
+        
         if (text.length<=0) {
             str = @"请先填写您的答案～";
             anserString = [NSMutableString string];
@@ -657,7 +679,7 @@ static BOOL isCanUpLoad = NO;
         [self.myScroll setContentOffset:CGPointMake(0, 0)];
         [self.homeControl stopTimer];
         self.homeControl.appearCorrectButton.enabled=NO;
-
+        
         for (int i=0; i<self.orgArray.count; i++) {
             UIButton *answerBtn = (UIButton *)[self.wordsContainerView viewWithTag:i+CP_Answer_Button_Tag_Offset];
             NSString *text = answerBtn.titleLabel.text;
@@ -768,7 +790,7 @@ static BOOL isCanUpLoad = NO;
 }
 -(void)nextQuestion:(id)sender {
     [self.homeControl startTimer];
-[self.myScroll setContentOffset:CGPointMake(0, 0)];
+    [self.myScroll setContentOffset:CGPointMake(0, 0)];
     if ([DataService sharedService].number_correctAnswer>0) {
         self.homeControl.appearCorrectButton.enabled=YES;
     }
@@ -787,8 +809,6 @@ static BOOL isCanUpLoad = NO;
             type.homeworkTypeIsFinished = YES;
         }
     }
-    
-    
     
     NSArray *viewArray = [[NSBundle mainBundle] loadNibNamed:@"TenSecChallengeResultView" owner:self options:nil];
     self.resultView = (TenSecChallengeResultView *)[viewArray objectAtIndex:0];
@@ -848,27 +868,21 @@ static BOOL isCanUpLoad = NO;
     self.homeControl.appearCorrectButton.enabled=NO;
     self.homeControl.reduceTimeButton.enabled=NO;
     
-[self.myScroll setContentOffset:CGPointMake(0, 0)];
+    [self.myScroll setContentOffset:CGPointMake(0, 0)];
     if (self.isFirst==YES) {
         self.postNumber = 0;
         if (self.appDel.isReachable == NO) {
             [Utility errorAlert:@"暂无网络!"];
         }else {
-            MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.appDel.window];
-            hud.dimBackground = NO;
-            hud.labelText = @"正在上传做题结果，请稍后...";
-            [hud showWhileExecuting:@selector(postAnswerJson) onTarget:self withObject:nil animated:YES];
-            [self.appDel.window addSubview:hud];
+            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+            self.postInter = [[BasePostInterface alloc]init];
+            self.postInter.delegate = self;
+            [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
         }
     }else {
         [self showResultView];
     }
     
-}
--(void)postAnswerJson {
-    self.postInter = [[BasePostInterface alloc]init];
-    self.postInter.delegate = self;
-    [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
 }
 #pragma mark
 #pragma mark - PostDelegate
@@ -926,7 +940,7 @@ static BOOL isCanUpLoad = NO;
         self.homeControl.appearCorrectButton.enabled = NO;
     }
     NSMutableString *anserString = [NSMutableString string];
-
+    
     NSMutableDictionary *branch_propDic = [NSMutableDictionary dictionaryWithDictionary:[self.propsArray objectAtIndex:1]];
     NSMutableArray *branch_propArray = [NSMutableArray arrayWithArray:[branch_propDic objectForKey:@"branch_id"]];
     [branch_propArray addObject:[NSNumber numberWithInt:[[self.branchQuestionDic objectForKey:@"id"] intValue]]];
@@ -1032,11 +1046,10 @@ static BOOL isCanUpLoad = NO;
                 if (self.appDel.isReachable == NO) {
                     [Utility errorAlert:@"暂无网络!"];
                 }else {
-                    MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.appDel.window];
-                    hud.dimBackground = NO;
-                    hud.labelText = @"正在上传做题结果，请稍后...";
-                    [hud showWhileExecuting:@selector(postAnswerJson) onTarget:self withObject:nil animated:YES];
-                    [self.appDel.window addSubview:hud];
+                    [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                    self.postInter = [[BasePostInterface alloc]init];
+                    self.postInter.delegate = self;
+                    [self.postInter postAnswerFileWith:[DataService sharedService].taskObj.taskStartDate];
                 }
             }else {
                 [self.homeControl dismissViewControllerAnimated:YES completion:nil];

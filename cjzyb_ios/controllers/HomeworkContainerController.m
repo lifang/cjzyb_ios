@@ -68,7 +68,7 @@
 //TODO:上传answer文件
 -(void)uploadAnswerJsonFileWithPath:(NSString*)answerPath withSuccess:(void (^)(NSString *success))success withFailure:(void (^)(NSString *error ))failure{
     MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    progress.labelText = @"正在上传做题结果，请稍后...";
+    progress.labelText = @"正在努力加载中...";
     self.successBlock = success;
     self.failureBlock = failure;
     NSString *path = @"";
@@ -81,8 +81,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"%@--%@--%@",[DataService sharedService].user.userId,[DataService sharedService].user.studentId,[DataService sharedService].theClass.classId);
-//    [DataService sharedService].isHistory = YES;
     //TODO:判断做题历史 or  做题
     if ([DataService sharedService].isHistory==YES) {
         self.timeImg.hidden=YES; self.timerLabel.hidden=YES;

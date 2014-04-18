@@ -38,7 +38,6 @@
         success(attri,1,nil);
         return;
     }
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [Utility shared].isOrg = NO;
         [Utility shared].orgArray  = [Utility handleTheString:senStr];  //原句
@@ -85,14 +84,12 @@
             success(spellAttribute,score,errorWordArr.count>0 ?errorWordArr:nil);
         });
     });
-
 }
 
 
 ///把读出的string拆分成metaphone数组,并与单例中的原句数组作比较
 +(NSArray*)spellMatchWord:(NSString*)spellString{
     NSMutableArray *spellsArr = [NSMutableArray array];
-
     [Utility shared].isOrg = YES;
     NSString *text = spellString;
     text =   [text stringByReplacingOccurrencesOfString:@"[_]|[\n]+|[ ]{2,}" withString:@" " options:NSRegularExpressionSearch  range:NSMakeRange(0, text.length)];
@@ -189,7 +186,6 @@
                 return NSOrderedSame;
             }
     }];
-    DLog(@"%@",spellsArr);
     return spellsArr;
 }
 
