@@ -197,7 +197,7 @@
 		187C4ACD18D304AC0006461D /* 10_08@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4AC318D304AC0006461D /* 10_08@2x.png */; };
 		187C4ACE18D304AC0006461D /* 10_09@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4AC418D304AC0006461D /* 10_09@2x.png */; };
 		187C4ACF18D304AC0006461D /* 10_10@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 187C4AC518D304AC0006461D /* 10_10@2x.png */; };
-		188D9A381900F31800E1D8A0 /* Metaphone2.m in Sources */ = {isa = PBXBuildFile; fileRef = 188D9A371900F31800E1D8A0 /* Metaphone2.m */; };
+		188D9A391900FBC700E1D8A0 /* Metaphone2.m in Sources */ = {isa = PBXBuildFile; fileRef = 188D9A371900F31800E1D8A0 /* Metaphone2.m */; };
 		189D1B7418BDB61900C22D72 /* LHLNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */; };
 		189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */; };
 		189D1B7B18BDBA6B00C22D72 /* LHLNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 189D1B7A18BDBA6B00C22D72 /* LHLNotificationCell.xib */; };
@@ -671,8 +671,8 @@
 		187C4AC318D304AC0006461D /* 10_08@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_08@2x.png"; sourceTree = "<group>"; };
 		187C4AC418D304AC0006461D /* 10_09@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_09@2x.png"; sourceTree = "<group>"; };
 		187C4AC518D304AC0006461D /* 10_10@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10_10@2x.png"; sourceTree = "<group>"; };
-		188D9A361900F31800E1D8A0 /* Metaphone2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Metaphone2.h; sourceTree = "<group>"; };
-		188D9A371900F31800E1D8A0 /* Metaphone2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Metaphone2.m; sourceTree = "<group>"; };
+		188D9A361900F31800E1D8A0 /* Metaphone2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Metaphone2.h; path = ../Metaphone2.h; sourceTree = "<group>"; };
+		188D9A371900F31800E1D8A0 /* Metaphone2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Metaphone2.m; path = ../Metaphone2.m; sourceTree = "<group>"; };
 		189D1B7118BDB61900C22D72 /* LHLNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationViewController.h; sourceTree = SOURCE_ROOT; };
 		189D1B7218BDB61900C22D72 /* LHLNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationViewController.m; sourceTree = SOURCE_ROOT; };
 		189D1B7318BDB61900C22D72 /* LHLNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -1345,15 +1345,6 @@
 			name = notification;
 			sourceTree = "<group>";
 		};
-		188D9A351900F30400E1D8A0 /* 新音标算法 */ = {
-			isa = PBXGroup;
-			children = (
-				188D9A361900F31800E1D8A0 /* Metaphone2.h */,
-				188D9A371900F31800E1D8A0 /* Metaphone2.m */,
-			);
-			name = "新音标算法";
-			sourceTree = "<group>";
-		};
 		18AA80B318BEE42C00EC08CE /* image */ = {
 			isa = PBXGroup;
 			children = (
@@ -1615,7 +1606,6 @@
 		632954C318BC879B00F2B78D /* thirtys */ = {
 			isa = PBXGroup;
 			children = (
-				188D9A351900F30400E1D8A0 /* 新音标算法 */,
 				1860054B18FE5F7B004F6F9B /* UIImageView+Addition.h */,
 				1860054A18FE5F7B004F6F9B /* UIImageView+Addition.m */,
 				18B3DD3018F3946E00F0F95C /* RecognizerFactory.h */,
@@ -2099,6 +2089,8 @@
 			children = (
 				63DD5C6D18C9B7860034512D /* double_metaphone.c */,
 				63DD5C6E18C9B7860034512D /* double_metaphone.h */,
+				188D9A361900F31800E1D8A0 /* Metaphone2.h */,
+				188D9A371900F31800E1D8A0 /* Metaphone2.m */,
 				63DD5C7018C9BB7B0034512D /* DRSentenceSpellMatch.h */,
 				63DD5C7118C9BB7B0034512D /* DRSentenceSpellMatch.m */,
 				63DD5C7318C9C2740034512D /* SpellMatchObj.h */,
@@ -2384,13 +2376,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				188D9A391900FBC700E1D8A0 /* Metaphone2.m in Sources */,
 				6329551118BC8AA700F2B78D /* ASIDataCompressor.m in Sources */,
 				18AA80C418BF1A3300EC08CE /* LHLReplyNotificationCell.m in Sources */,
 				0EAABD8818CF1F6300CD2DE7 /* TagInterface.m in Sources */,
 				0EAABD8B18CF22F700CD2DE7 /* TagViewFooter.m in Sources */,
 				6329556918BC900600F2B78D /* SDWebImagePrefetcher.m in Sources */,
 				6329556118BC900600F2B78D /* MKAnnotationView+WebCache.m in Sources */,
-				188D9A381900F31800E1D8A0 /* Metaphone2.m in Sources */,
 				6329552818BC8AA700F2B78D /* ASIS3Request.m in Sources */,
 				638C050618E52327009BFD40 /* RankingObject.m in Sources */,
 				63DD5C7918C9E9F60034512D /* ReadingTaskViewControllerView.m in Sources */,
@@ -2691,6 +2683,7 @@
 					armv7s,
 					armv7,
 				);
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.comdosoft.cjzyb";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sen Ye (FE46ZS29LM)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2714,7 +2707,7 @@
 					"$(SRCROOT)/cjzyb_ios/thirtys/lib",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				OTHER_LDFLAGS = "-fobjc-arc";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "C6BB01A8-B862-43B6-8243-09C1BFC0A74A";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -2730,6 +2723,7 @@
 					armv7s,
 					armv7,
 				);
+				CLANG_CXX_LIBRARY = "libstdc++";
 				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.comdosoft.cjzyb";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Sen Ye (63FVWL9TD6)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2752,7 +2746,7 @@
 					"$(SRCROOT)/cjzyb_ios/thirtys/iSpeech",
 					"$(SRCROOT)/cjzyb_ios/thirtys/lib",
 				);
-				OTHER_LDFLAGS = "-fobjc-arc";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "C6BB01A8-B862-43B6-8243-09C1BFC0A74A";
 				TARGETED_DEVICE_FAMILY = 2;

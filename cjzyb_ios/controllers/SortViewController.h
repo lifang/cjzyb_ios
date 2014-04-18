@@ -33,6 +33,7 @@
 @property (nonatomic, assign) NSInteger currentWordIndex;// 当前应该填字的位置：1 2 3 4
 @property (strong, nonatomic) NSMutableDictionary *maps;//标记第几个
 @property (nonatomic, strong) NSMutableArray *actionArray;//记录操作
+
 @property (nonatomic, assign) NSInteger isRestart;//判断是否可以重新开始
 
 @property (nonatomic, strong) UIButton *preBtn;

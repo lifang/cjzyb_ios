@@ -188,11 +188,10 @@ void DoubleMetaphone(const char *str, char **codes)
     int        last;
 
     current = 0;
-    /* we need the real length and last prior to padding */
     length  = strlen(str); 
     last    = length - 1; 
     original = NewMetaString(str);
-    /* Pad original so we can index beyond end */
+
     MetaphAdd(original, "     ");
 
     primary = NewMetaString("");
@@ -202,19 +201,16 @@ void DoubleMetaphone(const char *str, char **codes)
 
     MakeUpper(original);
 
-    /* skip these when at start of word */
     if (StringAt(original, 0, 2, "GN", "KN", "PN", "WR", "PS", ""))
 	current += 1;
 
-    /* Initial 'X' is pronounced 'Z' e.g. 'Xavier' */
     if (GetAt(original, 0) == 'X')
       {
-	  MetaphAdd(primary, "S");	/* 'Z' maps to 'S' */
+	  MetaphAdd(primary, "S");
 	  MetaphAdd(secondary, "S");
 	  current += 1;
       }
 
-    /* main loop */
     while ((primary->length < 4) || (secondary->length < 4))  
       {
 	  if (current >= length)
