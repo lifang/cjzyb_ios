@@ -17,7 +17,6 @@
         }
         return;
     }
-    
     NSString *senStr = [sentence stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *spellStr = [spellSentence stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if ([senStr isEqualToString:@""] || [spellStr isEqualToString:@""]) {
@@ -44,6 +43,7 @@
         [Utility shared].orgArray  = [Utility handleTheString:senStr];  //原句
         [Utility shared].metaphoneArray = [Utility metaphoneArray:[Utility shared].orgArray];
         NSArray *spellMatchRangeArr = [DRSentenceSpellMatch spellMatchWord:spellStr];
+        
         NSMutableAttributedString *spellAttribute = [[NSMutableAttributedString alloc] initWithString:senStr];
         [spellAttribute addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:35] range:NSMakeRange(0, spellAttribute.length)];
         
@@ -53,7 +53,7 @@
         NSRange leftRange = NSMakeRange(0, spellAttribute.length);
         while (YES) {
             NSRange findRange = [senStr rangeOfCharacterFromSet:[[NSCharacterSet letterCharacterSet] invertedSet] options:NSLiteralSearch range:leftRange];
-            if (findRange.length > 0) {
+            if (findRange.length > 0) {  //找到目标
                 if (findRange.location + findRange.length <= spellAttribute.length) {
                     [spellAttribute addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:findRange];
                 }
@@ -62,7 +62,6 @@
                 break;
             }
         }
-        
         int unMatch = 0;
         int matched = 0;
         NSMutableArray *errorWordArr = [NSMutableArray array];
@@ -80,12 +79,10 @@
             }
         }
         float score = (float)matched/(float)[Utility shared].orgArray.count;
-
         dispatch_async(dispatch_get_main_queue(), ^{
             success(spellAttribute,score,errorWordArr.count>0 ?errorWordArr:nil);
         });
     });
-
 }
 
 

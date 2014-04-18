@@ -9,7 +9,8 @@
 #import "Utility.h"
 #import <objc/runtime.h>
 #import <CommonCrypto/CommonDigest.h>
-#include "double_metaphone.h"
+//#include "double_metaphone.h"
+#include "Metaphone2.h"
 @interface Utility()
 @property (nonatomic,strong) UIAlertView *alert;
 @end
@@ -514,9 +515,8 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     if (!word) {
         return NULL;
     }
-     char *reslut = nil;
-    DoubleMetaphone([word UTF8String], &reslut);
-    return [NSString stringWithCString:reslut encoding:NSUTF8StringEncoding];
+    NSString *result = [Metaphone2 metaphone:[NSString stringWithString:word]];
+    return result;
 }
 
 ///把单词Array 转化成 metaphone码Array

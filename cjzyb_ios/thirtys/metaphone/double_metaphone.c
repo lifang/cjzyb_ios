@@ -21,7 +21,7 @@
 #endif
 
 
-metastring * NewMetaString(char *init_str)
+metastring * NewMetaString(const char *init_str)
 {
     metastring *s;
     char empty_string[] = "";
@@ -178,7 +178,7 @@ void MetaphAdd(metastring * s, char *new_str)
 }
 
 
-void DoubleMetaphone(char *str, char **codes)
+void DoubleMetaphone(const char *str, char **codes)
 {
     int        length;
     metastring *original;
