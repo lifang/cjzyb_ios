@@ -138,7 +138,8 @@
     [_iflyRecognizerView setParameter:@"language" value:@"en_us"];
     [_iflyRecognizerView setParameter:@"asr_ptt" value:@"0"];
     [_iflyRecognizerView setParameter:@"asr_audio_path" value:nil];
-    
+    [_iflyRecognizerView setParameter:@"vad_eos" value:@"800"];
+    [_iflyRecognizerView setParameter:@"vad_bos" value:@"1000"];
     //KVO,为播放按钮切换图片
     [self.readingButton addObserver:self forKeyPath:@"userInteractionEnabled" options:NSKeyValueObservingOptionNew context:nil];
     
