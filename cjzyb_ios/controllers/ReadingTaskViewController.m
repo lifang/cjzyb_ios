@@ -721,6 +721,9 @@
     [self updateFirstSentence];
     self.isFirst = NO;
     [self appearPrePlayControllerWithAnimation:YES];
+    [self.preReadingController startPreListeningHomeworkSentence:self.currentHomework withPlayFinished:^(BOOL isSuccess) {
+        
+    }];
 }
 #pragma mark --
 
