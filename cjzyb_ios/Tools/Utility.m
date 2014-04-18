@@ -498,11 +498,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     msg(@"无法连接服务器");
     return NO;
 }
-
-
-
 /////////////////////////////////////////下面都是单词匹配使用的
-
 + (Utility *)shared{
     static Utility *defaultUti = nil;
     static dispatch_once_t onceToken;
@@ -515,6 +511,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
     if (!word) {
         return NULL;
     }
+
     NSString *result = [Metaphone2 metaphone:[NSString stringWithString:word]];
     return result;
 }
