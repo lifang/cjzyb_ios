@@ -13,16 +13,16 @@
 #import "ParseQuestionJsonFileTool.h"
 #import "TenSecChallengeResultView.h"
 @class HomeworkContainerController;
-#import "iflyMSC/IFlySpeechRecognizer.h"
-#import "PopupView.h"
+#import "iflyMSC/IFlyRecognizerView.h"
+#import "iflyMSC/IFlyRecognizerViewDelegate.h"
+
 /** ReadingTaskViewController
  *
  * 朗读任务
  */
-@interface ReadingTaskViewController : UIViewController<AVAudioRecorderDelegate,AVAudioPlayerDelegate,UIAlertViewDelegate,TenSecChallengeResultViewDelegate,IFlySpeechRecognizerDelegate>
+@interface ReadingTaskViewController : UIViewController<AVAudioRecorderDelegate,AVAudioPlayerDelegate,UIAlertViewDelegate,TenSecChallengeResultViewDelegate,IFlyRecognizerViewDelegate>
 {
-    IFlySpeechRecognizer    * _iFlySpeechRecognizer;
-    PopupView               * _popUpView;
+    IFlyRecognizerView    * _iflyRecognizerView;
 }
 ///每道大题需要时间秒数（包含多个句子）
 @property (assign,nonatomic) int specifiedSecond;

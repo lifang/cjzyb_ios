@@ -16,7 +16,7 @@
 		return code;
 	}
 	
-	NSArray *vowels = [[NSArray alloc] initWithObjects:@"a",@"e",@"i",@"o",@"u",nil];
+//	NSArray *vowels = [[NSArray alloc] initWithObjects:@"a",@"e",@"i",@"o",@"u",nil];
 	
 	aWord = [aWord lowercaseString];
 	aWord = [aWord stringByFoldingWithOptions:NSDiacriticInsensitiveSearch locale:[NSLocale currentLocale]];
@@ -27,7 +27,7 @@
 		return code;
 	}
 	
-	NSString *firstChar = [aWord substringToIndex:1];
+//	NSString *firstChar = [aWord substringToIndex:1];
 	NSString *aWord2 = [aWord substringToIndex:1];
 	for (int idx = 0; idx < [aWord length]; ++idx) {
 		NSString *ch = [aWord substringWithRange:NSMakeRange(idx, 1)];

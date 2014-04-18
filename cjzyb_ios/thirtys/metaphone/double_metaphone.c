@@ -6,22 +6,31 @@
 #include <assert.h>
 #include "double_metaphone.h"
 
+/*
+* * If META_USE_PERL_MALLOC is defined we use Perl's memory routines.
+* */
 #ifdef META_USE_PERL_MALLOC
-#include "EXTERN.h"
-#include "perl.h"
+ 
+//#include "EXTERN.h"
+//#include "perl.h"
 #define META_MALLOC(v,n,t) New(1,v,n,t)
 #define META_REALLOC(v,n,t) Renew(v,n,t)
 #define META_FREE(x) Safefree((x))
+ 
 #else
+ 
 #define META_MALLOC(v,n,t) \
           (v = (t*)malloc(((n)*sizeof(t))))
 #define META_REALLOC(v,n,t) \
 	                  (v = (t*)realloc((v),((n)*sizeof(t))))
 #define META_FREE(x) free((x))
-#endif
+	 
+#endif /* META_USE_PERL_MALLOC */
+
 
 
 metastring * NewMetaString(const char *init_str)
+
 {
     metastring *s;
     char empty_string[] = "";
@@ -45,7 +54,8 @@ metastring * NewMetaString(const char *init_str)
 }
 
 
-void DestroyMetaString(metastring * s)
+void
+DestroyMetaString(metastring * s)
 {
     if (s == NULL)
 	return;
@@ -57,7 +67,8 @@ void DestroyMetaString(metastring * s)
 }
 
 
-void IncreaseBuffer(metastring * s, int chars_needed)
+void
+IncreaseBuffer(metastring * s, int chars_needed)
 {
     META_REALLOC(s->str, (s->bufsize + chars_needed + 10), char);
     assert( s->str != NULL );
@@ -65,7 +76,8 @@ void IncreaseBuffer(metastring * s, int chars_needed)
 }
 
 
-void MakeUpper(metastring * s)
+void
+MakeUpper(metastring * s)
 {
     char *i;
 
@@ -76,7 +88,8 @@ void MakeUpper(metastring * s)
 }
 
 
-int IsVowel(metastring * s, int pos)
+int
+IsVowel(metastring * s, int pos)
 {
     char c;
 
@@ -92,7 +105,8 @@ int IsVowel(metastring * s, int pos)
 }
 
 
-int SlavoGermanic(metastring * s)
+int
+SlavoGermanic(metastring * s)
 {
     if ((char *) strstr(s->str, "W"))
 	return 1;
@@ -107,13 +121,15 @@ int SlavoGermanic(metastring * s)
 }
 
 
-int GetLength(metastring * s)
+int
+GetLength(metastring * s)
 {
     return s->length;
 }
 
 
-char GetAt(metastring * s, int pos)
+char
+GetAt(metastring * s, int pos)
 {
     if ((pos < 0) || (pos >= s->length))
 	return '\0';
@@ -122,7 +138,8 @@ char GetAt(metastring * s, int pos)
 }
 
 
-void SetAt(metastring * s, int pos, char c)
+void
+SetAt(metastring * s, int pos, char c)
 {
     if ((pos < 0) || (pos >= s->length))
 	return;
@@ -134,7 +151,8 @@ void SetAt(metastring * s, int pos, char c)
 /* 
    Caveats: the START value is 0 based
 */
-int StringAt(metastring * s, int start, int length, ...)
+int
+StringAt(metastring * s, int start, int length, ...)
 {
     char *test;
     char *pos;
@@ -160,7 +178,8 @@ int StringAt(metastring * s, int start, int length, ...)
 }
 
 
-void MetaphAdd(metastring * s, char *new_str)
+void
+MetaphAdd(metastring * s, char *new_str)
 {
     int add_length;
 
@@ -179,6 +198,7 @@ void MetaphAdd(metastring * s, char *new_str)
 
 
 void DoubleMetaphone(const char *str, char **codes)
+
 {
     int        length;
     metastring *original;
@@ -188,10 +208,11 @@ void DoubleMetaphone(const char *str, char **codes)
     int        last;
 
     current = 0;
+    /* we need the real length and last prior to padding */
     length  = strlen(str); 
     last    = length - 1; 
     original = NewMetaString(str);
-
+    /* Pad original so we can index beyond end */
     MetaphAdd(original, "     ");
 
     primary = NewMetaString("");
@@ -201,16 +222,19 @@ void DoubleMetaphone(const char *str, char **codes)
 
     MakeUpper(original);
 
+    /* skip these when at start of word */
     if (StringAt(original, 0, 2, "GN", "KN", "PN", "WR", "PS", ""))
 	current += 1;
 
+    /* Initial 'X' is pronounced 'Z' e.g. 'Xavier' */
     if (GetAt(original, 0) == 'X')
       {
-	  MetaphAdd(primary, "S");
+	  MetaphAdd(primary, "S");	/* 'Z' maps to 'S' */
 	  MetaphAdd(secondary, "S");
 	  current += 1;
       }
 
+    /* main loop */
     while ((primary->length < 4) || (secondary->length < 4))  
       {
 	  if (current >= length)

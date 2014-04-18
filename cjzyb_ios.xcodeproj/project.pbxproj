@@ -108,6 +108,9 @@
 		0E9D68D918CDC28700EACFA3 /* MyPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D68D818CDC28700EACFA3 /* MyPageControl.m */; };
 		0E9D68DC18CDC45400EACFA3 /* card_highted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9D68DA18CDC45400EACFA3 /* card_highted@2x.png */; };
 		0E9D68DD18CDC45400EACFA3 /* card_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9D68DB18CDC45400EACFA3 /* card_normal@2x.png */; };
+		0E9E242719010B4E00969F6B /* mic_normal_358x358@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E242419010B4E00969F6B /* mic_normal_358x358@2x.png */; };
+		0E9E242819010B4E00969F6B /* mic_talk_358x358@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E242519010B4E00969F6B /* mic_talk_358x358@2x.png */; };
+		0E9E242919010B4E00969F6B /* wave70x117@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E242619010B4E00969F6B /* wave70x117@2x.png */; };
 		0EA5D94618FE5FFE009BAF03 /* UIImageView+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA5D94518FE5FFE009BAF03 /* UIImageView+Addition.m */; };
 		0EA8693C18FB7749008658B8 /* logo_detail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA8693B18FB7749008658B8 /* logo_detail@2x.png */; };
 		0EA8694118FB80CF008658B8 /* Icon_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA8693D18FB80CF008658B8 /* Icon_5.png */; };
@@ -207,7 +210,6 @@
 		18AA80C418BF1A3300EC08CE /* LHLReplyNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */; };
 		18B3DD2C18F3924500F0F95C /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B3DD2B18F3924500F0F95C /* iflyMSC.framework */; };
 		18B3DD2F18F3938600F0F95C /* PopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B3DD2D18F3938600F0F95C /* PopupView.m */; };
-		18B3DD3218F3946E00F0F95C /* RecognizerFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B3DD3118F3946E00F0F95C /* RecognizerFactory.m */; };
 		18CF139218E93B61001E3448 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92654E18BD9016003ADEC3 /* MainViewController.xib */; };
 		18CF139618E961CB001E3448 /* LHLNotificationContainerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CF139418E961CB001E3448 /* LHLNotificationContainerVC.m */; };
 		18CF139718E961CB001E3448 /* LHLNotificationContainerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18CF139518E961CB001E3448 /* LHLNotificationContainerVC.xib */; };
@@ -531,6 +533,9 @@
 		0E9D68D818CDC28700EACFA3 /* MyPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPageControl.m; sourceTree = "<group>"; };
 		0E9D68DA18CDC45400EACFA3 /* card_highted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "card_highted@2x.png"; sourceTree = "<group>"; };
 		0E9D68DB18CDC45400EACFA3 /* card_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "card_normal@2x.png"; sourceTree = "<group>"; };
+		0E9E242419010B4E00969F6B /* mic_normal_358x358@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mic_normal_358x358@2x.png"; sourceTree = "<group>"; };
+		0E9E242519010B4E00969F6B /* mic_talk_358x358@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mic_talk_358x358@2x.png"; sourceTree = "<group>"; };
+		0E9E242619010B4E00969F6B /* wave70x117@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "wave70x117@2x.png"; sourceTree = "<group>"; };
 		0EA5D94418FE5FFE009BAF03 /* UIImageView+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Addition.h"; sourceTree = "<group>"; };
 		0EA5D94518FE5FFE009BAF03 /* UIImageView+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Addition.m"; sourceTree = "<group>"; };
 		0EA8693B18FB7749008658B8 /* logo_detail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_detail@2x.png"; sourceTree = "<group>"; };
@@ -687,8 +692,6 @@
 		18B3DD2B18F3924500F0F95C /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iflyMSC.framework; sourceTree = "<group>"; };
 		18B3DD2D18F3938600F0F95C /* PopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupView.m; sourceTree = "<group>"; };
 		18B3DD2E18F3938600F0F95C /* PopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupView.h; sourceTree = "<group>"; };
-		18B3DD3018F3946E00F0F95C /* RecognizerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecognizerFactory.h; sourceTree = "<group>"; };
-		18B3DD3118F3946E00F0F95C /* RecognizerFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecognizerFactory.m; sourceTree = "<group>"; };
 		18CF139318E961CB001E3448 /* LHLNotificationContainerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationContainerVC.h; sourceTree = "<group>"; };
 		18CF139418E961CB001E3448 /* LHLNotificationContainerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationContainerVC.m; sourceTree = "<group>"; };
 		18CF139518E961CB001E3448 /* LHLNotificationContainerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationContainerVC.xib; sourceTree = "<group>"; };
@@ -1061,6 +1064,9 @@
 		0E92657218BDACCE003ADEC3 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0E9E242419010B4E00969F6B /* mic_normal_358x358@2x.png */,
+				0E9E242519010B4E00969F6B /* mic_talk_358x358@2x.png */,
+				0E9E242619010B4E00969F6B /* wave70x117@2x.png */,
 				0EA8695218FBB2DE008658B8 /* niuqi_yellow@2x.png */,
 				0EA8695018FBAFE3008658B8 /* niuqi@2x.png */,
 				0EA8694E18FBAD92008658B8 /* praised@2x.png */,
@@ -1608,8 +1614,6 @@
 			children = (
 				1860054B18FE5F7B004F6F9B /* UIImageView+Addition.h */,
 				1860054A18FE5F7B004F6F9B /* UIImageView+Addition.m */,
-				18B3DD3018F3946E00F0F95C /* RecognizerFactory.h */,
-				18B3DD3118F3946E00F0F95C /* RecognizerFactory.m */,
 				18B3DD2B18F3924500F0F95C /* iflyMSC.framework */,
 				182BEE4218E12F8100FC0AA0 /* ZipArchiever */,
 				0E660F1E18E0277D0074454C /* upLoadImage */,
@@ -2198,6 +2202,7 @@
 				63289A2D18C595D300C0083E /* reading_start@2x.png in Resources */,
 				0E96104618F92CAB004F222B /* left.png in Resources */,
 				187C4AC918D304AC0006461D /* 10_04@2x.png in Resources */,
+				0E9E242719010B4E00969F6B /* mic_normal_358x358@2x.png in Resources */,
 				18FAB37A18F4F84700C2AB83 /* homework_refresh@2x.png in Resources */,
 				0E0E801C18E912BF0022AC57 /* InfoPlist.strings in Resources */,
 				630DBDFE18D15AFB009DA0EB /* xunsu_yellow@2x.png in Resources */,
@@ -2234,6 +2239,7 @@
 				0E0E801E18E912BF0022AC57 /* first@2x.png in Resources */,
 				0E2B517C18DC27110056859D /* trueMusic.wav in Resources */,
 				630DBDF318D15A95009DA0EB /* youxiu@2x.png in Resources */,
+				0E9E242919010B4E00969F6B /* wave70x117@2x.png in Resources */,
 				182AF15E18F7D7F300EA5A7E /* FullText.xib in Resources */,
 				0E96100218F8F25B004F222B /* card_btn_active@2x.png in Resources */,
 				187C4ACB18D304AC0006461D /* 10_06@2x.png in Resources */,
@@ -2264,6 +2270,7 @@
 				6341536918C1C96C00DE4480 /* CalendarViewController.xib in Resources */,
 				63289A2518C594DB00C0083E /* ReadingTaskViewController.xib in Resources */,
 				630DBDEB18D15A95009DA0EB /* jinque@2x.png in Resources */,
+				0E9E242819010B4E00969F6B /* mic_talk_358x358@2x.png in Resources */,
 				630DBDF018D15A95009DA0EB /* user@2x.png in Resources */,
 				630DBE1C18D15CB1009DA0EB /* homework_left@2x.png in Resources */,
 				0E92656918BD92B0003ADEC3 /* ThirdViewController.xib in Resources */,
@@ -2532,7 +2539,6 @@
 				0E5E020718E16F0800E55DD0 /* TextViewController.m in Sources */,
 				0E9D68C118CD8CDF00EACFA3 /* CardInterface.m in Sources */,
 				0E92ECDF18D2B03600B6806C /* ClozeAnswerViewController.m in Sources */,
-				18B3DD3218F3946E00F0F95C /* RecognizerFactory.m in Sources */,
 				6329556A18BC900600F2B78D /* UIButton+WebCache.m in Sources */,
 				0E9265BF18C028A9003ADEC3 /* ComtomTxt.m in Sources */,
 				6329551518BC8AA700F2B78D /* ASIHTTPRequest.m in Sources */,

@@ -12,12 +12,11 @@
 #import <QuartzCore/QuartzCore.h>
 #import "HomeworkContainerController.h"
 #import "ParseAnswerJsonFileTool.h"
-//#import "ParseQuestionJsonFileTool.h"
-#import "RecognizerFactory.h"//语音
+
 #import "PreReadingTaskViewController.h"
 
-#import "SpellMatchObj.h"
 
+#define APPID @"533e6dc2"
 #define parentVC ((HomeworkContainerController *)[self parentViewController])
 #define minRecoginCount 4
 #define minRecoginLevel 0.5
@@ -129,9 +128,16 @@
     self.currentSentencePassed = NO;
     self.shouldUpload = NO;
     // 创建识别对象
-    _iFlySpeechRecognizer = [RecognizerFactory CreateRecognizer:self Domain:@"iat"];
-    _popUpView = [[PopupView alloc]initWithFrame:CGRectMake(100, 100, 0, 0)];
-    _popUpView.ParentView = self.view;
+    //初始化语音识别控件
+    NSString *initString = [NSString stringWithFormat:@"appid=%@",APPID];
+    _iflyRecognizerView = [[IFlyRecognizerView alloc] initWithCenter:self.view.center initParam:initString];
+    _iflyRecognizerView.delegate = self;
+    
+    [_iflyRecognizerView setParameter:@"domain" value:@"iat"];
+    [_iflyRecognizerView setParameter:@"asr_audio_path" value:@"asrview.pcm"];
+    [_iflyRecognizerView setParameter:@"language" value:@"en_us"];
+    [_iflyRecognizerView setParameter:@"asr_ptt" value:@"0"];
+    [_iflyRecognizerView setParameter:@"asr_audio_path" value:nil];
     
     //KVO,为播放按钮切换图片
     [self.readingButton addObserver:self forKeyPath:@"userInteractionEnabled" options:NSKeyValueObservingOptionNew context:nil];
@@ -527,12 +533,10 @@
 
 #pragma mark 界面过度动画代理
 -(void)animationDidStart:(CAAnimation *)anim{
-    NSLog(@"start aninatiom");
     [self.view setUserInteractionEnabled:NO];
 }
 
 -(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag{
-    NSLog(@"finished");
     [self.view setUserInteractionEnabled:YES];
 }
 #pragma mark --
@@ -592,13 +596,7 @@
         [parentVC startTimer];
     }
     
-    bool ret = [_iFlySpeechRecognizer startListening];
-    if (ret) {
-        [_popUpView setText: @"开始录音"];
-    }else {
-        [_popUpView setText: @"启动识别服务失败，请稍后重试"];//可能是上次请求未结束
-    }
-    [self.view addSubview:_popUpView];
+    [_iflyRecognizerView start];;
     
     self.isReading = YES;
     [self.readingButton setUserInteractionEnabled:NO];
@@ -840,11 +838,6 @@
         
     }
 }
--(void)viewWillDisappear:(BOOL)animated
-{
-    [_iFlySpeechRecognizer cancel];
-    [_iFlySpeechRecognizer setDelegate: nil];
-}
 
 #pragma mark --
 #pragma mark - KVO
@@ -860,94 +853,17 @@
 
 #pragma mark --
 #pragma mark - IFlySpeechRecognizerDelegate
-/**
- * @fn      onVolumeChanged
- * @brief   音量变化回调
- *
- * @param   volume      -[in] 录音的音量，音量范围1~100
- * @see
- */
-- (void) onVolumeChanged: (int)volume
-{
-    NSString * vol = [NSString stringWithFormat:@"音量：%d",volume];
-    [_popUpView setText: vol];
-    [self.view addSubview:_popUpView];
-}
-/**
- * @fn      onBeginOfSpeech
- * @brief   开始识别回调
- *
- * @see
- */
-- (void) onBeginOfSpeech
-{
-    [_popUpView setText: @"正在录音"];
-    [self.view addSubview:_popUpView];
-}
-/**
- * @fn      onEndOfSpeech
- * @brief   停止录音回调
- *
- * @see
- */
-- (void) onEndOfSpeech
-{
-    [_popUpView setText: @"停止录音"];
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"语音识别中";
-    [self.view addSubview:_popUpView];
-}
-/**
- * @fn      onError
- * @brief   识别结束回调
- *
- * @param   errorCode   -[out] 错误类，具体用法见IFlySpeechError
- */
-- (void) onError:(IFlySpeechError *) error
-{
-    
-    [self.readingButton setUserInteractionEnabled:YES];
-    NSString *text ;
-    if (error.errorCode ==0 ) {
-        text = @"识别成功";
-    }else {
-        text = [NSString stringWithFormat:@"发生错误：%d %@",error.errorCode,error.errorDesc];
-        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-    }
-    [_popUpView setText: text];
-    [self.view addSubview:_popUpView];
-}
 
-/**
- * @fn      onCancel
- * @brief   取消识别回调
- * 当调用了`cancel`函数之后，会回调此函数，在调用了cancel函数和回调onError之前会有一个短暂时间，您可以在此函数中实现对这段时间的界面显示。
- * @param
- * @see
- */
-- (void) onCancel
-{
-    NSLog(@"识别取消");
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-}
-/**
- * @fn      onResults
- * @brief   识别结果回调
- *
- * @param   result      -[out] 识别结果，NSArray的第一个元素为NSDictionary，NSDictionary的key为识别结果，value为置信度
- * @see
- */
-- (void) onResults:(NSArray *) results{
+- (void)onResult:(IFlyRecognizerView *)iFlyRecognizerView theResult:(NSArray *)resultArray{
     [parentVC stopTimer];
     NSMutableString *result = [[NSMutableString alloc] init];
-    NSDictionary *dic = [results objectAtIndex:0];
+    NSDictionary *dic = [resultArray objectAtIndex:0];
     for (NSString *key in dic) {
         [result appendFormat:@"%@",key];
     }
     NSLog(@"听写结果：%@",result);
     
-    [_iFlySpeechRecognizer stopListening];
-    [_iFlySpeechRecognizer cancel];
+    [_iflyRecognizerView cancel];
     
     [self.readingButton setUserInteractionEnabled:YES];
     [self.listeningButton setUserInteractionEnabled:YES];
@@ -1030,5 +946,8 @@
         [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
     }];
 }
-
+- (void)onEnd:(IFlyRecognizerView *)iFlyRecognizerView theError:(IFlySpeechError *)error
+{
+    [self.readingButton setUserInteractionEnabled:YES];
+}
 @end
