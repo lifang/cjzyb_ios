@@ -81,13 +81,13 @@
 
 //比较时间
 -(BOOL)compareTimeWithString:(NSString *)string {
-    
+    NSString *str = [Utility getNowDateFromatAnDate];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     [dateFormatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"Asia/Shanghai"]];
     NSDate *endDate = [dateFormatter dateFromString:string];
     
-    NSDate *nowDate = [NSDate date];
+    NSDate *nowDate = [dateFormatter dateFromString:str];
     
     NSCalendar *cal = [NSCalendar currentCalendar];
     unsigned int unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;

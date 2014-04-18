@@ -169,32 +169,31 @@
         NSArray *answerArray = [self.aCard.answer componentsSeparatedByString:@";||;"];
         self.cardFirst.rightLetterLab.text = [answerArray componentsJoinedByString:@"  "];
         
-        self.cardSecond.cardSecondTable = [[UITableView alloc]initWithFrame:CGRectMake(20, self.cardSecond.label_title.frame.origin.y+self.cardSecond.label_title.frame.size.height, 292, 212)];
-        self.cardSecond.cardSecondTable.separatorStyle = UITableViewCellSeparatorStyleNone;
-        self.cardSecond.cardSecondTable.backgroundColor = [UIColor clearColor];
-        self.cardSecond.cardSecondTable.userInteractionEnabled = NO;
-        self.cardSecond.cardSecondTable.delegate = self.cardSecond;
-        self.cardSecond.cardSecondTable.dataSource = self.cardSecond;
-        [self.cardSecond addSubview:self.cardSecond.cardSecondTable];
+//        self.cardSecond.cardSecondTable = [[UITableView alloc]initWithFrame:CGRectMake(20, self.cardSecond.label_title.frame.origin.y+self.cardSecond.label_title.frame.size.height, 292, 212)];
+//        self.cardSecond.cardSecondTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+//        self.cardSecond.cardSecondTable.backgroundColor = [UIColor clearColor];
+//        self.cardSecond.cardSecondTable.userInteractionEnabled = NO;
+//        self.cardSecond.cardSecondTable.delegate = self.cardSecond;
+//        self.cardSecond.cardSecondTable.dataSource = self.cardSecond;
+//        [self.cardSecond addSubview:self.cardSecond.cardSecondTable];
 
-        self.cardSecond.cardSecondArray = [self.aCard.options componentsSeparatedByString:@";||;"];
+//        self.cardSecond.cardSecondArray = [self.aCard.options componentsSeparatedByString:@";||;"];
         
-        NSMutableArray *indexArray = [[NSMutableArray alloc]init];
-        for (int i=0; i<answerArray.count; i++) {
-            NSString *str = [answerArray objectAtIndex:i];
-            if ([self.cardSecond.cardSecondArray containsObject:str]) {
-                NSString *index_str = [NSString stringWithFormat:@"%d",[self.cardSecond.cardSecondArray indexOfObject:str]];
-                [indexArray addObject:index_str];
-            }
-        }
-        
-        self.cardSecond.indexArray = indexArray;
-        [self.cardSecond.cardSecondTable reloadData];
+//        NSMutableArray *indexArray = [[NSMutableArray alloc]init];
+//        for (int i=0; i<answerArray.count; i++) {
+//            NSString *str = [answerArray objectAtIndex:i];
+//            if ([self.cardSecond.cardSecondArray containsObject:str]) {
+//                NSString *index_str = [NSString stringWithFormat:@"%d",[self.cardSecond.cardSecondArray indexOfObject:str]];
+//                [indexArray addObject:index_str];
+//            }
+//        }
+//        
+//        self.cardSecond.indexArray = indexArray;
+//        [self.cardSecond.cardSecondTable reloadData];
         [self.cardSecond.rtLab removeFromSuperview];
         
         NSRange range = [self.aCard.content rangeOfString:@"</file>"];
         if (range.location != NSNotFound && range.length!=NSNotFound) {
-            self.cardSecond.titleLab.hidden = YES;
             NSArray *array = [self.aCard.content componentsSeparatedByString:@"</file>"];
             NSString *title_sub  =[array objectAtIndex:0];
             NSString *title=[title_sub stringByReplacingOccurrencesOfString:@"<file>" withString:@""];
@@ -219,25 +218,57 @@
                 if (array.count>1) {
                     self.cardSecond.label_title = [self returnLabel];
                     CGSize size = [self getSizeWithString:[array objectAtIndex:1] withWidth:212];
-                    self.cardSecond.label_title.frame = CGRectMake(120, 10, 212, size.height);
+                    if (size.height>212) {
+                        self.cardSecond.showFullText.hidden = NO;
+                        self.cardSecond.fullText = [array objectAtIndex:1];
+                    }else {
+                        self.cardSecond.showFullText.hidden = YES;
+                        self.cardSecond.fullText = nil;
+                    }
+                    
+                    self.cardSecond.label_title.frame = CGRectMake(130, 50, 202, size.height);
                     self.cardSecond.label_title.text = [array objectAtIndex:1];
                     [self.cardSecond addSubview:self.cardSecond.label_title];
                 }
-                self.cardSecond.cardSecondTable.frame = CGRectMake(20, 110, 292, 212);
+//                self.cardSecond.cardSecondTable.frame = CGRectMake(20, 110, 292, 212);
             }else {
                 self.cardSecond.voiceBtn.hidden=NO;
-                self.cardSecond.cardSecondTable.frame = CGRectMake(20, 50, 292, 212);
+                if (array.count>1) {
+                    self.cardSecond.label_title = [self returnLabel];
+                    CGSize size = [self getSizeWithString:[array objectAtIndex:1] withWidth:212];
+                    if (size.height>212) {
+                        self.cardSecond.showFullText.hidden = NO;
+                        self.cardSecond.fullText = [array objectAtIndex:1];
+                    }else {
+                        self.cardSecond.showFullText.hidden = YES;
+                        self.cardSecond.fullText = nil;
+                    }
+                    
+                    self.cardSecond.label_title.frame = CGRectMake(20, 50, 212, size.height);
+                    self.cardSecond.label_title.text = [array objectAtIndex:1];
+                    [self.cardSecond addSubview:self.cardSecond.label_title];
+                }
+                
+//                self.cardSecond.cardSecondTable.frame = CGRectMake(20, self.cardSecond.label_title.frame.origin.y+self.cardSecond.label_title.frame.size.height, 292, 212);
             }
             
         }else {
             self.cardSecond.titleLab.hidden = NO;
             self.cardSecond.label_title = [self returnLabel];
             CGSize size = [self getSizeWithString:self.aCard.content withWidth:292];
+            if (size.height>212) {
+                self.cardSecond.showFullText.hidden = NO;
+                self.cardSecond.fullText = self.aCard.content;
+            }else {
+                self.cardSecond.showFullText.hidden = YES;
+                self.cardSecond.fullText = nil;
+            }
+            
             self.cardSecond.label_title.frame = CGRectMake(20, 50, 292, size.height);
             self.cardSecond.label_title.text = self.aCard.content;
             [self.cardSecond addSubview:self.cardSecond.label_title];
             
-            self.cardSecond.cardSecondTable.frame = CGRectMake(20, self.cardSecond.label_title.frame.origin.y+self.cardSecond.label_title.frame.size.height, 292, 212);
+//            self.cardSecond.cardSecondTable.frame = CGRectMake(20, self.cardSecond.label_title.frame.origin.y+self.cardSecond.label_title.frame.size.height, 292, 212);
         }
         
     }else if (type==4) {//连线
@@ -361,7 +392,7 @@
 
 }
 -(UIImageView *)returnImageView {
-    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 10, 100, 100)];
+    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 50, 100, 100)];
     imgView.backgroundColor = [UIColor clearColor];
     return imgView;
 }

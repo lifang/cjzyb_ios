@@ -328,7 +328,7 @@ static BOOL isCanUpLoad = NO;
     for (int i=0; i<self.answerArray.count; i++) {
         UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:i+UnderLab_tag];
         if (label.text.length==0) {
-            str = @"请填写完整!";
+            str = @"请先填写您的答案～";
             break;
         }
     }

@@ -16,7 +16,7 @@
 -(void)pressedShowFullText:(NSString *)fullText andBtn:(UIButton *)btn;
 @end
 
-@interface CardSecondView : UIControl<UITableViewDataSource,UITableViewDelegate>
+@interface CardSecondView : UIControl
 
 @property (nonatomic, assign) id<CardSecondViewDelegate>delegate;
 
@@ -32,7 +32,7 @@
 @property (nonatomic, strong) UIImageView *imgView;
 
 @property (nonatomic, strong) UILabel *label_title;
-@property (nonatomic, strong) UITableView *cardSecondTable;
-@property (nonatomic, strong) NSArray *cardSecondArray;
-@property (nonatomic, strong) NSArray *indexArray;
+//@property (nonatomic, strong) UITableView *cardSecondTable;
+//@property (nonatomic, strong) NSArray *cardSecondArray;
+//@property (nonatomic, strong) NSArray *indexArray;
 @end

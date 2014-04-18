@@ -645,7 +645,7 @@ static BOOL isCanUpLoad = NO;
         [anserString appendFormat:@"%@ ",text];
     
         if (text.length<=0) {
-            str = @"请填写完整!";
+            str = @"请先填写您的答案～";
             anserString = [NSMutableString string];
             break;
         }
