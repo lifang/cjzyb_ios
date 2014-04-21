@@ -139,7 +139,7 @@
     [_iflyRecognizerView setParameter:@"asr_ptt" value:@"0"];
     [_iflyRecognizerView setParameter:@"asr_audio_path" value:nil];
     [_iflyRecognizerView setParameter:@"vad_eos" value:@"800"];
-    [_iflyRecognizerView setParameter:@"vad_bos" value:@"1000"];
+    [_iflyRecognizerView setParameter:@"vad_bos" value:@"1500"];
     //KVO,为播放按钮切换图片
     [self.readingButton addObserver:self forKeyPath:@"userInteractionEnabled" options:NSKeyValueObservingOptionNew context:nil];
     
@@ -868,7 +868,6 @@
     
     [self.readingButton setUserInteractionEnabled:YES];
     [self.listeningButton setUserInteractionEnabled:YES];
-    [parentVC stopTimer];
     self.readingCount++;
     TaskObj *task = [DataService sharedService].taskObj;
     NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
