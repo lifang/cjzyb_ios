@@ -9,6 +9,7 @@
 #import "Utility.h"
 #import <objc/runtime.h>
 #import <CommonCrypto/CommonDigest.h>
+#import "LHLDoubleMetaphone.h"
 //#include "double_metaphone.h"
 #include "Metaphone2.h"
 @interface Utility()
@@ -512,7 +513,8 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         return NULL;
     }
 
-    NSString *result = [Metaphone2 metaphone:[NSString stringWithString:word]];
+//    NSString *result = [Metaphone2 metaphone:[NSString stringWithString:word]];
+    NSString *result = [[LHLDoubleMetaphone doubleMetaphone:word] firstObject];
     return result;
 }
 

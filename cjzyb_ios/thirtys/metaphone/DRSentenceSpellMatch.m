@@ -31,13 +31,13 @@
         return;
     }
     
-    if ([senStr isEqualToString:spellStr]) {
-        NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:senStr];
-        [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:35] range:NSMakeRange(0, attri.length)];
-        [attri addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:NSMakeRange(0, attri.length)];
-        success(attri,1,nil,@[senStr]);
-        return;
-    }
+//    if ([senStr isEqualToString:spellStr]) {
+//        NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:senStr];
+//        [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:35] range:NSMakeRange(0, attri.length)];
+//        [attri addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:NSMakeRange(0, attri.length)];
+//        success(attri,1,nil,@[senStr]);
+//        return;
+//    }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [Utility shared].isOrg = NO;
         [Utility shared].orgArray  = [Utility handleTheString:senStr];  //原句

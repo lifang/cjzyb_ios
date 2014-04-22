@@ -205,6 +205,7 @@
 		18AA80B818BEFFFD00EC08CE /* bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 18AA80B718BEFFFD00EC08CE /* bg@2x.png */; };
 		18AA80BD18BF04E800EC08CE /* LHLNotificationHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */; };
 		18AA80C418BF1A3300EC08CE /* LHLReplyNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */; };
+		18AAB75C19068114003FD195 /* LHLDoubleMetaphone.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AAB75B19068114003FD195 /* LHLDoubleMetaphone.m */; };
 		18B3DD2C18F3924500F0F95C /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B3DD2B18F3924500F0F95C /* iflyMSC.framework */; };
 		18B3DD2F18F3938600F0F95C /* PopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B3DD2D18F3938600F0F95C /* PopupView.m */; };
 		18CF139218E93B61001E3448 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92654E18BD9016003ADEC3 /* MainViewController.xib */; };
@@ -682,6 +683,8 @@
 		18AA80BC18BF04E800EC08CE /* LHLNotificationHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationHeader.m; sourceTree = SOURCE_ROOT; };
 		18AA80C218BF1A3300EC08CE /* LHLReplyNotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLReplyNotificationCell.h; sourceTree = SOURCE_ROOT; };
 		18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLReplyNotificationCell.m; sourceTree = SOURCE_ROOT; };
+		18AAB75A19068114003FD195 /* LHLDoubleMetaphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLDoubleMetaphone.h; sourceTree = "<group>"; };
+		18AAB75B19068114003FD195 /* LHLDoubleMetaphone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLDoubleMetaphone.m; sourceTree = "<group>"; };
 		18B3DD2B18F3924500F0F95C /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iflyMSC.framework; sourceTree = "<group>"; };
 		18B3DD2D18F3938600F0F95C /* PopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupView.m; sourceTree = "<group>"; };
 		18B3DD2E18F3938600F0F95C /* PopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupView.h; sourceTree = "<group>"; };
@@ -2081,6 +2084,8 @@
 			children = (
 				188D9A361900F31800E1D8A0 /* Metaphone2.h */,
 				188D9A371900F31800E1D8A0 /* Metaphone2.m */,
+				18AAB75A19068114003FD195 /* LHLDoubleMetaphone.h */,
+				18AAB75B19068114003FD195 /* LHLDoubleMetaphone.m */,
 				63DD5C7018C9BB7B0034512D /* DRSentenceSpellMatch.h */,
 				63DD5C7118C9BB7B0034512D /* DRSentenceSpellMatch.m */,
 				63DD5C7318C9C2740034512D /* SpellMatchObj.h */,
@@ -2425,6 +2430,7 @@
 				0EEF4C1C18C562900058606A /* ReplyMessageObject.m in Sources */,
 				63D8723E18DFFF57006D94E5 /* ParseAnswerJsonFileTool.m in Sources */,
 				63CBCC1B18D2FA90006F7C3D /* UserObjDaoInterface.m in Sources */,
+				18AAB75C19068114003FD195 /* LHLDoubleMetaphone.m in Sources */,
 				0EEF4BCF18C561300058606A /* DataService.m in Sources */,
 				0EA5D94618FE5FFE009BAF03 /* UIImageView+Addition.m in Sources */,
 				182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */,
@@ -2697,7 +2703,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "C6BB01A8-B862-43B6-8243-09C1BFC0A74A";
+				PROVISIONING_PROFILE = "37802699-AB6B-4EFD-B0D4-A6DE8B8A2864";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
@@ -2736,7 +2742,7 @@
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "C6BB01A8-B862-43B6-8243-09C1BFC0A74A";
+				PROVISIONING_PROFILE = "37802699-AB6B-4EFD-B0D4-A6DE8B8A2864";
 				TARGETED_DEVICE_FAMILY = 2;
 				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
