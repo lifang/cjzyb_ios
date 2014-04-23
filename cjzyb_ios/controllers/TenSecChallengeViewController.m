@@ -497,7 +497,7 @@
         self.lowerOptionLabel.text = currentQuestion.tenAnswerTwo;
         [self handleLabelFont:self.lowerOptionLabel withBeginningSize:80.];
         self.questionLabel.text = currentQuestion.tenQuestionContent;
-        [self handleLabelFont:self.questionLabel withBeginningSize:38.];
+//        [self handleLabelFont:self.questionLabel withBeginningSize:38.];
         
         //显示历史数据
         if (self.isViewingHistory) {

@@ -495,25 +495,25 @@
     [self.view setHidden:NO];
     dispatch_async(dispatch_get_main_queue(), ^{
         switch (self.selectingType) {
-            case SelectingTypeDefault:
+            case SelectingTypeDefault: //无图无语音
             {
                 self.questionImageView.hidden = YES;
                 self.questionPlayButton.hidden = YES;
                 self.questionTextView.hidden = NO;
                 
-                CGSize size = [Utility getTextSizeWithString:self.currentQuestion.seContent ? :@"" withFont:[UIFont systemFontOfSize:44.] withWidth:675];
+                CGSize size = [Utility getTextSizeWithString:self.currentQuestion.seContent ? :@"" withFont:[UIFont systemFontOfSize:44.] withWidth:685];
                 CGFloat contentHeight = size.height;
                 contentHeight = contentHeight < 50 ? 50 : contentHeight;
                 contentHeight = contentHeight > 260 ? 260 : contentHeight;
-                self.questionTextView.frame = (CGRect){38,17,680,contentHeight + 10};
+                self.questionTextView.frame = (CGRect){38,17,693,contentHeight + 10};
                 
-                self.optionTable.frame = (CGRect){38,CGRectGetMaxY(self.questionTextView.frame) + 15,650,874 - (CGRectGetMaxY(self.questionTextView.frame) + 15) - (self.isViewingHistory ? 155 : 0)};
+                self.optionTable.frame = (CGRect){59,CGRectGetMaxY(self.questionTextView.frame) + 15,650,874 - (CGRectGetMaxY(self.questionTextView.frame) + 15) - (self.isViewingHistory ? 155 : 0)};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
             }
                 break;
                 
-            case SelectingTypeListening:
+            case SelectingTypeListening:  //语音
             {
                 self.questionImageView.hidden = YES;
                 self.questionPlayButton.hidden = NO;
@@ -521,28 +521,32 @@
                 
                 self.questionPlayButton.frame = (CGRect){38,17,65,65};
                 
-                CGSize size = [Utility getTextSizeWithString:self.currentQuestion.seContent ? :@"" withFont:[UIFont systemFontOfSize:44.] withWidth:600];
+                CGSize size = [Utility getTextSizeWithString:self.currentQuestion.seContent ? :@"" withFont:[UIFont systemFontOfSize:44.] withWidth:540];
                 CGFloat contentHeight = size.height;
                 contentHeight = contentHeight < 50 ? 50 : contentHeight;
                 contentHeight = contentHeight > 260 ? 260 : contentHeight;
-                self.questionTextView.frame = (CGRect){120,17,600,contentHeight + 10};
+                self.questionTextView.frame = (CGRect){111,17,547,contentHeight + 10};
                 
-                self.optionTable.frame = (CGRect){38,CGRectGetMaxY(self.questionTextView.frame) + 15,570,874 - (CGRectGetMaxY(self.questionTextView.frame) + 15) - (self.isViewingHistory ? 155 : 0)};
+                self.optionTable.frame = (CGRect){59,CGRectGetMaxY(self.questionTextView.frame) + 15,650,874 - (CGRectGetMaxY(self.questionTextView.frame) + 15) - (self.isViewingHistory ? 155 : 0)};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
             }
                 break;
                 
-            case SelectingTypeWatching:
+            case SelectingTypeWatching:  //图片
             {
                 self.questionImageView.hidden = NO;
                 self.questionPlayButton.hidden = YES;
                 self.questionTextView.hidden = NO;
                 
-                self.questionImageView.frame = (CGRect){38,17,250,265};
+                CGSize size = [Utility getTextSizeWithString:self.currentQuestion.seContent ? :@"" withFont:[UIFont systemFontOfSize:44.] withWidth:685];
+                CGFloat contentHeight = size.height;
+                contentHeight = contentHeight < 50 ? 50 : contentHeight;
+                contentHeight = contentHeight > 250 ? 250 : contentHeight;
+                self.questionTextView.frame = (CGRect){38,17,693,contentHeight + 10};
+                self.questionImageView.frame = (CGRect){259,CGRectGetMaxY(self.questionTextView.frame) + 15,250,255};
                 [self.questionImageView addDetailShow];
-                self.questionTextView.frame = (CGRect){290,17,430,265};
-                self.optionTable.frame = (CGRect){38,317,650,874 - 317 - (self.isViewingHistory ? 155 : 0)};
+                self.optionTable.frame = (CGRect){59,CGRectGetMaxY(self.questionImageView.frame) + 15,650,874 - (CGRectGetMaxY(self.questionImageView.frame) + 15) - (self.isViewingHistory ? 155 : 0)};
                 
                 self.questionTextView.text = self.currentQuestion.seContent;
                 NSString *path = [[DataService sharedService].taskObj.taskFolderPath stringByAppendingPathComponent:self.currentQuestion.seContentAttachment];
