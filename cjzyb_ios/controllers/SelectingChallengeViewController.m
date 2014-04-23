@@ -67,9 +67,6 @@
     
     [self.optionTable registerClass:[SelectingChallengeOptionCell class] forCellReuseIdentifier:@"cell"];
     
-    [self.questionPlayButton setImage:[UIImage imageNamed:@"listening_start.png"] forState:UIControlStateDisabled];
-    [self.questionPlayButton setImage:[UIImage imageNamed:@"listening_stop.png"] forState:UIControlStateDisabled];
-    
     self.shouldUploadJSON = NO;
     self.haveUploadedJSON = NO;
     self.isReDoingChallenge = NO;
@@ -753,7 +750,8 @@
     [AppDelegate shareIntance].avPlayer.volume = 1;
     if([[AppDelegate shareIntance].avPlayer prepareToPlay]){
         [[AppDelegate shareIntance].avPlayer play];
-        self.questionPlayButton.enabled = NO;
+        [self.questionPlayButton setUserInteractionEnabled:NO];
+        [self.questionPlayButton setImage:[UIImage imageNamed:@"listening_start.png"] forState:UIControlStateNormal];
     }
 }
 
@@ -962,9 +960,18 @@
 
 #pragma mark AVAudioPlayerDelegate
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
-    if (flag) {
-        self.questionPlayButton.enabled = YES;
-    }
+    [self.questionPlayButton setUserInteractionEnabled:YES];
+    [self.questionPlayButton setImage:[UIImage imageNamed:@"listening_stop.png"] forState:UIControlStateNormal];
+}
+
+- (void)audioPlayerDecodeErrorDidOccur:(AVAudioPlayer *)player error:(NSError *)error{
+    [self.questionPlayButton setUserInteractionEnabled:YES];
+    [self.questionPlayButton setImage:[UIImage imageNamed:@"listening_stop.png"] forState:UIControlStateNormal];
+}
+
+- (void)audioPlayerBeginInterruption:(AVAudioPlayer *)player{
+    [self.questionPlayButton setUserInteractionEnabled:YES];
+    [self.questionPlayButton setImage:[UIImage imageNamed:@"listening_stop.png"] forState:UIControlStateNormal];
 }
 
 #pragma mark AlertViewDelegate
