@@ -286,9 +286,9 @@
     
     CGRect rectangle = CGRectMake(0,0,self.frame.size.width,kVRGCalendarViewTopBarHeight);
     CGContextAddRect(context, rectangle);
-    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
+    CGContextSetFillColorWithColor(context, [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0].CGColor);
     CGContextFillPath(context);
-    
+
     //Arrows
     int arrowSize = 12;
     int xmargin = 20;
@@ -302,7 +302,7 @@
     CGContextAddLineToPoint(context,xmargin+arrowSize/1.5, ymargin);
     
     CGContextSetFillColorWithColor(context, 
-                                   [UIColor blackColor].CGColor);
+                                   [UIColor whiteColor].CGColor);
     CGContextFillPath(context);
     
     //Arrow right
@@ -313,22 +313,21 @@
     CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5), ymargin);
     
     CGContextSetFillColorWithColor(context, 
-                                   [UIColor blackColor].CGColor);
+                                   [UIColor whiteColor].CGColor);
     CGContextFillPath(context);
     
     //Weekdays
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat=@"EEE";
-    //always assume gregorian with monday first
     NSMutableArray *weekdays = [[NSMutableArray alloc] initWithArray:[dateFormatter shortWeekdaySymbols]];
     [weekdays moveObjectFromIndex:0 toIndex:6];
     
     CGContextSetFillColorWithColor(context, 
-                                   [UIColor colorWithHexString:@"0x383838"].CGColor);
+                                   [UIColor whiteColor].CGColor);
     for (int i =0; i<[weekdays count]; i++) {
         NSString *weekdayValue = (NSString *)[weekdays objectAtIndex:i];
         UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:18];
-        [weekdayValue drawInRect:CGRectMake(i*(kVRGCalendarViewDayWidth+2), 40, kVRGCalendarViewDayWidth+2, 20) withFont:font lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentCenter];
+        [weekdayValue drawInRect:CGRectMake(i*(kVRGCalendarViewDayWidth+2), 50, kVRGCalendarViewDayWidth+2, 20) withFont:font lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentCenter];
     }
     
     int numRows = [self numRows];
@@ -340,7 +339,6 @@
     CGRect rectangleGrid = CGRectMake(0,kVRGCalendarViewTopBarHeight,self.frame.size.width,gridHeight);
     CGContextAddRect(context, rectangleGrid);
     CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:@"0xf3f3f3"].CGColor);
-    //CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:@"0xff0000"].CGColor);
     CGContextFillPath(context);
     
     //Grid white lines
@@ -385,19 +383,17 @@
     //Draw days
     CGContextSetFillColorWithColor(context, 
                                    [UIColor colorWithHexString:@"0x383838"].CGColor);
-    
-    
-    //NSLog(@"currentMonth month = %i, first weekday in month = %i",[self.currentMonth month],[self.currentMonth firstWeekDayInMonth]);
-    
+
     int numBlocks = numRows*7;
     NSDate *previousMonth = [self.currentMonth offsetMonth:-1];
     int currentMonthNumDays = [currentMonth numDaysInMonth];
     int prevMonthNumDays = [previousMonth numDaysInMonth];
     
+    NSDate *nextMonth = [self.currentMonth offsetMonth:1];
+    
     int selectedDateBlock = ([selectedDate day]-1)+firstWeekDay;
     
     //prepAnimationPreviousMonth nog wat mee doen
-    
     //prev next month
     BOOL isSelectedDatePreviousMonth = prepAnimationPreviousMonth;
     BOOL isSelectedDateNextMonth = prepAnimationNextMonth;
@@ -417,40 +413,83 @@
         selectedDateBlock = [currentMonth numDaysInMonth] + (firstWeekDay-1) + [selectedDate day];
     }
     
-    
     NSDate *todayDate = [NSDate date];
     int todayBlock = -1;
-    
-//    NSLog(@"currentMonth month = %i day = %i, todaydate day = %i",[currentMonth month],[currentMonth day],[todayDate month]);
     
     if ([todayDate month] == [currentMonth month] && [todayDate year] == [currentMonth year]) {
         todayBlock = [todayDate day] + firstWeekDay - 1;
     }
     
+    NSDateFormatter *dateFormatterString = [[NSDateFormatter alloc] init];
+    dateFormatterString.dateFormat = @"yyyy-MM-dd";
+    [dateFormatterString setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"Asia/Shanghai"]];
+   
     for (int i=0; i<numBlocks; i++) {
         int targetDate = i;
         int targetColumn = i%7;
         int targetRow = i/7;
-        int targetX = targetColumn * (kVRGCalendarViewDayWidth+2);
-        int targetY = kVRGCalendarViewTopBarHeight + targetRow * (kVRGCalendarViewDayHeight+2);
+        int targetX = targetColumn * (kVRGCalendarViewDayWidth+2)-2;
+        int targetY = kVRGCalendarViewTopBarHeight + targetRow * (kVRGCalendarViewDayHeight+2)+12;
         
+        NSString *dateString;
         // BOOL isCurrentMonth = NO;
+        BOOL isToDrawYuan = NO;
         if (i<firstWeekDay) { //previous month
             targetDate = (prevMonthNumDays-firstWeekDay)+(i+1);
-            NSString *hex = (isSelectedDatePreviousMonth) ? @"0x383838" : @"aaaaaa";
             
-            CGContextSetFillColorWithColor(context, 
+            dateString = [NSString stringWithFormat:@"%d-%d-%d",[currentMonth year],[previousMonth month],targetDate];
+            NSDate *endDate = [dateFormatterString dateFromString:dateString];
+            dateString = [dateFormatterString stringFromDate:endDate];
+            NSPredicate *predicateString = [NSPredicate predicateWithFormat:@"%K contains[cd] %@", @"taskStartDate", dateString];
+            NSMutableArray  *filteredArray = [NSMutableArray arrayWithArray:[[DataService sharedService].historyTaskArray filteredArrayUsingPredicate:predicateString]];
+            if (filteredArray.count>0) {//标记
+                isToDrawYuan = YES;
+                CGContextSetLineWidth(context, 0);//线的宽度
+                UIColor*aColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+                CGContextSetFillColorWithColor(context, aColor.CGColor);//填充颜色
+                CGContextAddArc(context, targetX+kVRGCalendarViewDayWidth-10, targetY, 5, 0, 2*M_PI, 0); //添加一个圆
+                CGContextDrawPath(context, kCGPathFillStroke);//绘制填充
+            }
+            NSString *hex = (isSelectedDatePreviousMonth) ? @"0x383838" : @"aaaaaa";
+            CGContextSetFillColorWithColor(context,
                                            [UIColor colorWithHexString:hex].CGColor);
+            
         } else if (i>=(firstWeekDay+currentMonthNumDays)) { //next month
             targetDate = (i+1) - (firstWeekDay+currentMonthNumDays);
+            dateString = [NSString stringWithFormat:@"%d-%d-%d",[currentMonth year],[nextMonth month],targetDate];
+            NSDate *endDate = [dateFormatterString dateFromString:dateString];
+            dateString = [dateFormatterString stringFromDate:endDate];
+            NSPredicate *predicateString = [NSPredicate predicateWithFormat:@"%K contains[cd] %@", @"taskStartDate", dateString];
+            NSMutableArray  *filteredArray = [NSMutableArray arrayWithArray:[[DataService sharedService].historyTaskArray filteredArrayUsingPredicate:predicateString]];
+            if (filteredArray.count>0) {//标记
+                isToDrawYuan = YES;
+                CGContextSetLineWidth(context, 0);//线的宽度
+                UIColor*aColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+                CGContextSetFillColorWithColor(context, aColor.CGColor);//填充颜色
+                CGContextAddArc(context, targetX+kVRGCalendarViewDayWidth-10, targetY, 5, 0, 2*M_PI, 0); //添加一个圆
+                CGContextDrawPath(context, kCGPathFillStroke);//绘制填充
+            }
             NSString *hex = (isSelectedDateNextMonth) ? @"0x383838" : @"aaaaaa";
-            CGContextSetFillColorWithColor(context, 
+            CGContextSetFillColorWithColor(context,
                                            [UIColor colorWithHexString:hex].CGColor);
         } else { //current month
             // isCurrentMonth = YES;
             targetDate = (i-firstWeekDay)+1;
+            dateString = [NSString stringWithFormat:@"%d-%d-%d",[currentMonth year],[currentMonth month],targetDate];
+            NSDate *endDate = [dateFormatterString dateFromString:dateString];
+            dateString = [dateFormatterString stringFromDate:endDate];
+            NSPredicate *predicateString = [NSPredicate predicateWithFormat:@"%K contains[cd] %@", @"taskStartDate", dateString];
+            NSMutableArray  *filteredArray = [NSMutableArray arrayWithArray:[[DataService sharedService].historyTaskArray filteredArrayUsingPredicate:predicateString]];
+            if (filteredArray.count>0) {//标记
+                isToDrawYuan = YES;
+                CGContextSetLineWidth(context, 0);//线的宽度
+                UIColor*aColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+                CGContextSetFillColorWithColor(context, aColor.CGColor);//填充颜色
+                CGContextAddArc(context, targetX+kVRGCalendarViewDayWidth-10, targetY, 5, 0, 2*M_PI, 0); //添加一个圆
+                CGContextDrawPath(context, kCGPathFillStroke);//绘制填充
+            }
             NSString *hex = (isSelectedDatePreviousMonth || isSelectedDateNextMonth) ? @"0xaaaaaa" : @"0x383838";
-            CGContextSetFillColorWithColor(context, 
+            CGContextSetFillColorWithColor(context,
                                            [UIColor colorWithHexString:hex].CGColor);
         }
         
@@ -458,18 +497,18 @@
         
         //draw selected date
         if (selectedDate && i==selectedDateBlock) {
-            CGRect rectangleGrid = CGRectMake(targetX,targetY,kVRGCalendarViewDayWidth+2,kVRGCalendarViewDayHeight+2);
+            CGRect rectangleGrid = CGRectMake(targetX+2,targetY-12,kVRGCalendarViewDayWidth+2,kVRGCalendarViewDayHeight+2);
             CGContextAddRect(context, rectangleGrid);
-            CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:@"0x006dbc"].CGColor);
+            CGContextSetFillColorWithColor(context, [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0].CGColor);
             CGContextFillPath(context);
             
-            CGContextSetFillColorWithColor(context, 
-                                           [UIColor whiteColor].CGColor);
-        } else if (todayBlock==i) {
-            CGRect rectangleGrid = CGRectMake(targetX,targetY,kVRGCalendarViewDayWidth+2,kVRGCalendarViewDayHeight+2);
-            CGContextAddRect(context, rectangleGrid);
-            CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:@"0x383838"].CGColor);
-            CGContextFillPath(context);
+            if (isToDrawYuan == YES) {
+                CGContextSetLineWidth(context, 0);//线的宽度
+                UIColor*aColor = [UIColor whiteColor];
+                CGContextSetFillColorWithColor(context, aColor.CGColor);//填充颜色
+                CGContextAddArc(context, targetX+kVRGCalendarViewDayWidth-10, targetY, 5, 0, 2*M_PI, 0); //添加一个圆
+                CGContextDrawPath(context, kCGPathFillStroke);//绘制填充
+            }
             
             CGContextSetFillColorWithColor(context, 
                                            [UIColor whiteColor].CGColor);
@@ -539,7 +578,7 @@
 
 #pragma mark - Init
 -(id)init {
-    self = [super initWithFrame:CGRectMake(0, 0, kVRGCalendarViewWidth, 0)];
+    self = [super initWithFrame:CGRectMake(0, 10, kVRGCalendarViewWidth, 0)];
     if (self) {
         self.contentMode = UIViewContentModeTop;
         self.clipsToBounds=YES;
@@ -547,13 +586,13 @@
         isAnimating=NO;
         self.labelCurrentMonth = [[UILabel alloc] initWithFrame:CGRectMake(34, 0, kVRGCalendarViewWidth-68, 40)];
         [self addSubview:labelCurrentMonth];
-        labelCurrentMonth.backgroundColor=[UIColor whiteColor];
+        labelCurrentMonth.backgroundColor=[UIColor clearColor];
         labelCurrentMonth.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:22];
-        labelCurrentMonth.textColor = [UIColor colorWithHexString:@"0x383838"];
+        labelCurrentMonth.textColor = [UIColor whiteColor];
         labelCurrentMonth.textAlignment = NSTextAlignmentCenter;
         
+        
         [self performSelector:@selector(reset) withObject:nil afterDelay:0.1]; //so delegate can be set after init and still get called on init
-        //        [self reset];
     }
     return self;
 }

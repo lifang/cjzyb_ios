@@ -14,17 +14,26 @@
                 <view contentMode="scaleToFill" id="BQv-m2-LaM">
                     <rect key="frame" x="0.0" y="0.0" width="548" height="67"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="dlm-Av-vlg">
+                            <rect key="frame" x="20" y="9" width="63" height="50"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <state key="normal" image="navigationBarLeftItem.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
                     <color key="backgroundColor" red="0.20784313725490194" green="0.81176470588235294" blue="0.5607843137254902" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="dlm-Av-vlg">
-                    <rect key="frame" x="0.0" y="0.0" width="110" height="67"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <state key="normal" image="navigationBarLeftItem.png">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="作业" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ga2-wv-w7F">
+                    <rect key="frame" x="71" y="31" width="36" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <view contentMode="scaleToFill" id="6Iu-U4-ejb">
                     <rect key="frame" x="548" y="0.0" width="220" height="67"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" heightSizable="YES"/>
@@ -72,6 +81,7 @@
                 <outlet property="imageButton" destination="VQX-5c-RC3" id="qeP-BZ-e72"/>
                 <outlet property="leftButtonItem" destination="dlm-Av-vlg" id="NZG-ff-GEf"/>
                 <outlet property="rightButtonItem" destination="gRx-zk-ghh" id="9wC-B5-OWz"/>
+                <outlet property="titlelabel" destination="Ga2-wv-w7F" id="Stl-jY-v5N"/>
                 <outlet property="userHeaderImage" destination="eO2-2f-FpF" id="x6x-Ek-3KL"/>
                 <outlet property="userNameLabel" destination="ip0-6O-DjT" id="VnX-rC-UKZ"/>
             </connections>

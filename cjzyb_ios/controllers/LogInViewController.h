@@ -31,9 +31,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *logoImg;
 @property (nonatomic, strong) IBOutlet UIButton *backBtn;
 //激活码
-
 @property (nonatomic, strong) IBOutlet UITextField *activeTxt;
-
 @property (nonatomic, strong) IBOutlet UIButton *activeSkipBtn;
 
 ///0=QQ登录页面   1=激活码页面   2=班级验证码页面   3=完善信息页面
@@ -43,4 +41,9 @@
 @property (nonatomic, strong) IBOutlet UIView *IconView;
 @property (nonatomic, strong) IBOutlet UILabel *visonLabel;
 @property (nonatomic, strong) IBOutlet UILabel *companyLabel;
+
+
+
+@property (nonatomic, strong) IBOutlet UIImageView *warnImg;
+@property (nonatomic, strong) IBOutlet UILabel *warnLabel;
 @end

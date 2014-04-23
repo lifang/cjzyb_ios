@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "HomeworkRankingTableViewCell.h"
 #import "HomeworkDaoInterface.h"
+
+
 @interface HomeworkRankingViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 ///参与排名的列表
 @property (strong,nonatomic) NSArray *rankingUserArray;

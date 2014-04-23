@@ -23,6 +23,7 @@
 
 @implementation DRLeftTabBarViewController
 
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -55,7 +56,11 @@
     [self.appDel showRootView];
 }
 #pragma mark --
-
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+}
 
 - (void)viewDidLoad
 {
@@ -104,17 +109,22 @@
     [self.drNavigationBar.leftButtonItem addTarget:self action:@selector(navigationLeftItemClicked) forControlEvents:UIControlEventTouchUpInside];
     self.drNavigationBar.frame = (CGRect){0,0,768,67};
     [self.view addSubview:self.drNavigationBar];
+    
     //设置子controller
     self.currentViewController = [self.childenControllerArray objectAtIndex:self.currentPage];
     if (self.currentViewController) {
         [self addOneController:self.currentViewController];
     }
+    
     if (self.currentPage==0) {
-        self.leftTabBar.mainTabBarItem.isSelected=YES;
-    }else if (self.currentPage==1) {
         self.leftTabBar.homeworkTabBarItem.isSelected=YES;
+        self.drNavigationBar.titlelabel.text = @"作业";
+    }else if (self.currentPage==1) {
+        self.leftTabBar.mainTabBarItem.isSelected=YES;
+        self.drNavigationBar.titlelabel.text = @"问答";
     }else if (self.currentPage==2) {
         self.leftTabBar.notificationTabBarItem.isSelected=YES;
+        self.drNavigationBar.titlelabel.text = @"通知";
     }
     
     //加载用户信息界面
@@ -316,7 +326,7 @@
 }
 #pragma mark LeftTabBarViewDelegate 左边栏代理
 -(void)leftTabBar:(LeftTabBarView *)tabBarView selectedItem:(LeftTabBarItemType)itemType{
-    NSLog(@"%d",itemType);
+
     if (itemType == LeftTabBarItemType_logOut ) {
         NSFileManager *fileManage = [NSFileManager defaultManager];
         NSString *path = [Utility returnPath];
@@ -347,8 +357,16 @@
         }
         else{
             if (itemType == LeftTabBarItemType_carBag) {
-                
+                self.drNavigationBar.titlelabel.text = @"卡包";
             }else {
+                if (itemType == LeftTabBarItemType_homework){
+                    self.drNavigationBar.titlelabel.text = @"作业";
+                }else if (itemType == LeftTabBarItemType_main) {
+                    self.drNavigationBar.titlelabel.text = @"问答";
+                }else if (itemType == LeftTabBarItemType_notification){
+                    self.drNavigationBar.titlelabel.text = @"通知";
+                }
+                
                 NSString *str = [NSString stringWithFormat:@"%d",-1];
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"changePlayerByView" object:str];
             }

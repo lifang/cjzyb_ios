@@ -218,6 +218,13 @@
             frame.origin.y -= xx;
             self.classTxt.frame = frame;
 
+            frame = self.warnImg.frame;
+            frame.origin.y -=xx;
+            self.warnImg.frame = frame;
+            
+            frame = self.warnLabel.frame;
+            frame.origin.y -=xx;
+            self.warnLabel.frame = frame;
         }else if (self.pageIndex==3){//完善信息页面
             frame = self.nickTxt.frame;
             frame.origin.y -= xx;
@@ -262,6 +269,14 @@
             frame = self.classTxt.frame;
             frame.origin.y += xx;
             self.classTxt.frame = frame;
+            
+            frame = self.warnImg.frame;
+            frame.origin.y +=xx;
+            self.warnImg.frame = frame;
+            
+            frame = self.warnLabel.frame;
+            frame.origin.y +=xx;
+            self.warnLabel.frame = frame;
         }else if (self.pageIndex==3){//完善信息页面
             frame = self.nickTxt.frame;
             frame.origin.y += xx;
@@ -321,6 +336,10 @@
             [Utility errorAlert:@"请输入激活码!"];
         }else {
             self.pageIndex=2;
+            self.logoImg.hidden = YES;
+            self.warnImg.hidden = NO;
+            self.warnLabel.hidden = NO;
+            
             self.classTxt.hidden = NO;
             CGRect frame = self.classTxt.frame;
             frame.origin.y = 526;
@@ -368,13 +387,14 @@
     
     if (self.pageIndex==3 || self.pageIndex==2) {//完善信息页面//班级验证码页面
         self.pageIndex=1;
-        
+        self.logoImg.hidden = NO;
         self.nickTxt.hidden = YES;
         self.nameTxt.hidden = YES;
         self.classTxt.hidden = YES;
         self.activeTxt.hidden = NO;
         self.activeSkipBtn.hidden = NO;
-        
+        self.warnLabel.hidden=YES;
+        self.warnImg.hidden = YES;
         CGRect frame = self.detailBtn.frame;
         frame.origin.y = 650;
         self.detailBtn.frame = frame;
@@ -456,7 +476,8 @@
                 self.pageIndex = 1;//激活码页面
                 self.logView.hidden = YES;
                 self.detailView.hidden = NO;
-                
+                self.warnImg.hidden = YES;
+                self.warnLabel.hidden = YES;
                 self.nickTxt.hidden = YES;
                 self.nameTxt.hidden = YES;
                 self.classTxt.hidden = YES;

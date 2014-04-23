@@ -432,7 +432,6 @@
         NSValue *contentSizeValue = [change objectForKey:@"new"];
         CGSize contentSize;
         [contentSizeValue getValue:&contentSize];
-        
         CGFloat contentHeight = contentSize.height;//一行字30  加16起步  实际大小为加10
         contentHeight = contentHeight > 46 ? contentHeight : 46;
         contentHeight = contentHeight > 400 ? 400 : contentHeight;

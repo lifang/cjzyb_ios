@@ -27,5 +27,7 @@
 ///剩余卡片的数量
 @property (nonatomic,assign) NSInteger cardsCount;
 
+///查看历史任务
+@property (strong,nonatomic) NSMutableArray *historyTaskArray;
 + (DataService *)sharedService;
 @end

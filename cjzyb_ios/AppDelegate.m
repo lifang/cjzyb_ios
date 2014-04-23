@@ -21,6 +21,8 @@
 #import "PreReadingTaskViewController.h"
 #import "DRSentenceSpellMatch.h"
 #import "InitViewController.h"
+#import "HintHelper.h"
+
 @implementation AppDelegate
 -(void)loadTrueSound:(NSInteger)index {
     NSURL *url=[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"trueMusic.wav"];
@@ -72,10 +74,19 @@
     LHLNotificationContainerVC *notificationView = [[LHLNotificationContainerVC alloc]initWithNibName:@"LHLNotificationContainerVC" bundle:nil];
     CardpackageViewController *cardView = [[CardpackageViewController alloc]initWithNibName:@"CardpackageViewController" bundle:nil];
     self.tabBarController = [[DRLeftTabBarViewController alloc] init];
-    self.tabBarController.childenControllerArray = @[main,homework,notificationView,cardView];
+    self.tabBarController.childenControllerArray = @[homework,main,notificationView,cardView];
     
     self.tabBarController.currentPage = self.notification_type;
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger isFirstToLoad = [[defaults objectForKey:@"isFirstToLoad"]integerValue];
+    if (isFirstToLoad == 0) {
+        _hintHelper = [[HintHelper alloc] initWithViewController:self.tabBarController];
+        
+        [defaults setObject:@"111" forKey:@"isFirstToLoad"];
+        [defaults synchronize];
+    }
+
     self.window.rootViewController = self.tabBarController;
 }
 
@@ -155,7 +166,7 @@
         self.the_class_name = [pushDict objectForKey:@"class_name"];
         self.the_student_id = [[pushDict objectForKey:@"student_id"]integerValue];
         if (typeValue == 2) {
-            self.notification_type = 1;
+            self.notification_type = 0;
         }else {
             self.notification_type = 2;
             if (typeValue==0) {

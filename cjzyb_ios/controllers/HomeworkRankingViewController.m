@@ -104,12 +104,10 @@
     RankingObject *rank = [self.rankingUserArray objectAtIndex:indexPath.row];
     [cell.headerImageView setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,rank.rankingHeaderURL]]];
     cell.nameLabel.text = rank.rankingName;
-//    cell.rankLabel.text = rank.rankingNumber;
     cell.rankLabel.text = [self rankTextFromRowNumber:indexPath.row];
     cell.scoreLabel.text = rank.rankingScore;
     
     cell.contentView.backgroundColor = [UIColor colorWithRed:24./255. green:139./255. blue:79./255. alpha:1.];
-//    self.view.layer.cornerRadius = 10;
     return cell;
 }
 

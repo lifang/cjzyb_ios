@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cjzyb_ios/controllers/SelectedViewController.m"
-            timestampString = "419425174.659007"
+            timestampString = "419849984.613198"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "513"
-            endingLineNumber = "513"
+            startingLineNumber = "523"
+            endingLineNumber = "523"
             landmarkName = "-getPostInfoDidFinished:"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cjzyb_ios/AppDelegate.m"
-            timestampString = "419416941.59163"
+            timestampString = "419925561.692796"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "250"
-            endingLineNumber = "250"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
             landmarkName = "-application:didReceiveRemoteNotification:"
             landmarkType = "5">
          </BreakpointContent>
@@ -58,12 +58,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "cjzyb_ios/controllers/SortViewController.m"
-            timestampString = "419484524.132063"
+            timestampString = "419849984.613198"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "535"
-            endingLineNumber = "535"
+            startingLineNumber = "710"
+            endingLineNumber = "710"
             landmarkName = "-setRestartButtonUI"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "cjzyb_ios/thirtys/MLPSpotlight/MLPSpotlight.m"
+            timestampString = "419914714.732243"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
+            landmarkName = "+addSpotlightInView:atPoint:withDuration:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
