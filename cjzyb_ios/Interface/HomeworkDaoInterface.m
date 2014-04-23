@@ -95,7 +95,6 @@
             
             taskObj.taskHomeworkTypeArray = homeworkTypeList;
             [taskList addObject:taskObj];
-            [taskList addObject:taskObj];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
