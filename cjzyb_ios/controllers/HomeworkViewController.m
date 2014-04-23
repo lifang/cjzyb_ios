@@ -80,6 +80,10 @@
         HomeworkViewController *tempSelf= weakSelf;
         if (tempSelf) {
             tempSelf.currentDayTaskArray = [NSMutableArray arrayWithArray:taskObjArr];
+            if (tempSelf.currentDayTaskArray.count==0) {
+                self.currentDay.hidden = NO;
+                self.currentDay.text = @"今日暂无作业";
+            }
             tempSelf.isShowHistory = NO;
             [tempSelf.collectionView reloadData];
             [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
@@ -170,6 +174,13 @@
     self.isShowHistory = NO;
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
     [DataService sharedService].historyTaskArray = nil;
+    
+    if (self.currentDayTaskArray.count==0) {
+        self.historyNameLabel.hidden = YES;
+        self.historyStartTaskLabel.hidden = YES;
+        self.currentDay.hidden = NO;
+        self.currentDay.text = @"今日暂无作业";
+    }
     [self.collectionView reloadData];
 }
 

@@ -88,9 +88,9 @@ static BOOL isCanUpLoad = NO;
             btn3.enabled = NO;
             [self.wordsContainerView addSubview:btn3];
             
-            NSTextCheckingResult *math = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag];
+            NSTextCheckingResult *math = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag-CP_Answer_Button_Tag_Offset];
             NSRange range = [math rangeAtIndex:0];
-            if (btn3.tag==0 && range.location != 0) {//第一位出现标点的情况
+            if (btn3.tag-CP_Answer_Button_Tag_Offset==0 && range.location != 0) {//第一位出现标点的情况
                 NSString *str = [content substringWithRange:NSMakeRange(0, range.location)];
                 UILabel *label = [self returnPointLabel];
                 point_frame.origin.x = 0;
@@ -98,8 +98,8 @@ static BOOL isCanUpLoad = NO;
                 label.frame = point_frame;
                 label.text = str;
                 [self.wordsContainerView addSubview:label];
-            }else if (btn3.tag<self.orgArray.count-1) {
-                NSTextCheckingResult *math2 = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag+1];
+            }else if (btn3.tag-CP_Answer_Button_Tag_Offset<self.orgArray.count-1) {
+                NSTextCheckingResult *math2 = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag+1-CP_Answer_Button_Tag_Offset];
                 NSRange range2 = [math2 rangeAtIndex:0];
                 
                 NSString *str = [content substringWithRange:NSMakeRange(range.location+range.length, range2.location-range.location-range.length)];
@@ -144,9 +144,9 @@ static BOOL isCanUpLoad = NO;
         btn3.enabled = NO;
         [self.wordsContainerView addSubview:btn3];
         
-        NSTextCheckingResult *math = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag];
+        NSTextCheckingResult *math = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag-CP_Answer_Button_Tag_Offset];
         NSRange range = [math rangeAtIndex:0];
-        if (btn3.tag==0 && range.location != 0) {//第一位出现标点的情况
+        if (btn3.tag-CP_Answer_Button_Tag_Offset==0 && range.location != 0) {//第一位出现标点的情况
             NSString *str = [content substringWithRange:NSMakeRange(0, range.location)];
             UILabel *label = [self returnPointLabel];
             point_frame.origin.x = 0;
@@ -154,8 +154,8 @@ static BOOL isCanUpLoad = NO;
             label.frame = point_frame;
             label.text = str;
             [self.wordsContainerView addSubview:label];
-        }else if (btn3.tag<self.orgArray.count-1) {
-            NSTextCheckingResult *math2 = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag+1];
+        }else if (btn3.tag-CP_Answer_Button_Tag_Offset<self.orgArray.count-1) {
+            NSTextCheckingResult *math2 = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag+1-CP_Answer_Button_Tag_Offset];
             NSRange range2 = [math2 rangeAtIndex:0];
             
             NSString *str = [content substringWithRange:NSMakeRange(range.location+range.length, range2.location-range.location-range.length)];

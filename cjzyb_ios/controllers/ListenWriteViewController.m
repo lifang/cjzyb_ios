@@ -250,6 +250,7 @@ static BOOL isCanUpLoad = NO;
     self.resultDic = [Utility listenCompareWithArray:array1 andArray:array2 WithArray:self.orgArray andArray:self.metaphoneArray WithRange:[Utility shared].rangeArray];
     NSMutableString *remindString = [NSMutableString string];
     if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
+        self.remindView.hidden = NO;
         NSArray *sureArray = [self.resultDic objectForKey:@"sure"];
         for (int i=0; i<sureArray.count; i++) {
             [remindString appendFormat:@"%@  ",[sureArray objectAtIndex:i]];
