@@ -24,6 +24,7 @@
         self.backgroundColor = [UIColor clearColor];
         self.contentView.backgroundColor = [UIColor clearColor];
         
+        //cell的可见部分
         self.optionBackgroundView = [[UIView alloc] init];
         _optionBackgroundView.backgroundColor = [UIColor whiteColor];
         _optionBackgroundView.layer.cornerRadius = 8.0;
@@ -59,8 +60,8 @@
 
 -(void)layoutSubviews{
     CGFloat cellHeight = self.cellHeight;
-    
-    _optionBackgroundView.frame = (CGRect){0,0,3 * PADDING + self.maxLabelWidth + ABCDWIDTH,cellHeight};
+    CGFloat cellWidth = self.frame.size.width;
+    _optionBackgroundView.frame = (CGRect){(cellWidth - (3 * PADDING + self.maxLabelWidth + ABCDWIDTH)) / 2 ,0,3 * PADDING + self.maxLabelWidth + ABCDWIDTH,cellHeight};
     
     _abcdLabel.frame = (CGRect){PADDING,(cellHeight - ABCDWIDTH ) / 2,ABCDWIDTH,ABCDWIDTH};
     
