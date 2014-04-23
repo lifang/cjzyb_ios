@@ -67,6 +67,9 @@
     
     [self.optionTable registerClass:[SelectingChallengeOptionCell class] forCellReuseIdentifier:@"cell"];
     
+    [self.questionPlayButton setImage:[UIImage imageNamed:@"listening_start.png"] forState:UIControlStateDisabled];
+    [self.questionPlayButton setImage:[UIImage imageNamed:@"listening_stop.png"] forState:UIControlStateDisabled];
+    
     self.shouldUploadJSON = NO;
     self.haveUploadedJSON = NO;
     self.isReDoingChallenge = NO;

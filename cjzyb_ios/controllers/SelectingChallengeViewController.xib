@@ -33,12 +33,12 @@
                             <fontDescription key="fontDescription" type="system" pointSize="44"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="g58-1V-7lI" userLabel="playButton - Button">
+                        <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="g58-1V-7lI" userLabel="playButton - Button">
                             <rect key="frame" x="38" y="17" width="65" height="65"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <state key="normal" image="listening_start.png">
+                            <state key="normal" image="listening_stop.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -87,7 +87,7 @@
         </view>
     </objects>
     <resources>
-        <image name="listening_start.png" width="63" height="63"/>
+        <image name="listening_stop.png" width="63" height="63"/>
         <image name="yourChoice.png" width="60" height="60"/>
     </resources>
 </document>

@@ -868,11 +868,12 @@
     
     [self.readingButton setUserInteractionEnabled:YES];
     [self.listeningButton setUserInteractionEnabled:YES];
-    self.readingCount++;
+    
     TaskObj *task = [DataService sharedService].taskObj;
     NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
     
     [DRSentenceSpellMatch checkSentence:self.currentSentence.readingSentenceContent withSpellMatchSentence:result andSpellMatchAttributeString:^(NSMutableAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray,NSArray *rightWordArray) {
+        self.readingCount++;
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         //记录读对的词
         for(NSString *rightWord in rightWordArray){

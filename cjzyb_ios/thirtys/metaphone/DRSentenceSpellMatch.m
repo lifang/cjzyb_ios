@@ -14,7 +14,7 @@
     
     if (!sentence || !spellSentence) {
         if (failure) {
-            failure([NSError errorWithDomain:@"" code:10010 userInfo:@{@"msg": @"要匹配对象不存在"}]);
+            failure([NSError errorWithDomain:@"" code:10010 userInfo:@{@"msg": @"未检测到语句,请重新朗读"}]);
         }
         return;
     }
@@ -22,7 +22,7 @@
     NSString *spellStr = [spellSentence stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if ([senStr isEqualToString:@""] || [spellStr isEqualToString:@""]) {
         if (failure) {
-            failure([NSError errorWithDomain:@"" code:10010 userInfo:@{@"msg": @"要匹配对象不存在"}]);
+            failure([NSError errorWithDomain:@"" code:10010 userInfo:@{@"msg": @"未检测到语句,请重新朗读"}]);
         }
         return;
     }
