@@ -28,8 +28,9 @@
     [super viewDidLoad];
     self.calendarView = [[VRGCalendarView alloc] init];
     self.calendarView.delegate = self;
+    self.calendarView.backgroundColor = [UIColor redColor];
     [self.view addSubview:self.calendarView];
-    // Do any additional setup after loading the view from its nib.
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,17 +41,11 @@
 
 #pragma mark VRGCalendarViewDelegate日历代理
 -(void)calendarView:(VRGCalendarView *)calendarView dateSelected:(NSDate *)date{
-    NSLog(@"%@",date);
-//    for (NSDate *date2 in self.selectedDateArray) {
-//        if ([Utility isSameDay:date date2:date2]) {
-//            [self.selectedDateArray removeObject:date2];
-//            return;
-//        }
-//    }
-//    [self.selectedDateArray addObject:date];
-    
-    [self.selectedDateArray removeAllObjects];
-    [self.selectedDateArray addObject:date];
+    NSDateFormatter *dateFormatterString = [[NSDateFormatter alloc] init];
+    dateFormatterString.dateFormat = @"yyyy-MM-dd";
+    [dateFormatterString setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"Asia/Shanghai"]];
+    NSString *dateString = [dateFormatterString stringFromDate:date];
+    self.selectedDateBlock(dateString);
 }
 
 -(void)calendarView:(VRGCalendarView *)calendarView switchedToMonth:(int)month targetHeight:(float)targetHeight animated:(BOOL)animated{
@@ -59,9 +54,9 @@
 #pragma mark --
 
 - (IBAction)okButtonClicked:(id)sender {
-    if (self.selectedDateBlock) {
-        self.selectedDateBlock(self.selectedDateArray);
-    }
+//    if (self.selectedDateBlock) {
+//        self.selectedDateBlock(self.selectedDateArray);
+//    }
 }
 
 #pragma mark property

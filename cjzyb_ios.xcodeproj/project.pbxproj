@@ -135,6 +135,15 @@
 		0EAABDAC18D02DEC00CD2DE7 /* ListenWriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EAABDAA18D02DEC00CD2DE7 /* ListenWriteViewController.m */; };
 		0EAABDAD18D02DEC00CD2DE7 /* ListenWriteViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EAABDAB18D02DEC00CD2DE7 /* ListenWriteViewController.xib */; };
 		0EAABDBF18D0416E00CD2DE7 /* listen_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAABDBE18D0416E00CD2DE7 /* listen_back@2x.png */; };
+		0EAB00911904B1270007C994 /* waring@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EAB00901904B1270007C994 /* waring@2x.png */; };
+		0EE461F419074C4300F38A4C /* UIViewController+MJPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE461F119074C4300F38A4C /* UIViewController+MJPopupViewController.m */; };
+		0EE461F519074C4300F38A4C /* MJPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE461F319074C4300F38A4C /* MJPopupBackgroundView.m */; };
+		0EE461F919074D8D00F38A4C /* AlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE461F719074D8D00F38A4C /* AlertViewController.m */; };
+		0EE461FA19074D8D00F38A4C /* AlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EE461F819074D8D00F38A4C /* AlertViewController.xib */; };
+		0EE461FC1907504C00F38A4C /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE461FB1907504C00F38A4C /* close.png */; };
+		0EE46206190769D500F38A4C /* EMHint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE46203190769D500F38A4C /* EMHint.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		0EE46207190769D500F38A4C /* EMHintsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE46204190769D500F38A4C /* EMHintsView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		0EE4620A19076A2200F38A4C /* HintHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE4620919076A2200F38A4C /* HintHelper.m */; };
 		0EEF4BCF18C561300058606A /* DataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4BCE18C561300058606A /* DataService.m */; };
 		0EEF4BD818C561570058606A /* CardFirstView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EEF4BD118C561570058606A /* CardFirstView.m */; };
 		0EEF4BD918C561570058606A /* CardFirstView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EEF4BD218C561570058606A /* CardFirstView.xib */; };
@@ -207,7 +216,6 @@
 		18AA80C418BF1A3300EC08CE /* LHLReplyNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AA80C318BF1A3300EC08CE /* LHLReplyNotificationCell.m */; };
 		18AAB75C19068114003FD195 /* LHLDoubleMetaphone.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AAB75B19068114003FD195 /* LHLDoubleMetaphone.m */; };
 		18B3DD2C18F3924500F0F95C /* iflyMSC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18B3DD2B18F3924500F0F95C /* iflyMSC.framework */; };
-		18B3DD2F18F3938600F0F95C /* PopupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18B3DD2D18F3938600F0F95C /* PopupView.m */; };
 		18CF139218E93B61001E3448 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E92654E18BD9016003ADEC3 /* MainViewController.xib */; };
 		18CF139618E961CB001E3448 /* LHLNotificationContainerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CF139418E961CB001E3448 /* LHLNotificationContainerVC.m */; };
 		18CF139718E961CB001E3448 /* LHLNotificationContainerVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 18CF139518E961CB001E3448 /* LHLNotificationContainerVC.xib */; };
@@ -567,6 +575,21 @@
 		0EAABDAA18D02DEC00CD2DE7 /* ListenWriteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListenWriteViewController.m; sourceTree = "<group>"; };
 		0EAABDAB18D02DEC00CD2DE7 /* ListenWriteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListenWriteViewController.xib; sourceTree = "<group>"; };
 		0EAABDBE18D0416E00CD2DE7 /* listen_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "listen_back@2x.png"; sourceTree = "<group>"; };
+		0EAB00901904B1270007C994 /* waring@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "waring@2x.png"; sourceTree = "<group>"; };
+		0EE461F019074C4300F38A4C /* UIViewController+MJPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+MJPopupViewController.h"; sourceTree = "<group>"; };
+		0EE461F119074C4300F38A4C /* UIViewController+MJPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+MJPopupViewController.m"; sourceTree = "<group>"; };
+		0EE461F219074C4300F38A4C /* MJPopupBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPopupBackgroundView.h; sourceTree = "<group>"; };
+		0EE461F319074C4300F38A4C /* MJPopupBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPopupBackgroundView.m; sourceTree = "<group>"; };
+		0EE461F619074D8D00F38A4C /* AlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertViewController.h; path = ../views/AlertViewController.h; sourceTree = "<group>"; };
+		0EE461F719074D8D00F38A4C /* AlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlertViewController.m; path = ../views/AlertViewController.m; sourceTree = "<group>"; };
+		0EE461F819074D8D00F38A4C /* AlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AlertViewController.xib; path = ../views/AlertViewController.xib; sourceTree = "<group>"; };
+		0EE461FB1907504C00F38A4C /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
+		0EE46202190769D500F38A4C /* EMHint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMHint.h; sourceTree = "<group>"; };
+		0EE46203190769D500F38A4C /* EMHint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMHint.m; sourceTree = "<group>"; };
+		0EE46204190769D500F38A4C /* EMHintsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMHintsView.m; sourceTree = "<group>"; };
+		0EE46205190769D500F38A4C /* EMHintsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMHintsView.h; sourceTree = "<group>"; };
+		0EE4620819076A2200F38A4C /* HintHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HintHelper.h; sourceTree = "<group>"; };
+		0EE4620919076A2200F38A4C /* HintHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HintHelper.m; sourceTree = "<group>"; };
 		0EEF4BCD18C561300058606A /* DataService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataService.h; sourceTree = "<group>"; };
 		0EEF4BCE18C561300058606A /* DataService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataService.m; sourceTree = "<group>"; };
 		0EEF4BD018C561570058606A /* CardFirstView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardFirstView.h; sourceTree = "<group>"; };
@@ -686,8 +709,6 @@
 		18AAB75A19068114003FD195 /* LHLDoubleMetaphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLDoubleMetaphone.h; sourceTree = "<group>"; };
 		18AAB75B19068114003FD195 /* LHLDoubleMetaphone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLDoubleMetaphone.m; sourceTree = "<group>"; };
 		18B3DD2B18F3924500F0F95C /* iflyMSC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = iflyMSC.framework; sourceTree = "<group>"; };
-		18B3DD2D18F3938600F0F95C /* PopupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupView.m; sourceTree = "<group>"; };
-		18B3DD2E18F3938600F0F95C /* PopupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupView.h; sourceTree = "<group>"; };
 		18CF139318E961CB001E3448 /* LHLNotificationContainerVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHLNotificationContainerVC.h; sourceTree = "<group>"; };
 		18CF139418E961CB001E3448 /* LHLNotificationContainerVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHLNotificationContainerVC.m; sourceTree = "<group>"; };
 		18CF139518E961CB001E3448 /* LHLNotificationContainerVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LHLNotificationContainerVC.xib; sourceTree = "<group>"; };
@@ -1058,6 +1079,8 @@
 		0E92657218BDACCE003ADEC3 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				0EE461FB1907504C00F38A4C /* close.png */,
+				0EAB00901904B1270007C994 /* waring@2x.png */,
 				0EA8695218FBB2DE008658B8 /* niuqi_yellow@2x.png */,
 				0EA8695018FBAFE3008658B8 /* niuqi@2x.png */,
 				0EA8694E18FBAD92008658B8 /* praised@2x.png */,
@@ -1231,6 +1254,28 @@
 				638C050518E52327009BFD40 /* RankingObject.m */,
 			);
 			name = modelmodel;
+			sourceTree = "<group>";
+		};
+		0EE461E619074BBB00F38A4C /* PopView */ = {
+			isa = PBXGroup;
+			children = (
+				0EE461F019074C4300F38A4C /* UIViewController+MJPopupViewController.h */,
+				0EE461F119074C4300F38A4C /* UIViewController+MJPopupViewController.m */,
+				0EE461F219074C4300F38A4C /* MJPopupBackgroundView.h */,
+				0EE461F319074C4300F38A4C /* MJPopupBackgroundView.m */,
+			);
+			name = PopView;
+			sourceTree = "<group>";
+		};
+		0EE46201190769CC00F38A4C /* EMHint */ = {
+			isa = PBXGroup;
+			children = (
+				0EE46202190769D500F38A4C /* EMHint.h */,
+				0EE46203190769D500F38A4C /* EMHint.m */,
+				0EE46204190769D500F38A4C /* EMHintsView.m */,
+				0EE46205190769D500F38A4C /* EMHintsView.h */,
+			);
+			path = EMHint;
 			sourceTree = "<group>";
 		};
 		0EEF4BDD18C561700058606A /* Interface */ = {
@@ -1507,6 +1552,8 @@
 		632954C018BC879B00F2B78D /* controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0EE4620819076A2200F38A4C /* HintHelper.h */,
+				0EE4620919076A2200F38A4C /* HintHelper.m */,
 				18FAB37418F4DE4E00C2AB83 /* InitViewController.h */,
 				18FAB37518F4DE4E00C2AB83 /* InitViewController.m */,
 				18FAB37718F4DF4C00C2AB83 /* InitViewController.xib */,
@@ -1538,6 +1585,9 @@
 				6396580718C04D4A002F2A90 /* HomeworkViewController.h */,
 				6396580818C04D4A002F2A90 /* HomeworkViewController.m */,
 				6396580918C04D4A002F2A90 /* HomeworkViewController.xib */,
+				0EE461F619074D8D00F38A4C /* AlertViewController.h */,
+				0EE461F719074D8D00F38A4C /* AlertViewController.m */,
+				0EE461F819074D8D00F38A4C /* AlertViewController.xib */,
 				6396583018C06C9D002F2A90 /* HomeworkDailyCollectionViewController.h */,
 				6396583118C06C9D002F2A90 /* HomeworkDailyCollectionViewController.m */,
 				6396583218C06C9D002F2A90 /* HomeworkDailyCollectionViewController.xib */,
@@ -1603,6 +1653,8 @@
 		632954C318BC879B00F2B78D /* thirtys */ = {
 			isa = PBXGroup;
 			children = (
+				0EE46201190769CC00F38A4C /* EMHint */,
+				0EE461E619074BBB00F38A4C /* PopView */,
 				1860054B18FE5F7B004F6F9B /* UIImageView+Addition.h */,
 				1860054A18FE5F7B004F6F9B /* UIImageView+Addition.m */,
 				18B3DD2B18F3924500F0F95C /* iflyMSC.framework */,
@@ -1626,8 +1678,6 @@
 		632954C418BC879B00F2B78D /* views */ = {
 			isa = PBXGroup;
 			children = (
-				18B3DD2D18F3938600F0F95C /* PopupView.m */,
-				18B3DD2E18F3938600F0F95C /* PopupView.h */,
 				630DBDC618D15611009DA0EB /* navigationBar */,
 				63DB920F18CD9D4000157D74 /* lining */,
 				0E9C6E9F18D1A16300E807D1 /* ClozeView.h */,
@@ -2187,6 +2237,7 @@
 				18CF139718E961CB001E3448 /* LHLNotificationContainerVC.xib in Resources */,
 				185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */,
 				630DBE0718D15BF4009DA0EB /* homeworkTimer@2x.png in Resources */,
+				0EAB00911904B1270007C994 /* waring@2x.png in Resources */,
 				630DBE2318D15CB1009DA0EB /* homwwork_listenWrite@2x.png in Resources */,
 				0EAABD8018CF15C900CD2DE7 /* card_hasselected@2x.png in Resources */,
 				0E9D689818CD4E0D00EACFA3 /* SVPullToRefresh.bundle in Resources */,
@@ -2203,6 +2254,7 @@
 				630DBDEF18D15A95009DA0EB /* progressTrack@2x.png in Resources */,
 				630DBE1818D15CB1009DA0EB /* homework_blank@2x.png in Resources */,
 				189D1B7518BDB61900C22D72 /* LHLNotificationViewController.xib in Resources */,
+				0EE461FA19074D8D00F38A4C /* AlertViewController.xib in Resources */,
 				630DBE2018D15CB1009DA0EB /* homework_right@2x.png in Resources */,
 				187C4ACA18D304AC0006461D /* 10_05@2x.png in Resources */,
 				630DBE1718D15CB1009DA0EB /* homework_back@2x.png in Resources */,
@@ -2267,6 +2319,7 @@
 				0E9D689E18CD670E00EACFA3 /* CardpackageViewController.xib in Resources */,
 				0E9D68DC18CDC45400EACFA3 /* card_highted@2x.png in Resources */,
 				0E9D68A518CD680700EACFA3 /* card_deleteBtn@2x.png in Resources */,
+				0EE461FC1907504C00F38A4C /* close.png in Resources */,
 				0E9D688918C9A96C00EACFA3 /* detail_logIn@2x.png in Resources */,
 				1867B53A18D008C50042A95D /* trash_icon@2x.png in Resources */,
 				187C4ACF18D304AC0006461D /* 10_10@2x.png in Resources */,
@@ -2375,7 +2428,9 @@
 				6329551118BC8AA700F2B78D /* ASIDataCompressor.m in Sources */,
 				18AA80C418BF1A3300EC08CE /* LHLReplyNotificationCell.m in Sources */,
 				0EAABD8818CF1F6300CD2DE7 /* TagInterface.m in Sources */,
+				0EE461F519074C4300F38A4C /* MJPopupBackgroundView.m in Sources */,
 				0EAABD8B18CF22F700CD2DE7 /* TagViewFooter.m in Sources */,
+				0EE4620A19076A2200F38A4C /* HintHelper.m in Sources */,
 				6329556918BC900600F2B78D /* SDWebImagePrefetcher.m in Sources */,
 				6329556118BC900600F2B78D /* MKAnnotationView+WebCache.m in Sources */,
 				6329552818BC8AA700F2B78D /* ASIS3Request.m in Sources */,
@@ -2442,6 +2497,7 @@
 				0E660F2518E02FC30074454C /* ImageSelectedViewController.m in Sources */,
 				0E92656818BD92B0003ADEC3 /* ThirdViewController.m in Sources */,
 				6329556218BC900600F2B78D /* NSData+ImageContentType.m in Sources */,
+				0EE461F919074D8D00F38A4C /* AlertViewController.m in Sources */,
 				6329556B18BC900600F2B78D /* UIImage+GIF.m in Sources */,
 				6329551018BC8AA700F2B78D /* ASIAuthenticationDialog.m in Sources */,
 				630E063618E16C760044F819 /* PreReadingTaskViewController.m in Sources */,
@@ -2449,6 +2505,7 @@
 				6396583A18C07B37002F2A90 /* HomeworkTypeObj.m in Sources */,
 				18DF866018E2C697009BEB58 /* LHLTableView.m in Sources */,
 				6341536118C1C90300DE4480 /* NSMutableArray+convenience.m in Sources */,
+				0EE461F419074C4300F38A4C /* UIViewController+MJPopupViewController.m in Sources */,
 				0E5D1C6718C85FD5008A13F2 /* FourthViewController.m in Sources */,
 				18FAB37618F4DE4E00C2AB83 /* InitViewController.m in Sources */,
 				0E9D68A118CD671F00EACFA3 /* CardObject.m in Sources */,
@@ -2522,7 +2579,6 @@
 				6329551718BC8AA700F2B78D /* ASINetworkQueue.m in Sources */,
 				160A4D4218CBE09D0020848C /* SelectingChallengeOptionCell.m in Sources */,
 				181A786A18C469AB00D288D3 /* TenSecChallengeObject.m in Sources */,
-				18B3DD2F18F3938600F0F95C /* PopupView.m in Sources */,
 				6329552718BC8AA700F2B78D /* ASIS3ObjectRequest.m in Sources */,
 				0E5E020718E16F0800E55DD0 /* TextViewController.m in Sources */,
 				0E9D68C118CD8CDF00EACFA3 /* CardInterface.m in Sources */,
@@ -2546,11 +2602,13 @@
 				6341536818C1C96C00DE4480 /* CalendarViewController.m in Sources */,
 				638C04FA18E51D13009BFD40 /* HomeworkRankingViewController.m in Sources */,
 				0E660F1D18E0249E0074454C /* PostImage.m in Sources */,
+				0EE46206190769D500F38A4C /* EMHint.m in Sources */,
 				0EEF4BDA18C561570058606A /* CardSecondView.m in Sources */,
 				0E9D689318C9C00B00EACFA3 /* PersonInfoInterface.m in Sources */,
 				1802DC3818C065320016F110 /* NotificationObject.m in Sources */,
 				63DB921818CDABFB00157D74 /* LiningItemButton.m in Sources */,
 				63B81C4F18CF05F900004745 /* HomeworkContainerController.m in Sources */,
+				0EE46207190769D500F38A4C /* EMHintsView.m in Sources */,
 				0EAABD8518CF1B5500CD2DE7 /* CMRManager.mm in Sources */,
 				6329556D18BC900600F2B78D /* UIImage+WebP.m in Sources */,
 				182BEE5118E12FA000FC0AA0 /* unzip.c in Sources */,

@@ -15,11 +15,14 @@
 #import "Reachability.h"
 
 
+@class HintHelper;
 @class DRLeftTabBarViewController;
 @class InitViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
-
+{
+    HintHelper *_hintHelper;
+}
 
 //网络监听所用
 @property (retain, nonatomic) Reachability *hostReach;

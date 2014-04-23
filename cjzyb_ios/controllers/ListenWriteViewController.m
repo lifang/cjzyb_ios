@@ -169,11 +169,11 @@ static BOOL isCanUpLoad = NO;
         }
     }
     [Utility shared].rangeArray = nil;[Utility shared].isOrg = YES;
-    self.wordsContainerView.frame = CGRectMake(768, 53, 640, frame.origin.y+Textfield_Height+Textfield_Space_Height);
+    self.wordsContainerView.frame = CGRectMake(768, 10, 640, frame.origin.y+Textfield_Height+Textfield_Space_Height);
     [self.view addSubview:self.wordsContainerView];
     
     [UIView animateWithDuration:0.5 animations:^{
-        [self.wordsContainerView setFrame:CGRectMake(98, 53, 640, frame.origin.y+Textfield_Height+Textfield_Space_Height)];
+        [self.wordsContainerView setFrame:CGRectMake(98, 10, 640, frame.origin.y+Textfield_Height+Textfield_Space_Height)];
     } completion:^(BOOL finished){
         if (finished) {
             
@@ -211,7 +211,7 @@ static BOOL isCanUpLoad = NO;
     self.wordsContainerView = [[UIView alloc]init];
     self.wordsContainerView.backgroundColor = [UIColor clearColor];
     
-    CGRect frame = CGRectMake(0, 0, 600, 0);
+    CGRect frame = CGRectMake(0, 10, 600, 0);
     NSString *content = [self.branchQuestionDic objectForKey:@"content"];
     self.orgArray = [Utility handleTheString:content];
     self.metaphoneArray = [Utility metaphoneArray:self.orgArray];
@@ -223,7 +223,7 @@ static BOOL isCanUpLoad = NO;
     label.text = content;
     [self.wordsContainerView addSubview:label];
     
-    self.wordsContainerView.frame = CGRectMake(768, 53, 640, 600);
+    self.wordsContainerView.frame = CGRectMake(768, 10, 640, 600);
     [self.view addSubview:self.wordsContainerView];
     
     [Utility shared].isOrg = NO;
@@ -258,7 +258,7 @@ static BOOL isCanUpLoad = NO;
     self.remindLab.text = remindString;
     
     [UIView animateWithDuration:0.5 animations:^{
-        [self.wordsContainerView setFrame:CGRectMake(108, 53, 640, frame.origin.y+frame.size.height)];
+        [self.wordsContainerView setFrame:CGRectMake(108, 10, 640, frame.origin.y+frame.size.height)];
     } completion:^(BOOL finished){
     }];
 }

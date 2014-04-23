@@ -34,7 +34,7 @@
         return YES;
 }
 
-+(void)downloadCurrentTaskWithUserId:(NSString*)userId withClassId:(NSString*)classID withSuccess:(void(^)(TaskObj *taskObj))success withError:(void (^)(NSError *error))failure{
++(void)downloadCurrentTaskWithUserId:(NSString*)userId withClassId:(NSString*)classID withSuccess:(void(^)(NSArray *taskObjArr))success withError:(void (^)(NSError *error))failure{
 
     if (!userId || !classID) {
         if (failure) {
@@ -43,84 +43,68 @@
         return;
     }
     NSString *urlString = [NSString stringWithFormat:@"%@/api/students/get_newer_task?student_id=%@&school_class_id=%@",kHOST,userId,classID];
-    DLog(@"获得班级同学信息url:%@",urlString);
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     [request setHTTPMethod:@"GET"];
     [request setTimeoutInterval:60];
     [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
         NSArray *taskArr = [dicData objectForKey:@"tasks"];
         NSString *knowlegeCount = [Utility filterValue:[dicData objectForKey:@"knowledges_cards_count"]];
-        if (!taskArr || taskArr.count <= 0) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (failure) {
-                    failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"当前没有任务"}]);
-                }
-            });
-            return;
-        }
-        
-        NSDictionary *taskDic = [taskArr firstObject];
-        if (!taskDic || taskDic.count <= 0) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (failure) {
-                    failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"获取数据失败"}]);
-                }
-            });
-            return;
-        }
-        
-        TaskObj *taskObj = [TaskObj taskFromDictionary:taskDic];
-        
-        BOOL isExipre = [HomeworkDaoInterface compareTimeWithString:taskObj.taskEndDate];
-        taskObj.isExpire = isExipre;
-        
-        //道具 0减少时间   1显示正确答案
-        NSArray *propsArr = [dicData objectForKey:@"props"];
-        for (NSDictionary *propsDic in propsArr) {
-            NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
-            NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
-            if ([type integerValue]==1) {
-                [DataService sharedService].number_correctAnswer = number ?number.intValue:0;
-            }else if ([type integerValue]==0){
-                [DataService sharedService].number_reduceTime = number ?number.intValue:0;
-            }
-        }
-        
-        [DataService sharedService].cardsCount = knowlegeCount?knowlegeCount.intValue:0;
-        
-        
-        NSMutableArray *homeworkTypeList = [NSMutableArray array];
-        NSArray *undoTypeArr = [taskDic objectForKey:@"question_types"];
-        NSArray *finishedTypeArr = [taskDic objectForKey:@"finish_types"];
-        for (int index = 0; index < undoTypeArr.count; index++) {
-            NSString *index_string = [undoTypeArr objectAtIndex:index];
-            HomeworkTypeObj *type = [[HomeworkTypeObj alloc] init];
-            type.homeworkType = [HomeworkDaoInterface convertTypeFromInt:[[undoTypeArr objectAtIndex:index] intValue]];
+        NSMutableArray *taskList = [NSMutableArray array];
+        for (NSDictionary *taskDic in taskArr) {
+            TaskObj *taskObj = [TaskObj taskFromDictionary:taskDic];
+            BOOL isExipre = [HomeworkDaoInterface compareTimeWithString:taskObj.taskEndDate];
+            taskObj.isExpire = isExipre;
             
-            if ([finishedTypeArr containsObject:index_string]) {
-                type.homeworkTypeIsFinished = YES;
-            }else {
-                type.homeworkTypeIsFinished = NO;
-            }
-            if (taskObj.isExpire==YES) {
-                type.homeworkTypeIsRanking = YES;
-            }else {
-                type.homeworkTypeIsRanking = NO;
+            //道具 0减少时间   1显示正确答案
+            NSArray *propsArr = [dicData objectForKey:@"props"];
+            for (NSDictionary *propsDic in propsArr) {
+                NSString *type = [Utility filterValue:[propsDic objectForKey:@"types"]];
+                NSString *number = [Utility filterValue:[propsDic objectForKey:@"number"]];
+                if ([type integerValue]==1) {
+                    [DataService sharedService].number_correctAnswer = number ?number.intValue:0;
+                }else if ([type integerValue]==0){
+                    [DataService sharedService].number_reduceTime = number ?number.intValue:0;
+                }
             }
             
-            [homeworkTypeList addObject:type];
-            type = nil;
+            [DataService sharedService].cardsCount = knowlegeCount?knowlegeCount.intValue:0;
+            
+            
+            NSMutableArray *homeworkTypeList = [NSMutableArray array];
+            NSArray *undoTypeArr = [taskDic objectForKey:@"question_types"];
+            NSArray *finishedTypeArr = [taskDic objectForKey:@"finish_types"];
+            for (int index = 0; index < undoTypeArr.count; index++) {
+                NSString *index_string = [undoTypeArr objectAtIndex:index];
+                HomeworkTypeObj *type = [[HomeworkTypeObj alloc] init];
+                type.homeworkType = [HomeworkDaoInterface convertTypeFromInt:[[undoTypeArr objectAtIndex:index] intValue]];
+                
+                if ([finishedTypeArr containsObject:index_string]) {
+                    type.homeworkTypeIsFinished = YES;
+                }else {
+                    type.homeworkTypeIsFinished = NO;
+                }
+                if (taskObj.isExpire==YES) {
+                    type.homeworkTypeIsRanking = YES;
+                }else {
+                    type.homeworkTypeIsRanking = NO;
+                }
+                
+                [homeworkTypeList addObject:type];
+                type = nil;
+            }
+            
+            taskObj.taskHomeworkTypeArray = homeworkTypeList;
+            [taskList addObject:taskObj];
         }
-        
-        taskObj.taskHomeworkTypeArray = homeworkTypeList;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
-                success(taskObj);
+                success(taskList);
             }
         });
     } withFailure:failure];
 }
+
 //TODO:作业类型转换
 +(HomeworkType)convertTypeFromInt:(int)type{
     //TYPES_NAME = {0 => "听力", 1 => "朗读",  2 => "十速挑战", 3 => "选择", 4 => "连线", 5 => "完型填空", 6 => "排序"
@@ -188,14 +172,6 @@
     [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
         NSArray *taskArr = [dicData objectForKey:@"tasks"];
         NSString *knowlegeCount = [Utility filterValue:[dicData objectForKey:@"knowledges_cards_count"]];
-        if (!taskArr || taskArr.count <= 0) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (failure) {
-                    failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"没有历史任务"}]);
-                }
-            });
-            return;
-        }
         
         NSMutableArray *taskList = [NSMutableArray array];
         for (NSDictionary *taskDic in taskArr) {
@@ -205,7 +181,6 @@
             TaskObj *taskObj = [TaskObj taskFromDictionary:taskDic];
             BOOL isExipre = [HomeworkDaoInterface compareTimeWithString:taskObj.taskEndDate];
             taskObj.isExpire = isExipre;
-            
             
             //道具 0减少时间   1显示正确答案
             NSArray *propsArr = [dicData objectForKey:@"props"];
@@ -249,16 +224,6 @@
             
             [taskList addObject:taskObj];
         }
-        
-        if (taskList.count <= 0) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (failure) {
-                    failure([NSError errorWithDomain:@"" code:2001 userInfo:@{@"msg": @"当前没有历史任务"}]);
-                }
-            });
-            return;
-        }
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             if (success) {
                 success(taskList);

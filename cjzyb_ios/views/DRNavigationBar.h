@@ -14,4 +14,5 @@
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *userHeaderImage;
 @property (strong, nonatomic) IBOutlet UIButton *imageButton;
+@property (weak, nonatomic) IBOutlet UILabel *titlelabel;
 @end

@@ -583,7 +583,6 @@
         [self.cellArray addObject:aIndex];
     }
 }
-
 - (void)contextMenuCellDidSelectCoverOption:(FirstCell *)cell {
     [self.textViewFirst resignFirstResponder];
     self.theIndex = [self.firstTable indexPathForCell:cell];

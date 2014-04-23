@@ -83,6 +83,16 @@ static BOOL isCanUpLoad = NO;
         UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:i+UnderLab_tag];
         NSDictionary *dic = [self.answerArray objectAtIndex:i];
         NSString *answer = [dic objectForKey:@"answer"];
+        
+        int font_size = 20;
+        for (int i=33; i>=20; i--) {
+            CGSize sizeSub = [answer sizeWithFont:[UIFont systemFontOfSize:i]];
+            if (sizeSub.width-150<=0) {
+                font_size = i;
+                break;
+            }
+        }
+        label.font = [UIFont systemFontOfSize:font_size];
         [label setText:answer];
     }
     

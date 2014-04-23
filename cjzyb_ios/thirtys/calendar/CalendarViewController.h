@@ -10,6 +10,6 @@
 #import "VRGCalendarView.h"
 @interface CalendarViewController : UIViewController<VRGCalendarViewDelegate>
 @property (strong, nonatomic)  VRGCalendarView *calendarView;
-@property (strong, nonatomic) void (^selectedDateBlock)(NSArray* selectedDateArray);
+@property (strong, nonatomic) void (^selectedDateBlock)(NSString *dateString);
 @property (strong, nonatomic) NSMutableArray *selectedDateArray;
 @end

@@ -22,7 +22,7 @@
  *
  * @return taskObj 当天任务对象
  */
-+(void)downloadCurrentTaskWithUserId:(NSString*)userId withClassId:(NSString*)classID withSuccess:(void(^)(TaskObj *taskObj))success withError:(void (^)(NSError *error))failure;
++(void)downloadCurrentTaskWithUserId:(NSString*)userId withClassId:(NSString*)classID withSuccess:(void(^)(NSArray *taskObjArr))success withError:(void (^)(NSError *error))failure;
 
 /**
  * @brief 获取历史的任务

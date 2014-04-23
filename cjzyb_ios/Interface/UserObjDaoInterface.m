@@ -181,17 +181,26 @@
     [request setTimeOutSeconds:60];
     [request setRequestMethod:@"GET"];
     [Utility requestDataWithASIRequest:request withSuccess:^(NSDictionary *dicData) {
-        NSDictionary *userDic = [dicData objectForKey:@"student"];
-        NSDictionary *gradeDic = [dicData objectForKey:@"class"];
-        
-        UserObject *user = [UserObject userFromDictionary:userDic];
-        ClassObject *grade = [ClassObject classFromDictionary:gradeDic];
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (success) {
-                success(user,grade);
-            }
-        });
+        if ([[dicData objectForKey:@"status"]isEqualToString:@"success"]) {
+            NSDictionary *userDic = [dicData objectForKey:@"student"];
+            NSDictionary *gradeDic = [dicData objectForKey:@"class"];
+            
+            UserObject *user = [UserObject userFromDictionary:userDic];
+            ClassObject *grade = [ClassObject classFromDictionary:gradeDic];
+            success(user,grade);
+        }else {
+            [Utility errorAlert:[dicData objectForKey:@"notice"]];
+            
+            NSFileManager *fileManage = [NSFileManager defaultManager];
+            NSString *path = [Utility returnPath];
+            NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
+            [fileManage removeItemAtPath:filename error:nil];
+            filename = [path stringByAppendingPathComponent:@"student.plist"];
+            [fileManage removeItemAtPath:filename error:nil];
+            
+            AppDelegate *appDel = [AppDelegate shareIntance];
+            [appDel showLogInView];
+        }
     } withFailure:failure];
 }
 @end

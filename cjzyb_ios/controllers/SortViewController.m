@@ -32,8 +32,13 @@ static BOOL isCanUpLoad = NO;
     }
     return self;
 }
-
-
+-(UILabel *)returnPointLabel {
+    UILabel *label = [[UILabel alloc]init];
+    label.font = [UIFont systemFontOfSize:18];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor blackColor];
+    return label;
+}
 -(UIButton *)returnButton {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     btn.backgroundColor = [UIColor whiteColor];
@@ -57,8 +62,12 @@ static BOOL isCanUpLoad = NO;
     self.wordsContainerView.tag = 873663;
     self.wordsContainerView.backgroundColor = [UIColor clearColor];
     
-    CGRect frame = CGRectMake(0, 0, Textfield_Width*1.5, Textfield_Height*1.2);
+    CGRect frame = CGRectMake(0, 0, Textfield_Width, Textfield_Height);
+    CGRect point_frame = CGRectMake(0, 0, 20, 20);
     NSString *content = [self.branchQuestionDic objectForKey:@"content"];
+
+    [Utility shared].isOrg = NO;
+    [Utility shared].rangeArray = [[NSMutableArray alloc]init];
     self.orgArray = [Utility handleTheString:content];
     NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.orgArray];
     NSInteger count = tmpArray.count;
@@ -78,8 +87,50 @@ static BOOL isCanUpLoad = NO;
             [btn3 addTarget:self action:@selector(answerButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
             btn3.enabled = NO;
             [self.wordsContainerView addSubview:btn3];
+            
+            NSTextCheckingResult *math = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag];
+            NSRange range = [math rangeAtIndex:0];
+            if (btn3.tag==0 && range.location != 0) {//第一位出现标点的情况
+                NSString *str = [content substringWithRange:NSMakeRange(0, range.location)];
+                UILabel *label = [self returnPointLabel];
+                point_frame.origin.x = 0;
+                point_frame.origin.y = frame.origin.y+frame.size.height-20;
+                label.frame = point_frame;
+                label.text = str;
+                [self.wordsContainerView addSubview:label];
+            }else if (btn3.tag<self.orgArray.count-1) {
+                NSTextCheckingResult *math2 = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag+1];
+                NSRange range2 = [math2 rangeAtIndex:0];
+                
+                NSString *str = [content substringWithRange:NSMakeRange(range.location+range.length, range2.location-range.location-range.length)];
+                str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+                if (str.length>0) {
+                    UILabel *label = [self returnPointLabel];
+                    point_frame.origin.x = frame.origin.x+frame.size.width+10;
+                    point_frame.origin.y = frame.origin.y+frame.size.height-20 ;
+                    label.frame = point_frame;
+                    label.text = str;
+                    [self.wordsContainerView addSubview:label];
+                }
+            }else {
+                int number = content.length - range.location - range.length;
+                if (number>0) {
+                    NSString *str = [content substringWithRange:NSMakeRange(range.location+range.length, number)];
+                    str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+                    if (str.length>0) {
+                        UILabel *label = [self returnPointLabel];
+                        point_frame.origin.x = frame.origin.x+frame.size.width+10;
+                        point_frame.origin.y = frame.origin.y+frame.size.height-20 ;
+                        label.frame = point_frame;
+                        label.text = str;
+                        [self.wordsContainerView addSubview:label];
+                    }
+                }
+            }
+            
         }
     }
+    
     frame.origin.y += Textfield_Height+Textfield_Space_Height;
     for (int i=0; i<num2; i++) {
         UIButton *btn3 = [self returnButton];
@@ -93,6 +144,45 @@ static BOOL isCanUpLoad = NO;
         btn3.enabled = NO;
         [self.wordsContainerView addSubview:btn3];
         
+        NSTextCheckingResult *math = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag];
+        NSRange range = [math rangeAtIndex:0];
+        if (btn3.tag==0 && range.location != 0) {//第一位出现标点的情况
+            NSString *str = [content substringWithRange:NSMakeRange(0, range.location)];
+            UILabel *label = [self returnPointLabel];
+            point_frame.origin.x = 0;
+            point_frame.origin.y = frame.origin.y+frame.size.height-20;
+            label.frame = point_frame;
+            label.text = str;
+            [self.wordsContainerView addSubview:label];
+        }else if (btn3.tag<self.orgArray.count-1) {
+            NSTextCheckingResult *math2 = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag+1];
+            NSRange range2 = [math2 rangeAtIndex:0];
+            
+            NSString *str = [content substringWithRange:NSMakeRange(range.location+range.length, range2.location-range.location-range.length)];
+            str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+            if (str.length>0) {
+                UILabel *label = [self returnPointLabel];
+                point_frame.origin.x = frame.origin.x+frame.size.width+10;
+                point_frame.origin.y = frame.origin.y+frame.size.height-20 ;
+                label.frame = point_frame;
+                label.text = str;
+                [self.wordsContainerView addSubview:label];
+            }
+        }else {
+            int number = content.length - range.location - range.length;
+            if (number>0) {
+                NSString *str = [content substringWithRange:NSMakeRange(range.location+range.length, number)];
+                str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+                if (str.length>0) {
+                    UILabel *label = [self returnPointLabel];
+                    point_frame.origin.x = frame.origin.x+frame.size.width+10;
+                    point_frame.origin.y = frame.origin.y+frame.size.height-20 ;
+                    label.frame = point_frame;
+                    label.text = str;
+                    [self.wordsContainerView addSubview:label];
+                }
+            }
+        }
     }
     
     //TODO:下半部分
@@ -200,8 +290,13 @@ static BOOL isCanUpLoad = NO;
     self.wordsContainerView = [[UIView alloc]init];
     self.wordsContainerView.backgroundColor = [UIColor clearColor];
     
-    CGRect frame = CGRectMake(0, 0, Textfield_Width*1.5, Textfield_Height*1.2);
+    CGRect frame = CGRectMake(0, 0, Textfield_Width, Textfield_Height);
+    CGRect point_frame = CGRectMake(0, 0, 20, 20);
     NSString *content = [self.branchQuestionDic objectForKey:@"content"];
+    
+    [Utility shared].isOrg = NO;
+    [Utility shared].rangeArray = [[NSMutableArray alloc]init];
+    
     self.orgArray = [Utility handleTheString:content];
     NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.orgArray];
     NSInteger count = tmpArray.count;
@@ -218,6 +313,46 @@ static BOOL isCanUpLoad = NO;
             [btn3 setTitleColor:[UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1] forState:UIControlStateNormal];
             [btn3 setTitle:[tmpArray objectAtIndex:3*i+k] forState:UIControlStateNormal];
             [self.wordsContainerView addSubview:btn3];
+            
+            NSTextCheckingResult *math = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag-CP_Answer_Button_Tag_Offset];
+            NSRange range = [math rangeAtIndex:0];
+            if (btn3.tag-CP_Answer_Button_Tag_Offset==0 && range.location != 0) {//第一位出现标点的情况
+                NSString *str = [content substringWithRange:NSMakeRange(0, range.location)];
+                UILabel *label = [self returnPointLabel];
+                point_frame.origin.x = 0;
+                point_frame.origin.y = frame.origin.y+frame.size.height-20;
+                label.frame = point_frame;
+                label.text = str;
+                [self.wordsContainerView addSubview:label];
+            }else if (btn3.tag-CP_Answer_Button_Tag_Offset<self.orgArray.count-1) {
+                NSTextCheckingResult *math2 = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag+1-CP_Answer_Button_Tag_Offset];
+                NSRange range2 = [math2 rangeAtIndex:0];
+                
+                NSString *str = [content substringWithRange:NSMakeRange(range.location+range.length, range2.location-range.location-range.length)];
+                str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+                if (str.length>0) {
+                    UILabel *label = [self returnPointLabel];
+                    point_frame.origin.x = frame.origin.x+frame.size.width+10;
+                    point_frame.origin.y = frame.origin.y+frame.size.height-20 ;
+                    label.frame = point_frame;
+                    label.text = str;
+                    [self.wordsContainerView addSubview:label];
+                }
+            }else {
+                int number = content.length - range.location - range.length;
+                if (number>0) {
+                    NSString *str = [content substringWithRange:NSMakeRange(range.location+range.length, number)];
+                    str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+                    if (str.length>0) {
+                        UILabel *label = [self returnPointLabel];
+                        point_frame.origin.x = frame.origin.x+frame.size.width+10;
+                        point_frame.origin.y = frame.origin.y+frame.size.height-20 ;
+                        label.frame = point_frame;
+                        label.text = str;
+                        [self.wordsContainerView addSubview:label];
+                    }
+                }
+            }
         }
     }
     frame.origin.y += Textfield_Height+Textfield_Space_Height;
@@ -230,6 +365,46 @@ static BOOL isCanUpLoad = NO;
         [btn3 setTitleColor:[UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1] forState:UIControlStateNormal];
         [btn3 setTitle:[tmpArray objectAtIndex:3*num1+i] forState:UIControlStateNormal];
         [self.wordsContainerView addSubview:btn3];
+        
+        NSTextCheckingResult *math = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag-CP_Answer_Button_Tag_Offset];
+        NSRange range = [math rangeAtIndex:0];
+        if (btn3.tag-CP_Answer_Button_Tag_Offset==0 && range.location != 0) {//第一位出现标点的情况
+            NSString *str = [content substringWithRange:NSMakeRange(0, range.location)];
+            UILabel *label = [self returnPointLabel];
+            point_frame.origin.x = 0;
+            point_frame.origin.y = frame.origin.y+frame.size.height-20;
+            label.frame = point_frame;
+            label.text = str;
+            [self.wordsContainerView addSubview:label];
+        }else if (btn3.tag-CP_Answer_Button_Tag_Offset<self.orgArray.count-1) {
+            NSTextCheckingResult *math2 = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:btn3.tag+1-CP_Answer_Button_Tag_Offset];
+            NSRange range2 = [math2 rangeAtIndex:0];
+            
+            NSString *str = [content substringWithRange:NSMakeRange(range.location+range.length, range2.location-range.location-range.length)];
+            str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+            if (str.length>0) {
+                UILabel *label = [self returnPointLabel];
+                point_frame.origin.x = frame.origin.x+frame.size.width+10;
+                point_frame.origin.y = frame.origin.y+frame.size.height-20 ;
+                label.frame = point_frame;
+                label.text = str;
+                [self.wordsContainerView addSubview:label];
+            }
+        }else {
+            int number = content.length - range.location - range.length;
+            if (number>0) {
+                NSString *str = [content substringWithRange:NSMakeRange(range.location+range.length, number)];
+                str = [str stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+                if (str.length>0) {
+                    UILabel *label = [self returnPointLabel];
+                    point_frame.origin.x = frame.origin.x+frame.size.width+10;
+                    point_frame.origin.y = frame.origin.y+frame.size.height-20 ;
+                    label.frame = point_frame;
+                    label.text = str;
+                    [self.wordsContainerView addSubview:label];
+                }
+            }
+        }
     }
     
     //TODO:下半部分
@@ -545,8 +720,6 @@ static BOOL isCanUpLoad = NO;
         int targetTag = [[self.maps objectForKey:[NSString stringWithFormat:@"%d",btn.tag]] intValue];
         [self.maps removeObjectForKey:[NSString stringWithFormat:@"%d",btn.tag]];
 
-        NSLog(@"btn-tag = %@",[NSString stringWithFormat:@"%d",btn.tag]);
-        NSLog(@"targetTag = %d",targetTag);
         UIButton *wordBtn = (UIButton *)[self.wordsContainerView viewWithTag:targetTag];
         wordBtn.enabled = YES;
         wordBtn.backgroundColor = [UIColor colorWithRed:39/255.0 green:48/255.0 blue:57/255.0 alpha:1];
@@ -573,7 +746,6 @@ static BOOL isCanUpLoad = NO;
     [self setRestartButtonUI];
     
     [self.maps setObject:[NSString stringWithFormat:@"%d",btn.tag] forKey:[NSString stringWithFormat:@"%d",answerBtn.tag]];
-    NSLog(@"maps = %@",self.maps);
     
     btn.backgroundColor = [UIColor colorWithRed:180/255.0 green:180/255.0 blue:180/255.0 alpha:1];
     btn.enabled = NO;

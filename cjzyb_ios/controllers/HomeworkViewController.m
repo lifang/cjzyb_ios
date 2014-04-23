@@ -25,12 +25,15 @@
 @property (weak, nonatomic) IBOutlet UIView *currentTopBackView;
 ///顶部显示历史任务时显示
 @property (weak, nonatomic) IBOutlet UIView *historyTopBackView;
-///顶部显示当前任务发布时间
-@property (weak, nonatomic) IBOutlet UILabel *startTaskTimeLabel;
-///顶部显示当前任务结束时间
-@property (weak, nonatomic) IBOutlet UILabel *endTaskTimeLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *currentDayTaskName;
+@property (weak, nonatomic) IBOutlet UILabel *currentDayTaskEndTime;
+@property (weak, nonatomic) IBOutlet UILabel *currentDay;
 ///底部显示历史任务发布时间
 @property (weak, nonatomic) IBOutlet UILabel *historyStartTaskLabel;
+///底部显示历史任务名称
+@property (weak, nonatomic) IBOutlet UILabel *historyNameLabel;
+
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 ///底部向左滑动的按钮
 @property (weak, nonatomic) IBOutlet UIButton *leftSwipButton;
@@ -47,7 +50,7 @@
 ///显示下一次的历史任务
 - (IBAction)rightSwipButtonClicked:(id)sender;
 
-@property (weak, nonatomic) IBOutlet UIButton * refreshBtn;
+
 @end
 
 @implementation HomeworkViewController
@@ -72,12 +75,11 @@
     __weak HomeworkViewController *weakSelf = self;
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     DataService *data = [DataService sharedService];
-    [HomeworkDaoInterface downloadCurrentTaskWithUserId:data.user.studentId withClassId:data.theClass.classId withSuccess:^(TaskObj *taskObj) {
+    [HomeworkDaoInterface downloadCurrentTaskWithUserId:data.user.studentId withClassId:data.theClass.classId withSuccess:^(NSArray *taskObjArr) {
         [self performSelectorOnMainThread:@selector(postNotification) withObject:nil waitUntilDone:NO];
         HomeworkViewController *tempSelf= weakSelf;
         if (tempSelf) {
-            tempSelf.taskObj = taskObj;
-            data.taskObj = taskObj;
+            tempSelf.currentDayTaskArray = [NSMutableArray arrayWithArray:taskObjArr];
             tempSelf.isShowHistory = NO;
             [tempSelf.collectionView reloadData];
             [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
@@ -85,7 +87,7 @@
     } withError:^(NSError *error) {
         HomeworkViewController *tempSelf= weakSelf;
         if (tempSelf) {
-            [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
+            
             [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
         }
     }];
@@ -118,7 +120,8 @@
     [HomeworkDaoInterface downloadHistoryTaskWithUserId:data.user.studentId withClassId:data.theClass.classId withCurrentTaskID:self.taskObj.taskID withSuccess:^(NSArray *taskObjArr) {
         HomeworkViewController *tempSelf= weakSelf;
         if (tempSelf) {
-            tempSelf.allHistoryTaskArray = [NSMutableArray arrayWithArray:taskObjArr] ;
+            tempSelf.allHistoryTaskArray = [NSMutableArray arrayWithArray:taskObjArr];
+            [DataService sharedService].historyTaskArray = tempSelf.allHistoryTaskArray;
             tempSelf.isShowHistory = YES;
             [tempSelf.collectionView reloadData];
             [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
@@ -134,41 +137,39 @@
 }
 
 - (IBAction)calendarButtonClicked:(id)sender {
-    __weak HomeworkViewController *weakSelf = self;
+
     CalendarViewController *calendarViewContr = [[CalendarViewController alloc] initWithNibName:@"CalendarViewController" bundle:nil];
     self.calendarPopController = [[WYPopoverController alloc] initWithContentViewController:calendarViewContr];
-    __weak WYPopoverController *weakPopoverController = self.calendarPopController;
-    calendarViewContr.selectedDateBlock =   ^(NSArray *selectedDateArray){
-        [weakPopoverController dismissPopoverAnimated:YES];
+    self.calendarPopController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.calendarPopController.theme.fillTopColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.calendarPopController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    self.calendarPopController.theme.glossShadowColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
+    
+    calendarViewContr.selectedDateBlock =   ^(NSString *dateString){
+        NSPredicate *predicateString = [NSPredicate predicateWithFormat:@"%K contains[cd] %@", @"taskStartDate", dateString];
+        NSMutableArray  *filteredArray = [NSMutableArray arrayWithArray:[[DataService sharedService].historyTaskArray filteredArrayUsingPredicate:predicateString]];
+        if (filteredArray.count>0) {
+            self.allHistoryTaskArray = [NSMutableArray arrayWithArray:filteredArray];
+            
+        }else {
+            self.allHistoryTaskArray = nil;
+        }
+        self.isShowHistory = YES;
+        [self.collectionView reloadData];
 
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        DataService *data = [DataService sharedService];
-        [HomeworkDaoInterface searchTaskWithUserId:data.user.studentId withClassId:data.theClass.classId withSelectedDate:selectedDateArray.firstObject withSuccess:^(NSArray *taskObjArr) {
-            HomeworkViewController *tempSelf= weakSelf;
-            if (tempSelf) {
-                tempSelf.allHistoryTaskArray = [NSMutableArray arrayWithArray:taskObjArr] ;
-                tempSelf.isShowHistory = YES;
-                [tempSelf.collectionView reloadData];
-                [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
-            }
-        } withError:^(NSError *error) {
-            HomeworkViewController *tempSelf= weakSelf;
-            if (tempSelf) {
-                [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
-                [MBProgressHUD hideAllHUDsForView:tempSelf.view animated:YES];
-            }
-        }];
     };
-    WYPopoverTheme *theme = [self.calendarPopController theme];
-    [theme setFillTopColor:[UIColor whiteColor]];
-    self.calendarPopController.popoverContentSize = (CGSize){500,650};
-    [self.calendarPopController presentPopoverFromRect:[(UIButton*)sender frame] inView:self.view permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES completion:^{
+    self.calendarPopController.popoverContentSize = (CGSize){500,583};
+    CGRect frame = [(UIButton*)sender frame];
+    frame.origin.y -= 10;
+    [self.calendarPopController presentPopoverFromRect:frame inView:self.view permittedArrowDirections:WYPopoverArrowDirectionAny animated:YES completion:^{
         
     }];
 }
 
 - (IBAction)backButtonClicked:(id)sender {
     self.isShowHistory = NO;
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
+    [DataService sharedService].historyTaskArray = nil;
     [self.collectionView reloadData];
 }
 
@@ -186,10 +187,18 @@
             [self.leftSwipButton setHidden:YES];
         }
         [self.rightSwipButton setHidden:NO];
-        if (self.allHistoryTaskArray.count <= 1) {
-            [self.rightSwipButton setHidden:YES];
-            [self.leftSwipButton setHidden:YES];
+        if (self.isShowHistory) {
+            if (self.allHistoryTaskArray.count <= 1) {
+                [self.rightSwipButton setHidden:YES];
+                [self.leftSwipButton setHidden:YES];
+            }
+        }else {
+            if (self.currentDayTaskArray.count <= 1) {
+                [self.rightSwipButton setHidden:YES];
+                [self.leftSwipButton setHidden:YES];
+            }
         }
+        
     }
 }
 
@@ -197,20 +206,38 @@
     NSArray *visibleItemIndexPath  = [self.collectionView indexPathsForVisibleItems];
     if (visibleItemIndexPath && visibleItemIndexPath.count > 0) {
         NSIndexPath *path = visibleItemIndexPath.firstObject;
-        if (path.item+1 < self.allHistoryTaskArray.count) {
-            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:path.item+1 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
+        if (self.isShowHistory) {
+            if (path.item+1 < self.allHistoryTaskArray.count) {
+                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:path.item+1 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
+            }
+            
+            if (path.item+1 == self.allHistoryTaskArray.count-1) {
+                [self.rightSwipButton setHidden:YES];
+            }else{
+                [self.rightSwipButton setHidden:NO];
+            }
+            [self.leftSwipButton setHidden:NO];
+            if (self.allHistoryTaskArray.count <= 1) {
+                [self.rightSwipButton setHidden:YES];
+                [self.leftSwipButton setHidden:YES];
+            }
+        }else {
+            if (path.item+1 < self.currentDayTaskArray.count) {
+                [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:path.item+1 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
+            }
+            
+            if (path.item+1 == self.currentDayTaskArray.count-1) {
+                [self.rightSwipButton setHidden:YES];
+            }else{
+                [self.rightSwipButton setHidden:NO];
+            }
+            [self.leftSwipButton setHidden:NO];
+            if (self.currentDayTaskArray.count <= 1) {
+                [self.rightSwipButton setHidden:YES];
+                [self.leftSwipButton setHidden:YES];
+            }
         }
         
-        if (path.item+1 == self.allHistoryTaskArray.count-1) {
-            [self.rightSwipButton setHidden:YES];
-        }else{
-            [self.rightSwipButton setHidden:NO];
-        }
-         [self.leftSwipButton setHidden:NO];
-        if (self.allHistoryTaskArray.count <= 1) {
-            [self.rightSwipButton setHidden:YES];
-            [self.leftSwipButton setHidden:YES];
-        }
     }
 }
 
@@ -224,10 +251,19 @@
     [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:mutableArray];
     }
 }
--(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    __block TaskObj *task = [DataService sharedService].taskObj;
-    if (alertView.tag == 1000) {
-        if (buttonIndex == 0) {//下载作业包
+#pragma mark - 弹出层
+- (void)dismissPopView:(AlertViewController *)alertView andType:(NSInteger)type{
+    [self dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideBottomBottom];
+    if (alertView.isSuccess == NO) {
+        if (type==1) {//重新答题
+            [DataService sharedService].isHistory = NO;
+            [self presentViewController:self.homeworkContainer animated:YES completion:^{
+                [self.selectedDailyController.collectionView reloadData];
+            }];
+        }
+    }else {
+        if (type==0) {//下载
+             __block TaskObj *task = [DataService sharedService].taskObj;
             AppDelegate *app = [AppDelegate shareIntance];
             __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
             progress.labelText = @"正在下载作业包，请稍后...";
@@ -247,36 +283,30 @@
                     }
                 });
             });
-            
+        }else {//查看历史记录
+            [DataService sharedService].isHistory = YES;
+            [self presentViewController:self.homeworkContainer animated:YES completion:^{
+                [self.selectedDailyController.collectionView reloadData];
+            }];
         }
-    }else
-        if (alertView.tag == 1001) {
-            if (buttonIndex == 0) {//查看历史记录
-                [DataService sharedService].isHistory = YES;
-                [self presentViewController:self.homeworkContainer animated:YES completion:^{
-                    [self.selectedDailyController.collectionView reloadData];
-                }];
-            }else
-                if (buttonIndex == 1) {//重新答题
-                    [DataService sharedService].isHistory = NO;
-                    [self presentViewController:self.homeworkContainer animated:YES completion:^{
-                        [self.selectedDailyController.collectionView reloadData];
-                    }];
-                }
-        }
+    }
+    
+    self.alertViewControl = nil;
 }
-#pragma mark --
+
+#pragma mark - 查看历史或重新答题
 -(void)showAlertWith:(HomeworkTypeObj *)typeObj {
     //判断卡包
     if ([DataService sharedService].cardsCount >=20) {
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"作业提示" message:@"卡包数量大于20，先去清理卡包?" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        alert.tag = 999;
-        [alert show];
+        MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+        progress.labelText = @"卡包数量大于20,先去清理卡包";
+        [progress hide:YES afterDelay:1];
     }else {
         if (typeObj.homeworkTypeIsFinished) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
-            alert.tag = 1001;
-            [alert show];
+            self.alertViewControl = [[AlertViewController alloc]initWithNibName:@"AlertViewController" bundle:nil];
+            self.alertViewControl.delegate = self;
+            self.alertViewControl.type = 1;
+            [self presentPopupViewController:self.alertViewControl animationType:MJPopupViewAnimationSlideBottomBottom];
         }else{
             [DataService sharedService].isHistory = NO;
             [self presentViewController:self.homeworkContainer animated:YES completion:^{
@@ -311,17 +341,19 @@
                         if (!dicData || dicData.count <= 0) {
                             [Utility errorAlert:@"下载历史记录包失败"];
                         }else{
-                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
-                            alert.tag = 1001;
-                            [alert show];
+                            self.alertViewControl = [[AlertViewController alloc]initWithNibName:@"AlertViewController" bundle:nil];
+                            self.alertViewControl.delegate = self;
+                            self.alertViewControl.type = 1;
+                            [self presentPopupViewController:self.alertViewControl animationType:MJPopupViewAnimationSlideBottomBottom];
                         }
                         [MBProgressHUD hideHUDForView:app.window animated:YES];
                     });
                 });
             }else {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:nil delegate:self cancelButtonTitle:nil otherButtonTitles:@"查看历史记录",@"重新答题" ,@"取消",nil];
-                alert.tag = 1001;
-                [alert show];
+                self.alertViewControl = [[AlertViewController alloc]initWithNibName:@"AlertViewController" bundle:nil];
+                self.alertViewControl.delegate = self;
+                self.alertViewControl.type = 1;
+                [self presentPopupViewController:self.alertViewControl animationType:MJPopupViewAnimationSlideBottomBottom];
             }
         }else {
             if (status == 0) {
@@ -386,9 +418,11 @@
             }
         }
     }else{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"下载作业包才能开始答题" delegate:self cancelButtonTitle:nil otherButtonTitles:@"下载作业包",@"取消下载" ,nil];
-        alert.tag = 1000;
-        [alert show];
+        self.alertViewControl = [[AlertViewController alloc]initWithNibName:@"AlertViewController" bundle:nil];
+        self.alertViewControl.delegate = self;
+        self.alertViewControl.type = 0;
+        
+        [self presentPopupViewController:self.alertViewControl animationType:MJPopupViewAnimationSlideBottomBottom];
     }
 }
 
@@ -419,17 +453,34 @@
     }
     cell.dailyCollectionViewController.delegate = self;
     if (self.isShowHistory) {
+        self.historyNameLabel.hidden = NO;
+        self.historyStartTaskLabel.hidden = NO;
+        self.currentDay.hidden = YES;
+        self.currentDayTaskName.hidden = YES;
+        self.currentDayTaskEndTime.hidden = YES;
         TaskObj *task = [self.allHistoryTaskArray objectAtIndex:indexPath.item];
         cell.dailyCollectionViewController.taskObj = task;
         self.historyStartTaskLabel.text = [NSString stringWithFormat:@"%@ 发布",task.taskStartDate];
+        self.historyNameLabel.text = [NSString stringWithFormat:@"%@",task.taskName];
     }else{
-        cell.dailyCollectionViewController.taskObj = self.taskObj;
-        self.startTaskTimeLabel.text = [NSString stringWithFormat:@"发布时间为 %@",self.taskObj.taskStartDate?:@""];
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"今日作业截止时间为 %@",self.taskObj.taskEndDate?:@""]];
-        [str addAttribute:NSFontAttributeName value:self.endTaskTimeLabel.font range:NSMakeRange(0, str.length)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:NSMakeRange(0, 9)];
-        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1] range:NSMakeRange(9, str.length - 9)];
-        self.endTaskTimeLabel.attributedText = str;
+        self.historyNameLabel.hidden = YES;
+        self.historyStartTaskLabel.hidden = YES;
+        self.currentDay.hidden = NO;
+        
+        if (self.currentDayTaskArray.count==0) {
+            self.currentDay.text = @"今日暂无作业";
+            self.currentDayTaskName.hidden = YES;
+            self.currentDayTaskEndTime.hidden = YES;
+        }else {
+            self.currentDay.text = @"今日作业";
+            self.currentDayTaskName.hidden = NO;
+            self.currentDayTaskEndTime.hidden = NO;
+            
+            TaskObj *task = [self.currentDayTaskArray objectAtIndex:indexPath.item];
+            cell.dailyCollectionViewController.taskObj = task;
+            self.currentDayTaskName.text = [NSString stringWithFormat:@"%@",task.taskName];
+            self.currentDayTaskEndTime.text = [NSString stringWithFormat:@"截止日期    %@",task.taskStartDate];
+        }
     }
     return cell;
 }
@@ -442,7 +493,7 @@
     if (self.isShowHistory) {
         return self.allHistoryTaskArray.count;
     }else{
-        return 1;
+        return self.currentDayTaskArray.count;
     }
 }
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -466,6 +517,22 @@
                 [self.rightSwipButton setHidden:NO];
             }
         }
+    }else {
+        NSArray *visibleItemIndexPath  = [self.collectionView indexPathsForVisibleItems];
+        if (visibleItemIndexPath && visibleItemIndexPath.count > 0) {
+            NSIndexPath *indexPath = visibleItemIndexPath.firstObject;
+            if (indexPath.item == 0) {
+                [self.leftSwipButton setHidden:YES];
+            }else{
+                [self.leftSwipButton setHidden:NO];
+            }
+            
+            if (indexPath.item == self.currentDayTaskArray.count-1) {
+                [self.rightSwipButton setHidden:YES];
+            }else{
+                [self.rightSwipButton setHidden:NO];
+            }
+        }
     }
 }
 #pragma mark --
@@ -480,7 +547,7 @@
     if (isShowHistory) {
         [self.rightSwipButton setHidden:self.allHistoryTaskArray.count > 1?NO:YES];
     }else{
-        [self.rightSwipButton setHidden:YES];
+        [self.rightSwipButton setHidden:self.currentDayTaskArray.count > 1?NO:YES];
     }
 }
 
