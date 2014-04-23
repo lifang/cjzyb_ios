@@ -11,4 +11,5 @@
 
 @interface LHLNotificationViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,LHLNotificationCellDelegate,UITextViewDelegate>
 @property (strong,nonatomic) AppDelegate *appDel;
+-(void)requestSysNoticeWithStudentID:(NSString *)studentID andClassID:(NSString *)classID andPage:(NSString *)page;
 @end

@@ -29,19 +29,26 @@
     
     [self tabBarInit];
     
-    [self setSelectedIndex:[DataService sharedService].notificationPage animated:NO];
+    if ([DataService sharedService].notificationPage) {
+        [self setSelectedIndex:[DataService sharedService].notificationPage animated:NO];
+    }else{
+        [self setSelectedIndex:1 animated:NO];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated{
+    //如果通知页面有小红点,就刷新到该页面
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     if(![[appDelegate.notification_dic objectForKey:[DataService sharedService].theClass.classId] isKindOfClass:[NSNull class]] && [appDelegate.notification_dic objectForKey:[DataService sharedService].theClass.classId] != nil){
         NSArray *noticeArray = [appDelegate.notification_dic objectForKey:[DataService sharedService].theClass.classId];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (((NSString *)[noticeArray firstObject]).integerValue == 1) {
-                [self tabBarInit];
+                LHLNotificationViewController *noticeViewController = (LHLNotificationViewController *)[self.pagesContainer.viewControllers lastObject];
+                [noticeViewController requestSysNoticeWithStudentID:[DataService sharedService].user.studentId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
                 [self setSelectedIndex:1 animated:YES];
             }else if(noticeArray.count > 1 && ((NSString *)noticeArray[1]).integerValue == 1){
-                [self tabBarInit];
+                LHLReplyNotificationViewController *replyNotificationViewController = (LHLReplyNotificationViewController *)[self.pagesContainer.viewControllers firstObject];
+                [replyNotificationViewController requestMyNoticeWithUserID:[DataService sharedService].user.userId andClassID:[DataService sharedService].theClass.classId andPage:@"1"];
                 [self setSelectedIndex:0 animated:YES];
             }
         });
@@ -49,12 +56,6 @@
 }
 
 - (void)tabBarInit{
-    if (self.pagesContainer) {
-        [self.pagesContainer.view removeFromSuperview];
-        [self.pagesContainer removeFromParentViewController];
-        self.pagesContainer = nil;
-    }
-    
     self.pagesContainer = [[DAPagesContainer alloc] init];
     [self.pagesContainer willMoveToParentViewController:self];
     self.pagesContainer.view.frame = self.view.bounds;
