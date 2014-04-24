@@ -150,6 +150,10 @@
     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
 }
 
+- (void)notificationTableScrollToTop{
+    [self.tableView setContentOffset:(CGPoint){0,0}];
+}
+
 //TODO: 此格式会不会改?  处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
 -(NSString *)handleApiResponseTimeString:(NSString *)str{
     if (![str isKindOfClass:[NSString class]]) {
@@ -203,7 +207,7 @@
                 self.isLoading = NO;
                 [self performSelectorOnMainThread:@selector(postNotification) withObject:nil waitUntilDone:NO];
                 
-                if (self.isRefreshing) {
+                if (page.integerValue == 1) {
                     self.replyNotificationArray = [NSMutableArray array];
                     self.pageOfReplyNotification = 1;
                     self.editingReplyCellIndexPath = nil;
@@ -252,6 +256,10 @@
                         [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.5];
                     }
                     [self.tableView reloadData];
+                    //刷新时回归原位
+                    if (page.integerValue == 1) {
+                        [self performSelector:@selector(notificationTableScrollToTop) withObject:nil afterDelay:0.5];
+                    }
                 });
             } withFailure:^(NSError *error) {
                 self.isLoading = NO;

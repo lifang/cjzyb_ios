@@ -137,7 +137,6 @@
 		0EE461F519074C4300F38A4C /* MJPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE461F319074C4300F38A4C /* MJPopupBackgroundView.m */; };
 		0EE461F919074D8D00F38A4C /* AlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE461F719074D8D00F38A4C /* AlertViewController.m */; };
 		0EE461FA19074D8D00F38A4C /* AlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EE461F819074D8D00F38A4C /* AlertViewController.xib */; };
-		0EE461FC1907504C00F38A4C /* close.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EE461FB1907504C00F38A4C /* close.png */; };
 		0EE46206190769D500F38A4C /* EMHint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE46203190769D500F38A4C /* EMHint.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0EE46207190769D500F38A4C /* EMHintsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE46204190769D500F38A4C /* EMHintsView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0EE4620A19076A2200F38A4C /* HintHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE4620919076A2200F38A4C /* HintHelper.m */; };
@@ -180,6 +179,7 @@
 		1818F6A618C561ED00DC6207 /* TenSecChallengeResultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1818F6A518C561ED00DC6207 /* TenSecChallengeResultView.xib */; };
 		181A786618C4206700D288D3 /* TenSecChallengeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786418C4206700D288D3 /* TenSecChallengeViewController.m */; };
 		181A786A18C469AB00D288D3 /* TenSecChallengeObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 181A786918C469AB00D288D3 /* TenSecChallengeObject.m */; };
+		182622951908E7F200724654 /* delete_icon&48@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 182622941908E7F200724654 /* delete_icon&48@2x.png */; };
 		182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */; };
 		182AF15D18F7D7F300EA5A7E /* FullText.m in Sources */ = {isa = PBXBuildFile; fileRef = 182AF15B18F7D7F300EA5A7E /* FullText.m */; };
 		182AF15E18F7D7F300EA5A7E /* FullText.xib in Resources */ = {isa = PBXBuildFile; fileRef = 182AF15C18F7D7F300EA5A7E /* FullText.xib */; };
@@ -578,7 +578,6 @@
 		0EE461F619074D8D00F38A4C /* AlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertViewController.h; path = ../views/AlertViewController.h; sourceTree = "<group>"; };
 		0EE461F719074D8D00F38A4C /* AlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlertViewController.m; path = ../views/AlertViewController.m; sourceTree = "<group>"; };
 		0EE461F819074D8D00F38A4C /* AlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AlertViewController.xib; path = ../views/AlertViewController.xib; sourceTree = "<group>"; };
-		0EE461FB1907504C00F38A4C /* close.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = close.png; sourceTree = "<group>"; };
 		0EE46202190769D500F38A4C /* EMHint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMHint.h; sourceTree = "<group>"; };
 		0EE46203190769D500F38A4C /* EMHint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMHint.m; sourceTree = "<group>"; };
 		0EE46204190769D500F38A4C /* EMHintsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMHintsView.m; sourceTree = "<group>"; };
@@ -655,6 +654,7 @@
 		181A786818C469AB00D288D3 /* TenSecChallengeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TenSecChallengeObject.h; sourceTree = SOURCE_ROOT; };
 		181A786918C469AB00D288D3 /* TenSecChallengeObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TenSecChallengeObject.m; sourceTree = SOURCE_ROOT; };
 		182622931908B8B600724654 /* UIImageView+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImageView+Addition.h"; path = "../views/UIImageView+Addition.h"; sourceTree = "<group>"; };
+		182622941908E7F200724654 /* delete_icon&48@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete_icon&48@2x.png"; sourceTree = "<group>"; };
 		182A89D718C977BC00CF4B30 /* OrdinaryAnswerObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrdinaryAnswerObject.h; sourceTree = SOURCE_ROOT; };
 		182A89D818C977BC00CF4B30 /* OrdinaryAnswerObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrdinaryAnswerObject.m; sourceTree = SOURCE_ROOT; };
 		182AF15A18F7D7F300EA5A7E /* FullText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullText.h; sourceTree = "<group>"; };
@@ -1076,7 +1076,6 @@
 			children = (
 				0EE4620B1908A01400F38A4C /* left@2x.png */,
 				0EE4620C1908A01400F38A4C /* right@2x.png */,
-				0EE461FB1907504C00F38A4C /* close.png */,
 				0EAB00901904B1270007C994 /* waring@2x.png */,
 				0EA8695218FBB2DE008658B8 /* niuqi_yellow@2x.png */,
 				0EA8695018FBAFE3008658B8 /* niuqi@2x.png */,
@@ -1892,6 +1891,7 @@
 		638C04FC18E51D85009BFD40 /* ranking */ = {
 			isa = PBXGroup;
 			children = (
+				182622941908E7F200724654 /* delete_icon&48@2x.png */,
 				638C04FD18E51E1F009BFD40 /* close@2x.png */,
 			);
 			name = ranking;
@@ -2224,6 +2224,7 @@
 			files = (
 				18CF139218E93B61001E3448 /* MainViewController.xib in Resources */,
 				63AFA4CC18E510A200A30DB1 /* HomeworkTypeCollctionCell.xib in Resources */,
+				182622951908E7F200724654 /* delete_icon&48@2x.png in Resources */,
 				186C021E18D9866000D77EEC /* SelectingChallengeViewController.xib in Resources */,
 				18CF139718E961CB001E3448 /* LHLNotificationContainerVC.xib in Resources */,
 				185BAF1D18D8423600EE34F9 /* TenSecChallengeViewController.xib in Resources */,
@@ -2309,7 +2310,6 @@
 				0E9D689E18CD670E00EACFA3 /* CardpackageViewController.xib in Resources */,
 				0E9D68DC18CDC45400EACFA3 /* card_highted@2x.png in Resources */,
 				0E9D68A518CD680700EACFA3 /* card_deleteBtn@2x.png in Resources */,
-				0EE461FC1907504C00F38A4C /* close.png in Resources */,
 				0E9D688918C9A96C00EACFA3 /* detail_logIn@2x.png in Resources */,
 				1867B53A18D008C50042A95D /* trash_icon@2x.png in Resources */,
 				187C4ACF18D304AC0006461D /* 10_10@2x.png in Resources */,

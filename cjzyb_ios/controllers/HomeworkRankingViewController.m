@@ -35,7 +35,6 @@
     self.tableBackView.backgroundColor = [UIColor colorWithRed:24./255. green:139./255. blue:79./255. alpha:1.];
     
     
-//    self.view.layer.cornerRadius = 10;
     // Do any additional setup after loading the view from its nib.
 }
 

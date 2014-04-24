@@ -132,6 +132,10 @@
     [MBProgressHUD hideAllHUDsForView:self.tableView animated:YES];
 }
 
+- (void)notificationTableScrollToTop{
+    [self.tableView setContentOffset:(CGPoint){0,0}];
+}
+
 //TODO: 此格式会不会改?  处理服务器返回的时间字符串 ("2014-03-25T15:23:13+08:00")
 -(NSString *)handleApiResponseTimeString:(NSString *)str{
     if (![str isKindOfClass:[NSString class]]) {
@@ -155,16 +159,6 @@
     [header addSubview:loadLab];
     self.tableView.tableFooterView = header;
 }
-
-//-(void)initHeaderView {
-//    UIView *header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 768, 50)];
-//    header.backgroundColor = [UIColor clearColor];
-//    [header addSubview:self.indicView];
-//    UILabel *loadLab = [[UILabel alloc]initWithFrame:CGRectMake(self.indicView.frame.origin.x+30, 10, 200, 30)];
-//    loadLab.text = @"正在刷新中...";
-//    [header addSubview:loadLab];
-//    self.tableView.tableHeaderView = header;
-//}
 
 #pragma mark -- 请求接口
 -(void)postNotification {
@@ -193,8 +187,7 @@
             [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
                 self.isLoading = NO;
                 [self performSelectorOnMainThread:@selector(postNotification) withObject:nil waitUntilDone:NO];
-                
-                if (self.isRefreshing) {
+                if (page.integerValue == 1) {
                     self.notificationArray = [NSMutableArray array];
                     self.pageOfNotification = 1;
                     self.editingNotiCellIndexPath = nil;
@@ -209,7 +202,6 @@
                     obj.notiSchoolClassID = [noticeDic objectForKey:@"school_class_id"];
                     obj.notiStudentID = [noticeDic objectForKey:@"student_id"];
                     obj.notiContent = [noticeDic objectForKey:@"content"];
-//                    obj.notiTime = [NSString stringWithFormat:@"%@",[noticeDic objectForKey:@"created_at"]];
                     obj.notiTime = [NSString stringWithFormat:@"%@",[noticeDic objectForKey:@"new_created_at"]];
                     obj.isEditing = NO;
                     [self.notificationArray addObject:obj];
@@ -225,6 +217,10 @@
                     }
                     
                     [self.tableView reloadData];
+                    //刷新时回归原位
+                    if (page.integerValue == 1) {
+                        [self performSelector:@selector(notificationTableScrollToTop) withObject:nil afterDelay:0.5];
+                    }
                 });
             } withFailure:^(NSError *error) {
                 self.isLoading = NO;
@@ -375,5 +371,6 @@
         }
     }
 }
+
 
 @end
