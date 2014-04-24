@@ -60,7 +60,6 @@
         self.contentBgView = [[UIView alloc] init];
         _contentBgView.backgroundColor = [UIColor whiteColor];
         [self addSubview:_contentBgView];
-//        [self.contentView bringSubviewToFront:_contentBgView];
         
         //标题背景
         self.titleBgView = [[UIView alloc] init];
@@ -79,18 +78,10 @@
         _replyerNameLabel.textColor = [UIColor colorWithRed:21.0/255.0 green:168.0/255.0 blue:95.0/255.0 alpha:1.0];
         [_titleBgView addSubview:_replyerNameLabel];
         
-//        //"回复"二字
-//        self.unnamedLabel = [[UILabel alloc] init];
-//        _unnamedLabel.font = LHLFONT;
-//        _unnamedLabel.text = @"回复";
-//        _unnamedLabel.textColor = [UIColor darkGrayColor];
-//        [_titleBgView addSubview:_unnamedLabel];
-        
         //我的名字
         self.myNameLabel = [[UILabel alloc] init];
         _myNameLabel.font = LHLFONT;
         _myNameLabel.textColor = [UIColor darkGrayColor];
-//        _myNameLabel.textColor = [UIColor colorWithRed:22.0/255.0 green:168.0/255.0 blue:95.0/255.0 alpha:1.0];
         [_titleBgView addSubview:_myNameLabel];
         
         //回复时间
@@ -136,9 +127,6 @@
         CGSize size = [Utility getTextSizeWithString:self.replyObject.replyerName withFont:LHLFONT];
         _replyerNameLabel.frame = (CGRect){0,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
         
-//        size = [Utility getTextSizeWithString:@"回复" withFont:LHLFONT];
-//        _unnamedLabel.frame = (CGRect){CGRectGetMaxX(_replyerNameLabel.frame) + LHLTEXT_PADDING,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
-        
         size = [Utility getTextSizeWithString:self.replyObject.replyTargetName withFont:LHLFONT];
         _myNameLabel.frame = (CGRect){CGRectGetMaxX(_replyerNameLabel.frame) + LHLTEXT_PADDING,0,size.width + LHLTEXT_PADDING,titleBgFrame.size.height};
         
@@ -177,15 +165,6 @@
 
     // Configure the view for the selected state
 }
-
-////图像缓冲
-//- (UIImage *)bufferedImageForAddress:(NSString *)address{
-//    
-//    NSData *imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"kHOST%@",address]]];
-//    NSMutableDictionary *tempImageDic = [NSMutableDictionary dictionary];
-//    [tempImageDic setObject:imageData forKey:address];
-//    return nil;
-//}
 
 #pragma mark -- 按钮响应方法
 
