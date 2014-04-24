@@ -153,9 +153,12 @@
         NSPredicate *predicateString = [NSPredicate predicateWithFormat:@"%K contains[cd] %@", @"taskStartDate", dateString];
         NSMutableArray  *filteredArray = [NSMutableArray arrayWithArray:[[DataService sharedService].historyTaskArray filteredArrayUsingPredicate:predicateString]];
         if (filteredArray.count>0) {
+            self.historyNameLabel.hidden = NO;
+            self.historyStartTaskLabel.hidden = NO;
             self.allHistoryTaskArray = [NSMutableArray arrayWithArray:filteredArray];
-            
         }else {
+            self.historyNameLabel.hidden = YES;
+            self.historyStartTaskLabel.hidden = YES;
             self.allHistoryTaskArray = nil;
         }
         self.isShowHistory = YES;
@@ -172,7 +175,14 @@
 
 - (IBAction)backButtonClicked:(id)sender {
     self.isShowHistory = NO;
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
+    NSArray *visibleItemIndexPath  = [self.collectionView indexPathsForVisibleItems];
+    if (visibleItemIndexPath && visibleItemIndexPath.count > 0) {
+        NSIndexPath *path = visibleItemIndexPath.firstObject;
+        if (path.item -1 >= 0) {
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
+        }
+    }
+    
     [DataService sharedService].historyTaskArray = nil;
     
     if (self.currentDayTaskArray.count==0) {

@@ -57,10 +57,20 @@
     UITapGestureRecognizer *hiddenViewGecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hiddenViewAnimation)];
     [coverView addGestureRecognizer:hiddenViewGecognizer];
     
+    
+    float scale = 0;
+    UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    if (interfaceOrientation==UIDeviceOrientationPortrait) {
+        scale = 0;
+    }else if (interfaceOrientation==UIDeviceOrientationPortraitUpsideDown){
+        scale = 1;
+    }
+    
+    
     UIImageView *imageView = [[UIImageView alloc] initWithImage:self.image];
     imageView.tag = kImageViewTag;
     imageView.userInteractionEnabled = YES;
-    imageView.transform = CGAffineTransformMakeRotation(0);//图片翻转
+    imageView.transform = CGAffineTransformMakeRotation(M_PI*scale);//图片翻转
     CGRect rect = [self convertRect:self.bounds toView:self.window];
     imageView.frame = rect;
     

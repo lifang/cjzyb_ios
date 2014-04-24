@@ -118,7 +118,7 @@ static BOOL isCanUpLoad = NO;
     self.orgArray = [Utility handleTheString:content];
     
     self.metaphoneArray = [Utility metaphoneArray:self.orgArray];
-    self.tmpArray = nil;self.tmpIndexArray = nil;
+    self.tmpArray = nil;self.tmpIndexArray = nil;self.remindArray=nil;
     
     for (int i=0; i<self.orgArray.count; i++) {
         UITextField *text = [self returnTextField];
@@ -226,37 +226,18 @@ static BOOL isCanUpLoad = NO;
     self.wordsContainerView.frame = CGRectMake(768, 10, 640, 600);
     [self.view addSubview:self.wordsContainerView];
     
-    [Utility shared].isOrg = NO;
-    [Utility shared].correctArray = [[NSMutableArray alloc]init];
-    [Utility shared].sureArray = [[NSMutableArray alloc]init];
-    [Utility shared].greenArray = [[NSMutableArray alloc]init];
-    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
-    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
-    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
-    [Utility shared].firstpoint = 0;
-    
     NSString *txt = [self.history_branchQuestionDic objectForKey:@"answer"];
     NSArray *array = [txt componentsSeparatedByString:@";||;"];
-    NSString *originString =[array objectAtIndex:0];
-    [Utility shared].isOrg = NO;
-    NSArray *array1 = [Utility handleTheString:originString];
-    NSArray *array2 = [Utility metaphoneArray:array1];
-    [Utility shared].sureArray = [[NSMutableArray alloc]init];
-    [Utility shared].greenArray = [[NSMutableArray alloc]init];
-    [Utility shared].yellowArray = [[NSMutableArray alloc]init];
-    [Utility shared].wrongArray = [[NSMutableArray alloc]init];
-    [Utility shared].spaceLineArray = [[NSMutableArray alloc]init];
-    [Utility shared].firstpoint = 0;
-    self.resultDic = [Utility listenCompareWithArray:array1 andArray:array2 WithArray:self.orgArray andArray:self.metaphoneArray WithRange:[Utility shared].rangeArray];
     NSMutableString *remindString = [NSMutableString string];
-    if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
+    if (array.count>1) {
         self.remindView.hidden = NO;
-        NSArray *sureArray = [self.resultDic objectForKey:@"sure"];
-        for (int i=0; i<sureArray.count; i++) {
-            [remindString appendFormat:@"%@  ",[sureArray objectAtIndex:i]];
+        for (int i=1; i<array.count; i++) {
+            [remindString appendFormat:@"%@  ",[array objectAtIndex:i]];
         }
+        self.remindLab.text = remindString;
+    }else {
+        self.remindView.hidden = YES;
     }
-    self.remindLab.text = remindString;
     
     [UIView animateWithDuration:0.5 animations:^{
         [self.wordsContainerView setFrame:CGRectMake(108, 10, 640, frame.origin.y+frame.size.height)];
@@ -472,6 +453,12 @@ static BOOL isCanUpLoad = NO;
         _propsArray = [[NSMutableArray alloc]init];
     }
     return _propsArray;
+}
+- (NSMutableArray *)remindArray {
+    if (!_remindArray) {
+        _remindArray = [[NSMutableArray alloc]init];
+    }
+    return _remindArray;
 }
 -(NSMutableArray *)tmpArray {
     if (!_tmpArray) {
@@ -769,8 +756,16 @@ static int numberOfMusic =0;
         }else {
             NSMutableArray *tmpArray = [NSMutableArray arrayWithArray:self.orgArray];
             NSPredicate *thePredicate = [NSPredicate predicateWithFormat:@"NOT (SELF in %@)", correct_array];
-            
             [tmpArray filterUsingPredicate:thePredicate];
+            
+            //提醒多写的词
+            NSMutableArray *remindTmpArray = [NSMutableArray arrayWithArray:tmpArray];
+            NSPredicate *thePredicate2 = [NSPredicate predicateWithFormat:@"NOT (SELF in %@)", self.remindArray];
+            [remindTmpArray filterUsingPredicate:thePredicate2];
+        
+            [self.remindArray addObjectsFromArray:remindTmpArray];
+            NSLog(@"1=%@",self.remindArray);
+            
             self.remindView.hidden=NO;
             
             int indexx = arc4random() % (tmpArray.count);
@@ -780,6 +775,14 @@ static int numberOfMusic =0;
         }
     }else {
         self.remindView.hidden=NO;
+        
+        //提醒多写的词
+        NSMutableArray *remindTmpArray = [NSMutableArray arrayWithArray:self.orgArray];
+        NSPredicate *thePredicate2 = [NSPredicate predicateWithFormat:@"NOT (SELF in %@)", self.remindArray];
+        [remindTmpArray filterUsingPredicate:thePredicate2];
+        
+        [self.remindArray addObjectsFromArray:remindTmpArray];
+        NSLog(@"2=%@",self.remindArray);
         
         int indexx = arc4random() % (self.orgArray.count);
         NSString *letterStr = [self.orgArray objectAtIndex:indexx];
@@ -948,35 +951,8 @@ static CGFloat tmp_ratio = -100;
             }
             
             BOOL isToJson = NO;//判断是否写入json
-            
-            if (![[self.resultDic objectForKey:@"yellow"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"yellow"]!=nil) {
-                NSMutableArray *yellow_array = [self.resultDic objectForKey:@"yellow"];
-                for (int i=0; i<yellow_array.count; i++) {
-                    NSTextCheckingResult *math = (NSTextCheckingResult *)[yellow_array objectAtIndex:i];
-                    NSRange range = [math rangeAtIndex:0];
-                    NSString *str = [originString substringWithRange:NSMakeRange(range.location, range.length)];
-                    
-                    int index = [self.tmpArray indexOfObject:str];
-                    [wrong_anserString appendFormat:@"%@;||;",[self.orgArray objectAtIndex:index]];
-                }
-            }
-            
             if (![[self.resultDic objectForKey:@"wrong"]isKindOfClass:[NSNull class]] && [self.resultDic objectForKey:@"wrong"]!=nil) {
                 isToJson = NO;//还有错词不写入json
-                
-                NSMutableArray *yellow_array = [self.resultDic objectForKey:@"wrong"];
-                for (int i=0; i<yellow_array.count; i++) {
-                    NSTextCheckingResult *math = (NSTextCheckingResult *)[yellow_array objectAtIndex:i];
-                    NSRange range = [math rangeAtIndex:0];
-                    NSString *str = [originString substringWithRange:NSMakeRange(range.location, range.length)];
-                    
-                    int index = [self.tmpArray indexOfObject:str];
-                    if (i==yellow_array.count-1) {
-                        [wrong_anserString appendFormat:@"%@",[self.orgArray objectAtIndex:index]];
-                    }else {
-                        [wrong_anserString appendFormat:@"%@;||;",[self.orgArray objectAtIndex:index]];
-                    }
-                }
             }else if (isFinish == YES){
                 isToJson = YES;//没有错词写入json
                 if (self.branchNumber==self.branchQuestionArray.count-1 && self.number==self.questionArray.count-1) {
@@ -1001,6 +977,13 @@ static CGFloat tmp_ratio = -100;
                 FALSESOUND;
             }
             if (self.isFirst==YES && isToJson==YES) {
+                for (int i=0; i<self.remindArray.count; i++) {
+                    if (i==self.remindArray.count-1) {
+                        [wrong_anserString appendFormat:@"%@",[self.remindArray objectAtIndex:i]];
+                    }else {
+                        [wrong_anserString appendFormat:@"%@;||;",[self.remindArray objectAtIndex:i]];
+                    }
+                }
                 NSString *answer = [NSString stringWithFormat:@"%@;||;%@",anserString,wrong_anserString];
                 //TODO:写入json
                 int number_question = [[self.answerDic objectForKey:@"questions_item"]intValue];
