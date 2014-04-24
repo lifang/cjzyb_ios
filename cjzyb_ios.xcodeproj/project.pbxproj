@@ -108,7 +108,6 @@
 		0E9D68D918CDC28700EACFA3 /* MyPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9D68D818CDC28700EACFA3 /* MyPageControl.m */; };
 		0E9D68DC18CDC45400EACFA3 /* card_highted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9D68DA18CDC45400EACFA3 /* card_highted@2x.png */; };
 		0E9D68DD18CDC45400EACFA3 /* card_normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9D68DB18CDC45400EACFA3 /* card_normal@2x.png */; };
-		0EA5D94618FE5FFE009BAF03 /* UIImageView+Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EA5D94518FE5FFE009BAF03 /* UIImageView+Addition.m */; };
 		0EA8693C18FB7749008658B8 /* logo_detail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA8693B18FB7749008658B8 /* logo_detail@2x.png */; };
 		0EA8694118FB80CF008658B8 /* Icon_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA8693D18FB80CF008658B8 /* Icon_5.png */; };
 		0EA8694218FB80CF008658B8 /* Icon_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EA8693E18FB80CF008658B8 /* Icon_5@2x.png */; };
@@ -538,8 +537,6 @@
 		0E9D68D818CDC28700EACFA3 /* MyPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPageControl.m; sourceTree = "<group>"; };
 		0E9D68DA18CDC45400EACFA3 /* card_highted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "card_highted@2x.png"; sourceTree = "<group>"; };
 		0E9D68DB18CDC45400EACFA3 /* card_normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "card_normal@2x.png"; sourceTree = "<group>"; };
-		0EA5D94418FE5FFE009BAF03 /* UIImageView+Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Addition.h"; sourceTree = "<group>"; };
-		0EA5D94518FE5FFE009BAF03 /* UIImageView+Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Addition.m"; sourceTree = "<group>"; };
 		0EA8693B18FB7749008658B8 /* logo_detail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_detail@2x.png"; sourceTree = "<group>"; };
 		0EA8693D18FB80CF008658B8 /* Icon_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_5.png; sourceTree = "<group>"; };
 		0EA8693E18FB80CF008658B8 /* Icon_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_5@2x.png"; sourceTree = "<group>"; };
@@ -1213,8 +1210,6 @@
 		0EAABDB118D02E6400CD2DE7 /* 卡包 */ = {
 			isa = PBXGroup;
 			children = (
-				0EA5D94418FE5FFE009BAF03 /* UIImageView+Addition.h */,
-				0EA5D94518FE5FFE009BAF03 /* UIImageView+Addition.m */,
 				0EAABD6E18CEEC7500CD2DE7 /* TagCell.h */,
 				0EAABD6F18CEEC7500CD2DE7 /* TagCell.m */,
 				0EAABD8918CF22F700CD2DE7 /* TagViewFooter.h */,
@@ -2487,7 +2482,6 @@
 				63CBCC1B18D2FA90006F7C3D /* UserObjDaoInterface.m in Sources */,
 				18AAB75C19068114003FD195 /* LHLDoubleMetaphone.m in Sources */,
 				0EEF4BCF18C561300058606A /* DataService.m in Sources */,
-				0EA5D94618FE5FFE009BAF03 /* UIImageView+Addition.m in Sources */,
 				182A89D918C977BC00CF4B30 /* OrdinaryAnswerObject.m in Sources */,
 				0E9C6E9818D1496000E807D1 /* SortViewController.m in Sources */,
 				0E92654F18BD9016003ADEC3 /* MainViewController.m in Sources */,

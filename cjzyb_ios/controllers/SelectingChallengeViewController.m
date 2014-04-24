@@ -828,17 +828,16 @@
     }
     
     if (!self.isViewingHistory) {
-        if (self.currentSelectedOptions.count < 1) {
+        if (!self.checked && self.currentSelectedOptions.count < 1) {//未作选择
             [Utility errorAlert:@"请先填写您的答案～"];
             return;
         }
         self.optionTable.contentOffset = CGPointMake(0, 0);
         
-        if (!self.checked) {
-            //先检查
+        if (!self.checked) {//未检查
             [self checkChoice];
             [self pauseChallenge];
-        }else{
+        }else{//已检查
             [self loadNextQuestion];
             self.timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timerFired:) userInfo:nil repeats:YES];
             if (!self.isLastQuestion) {
