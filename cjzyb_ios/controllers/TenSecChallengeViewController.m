@@ -99,11 +99,6 @@
         self.currentNO = 0;
         self.historyView.hidden = NO;
         self.historyView.backgroundColor = [UIColor colorWithRed:39./255. green:48./255. blue:57./255. alpha:1.0];
-        [self handleAnyView:self.upperButton];
-        [self handleAnyView:self.lowerButton];
-        [self handleAnyView:self.upperOptionLabel];
-        [self handleAnyView:self.lowerOptionLabel];
-        [self handleAnyView:self.questionLabel];
         
         NSInteger ratio = 0;
         for (int i = 0; i < self.answerArray.count; i ++) {
@@ -463,11 +458,6 @@
             label.font = [UIFont systemFontOfSize:fontSize];
         }
     }
-}
-
-///把某个view向上移动97
-- (void)handleAnyView:(UIView *)view{
-    view.center = (CGPoint){view.center.x,view.center.y - 97};
 }
 
 #pragma mark -- property
