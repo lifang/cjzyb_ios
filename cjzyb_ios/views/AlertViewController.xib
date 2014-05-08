@@ -65,6 +65,6 @@
         </view>
     </objects>
     <resources>
-        <image name="close.png" width="44" height="44"/>
+        <image name="close.png" width="22" height="22"/>
     </resources>
 </document>

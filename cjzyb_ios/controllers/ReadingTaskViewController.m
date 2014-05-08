@@ -862,7 +862,6 @@
     for (NSString *key in dic) {
         [result appendFormat:@"%@",key];
     }
-    NSLog(@"听写结果：%@",result);
     
     [_iflyRecognizerView cancel];
     

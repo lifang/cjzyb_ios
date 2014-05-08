@@ -12,40 +12,20 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
-    return [self initWithFrame:frame andFirst:nil andSecond:nil andObj:nil];
-}
-- (id)initWithFrame:(CGRect)frame andFirst:(CardFirstView *)first andSecond:(CardSecondView *)second andObj:(CardObject *)object 
-{
     self = [super initWithFrame:frame];
     if (self) {
-        self.displayingPrimary = YES;
         
-        self.cardFirst = first;
-        CGRect frame1 = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-        [self.cardFirst setFrame: frame1];
-        self.cardFirst.userInteractionEnabled = YES;
-        self.cardFirst.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"card_back"]];
-        [self.cardFirst addTarget:self action:@selector(flipTouched) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:self.cardFirst];
-        
-        self.cardSecond = second;
-        [self.cardSecond setFrame: frame1];
-        [self addSubview:self.cardSecond];
-        self.cardSecond.userInteractionEnabled = YES;
-        [self sendSubviewToBack:self.cardSecond];
-        self.cardSecond.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"card_back_selected"]];
-        [self.cardSecond addTarget:self action:@selector(flipTouched) forControlEvents:UIControlEventTouchUpInside];
-        
-        self.aCard = object;
-        
-        [self setSubView];
-        
-    
     }
     return self;
 }
+-(void)setACard:(CardObject *)aCard {
+    _aCard = aCard;
+
+    [self setSubView];
+}
+
 -(CGSize)getSizeWithString:(NSString *)str withWidth:(int)width{
-    UIFont *aFont = [UIFont systemFontOfSize:22];
+    UIFont *aFont = [UIFont systemFontOfSize:20];
     CGSize size = [str sizeWithFont:aFont constrainedToSize:CGSizeMake(width, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
     return size;
 }
@@ -74,6 +54,7 @@
     self.fullTextString = mutableString;
     
 }
+#pragma mark --取中括号
 -(NSRange)dealWithString:(NSString *)string{
     NSString *regTags = @"\\[\\[.*?]]";
     NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regTags
@@ -88,109 +69,124 @@
     
     return range;
 }
--(void)setSubView {
+#pragma mark --取标点
+-(NSArray *)getPoint:(NSString *)string{
+    
+    NSString *regTags = @"[?~!;\\.。？！；！～]";
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regTags
+                                                                           options:NSRegularExpressionCaseInsensitive
+                                                                             error:nil];
+    // 执行匹配的过程
+    NSArray *array = [regex matchesInString:string
+                                    options:0
+                                      range:NSMakeRange(0, [string length])];
+    return array;
+}
 
-    [self.cardFirst setTagNameArray:self.aCard.tagArray];
-    //MISTAKE_TYPES_NAME = {0 => "默认", 1 => "读错",2 => '写错',3 => '选错'}
-    switch (self.aCard.mistake_types) {
-        case 1:
-            self.cardFirst.titleLab1.text = @"读错词汇:";
-            self.cardFirst.titleLab2.hidden=YES;
-            self.cardFirst.rightLetterLab.hidden = YES;
-            break;
-        case 2:
-            self.cardFirst.titleLab1.text = @"拼错词汇:";
-            self.cardFirst.titleLab2.text = @"正确拼写:";
-            self.cardFirst.titleLab2.hidden=NO;
-            self.cardFirst.rightLetterLab.hidden = NO;
-            
-            break;
-        case 3:
-            self.cardFirst.titleLab1.text = @"选错词汇:";
-            self.cardFirst.titleLab2.text = @"正确选择:";
-            self.cardFirst.titleLab2.hidden=NO;
-            self.cardFirst.rightLetterLab.hidden = NO;
-            break;
-            
-        default:
-            break;
-    }
+//原文－（20，50）  宽－240
+-(void)setSubView {
     //TYPES_NAME = {0 => "听力", 1 => "朗读",  2 => "十速挑战", 3 => "选择", 4 => "连线", 5 => "完型填空", 6 => "排序"}
+    self.remindImageView.hidden=YES;
     int type = [self.aCard.types integerValue];
-    self.cardSecond.showFullText.hidden = YES;
     if (type==0) {//听力
-        self.cardSecond.voiceBtn.hidden=NO;
-        [self.cardSecond.rtLab setText:self.aCard.content];
-        NSArray *yourArray = [self.aCard.your_answer componentsSeparatedByString:@";||;"];
-        NSString *wrongStr = [yourArray objectAtIndex:0];
-        self.cardFirst.wrongLetterLab.text =wrongStr;
+        self.typeLabel.text = @"听写:";
+        self.remindButton.hidden=NO;
+        [self.remindButton setImage:[UIImage imageNamed:@"card_voiceBtn"] forState:UIControlStateNormal];
+        [self.remindButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+        [self.remindButton addTarget:self action:@selector(voiceButtonPressed) forControlEvents:UIControlEventTouchUpInside];
         
-        NSMutableString *string = [NSMutableString string];
+        //原文
+        CGSize size = [self getSizeWithString:self.aCard.content withWidth:240];
+        UILabel *originLabel = [self returnLabel];
+        originLabel.frame = CGRectMake(20, 50, 240, size.height);
+        originLabel.text = self.aCard.content;
+        [self addSubview:originLabel];
+        //错误
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.aCard.content];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:NSMakeRange(0, self.aCard.content.length)];
+        
+        NSArray *yourArray = [self.aCard.your_answer componentsSeparatedByString:@";||;"];
+        
         for (int i=1; i<yourArray.count; i++) {
             NSString *text = [yourArray objectAtIndex:i];
-            [string appendFormat:@"%@  ",text];
             NSRange range = [self.aCard.content rangeOfString:text];
             if (range.location != NSNotFound) {
-                [self.cardSecond.rtLab setStyle:kCTUnderlineStyleSingle fromIndex:range.location length:range.length];
+                [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1] range:range];
             }
         }
-        self.cardFirst.rightLetterLab.text = string;
-        [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:self.aCard.content.length];
-        [self.cardSecond.rtLab setLine];
+        UILabel *wrongLabel = [self returnLabel];
+        wrongLabel.frame = CGRectMake(20, 70+originLabel.frame.size.height, 240, size.height);
+        wrongLabel.attributedText = str;
+        [self addSubview:wrongLabel];
         
-    }else if (type==1) {//朗读
-        self.cardSecond.voiceBtn.hidden=NO;
-        [self.cardSecond.rtLab setText:self.aCard.content];
-        NSMutableString *string = [NSMutableString string];
+    }
+    else if (type==1) {//朗读
+        self.typeLabel.text = @"朗读:";
+        self.remindButton.hidden=NO;
+        [self.remindButton setImage:[UIImage imageNamed:@"card_voiceBtn"] forState:UIControlStateNormal];
+        [self.remindButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+        [self.remindButton addTarget:self action:@selector(voiceButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        
+        //原文
+        CGSize size = [self getSizeWithString:self.aCard.content withWidth:240];
+        UILabel *originLabel = [self returnLabel];
+        originLabel.frame = CGRectMake(20, 50, 240, size.height);
+        originLabel.text = self.aCard.content;
+        [self addSubview:originLabel];
+        //错误
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.aCard.content];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:NSMakeRange(0, self.aCard.content.length)];
+
         NSArray *answerArray = [self.aCard.your_answer componentsSeparatedByString:@";||;"];
         for (int i=0; i<answerArray.count; i++) {
             NSString *text = [answerArray objectAtIndex:i];
-            [string appendFormat:@"%@ ",text];
             NSRange range = [self.aCard.content rangeOfString:text];
             if (range.location != NSNotFound) {
-                [self.cardSecond.rtLab setStyle:kCTUnderlineStyleSingle fromIndex:range.location length:range.length];
+                [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1] range:range];
             }
         }
-        self.cardFirst.wrongLetterLab.text = string;
+        UILabel *wrongLabel = [self returnLabel];
+        wrongLabel.frame = CGRectMake(20, 70+originLabel.frame.size.height, 240, size.height);
+        wrongLabel.attributedText = str;
+        [self addSubview:wrongLabel];
+    }
+    
+    else if (type==2) {//十速挑战
+        self.typeLabel.text = @"十速:";
+        self.remindButton.hidden=YES;
         
-        [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:self.aCard.content.length];
-        [self.cardSecond.rtLab setLine];
-        
-    }else if (type==2) {//十速挑战
-        self.cardSecond.voiceBtn.hidden=YES;
-        self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
-        self.cardFirst.rightLetterLab.text = self.aCard.answer;
-        [self.cardSecond.rtLab setText:self.aCard.content];
-        [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:self.aCard.content.length];
-        [self.cardSecond.rtLab setLine];
-    }else if (type==3) {//选择
-        self.cardSecond.voiceBtn.hidden=YES;
-        self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
-        NSArray *answerArray = [self.aCard.answer componentsSeparatedByString:@";||;"];
-        self.cardFirst.rightLetterLab.text = [answerArray componentsJoinedByString:@"  "];
-        
-//        self.cardSecond.cardSecondTable = [[UITableView alloc]initWithFrame:CGRectMake(20, self.cardSecond.label_title.frame.origin.y+self.cardSecond.label_title.frame.size.height, 292, 212)];
-//        self.cardSecond.cardSecondTable.separatorStyle = UITableViewCellSeparatorStyleNone;
-//        self.cardSecond.cardSecondTable.backgroundColor = [UIColor clearColor];
-//        self.cardSecond.cardSecondTable.userInteractionEnabled = NO;
-//        self.cardSecond.cardSecondTable.delegate = self.cardSecond;
-//        self.cardSecond.cardSecondTable.dataSource = self.cardSecond;
-//        [self.cardSecond addSubview:self.cardSecond.cardSecondTable];
+        //原文
+        CGSize size = [self getSizeWithString:self.aCard.content withWidth:292];
+        UILabel *originLabel = [self returnLabel];
+        originLabel.frame = CGRectMake(20, 50, 292, size.height);
+        originLabel.text = self.aCard.content;
+        [self addSubview:originLabel];
 
-//        self.cardSecond.cardSecondArray = [self.aCard.options componentsSeparatedByString:@";||;"];
+        UILabel *trueLabel = [self returnLabel];
+        trueLabel.frame = CGRectMake(20, 70+originLabel.frame.size.height, 240, 20);
+        trueLabel.text = @"True";
+        [trueLabel setTextColor:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1]];
+        [self addSubview:trueLabel];
         
-//        NSMutableArray *indexArray = [[NSMutableArray alloc]init];
-//        for (int i=0; i<answerArray.count; i++) {
-//            NSString *str = [answerArray objectAtIndex:i];
-//            if ([self.cardSecond.cardSecondArray containsObject:str]) {
-//                NSString *index_str = [NSString stringWithFormat:@"%d",[self.cardSecond.cardSecondArray indexOfObject:str]];
-//                [indexArray addObject:index_str];
-//            }
-//        }
-//        
-//        self.cardSecond.indexArray = indexArray;
-//        [self.cardSecond.cardSecondTable reloadData];
-        [self.cardSecond.rtLab removeFromSuperview];
+        UILabel *falseLabel = [self returnLabel];
+        falseLabel.frame = CGRectMake(20, trueLabel.frame.size.height+trueLabel.frame.origin.y+20, 240, 20);
+        falseLabel.text = @"False";
+        [falseLabel setTextColor:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1]];
+        [self addSubview:falseLabel];
+        
+        //错误
+        if ([self.aCard.your_answer isEqualToString:@"false"]) {
+            [falseLabel setTextColor:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1]];
+        }else {
+            [trueLabel setTextColor:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1]];
+        }
+        
+    }
+    else if (type==3) {//选择
+        self.typeLabel.text = @"选择:";        
+
+        UILabel *originLabel = [self returnLabel];
+        BOOL isOrigin = NO;
         
         NSRange range = [self.aCard.content rangeOfString:@"</file>"];
         if (range.location != NSNotFound && range.length!=NSNotFound) {
@@ -208,71 +204,104 @@
                                               options:0
                                                 range:NSMakeRange(0, [title length])];
             if (matches.count>0) {//图片
-                self.cardSecond.imgView = [self returnImageView];
+                self.remindButton.hidden = YES;
+                self.remindImageView.hidden=NO;
+                
                 NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",kHOST,title]];
-                [self.cardSecond.imgView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"UserHeaderImageBox"]];
-                
-                [self.cardSecond.imgView addDetailShow];
-                [self.cardSecond addSubview:self.cardSecond.imgView];
-                
+                [self.remindImageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"UserHeaderImageBox"]];
+                [self.remindImageView addDetailShow];
+
                 if (array.count>1) {
-                    self.cardSecond.label_title = [self returnLabel];
-                    CGSize size = [self getSizeWithString:[array objectAtIndex:1] withWidth:212];
-                    if (size.height>212) {
-                        self.cardSecond.showFullText.hidden = NO;
-                        self.cardSecond.fullText = [array objectAtIndex:1];
-                    }else {
-                        self.cardSecond.showFullText.hidden = YES;
-                        self.cardSecond.fullText = nil;
-                    }
-                    
-                    self.cardSecond.label_title.frame = CGRectMake(130, 50, 202, size.height);
-                    self.cardSecond.label_title.text = [array objectAtIndex:1];
-                    [self.cardSecond addSubview:self.cardSecond.label_title];
+                    isOrigin = YES;
+                    CGSize size = [self getSizeWithString:[array objectAtIndex:1] withWidth:240];
+                    originLabel.frame = CGRectMake(20, 50, 240, size.height);
+                    originLabel.text = [array objectAtIndex:1];
                 }
-//                self.cardSecond.cardSecondTable.frame = CGRectMake(20, 110, 292, 212);
             }else {
-                self.cardSecond.voiceBtn.hidden=NO;
-                if (array.count>1) {
-                    self.cardSecond.label_title = [self returnLabel];
-                    CGSize size = [self getSizeWithString:[array objectAtIndex:1] withWidth:212];
-                    if (size.height>212) {
-                        self.cardSecond.showFullText.hidden = NO;
-                        self.cardSecond.fullText = [array objectAtIndex:1];
-                    }else {
-                        self.cardSecond.showFullText.hidden = YES;
-                        self.cardSecond.fullText = nil;
-                    }
-                    
-                    self.cardSecond.label_title.frame = CGRectMake(20, 50, 212, size.height);
-                    self.cardSecond.label_title.text = [array objectAtIndex:1];
-                    [self.cardSecond addSubview:self.cardSecond.label_title];
-                }
+                self.remindButton.hidden = NO;
+                self.remindImageView.hidden=YES;
                 
-//                self.cardSecond.cardSecondTable.frame = CGRectMake(20, self.cardSecond.label_title.frame.origin.y+self.cardSecond.label_title.frame.size.height, 292, 212);
+                [self.remindButton setImage:[UIImage imageNamed:@"card_voiceBtn"] forState:UIControlStateNormal];
+                [self.remindButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+                [self.remindButton addTarget:self action:@selector(voiceButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+                
+                if (array.count>1) {
+                    isOrigin = YES;
+                    CGSize size = [self getSizeWithString:[array objectAtIndex:1] withWidth:240];
+                    originLabel.frame = CGRectMake(20, 50, 240, size.height);
+                    originLabel.text = [array objectAtIndex:1];
+                }
             }
-            
         }else {
-            self.cardSecond.titleLab.hidden = NO;
-            self.cardSecond.label_title = [self returnLabel];
+            self.remindButton.hidden = YES;
+            self.remindImageView.hidden=YES;
+            isOrigin = YES;
             CGSize size = [self getSizeWithString:self.aCard.content withWidth:292];
-            if (size.height>212) {
-                self.cardSecond.showFullText.hidden = NO;
-                self.cardSecond.fullText = self.aCard.content;
-            }else {
-                self.cardSecond.showFullText.hidden = YES;
-                self.cardSecond.fullText = nil;
-            }
-            
-            self.cardSecond.label_title.frame = CGRectMake(20, 50, 292, size.height);
-            self.cardSecond.label_title.text = self.aCard.content;
-            [self.cardSecond addSubview:self.cardSecond.label_title];
-            
-//            self.cardSecond.cardSecondTable.frame = CGRectMake(20, self.cardSecond.label_title.frame.origin.y+self.cardSecond.label_title.frame.size.height, 292, 212);
+            originLabel.frame = CGRectMake(20, 50, 292, size.height);
+            originLabel.text = self.aCard.content;
         }
         
-    }else if (type==4) {//连线
-        self.cardSecond.voiceBtn.hidden=YES;
+        CGRect frame;
+        if (isOrigin == YES) {
+            [self addSubview:originLabel];
+            frame = CGRectMake(20, 70+originLabel.frame.size.height, 292, 20);
+        }else {
+            frame = CGRectMake(20, 50, 240, 20);
+        }
+        //错误
+        NSArray *wrongArray = [self.aCard.your_answer componentsSeparatedByString:@";||;"];
+        //正确答案
+        NSArray *answerArray = [self.aCard.answer componentsSeparatedByString:@";||;"];
+        //选项
+        NSArray *optionsArray = [self.aCard.options componentsSeparatedByString:@";||;"];
+        for (int i=0; i<optionsArray.count; i++) {
+            if (i>0) {
+                frame.origin.y += 30;
+            }
+            
+            NSString *optionStr = [optionsArray objectAtIndex:i];
+            UILabel *optionlabel = [self returnLabel];
+            optionlabel.frame = frame;
+            optionlabel.text = [NSString stringWithFormat:@"%c.%@",(char)('A' + i),optionStr];
+            
+            if ([answerArray containsObject:optionStr]) {
+                [optionlabel setTextColor:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1]];
+            }else {
+                if ([wrongArray containsObject:optionStr]) {
+                    [optionlabel setTextColor:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1]];
+                }
+            }
+            [self addSubview:optionlabel];
+        }
+    }
+    else if (type==4) {//连线
+        self.typeLabel.text = @"连线:";
+        self.remindButton.hidden=YES;
+        
+        NSMutableArray *mutableArray = [NSMutableArray array];
+        //原文
+        NSMutableString *answerStr = [NSMutableString string];
+        NSString *content = self.aCard.content;
+        NSArray *array = [content componentsSeparatedByString:@";||;"];
+        for (int i=0; i<array.count; i++) {
+            NSString *str = [array objectAtIndex:i];
+            NSArray *subArray = [str componentsSeparatedByString:@"<=>"];
+            NSString *textStr;
+            if (i==array.count-1) {
+                textStr = [NSString stringWithFormat:@"%@--%@",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+            }else {
+                textStr = [NSString stringWithFormat:@"%@--%@\n",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+            }
+            [answerStr appendFormat:@"%@",textStr];
+            [mutableArray addObject:textStr];
+        }
+        
+        UILabel *originLabel = [self returnLabel];
+        originLabel.frame = CGRectMake(20, 50, 292, 80);
+        originLabel.text = answerStr;
+        [self addSubview:originLabel];
+        
+        //错误
         NSMutableString *wrongStr = [NSMutableString string];
         NSString *wrongContent = self.aCard.your_answer;
         NSArray *wrongArray = [wrongContent componentsSeparatedByString:@";||;"];
@@ -280,99 +309,126 @@
             NSString *str = [wrongArray objectAtIndex:i];
             NSArray *subArray = [str componentsSeparatedByString:@"<=>"];
             if (i==wrongArray.count-1) {
-                [wrongStr appendFormat:@"%@ %@",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+                [wrongStr appendFormat:@"%@--%@",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
             }else {
-                [wrongStr appendFormat:@"%@ %@    ",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+                [wrongStr appendFormat:@"%@--%@\n",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
             }
         }
-        
-        self.cardFirst.wrongLetterLab.text =wrongStr;
-        
-        NSMutableString *answerStr = [NSMutableString string];
-        NSString *content = self.aCard.content;
-        NSArray *array = [content componentsSeparatedByString:@";||;"];
-        for (int i=0; i<array.count; i++) {
-            NSString *str = [array objectAtIndex:i];
-            NSArray *subArray = [str componentsSeparatedByString:@"<=>"];
-            if (i==array.count-1) {
-                [answerStr appendFormat:@"%@ %@",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
-            }else {
-                [answerStr appendFormat:@"%@ %@    ",[subArray objectAtIndex:0],[subArray objectAtIndex:1]];
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:wrongStr];
+        [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1] range:NSMakeRange(0, wrongStr.length)];
+        for (int i=0; i<mutableArray.count; i++) {
+            NSString *text = [mutableArray objectAtIndex:i];
+            NSRange range = [wrongStr rangeOfString:text];
+            if (range.location != NSNotFound) {
+                [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:range];
             }
         }
-        self.cardFirst.rightLetterLab.text = answerStr;
-        [self.cardSecond.rtLab setText:answerStr];
-        
-        [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:answerStr.length];
-        [self.cardSecond.rtLab setLine];
-    }else if (type==5) {//完型填空
-        self.cardSecond.voiceBtn.hidden=YES;
-        self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
-        
+        UILabel *wrongLabel = [self returnLabel];
+        wrongLabel.frame = CGRectMake(20, 70+originLabel.frame.size.height, 292, 80);
+        wrongLabel.attributedText = str;
+        [self addSubview:wrongLabel];
+    }
+    else if (type==5) {//完型填空
+        self.typeLabel.text = @"完型:";
+
         int index = [self.aCard.content integerValue];
-        
+        NSString *answerString;
         for (int i=0; i<self.aCard.clozeAnswer.count; i++) {
             NSDictionary *dic = [self.aCard.clozeAnswer objectAtIndex:i];
             int content_index = [[dic objectForKey:@"content"]integerValue];
             if (content_index == index) {
-                self.cardFirst.rightLetterLab.text = [dic objectForKey:@"answer"];
+                answerString = [dic objectForKey:@"answer"];
                 break;
             }
         }
-
         [self deletelWithString:self.aCard.full_text];
-        
         self.fullTextString = [self.fullTextString stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
         self.fullTextString = [self.fullTextString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
 
         NSMutableString *full_context = [NSMutableString stringWithString:self.fullTextString];
-        
-        NSRange UnderLineRange;
-        
+        //截取一小题
+        NSMutableString *content_text = [NSMutableString string];
         for (int i=0; i<self.aCard.clozeAnswer.count; i++) {
             NSDictionary *dic = [self.aCard.clozeAnswer objectAtIndex:i];
             NSString *replaceStr =[dic objectForKey:@"answer"];
             NSRange range = [self dealWithString:full_context];
-            [full_context replaceCharactersInRange:range withString:replaceStr];
+
             int content_index = [[dic objectForKey:@"content"]integerValue];
             if (content_index==index) {
-                range.length = replaceStr.length;
-                UnderLineRange = range;
+                [full_context replaceCharactersInRange:range withString:@"____"];
+                NSArray *array = [self getPoint:full_context];
+                for (int k=array.count-1; k>=0; k--) {
+                    NSTextCheckingResult *math = (NSTextCheckingResult *)[array objectAtIndex:k];
+                    NSRange range_compare = [math rangeAtIndex:0];
+                    
+                    if (range_compare.location<=range.location) {//倒数取
+                        if (k==array.count-1) {
+                            content_text = [NSMutableString stringWithString:[full_context substringWithRange:NSMakeRange(range_compare.location+1, full_context.length-range_compare.location)]];
+                        }else {
+                            NSTextCheckingResult *math = (NSTextCheckingResult *)[array objectAtIndex:k+1];
+                            NSRange range_compare2 = [math rangeAtIndex:0];
+                            content_text = [NSMutableString stringWithString:[full_context substringWithRange:NSMakeRange(range_compare.location+1, range_compare2.location-range_compare.location)]];
+                        }
+                    }
+                }
+            }else {
+                [full_context replaceCharactersInRange:range withString:replaceStr];
             }
         }
+        self.fullTextString = full_context;
+
+        self.remindButton.hidden = NO;
+        [self.remindButton setImage:[UIImage imageNamed:@"txtBtn"] forState:UIControlStateNormal];
+        [self.remindButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
+        [self.remindButton addTarget:self action:@selector(showFullTextPressed) forControlEvents:UIControlEventTouchUpInside];
         
-        CGSize size = [full_context sizeWithFont:[UIFont systemFontOfSize:22] constrainedToSize:CGSizeMake(292, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-        if (size.height>212) {
-            self.cardSecond.showFullText.hidden = NO;
-            self.cardSecond.fullText = full_context;
-        }else {
-            self.cardSecond.showFullText.hidden = YES;
-            self.cardSecond.fullText = nil;
+        //原文
+        CGSize size = [self getSizeWithString:content_text withWidth:240];
+        UILabel *originLabel = [self returnLabel];
+        originLabel.frame = CGRectMake(20, 50, 240, size.height);
+        originLabel.text = content_text;
+        [self addSubview:originLabel];
+        //选项
+        CGRect frame = CGRectMake(20, originLabel.frame.size.height+originLabel.frame.origin.y+20, 292, 20);
+        NSArray *optionsArray = [self.aCard.options componentsSeparatedByString:@";||;"];
+        for (int i=0; i<optionsArray.count; i++) {
+            if (i>0) {
+                frame.origin.y += 30;
+            }
+            NSString *optionStr = [optionsArray objectAtIndex:i];
+            UILabel *optionlabel = [self returnLabel];
+            optionlabel.frame = frame;
+            optionlabel.text = [NSString stringWithFormat:@"%c.%@",(char)('A' + i),optionStr];
+            
+            if ([optionStr isEqualToString:self.aCard.your_answer]) {
+                [optionlabel setTextColor:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1]];
+            }else {
+                if ([optionStr isEqualToString:answerString]) {
+                    [optionlabel setTextColor:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1]];
+                }
+            }
+            [self addSubview:optionlabel];
         }
-        [self.cardSecond.rtLab setText:full_context];
-        [self.cardSecond.rtLab setStyle:kCTUnderlineStyleSingle fromIndex:UnderLineRange.location length:UnderLineRange.length];
-        [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:full_context.length];
-        [self.cardSecond.rtLab setLine];
-        
-    }else if (type==6) {//排序
-        self.cardSecond.voiceBtn.hidden=YES;
-        [Utility shared].isOrg = NO;
-        [Utility shared].rangeArray = [[NSMutableArray alloc]init];
-        
-        CGSize size = [self.aCard.content sizeWithFont:[UIFont systemFontOfSize:22] constrainedToSize:CGSizeMake(292, CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
-        if (size.height>212) {
-            self.cardSecond.showFullText.hidden = NO;
-            self.cardSecond.fullText = self.aCard.content;
-        }else {
-            self.cardSecond.showFullText.hidden = YES;
-            self.cardSecond.fullText = nil;
-        }
-        
-        [self.cardSecond.rtLab setText:self.aCard.content];
-        NSArray *content_array = [Utility handleTheString:self.aCard.content];
-        
+    }
+     else if (type==6) {//排序
+        self.typeLabel.text = @"排序:";
+        self.remindButton.hidden=YES;
+         
+         //原文
+         CGSize size = [self getSizeWithString:self.aCard.content withWidth:292];
+         UILabel *originLabel = [self returnLabel];
+         originLabel.frame = CGRectMake(20, 50, 292, size.height);
+         originLabel.text = self.aCard.content;
+         [self addSubview:originLabel];
+         
+         //错误
+         NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.aCard.your_answer];
+         [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:NSMakeRange(0, self.aCard.your_answer.length)];
+         
         [Utility shared].isOrg = YES;
-        self.cardFirst.wrongLetterLab.text =self.aCard.your_answer;
+        NSArray *content_array = [Utility handleTheString:self.aCard.content];
+        [Utility shared].isOrg = NO;
+         [Utility shared].rangeArray = [[NSMutableArray alloc]init];
         NSArray *answer_array = [Utility handleTheString:self.aCard.your_answer];
         
         for (int i=0; i<content_array.count; i++) {
@@ -381,25 +437,22 @@
             if (![answer_str isEqualToString:content_str]) {
                 NSTextCheckingResult *math = (NSTextCheckingResult *)[[Utility shared].rangeArray objectAtIndex:i];
                 NSRange range = [math rangeAtIndex:0];
-                [self.cardSecond.rtLab setStyle:kCTUnderlineStyleSingle fromIndex:range.location length:range.length];
+               [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:245/255.0 green:0/255.0 blue:18/255.0 alpha:1] range:range];
             }
         }
         [Utility shared].rangeArray = nil;
-        self.cardFirst.rightLetterLab.text = self.aCard.answer;
-        [self.cardSecond.rtLab setFont:[UIFont systemFontOfSize:22] fromIndex:0 length:self.aCard.content.length];
-        [self.cardSecond.rtLab setLine];
+         UILabel *wrongLabel = [self returnLabel];
+         wrongLabel.frame = CGRectMake(20, 70+originLabel.frame.size.height, 240, size.height);
+         wrongLabel.attributedText = str;
+         [self addSubview:wrongLabel];
     }
+}
 
-}
--(UIImageView *)returnImageView {
-    UIImageView *imgView = [[UIImageView alloc]initWithFrame:CGRectMake(20, 50, 100, 100)];
-    imgView.backgroundColor = [UIColor clearColor];
-    return imgView;
-}
 -(UILabel *)returnLabel {
     UILabel *label = [[UILabel alloc]init];
     label.numberOfLines = 0;
-    label.font = [UIFont systemFontOfSize:22];
+    label.lineBreakMode = NSLineBreakByCharWrapping;
+    label.font = [UIFont systemFontOfSize:20];
     label.backgroundColor = [UIColor clearColor];
     
     return label;
@@ -407,27 +460,26 @@
 -(void)setViewtag:(NSInteger)viewtag {
     _viewtag = viewtag;
     
-    self.cardFirst.txtBtn.tag = _viewtag;
-    
-    self.cardSecond.voiceBtn.tag = _viewtag;
-    self.cardSecond.deleteBtn.tag = _viewtag;
-    self.cardSecond.showFullText.tag = _viewtag;
+    self.remindButton.tag = _viewtag;
+}
+#pragma mark - 点击事件
+
+-(void)voiceButtonPressed {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pressedVoiceBtn:)]) {
+        [self.delegate pressedVoiceBtn:self.remindButton];
+    }
 }
 
--(void)flipTouched {
-    [UIView transitionFromView:(self.displayingPrimary ? self.cardFirst : self.cardSecond)
-                        toView:(self.displayingPrimary ? self.cardSecond : self.cardFirst)
-                      duration: .5
-                       options: UIViewAnimationOptionTransitionFlipFromLeft+UIViewAnimationOptionCurveEaseInOut
-                    completion:^(BOOL finished) {
-                        if (finished) {
-                            self.displayingPrimary = !self.displayingPrimary;
-                            
-                            NSString *str = [NSString stringWithFormat:@"%d",self.viewtag];
-                            [[NSNotificationCenter defaultCenter]postNotificationName:@"changePlayerByView" object:str];
-                        }
-                    }
-     ];
+-(IBAction)deleteButtonPressed:(id)sender {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pressedDeleteBtn:)]) {
+        [self.delegate pressedDeleteBtn:self.remindButton];
+    }
 }
 
+
+-(void)showFullTextPressed {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(pressedShowFullText:andBtn:)]) {
+        [self.delegate pressedShowFullText:self.fullTextString andBtn:self.remindButton];
+    }
+}
 @end

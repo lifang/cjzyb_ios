@@ -8,18 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "CardObject.h"
-#import "CardFirstView.h"
-#import "CardSecondView.h"
 #import "CardInterface.h"
 #import "CardCustomView.h"
 #import "MyPageControl.h"
 #import "DeleteCardInterface.h"
-#import "TagObject.h"
-#import "TagViewController.h"
 #import "CMRManager.h"
 #import "FullText.h"
-@interface CardpackageViewController : UIViewController<CardFirstViewDelegate,CardSecondViewDelegate,CardInterfaceDelegate,UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,DeleteCardInterfaceDelegate,WYPopoverControllerDelegate,UITextFieldDelegate>
+#import "DropDownCell.h"
+@interface CardpackageViewController : UIViewController<CardInterfaceDelegate,UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,DeleteCardInterfaceDelegate,WYPopoverControllerDelegate,UITextFieldDelegate,UIAlertViewDelegate,CardCustomViewDelegate>
 
+{
+    BOOL dropDown1Open;
+}
 @property (strong, nonatomic) CardInterface *cardInter;
 @property (strong, nonatomic) DeleteCardInterface *deleteInter;
 
@@ -27,11 +27,11 @@
 @property (nonatomic, strong) NSMutableArray *dataArray;
 @property (nonatomic, strong) NSMutableArray *arrSelSection;
 @property (nonatomic, strong) AppDelegate *appDel;
+//下拉状态
+@property (nonatomic, strong) IBOutlet UITableView *pullTable;
+@property (nonatomic, strong) NSArray *typeArray;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 @property (nonatomic, strong) IBOutlet UIView *cataview;
-@property (strong, nonatomic) IBOutlet UIButton *redBtn;
-@property (strong, nonatomic) IBOutlet UIButton *writeBtn;
-@property (strong, nonatomic) IBOutlet UIButton *selectedBtn;
 @property (strong, nonatomic) IBOutlet UIButton *defaultBtn;
 
 @property (strong, nonatomic) IBOutlet UIButton *searchBtn;

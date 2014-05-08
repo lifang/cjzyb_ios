@@ -110,7 +110,20 @@
     
     [self getHomeworkData];
 }
-
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    if (![[self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]isKindOfClass:[NSNull class]] && [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId]!=nil) {
+        NSArray *array = [self.appDel.notification_dic objectForKey:[DataService sharedService].theClass.classId];
+        
+        int value = [[array objectAtIndex:2]integerValue];
+        if (value == 1) {
+            [self getHomeworkData];
+        }
+    }
+}
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -338,48 +351,69 @@
 }
 #pragma mark HomeworkDailyCollectionViewControllerDelegate每一个题目类型cell代理
 -(void)homeworkDailyController:(HomeworkDailyCollectionViewController *)controller didSelectedAtIndexPath:(NSIndexPath *)path{
-    HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
-    TaskObj *task = controller.taskObj;
-    [DataService sharedService].taskObj = task;
-    self.selectedDailyController = controller;
-    HomeworkContainerController *homeworkContainer = [[HomeworkContainerController alloc ] initWithNibName:@"HomeworkContainerController" bundle:nil];
-    homeworkContainer.homeworkType = typeObj.homeworkType;
-    self.homeworkContainer = homeworkContainer;
-    homeworkContainer.spendSecond = 0;
-    
-    if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {//存在question
-        NSInteger status = [Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task];
+    if ([DataService sharedService].user.active_status == 2) {
+        [Utility errorAlert:@"暂未进行激活，无法作答作业"];
+    }else {
+        HomeworkTypeObj *typeObj = [controller.taskObj.taskHomeworkTypeArray objectAtIndex:path.item];
+        TaskObj *task = controller.taskObj;
+        [DataService sharedService].taskObj = task;
+        self.selectedDailyController = controller;
+        HomeworkContainerController *homeworkContainer = [[HomeworkContainerController alloc ] initWithNibName:@"HomeworkContainerController" bundle:nil];
+        homeworkContainer.homeworkType = typeObj.homeworkType;
+        self.homeworkContainer = homeworkContainer;
+        homeworkContainer.spendSecond = 0;
         
-        //0:不存在answer文件   1:存在不是最新的  2:最新的
-        if (task.isExpire == YES) {
-            if (status==1) {//存在不是最新的
-                AppDelegate *app = [AppDelegate shareIntance];
-                __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
-                progress.labelText = @"正在更新历史记录包，请稍后...";
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                    NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (!dicData || dicData.count <= 0) {
-                            [Utility errorAlert:@"下载历史记录包失败"];
-                        }else{
-                            self.alertViewControl = [[AlertViewController alloc]initWithNibName:@"AlertViewController" bundle:nil];
-                            self.alertViewControl.delegate = self;
-                            self.alertViewControl.type = 1;
-                            [self presentPopupViewController:self.alertViewControl animationType:MJPopupViewAnimationSlideBottomBottom];
-                        }
-                        [MBProgressHUD hideHUDForView:app.window animated:YES];
+        if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {//存在question
+            NSInteger status = [Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task];
+            
+            //0:不存在answer文件   1:存在不是最新的  2:最新的
+            if (task.isExpire == YES) {
+                if (status==1) {//存在不是最新的
+                    AppDelegate *app = [AppDelegate shareIntance];
+                    __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
+                    progress.labelText = @"正在更新历史记录包，请稍后...";
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                        NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            if (!dicData || dicData.count <= 0) {
+                                [Utility errorAlert:@"下载历史记录包失败"];
+                            }else{
+                                self.alertViewControl = [[AlertViewController alloc]initWithNibName:@"AlertViewController" bundle:nil];
+                                self.alertViewControl.delegate = self;
+                                self.alertViewControl.type = 1;
+                                [self presentPopupViewController:self.alertViewControl animationType:MJPopupViewAnimationSlideBottomBottom];
+                            }
+                            [MBProgressHUD hideHUDForView:app.window animated:YES];
+                        });
                     });
-                });
+                }else {
+                    self.alertViewControl = [[AlertViewController alloc]initWithNibName:@"AlertViewController" bundle:nil];
+                    self.alertViewControl.delegate = self;
+                    self.alertViewControl.type = 1;
+                    [self presentPopupViewController:self.alertViewControl animationType:MJPopupViewAnimationSlideBottomBottom];
+                }
             }else {
-                self.alertViewControl = [[AlertViewController alloc]initWithNibName:@"AlertViewController" bundle:nil];
-                self.alertViewControl.delegate = self;
-                self.alertViewControl.type = 1;
-                [self presentPopupViewController:self.alertViewControl animationType:MJPopupViewAnimationSlideBottomBottom];
-            }
-        }else {
-            if (status == 0) {
-                if (![task.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && task.taskAnswerFileDownloadURL.length>10) {
-                    //answer的下载地址
+                if (status == 0) {
+                    if (![task.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && task.taskAnswerFileDownloadURL.length>10) {
+                        //answer的下载地址
+                        AppDelegate *app = [AppDelegate shareIntance];
+                        __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
+                        progress.labelText = @"正在更新历史记录包，请稍后...";
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+                            NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                if (!dicData || dicData.count <= 0) {
+                                    [Utility errorAlert:@"下载历史记录包失败"];
+                                }else{
+                                    [self showAlertWith:typeObj];
+                                }
+                                [MBProgressHUD hideHUDForView:app.window animated:YES];
+                            });
+                        });
+                    }else {
+                        [self showAlertWith:typeObj];
+                    }
+                }else if (status==1) {//存在不是最新的
                     AppDelegate *app = [AppDelegate shareIntance];
                     __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
                     progress.labelText = @"正在更新历史记录包，请稍后...";
@@ -395,55 +429,38 @@
                         });
                     });
                 }else {
-                    [self showAlertWith:typeObj];
-                }
-            }else if (status==1) {//存在不是最新的
-                AppDelegate *app = [AppDelegate shareIntance];
-                __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];
-                progress.labelText = @"正在更新历史记录包，请稍后...";
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-                    NSDictionary *dicData = [Utility downloadAnswerWithAddress:task.taskAnswerFileDownloadURL andStartDate:task.taskStartDate];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (!dicData || dicData.count <= 0) {
-                            [Utility errorAlert:@"下载历史记录包失败"];
-                        }else{
+                    if (!self.isShowHistory) {
+                        NSString *path = [Utility returnPath];
+                        NSString *documentDirectory = [path stringByAppendingPathComponent:task.taskStartDate];
+                        NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
+                        NSError *error = nil;
+                        Class JSONSerialization = [Utility JSONParserClass];
+                        NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
+                        int isSuccess = [[dataObject objectForKey:@"isSuccessToUpload"]integerValue];
+                        if (isSuccess == 1) {
                             [self showAlertWith:typeObj];
-                        }
-                        [MBProgressHUD hideHUDForView:app.window animated:YES];
-                    });
-                });
-            }else {
-                if (!self.isShowHistory) {
-                    NSString *path = [Utility returnPath];
-                    NSString *documentDirectory = [path stringByAppendingPathComponent:task.taskStartDate];
-                    NSString *jsPath=[documentDirectory stringByAppendingPathComponent:[NSString stringWithFormat:@"answer_%@.json",[DataService sharedService].user.userId]];
-                    NSError *error = nil;
-                    Class JSONSerialization = [Utility JSONParserClass];
-                    NSDictionary *dataObject = [JSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:jsPath] options:0 error:&error];
-                    int isSuccess = [[dataObject objectForKey:@"isSuccessToUpload"]integerValue];
-                    if (isSuccess == 1) {
-                        [self showAlertWith:typeObj];
-                    }else {
-                        if (self.appDel.isReachable == NO) {
-                            [Utility errorAlert:@"暂无网络!"];
                         }else {
-                            [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
-                            self.postInter = [[BasePostInterface alloc]init];
-                            self.postInter.delegate = self;
-                            [self.postInter postAnswerFileWith:task.taskStartDate];
+                            if (self.appDel.isReachable == NO) {
+                                [Utility errorAlert:@"暂无网络!"];
+                            }else {
+                                [MBProgressHUD showHUDAddedTo:self.appDel.window animated:YES];
+                                self.postInter = [[BasePostInterface alloc]init];
+                                self.postInter.delegate = self;
+                                [self.postInter postAnswerFileWith:task.taskStartDate];
+                            }
                         }
+                    }else {
+                        [self showAlertWith:typeObj];
                     }
-                }else {
-                    [self showAlertWith:typeObj];
                 }
             }
+        }else{
+            self.alertViewControl = [[AlertViewController alloc]initWithNibName:@"AlertViewController" bundle:nil];
+            self.alertViewControl.delegate = self;
+            self.alertViewControl.type = 0;
+            
+            [self presentPopupViewController:self.alertViewControl animationType:MJPopupViewAnimationSlideBottomBottom];
         }
-    }else{
-        self.alertViewControl = [[AlertViewController alloc]initWithNibName:@"AlertViewController" bundle:nil];
-        self.alertViewControl.delegate = self;
-        self.alertViewControl.type = 0;
-        
-        [self presentPopupViewController:self.alertViewControl animationType:MJPopupViewAnimationSlideBottomBottom];
     }
 }
 
@@ -500,7 +517,7 @@
             TaskObj *task = [self.currentDayTaskArray objectAtIndex:indexPath.item];
             cell.dailyCollectionViewController.taskObj = task;
             self.currentDayTaskName.text = [NSString stringWithFormat:@"%@",task.taskName];
-            self.currentDayTaskEndTime.text = [NSString stringWithFormat:@"截止日期    %@",task.taskStartDate];
+            self.currentDayTaskEndTime.text = [NSString stringWithFormat:@"截止日期    %@",task.taskEndDate];
         }
     }
     return cell;

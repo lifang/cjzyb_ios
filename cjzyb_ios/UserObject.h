@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface UserObject : NSObject
-
+@property (nonatomic, assign) NSInteger active_status;
 @property (nonatomic, strong) NSString *studentId;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *nickName;

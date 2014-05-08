@@ -235,7 +235,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         if (self.successBlock) {
-            [DataService sharedService].cardsCount = ((NSString *)[result objectForKey:@"knowledges_cards_count"]).integerValue;
+            [DataService sharedService].cardsCount = [[result objectForKey:@"knowledges_cards_count"] integerValue];
             NSString *timeStr = [result objectForKey:@"updated_time"];
             self.successBlock(timeStr);
         }

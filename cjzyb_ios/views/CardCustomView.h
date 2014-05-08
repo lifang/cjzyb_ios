@@ -7,20 +7,26 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CardFirstView.h"
-#import "CardSecondView.h"
+
 #import "CardObject.h"
+
+@protocol CardCustomViewDelegate <NSObject>
+-(void)pressedVoiceBtn:(UIButton *)btn;
+-(void)pressedDeleteBtn:(UIButton *)btn;
+-(void)pressedShowFullText:(NSString *)fullText andBtn:(UIButton *)btn;
+@end
+
 @interface CardCustomView : UIView
 
-@property (nonatomic, strong) CardFirstView *cardFirst;
-@property (nonatomic, strong) CardSecondView *cardSecond;
-@property (nonatomic, assign) BOOL displayingPrimary;
+@property (nonatomic, strong) IBOutlet UILabel *typeLabel;
+@property (nonatomic, strong) IBOutlet UIButton *remindButton;
+@property (nonatomic, strong) IBOutlet UIImageView *remindImageView;
+
+@property (nonatomic, assign) id<CardCustomViewDelegate>delegate;
 @property (nonatomic, strong) CardObject *aCard;
 @property (nonatomic, assign) NSInteger viewtag;
-
-
 @property (nonatomic, strong) NSString *fullTextString;
--(void)flipTouched;
 
-- (id)initWithFrame:(CGRect)frame andFirst:(CardFirstView *)first andSecond:(CardSecondView *)second andObj:(CardObject *)object;
+
+
 @end
