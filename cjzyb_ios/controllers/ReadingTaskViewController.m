@@ -685,18 +685,19 @@
 }
 //TODO:更新所有的位置
 -(void)updateAllFrame{
+    //更新上方句子
     NSAttributedString *attributeString = self.readingTextView.attributedText;
-    NSAttributedString *attributeTip = self.tipTextView.attributedText;
-  
-    CGRect textRect = [attributeString boundingRectWithSize:(CGSize){CGRectGetWidth(self.readingTextView.frame),self.view.frame.size.height-350} options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading context:nil];
+    CGRect textRect = [attributeString boundingRectWithSize:(CGSize){CGRectGetWidth(self.readingTextView.frame),self.view.frame.size.height - 350} options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading context:nil];
     self.readingTextView.frame = (CGRect){self.readingTextView.frame.origin,CGRectGetWidth(self.readingTextView.frame),textRect.size.height + 10};
     
-    float maxTipHeight = (self.view.frame.size.height-CGRectGetMaxY(self.readingTextView.frame)-30);
-    CGRect tipRect = [attributeTip boundingRectWithSize:(CGSize){CGRectGetWidth(self.tipTextView.frame) - 5, maxTipHeight<80 ?80:maxTipHeight} options:NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesFontLeading context:nil];
-    
+    //更新按钮
     self.readingButton.frame = (CGRect){CGRectGetMinX(self.readingButton.frame),CGRectGetMaxY(self.readingTextView.frame)+20,self.readingButton.frame.size};
     
-    self.tipBackView.frame = (CGRect){CGRectGetMinX(self.tipBackView.frame),CGRectGetMaxY(self.readingButton.frame) +30,self.tipBackView.frame.size.width,tipRect.size.height+60};
+    //更新tip的位置和大小
+    NSAttributedString *attributeTip = self.tipTextView.attributedText;
+    float maxTipHeight = (self.view.frame.size.height - CGRectGetMaxY(self.readingTextView.frame) - 30);
+    CGRect tipRect = [attributeTip boundingRectWithSize:(CGSize){CGRectGetWidth(self.tipTextView.frame) - 5, maxTipHeight < 80 ? 80 : maxTipHeight} options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesFontLeading context:nil];
+    self.tipBackView.frame = (CGRect){CGRectGetMinX(self.tipBackView.frame),CGRectGetMaxY(self.readingButton.frame) + 30,self.tipBackView.frame.size.width,tipRect.size.height + 60};
 }
 
 ///标记颜色
@@ -795,6 +796,7 @@
 -(void)setCurrentSentence:(ReadingSentenceObj *)currentSentence{
     _currentSentence = currentSentence;
     if (currentSentence) {
+        //显示历史记录
         if ([DataService sharedService].isHistory) {
             NSMutableString *content = [NSMutableString stringWithFormat:@"需要多读的词"];
             if (currentSentence.readingErrorWordArray.count < 1 && [DataService sharedService].taskObj.isExpire) {
@@ -814,6 +816,7 @@
         }else{
             self.rightWordArray = [NSMutableArray array];
         }
+        
         NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:currentSentence.readingSentenceContent];
         [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:35] range:NSMakeRange(0, attri.length)];
         [attri addAttribute:NSForegroundColorAttributeName value:[UIColor darkGrayColor] range:NSMakeRange(0, attri.length)];

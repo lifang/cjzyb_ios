@@ -31,13 +31,6 @@
         return;
     }
     
-//    if ([senStr isEqualToString:spellStr]) {
-//        NSMutableAttributedString *attri = [[NSMutableAttributedString alloc] initWithString:senStr];
-//        [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:35] range:NSMakeRange(0, attri.length)];
-//        [attri addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] range:NSMakeRange(0, attri.length)];
-//        success(attri,1,nil,@[senStr]);
-//        return;
-//    }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [Utility shared].isOrg = NO;
         [Utility shared].orgArray  = [Utility handleTheString:senStr];  //原句
@@ -106,21 +99,26 @@
     [Utility shared].firstpoint = 0;
     NSDictionary *dic = [Utility compareWithArray:[Utility shared].orgArray andArray:[Utility shared].metaphoneArray WithArray:array andArray:array2  WithRange:[Utility shared].rangeArray];
     
-    NSMutableArray *range_array = [[NSMutableArray alloc]init];
+    NSMutableArray *unUsedIndexOfOriginRangeArray = [NSMutableArray array];   //原range array中未被匹配的对象编号,每匹配一个项,就删除一个index
+    for (int i = 0; i < [Utility shared].rangeArray.count; i ++) {
+        [unUsedIndexOfOriginRangeArray addObject:[NSString stringWithFormat:@"%d",i]];
+    }
+    NSMutableArray *range_array = [[NSMutableArray alloc]init];  //原句中非单词的range array (有序)
     for (int i=0; i<[Utility shared].orgArray.count; i++) {
         NSString *string = [[Utility shared].orgArray objectAtIndex:i];
-        [NSCharacterSet decimalDigitCharacterSet];
         NSString *string2 = [string stringByTrimmingCharactersInSet: [NSCharacterSet decimalDigitCharacterSet]];
         if ([string2 stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceCharacterSet]].length >0) {
+            
         }else{
             [range_array addObject:[[Utility shared].rangeArray objectAtIndex:i]];
+            [unUsedIndexOfOriginRangeArray removeObject:[NSString stringWithFormat:@"%d",i]];
         }
     }
     
     //绿色
     if (![[dic objectForKey:@"green"]isKindOfClass:[NSNull class]] && [dic objectForKey:@"green"]!=nil) {
         NSMutableArray *green_array = [NSMutableArray arrayWithArray:[dic objectForKey:@"green"]];
-        [green_array addObjectsFromArray:range_array];
+        [green_array addObjectsFromArray:range_array];  //非单词的物体全部算green
 
         for (int i=0; i<green_array.count; i++) {
             SpellMatchObj *spell = [[SpellMatchObj alloc] init];
@@ -130,6 +128,15 @@
             spell.color = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
             spell.spellLevel = 1;
             [spellsArr addObject:spell];
+            
+            //对green项 去除未匹配编号
+            for (int j = 0; j < [Utility shared].rangeArray.count; j ++) {
+                NSTextCheckingResult *resultInArray = [Utility shared].rangeArray[j];
+                NSRange rangeInArray = [resultInArray rangeAtIndex:0];
+                if (rangeInArray.length == range.length && rangeInArray.location == range.location) {
+                    [unUsedIndexOfOriginRangeArray removeObject:[NSString stringWithFormat:@"%d",j]];
+                }
+            }
         }
     }
     //黄色
@@ -143,13 +150,22 @@
             spell.color = [UIColor yellowColor];
             spell.spellLevel = 0.5;
             [spellsArr addObject:spell];
+            
+            //对yellow项 去除未匹配编号
+            for (int j = 0; j < [Utility shared].rangeArray.count; j ++) {
+                NSTextCheckingResult *resultInArray = [Utility shared].rangeArray[j];
+                NSRange rangeInArray = [resultInArray rangeAtIndex:0];
+                if (rangeInArray.length == range.length && rangeInArray.location == range.location) {
+                    [unUsedIndexOfOriginRangeArray removeObject:[NSString stringWithFormat:@"%d",j]];
+                }
+            }
         }
     }
     //错误
     if (![[dic objectForKey:@"wrong"]isKindOfClass:[NSNull class]] && [dic objectForKey:@"wrong"]!=nil) {
-        NSMutableArray *space_array = [NSMutableArray arrayWithArray:[dic objectForKey:@"wrong"]];
-        for (int i=0; i<space_array.count; i++) {
-            NSTextCheckingResult *math = (NSTextCheckingResult *)[space_array objectAtIndex:i];
+        NSMutableArray *wrong_array = [NSMutableArray arrayWithArray:[dic objectForKey:@"wrong"]];
+        for (int i=0; i<wrong_array.count; i++) {
+            NSTextCheckingResult *math = (NSTextCheckingResult *)[wrong_array objectAtIndex:i];
             NSRange range = [math rangeAtIndex:0];
             
             if (range_array.count>0) {
@@ -172,6 +188,26 @@
                 spell.color = [UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1];
                 [spellsArr addObject:spell];
             }
+        }
+    }
+    
+    //使用未匹配项补充spellArr
+    for (int i = 0; i < unUsedIndexOfOriginRangeArray.count; i ++) {
+        NSString *indexString = unUsedIndexOfOriginRangeArray[i];
+        NSTextCheckingResult *unUsed = [[Utility shared].rangeArray objectAtIndex:indexString.intValue];
+        NSRange unUsedRange = [unUsed rangeAtIndex:0];
+        BOOL shouldUse = YES;
+        for (SpellMatchObj *obj in spellsArr){
+            if (obj.range.length == unUsedRange.length && obj.range.location == unUsedRange.location) {
+                shouldUse = NO;
+            }
+        }
+        if (shouldUse) {
+            SpellMatchObj *spell = [[SpellMatchObj alloc] init];
+            spell.range = unUsedRange;
+            spell.spellLevel = 0;
+            spell.color = [UIColor colorWithRed:0/255.0 green:5/255.0 blue:28/255.0 alpha:1];
+            [spellsArr addObject:spell];
         }
     }
     
