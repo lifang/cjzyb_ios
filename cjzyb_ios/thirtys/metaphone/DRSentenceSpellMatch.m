@@ -115,6 +115,15 @@
         }
     }
     
+    //notice
+    if (![[dic objectForKey:@"notice"] isKindOfClass:[NSNull class]] && [dic objectForKey:@"notice"] != nil) {
+        NSMutableArray *notice_array = [dic objectForKey:@"notice"];
+        for (id obj in notice_array){
+            NSTextCheckingResult *rst = (NSTextCheckingResult *)obj;
+            NSRange range = [rst rangeAtIndex:0];
+        }
+    }
+    
     //绿色
     if (![[dic objectForKey:@"green"]isKindOfClass:[NSNull class]] && [dic objectForKey:@"green"]!=nil) {
         NSMutableArray *green_array = [NSMutableArray arrayWithArray:[dic objectForKey:@"green"]];

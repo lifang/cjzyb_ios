@@ -28,12 +28,8 @@
     [super viewDidLoad];
     
     [self tabBarInit];
-    
-    if ([DataService sharedService].notificationPage) {
-        [self setSelectedIndex:[DataService sharedService].notificationPage animated:NO];
-    }else{
-        [self setSelectedIndex:1 animated:NO];
-    }
+
+    [self setSelectedIndex:[DataService sharedService].notificationPage animated:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -80,18 +76,12 @@
     [self.pagesContainer.topBar setDAPagesContainerTopBarItemsOffset:3.1415926];
     [self.pagesContainer.topBar setDAPagesContainerTopBarItemViewWidth:self.pagesContainer.view.frame.size.width / 3];
     
-    if ([DataService sharedService].notificationPage) {
-        [self.pagesContainer setSelectedIndex:[DataService sharedService].notificationPage];
-    }else{
-        //默认选择0
-        [self.pagesContainer setSelectedIndex:0];
-    }
     
     [self.pagesContainer.topBar layoutSubviews];
 }
 
 - (void)setSelectedIndex:(NSUInteger)index animated:(BOOL)animated{
-    if (self.pagesContainer && index) {
+    if (self.pagesContainer) {
         [self.pagesContainer setSelectedIndex:index animated:animated];
         [self.pagesContainer.topBar layoutSubviews];
     }

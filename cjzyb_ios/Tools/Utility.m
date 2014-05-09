@@ -719,9 +719,11 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                         NSString *strBB3 = [temp_arrBB objectAtIndex:i];
                                         NSArray *arrayAA = [Utility handleTheLetter:strAA3];
                                         NSArray *arrayBB = [Utility handleTheLetter:strBB3];
+                                        NSMutableArray *array_BB_temp = [NSMutableArray arrayWithArray:arrayBB];
                                         for (int k=0; k<arrayAA.count; k++) {
                                             NSString *letter = [arrayAA objectAtIndex:k];
-                                            if ([arrayBB containsObject:letter]) {
+                                            if ([array_BB_temp containsObject:letter]) {
+                                                [array_BB_temp removeObject:letter];
                                                 m++;
                                             }
                                         }
@@ -731,9 +733,11 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                             NSString *strB = [temp_arrB objectAtIndex:i];
                                             NSArray *arrayA = [Utility handleTheLetter:strA];
                                             NSArray *arrayB = [Utility handleTheLetter:strB];
+                                            NSMutableArray *array_BB_temp = [NSMutableArray arrayWithArray:arrayB];
                                             for (int k=0; k<arrayA.count; k++) {
                                                 NSString *letter = [arrayA objectAtIndex:k];
-                                                if ([arrayB containsObject:letter]) {
+                                                if ([array_BB_temp containsObject:letter]) {
+                                                    [array_BB_temp removeObject:letter];
                                                     n++;
                                                 }
                                             }
@@ -1341,9 +1345,11 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                             //判断是否部分匹配
                             NSArray *arrayAA = [Utility handleTheLetter:strAA];
                             NSArray *arrayBB = [Utility handleTheLetter:strBB];
+                            NSMutableArray *array_BB_temp = [NSMutableArray arrayWithArray:arrayBB];
                             for (int k=0; k<arrayAA.count; k++) {
                                 NSString *letter = [arrayAA objectAtIndex:k];
-                                if ([arrayBB containsObject:letter]) {
+                                if ([array_BB_temp containsObject:letter]) {
+                                    [array_BB_temp removeObject:letter];
                                     m++;
                                 }
                             }
@@ -1354,9 +1360,11 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                 NSString *strB = [temp_arrB objectAtIndex:i];
                                 NSArray *arrayA = [Utility handleTheLetter:strA];
                                 NSArray *arrayB = [Utility handleTheLetter:strB];
+                                NSMutableArray *array_BB_temp = [NSMutableArray arrayWithArray:arrayB];
                                 for (int k=0; k<arrayA.count; k++) {
                                     NSString *letter = [arrayA objectAtIndex:k];
-                                    if ([arrayB containsObject:letter]) {
+                                    if ([array_BB_temp containsObject:letter]) {
+                                        [array_BB_temp removeObject:letter];
                                         n++;
                                     }
                                 }
@@ -1551,9 +1559,11 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                         NSString *strBB3 = [temp_arrBB objectAtIndex:i];
                                         NSArray *arrayAA = [Utility handleTheLetter:strAA3];
                                         NSArray *arrayBB = [Utility handleTheLetter:strBB3];
+                                        NSMutableArray *array_BB_temp = [NSMutableArray arrayWithArray:arrayBB];
                                         for (int k=0; k<arrayAA.count; k++) {
                                             NSString *letter = [arrayAA objectAtIndex:k];
-                                            if ([arrayBB containsObject:letter]) {
+                                            if ([array_BB_temp containsObject:letter]) {
+                                                [array_BB_temp removeObject:letter];
                                                 m++;
                                             }
                                         }
@@ -1563,9 +1573,11 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                             NSString *strB = [temp_arrB objectAtIndex:i];
                                             NSArray *arrayA = [Utility handleTheLetter:strA];
                                             NSArray *arrayB = [Utility handleTheLetter:strB];
+                                            NSMutableArray *array_BB_temp = [NSMutableArray arrayWithArray:arrayB];
                                             for (int k=0; k<arrayA.count; k++) {
                                                 NSString *letter = [arrayA objectAtIndex:k];
-                                                if ([arrayB containsObject:letter]) {
+                                                if ([array_BB_temp containsObject:letter]) {
+                                                    [array_BB_temp removeObject:letter];
                                                     n++;
                                                 }
                                             }
@@ -2177,9 +2189,11 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                             //判断是否部分匹配
                             NSArray *arrayAA = [Utility handleTheLetter:strAA];
                             NSArray *arrayBB = [Utility handleTheLetter:strBB];
+                            NSMutableArray *array_BB_temp = [NSMutableArray arrayWithArray:arrayBB];
                             for (int k=0; k<arrayAA.count; k++) {
                                 NSString *letter = [arrayAA objectAtIndex:k];
-                                if ([arrayBB containsObject:letter]) {
+                                if ([array_BB_temp containsObject:letter]) {
+                                    [array_BB_temp removeObject:letter];
                                     m++;
                                 }
                             }
@@ -2190,9 +2204,11 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                 NSString *strB = [temp_arrB objectAtIndex:i];
                                 NSArray *arrayA = [Utility handleTheLetter:strA];
                                 NSArray *arrayB = [Utility handleTheLetter:strB];
+                                NSMutableArray *array_BB_temp = [NSMutableArray arrayWithArray:arrayB];
                                 for (int k=0; k<arrayA.count; k++) {
                                     NSString *letter = [arrayA objectAtIndex:k];
-                                    if ([arrayB containsObject:letter]) {
+                                    if ([array_BB_temp containsObject:letter]) {
+                                        [array_BB_temp removeObject:letter];
                                         n++;
                                     }
                                 }

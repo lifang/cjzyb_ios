@@ -123,7 +123,7 @@
 
     self.the_class_id = -1;
 
-    [DataService sharedService].notificationPage=0;
+    [DataService sharedService].notificationPage=1;
     self.notification_type = 0;
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
     //推送
