@@ -28,7 +28,7 @@
     [super viewDidLoad];
     
     [self tabBarInit];
-    
+
     [self setSelectedIndex:[DataService sharedService].notificationPage animated:YES];
 }
 
@@ -80,7 +80,7 @@
 }
 
 - (void)setSelectedIndex:(NSUInteger)index animated:(BOOL)animated{
-    if (self.pagesContainer && index) {
+    if (self.pagesContainer) {
         [self.pagesContainer setSelectedIndex:index animated:animated];
         [self.pagesContainer.topBar layoutSubviews];
     }
