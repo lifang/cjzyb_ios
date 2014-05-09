@@ -27,6 +27,7 @@
 #import "TenSecChallengeResultView.h"
 #import "Metaphone2.h"
 #import "UIViewController+MJPopupViewController.h"
+#import "WYPopoverController.h"
 #endif
 
 #define TRUESOUND [(AppDelegate *)[[UIApplication sharedApplication]delegate] loadTrueSound:1];

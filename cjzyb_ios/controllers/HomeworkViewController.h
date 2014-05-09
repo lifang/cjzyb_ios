@@ -23,6 +23,7 @@
 
 @property (nonatomic, strong) AlertViewController *alertViewControl;
 @property (nonatomic, strong) BasePostInterface *postInter;
+@property (nonatomic,assign) BOOL isLoading;
 ///显示历史任务
 @property (nonatomic,assign) BOOL isShowHistory;
 /// 当前作业类型

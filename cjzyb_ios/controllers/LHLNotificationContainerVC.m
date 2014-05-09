@@ -37,6 +37,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     //如果通知页面有小红点,就刷新到该页面
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     if(![[appDelegate.notification_dic objectForKey:[DataService sharedService].theClass.classId] isKindOfClass:[NSNull class]] && [appDelegate.notification_dic objectForKey:[DataService sharedService].theClass.classId] != nil){

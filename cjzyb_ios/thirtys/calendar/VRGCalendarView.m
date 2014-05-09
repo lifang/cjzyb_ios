@@ -300,9 +300,7 @@
     CGContextAddLineToPoint(context,xmargin+arrowSize/1.5,ymargin+arrowSize);
     CGContextAddLineToPoint(context,xmargin,ymargin+arrowSize/2);
     CGContextAddLineToPoint(context,xmargin+arrowSize/1.5, ymargin);
-    
-    CGContextSetFillColorWithColor(context, 
-                                   [UIColor whiteColor].CGColor);
+    CGContextSetFillColorWithColor(context,[UIColor whiteColor].CGColor);
     CGContextFillPath(context);
     
     //Arrow right
@@ -311,9 +309,7 @@
     CGContextAddLineToPoint(context,self.frame.size.width-xmargin,ymargin+arrowSize/2);
     CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5),ymargin+arrowSize);
     CGContextAddLineToPoint(context,self.frame.size.width-(xmargin+arrowSize/1.5), ymargin);
-    
-    CGContextSetFillColorWithColor(context, 
-                                   [UIColor whiteColor].CGColor);
+    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextFillPath(context);
     
     //Weekdays
@@ -322,8 +318,7 @@
     NSMutableArray *weekdays = [[NSMutableArray alloc] initWithArray:[dateFormatter shortWeekdaySymbols]];
     [weekdays moveObjectFromIndex:0 toIndex:6];
     
-    CGContextSetFillColorWithColor(context, 
-                                   [UIColor whiteColor].CGColor);
+    CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
     for (int i =0; i<[weekdays count]; i++) {
         NSString *weekdayValue = (NSString *)[weekdays objectAtIndex:i];
         UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:18];
@@ -355,7 +350,6 @@
         CGContextMoveToPoint(context, 0, kVRGCalendarViewTopBarHeight+i*(kVRGCalendarViewDayHeight+1)+i*1+1);
         CGContextAddLineToPoint(context, kVRGCalendarViewWidth, kVRGCalendarViewTopBarHeight+i*(kVRGCalendarViewDayHeight+1)+i*1+1);
     }
-    
     CGContextStrokePath(context);
     
     //Grid dark lines
@@ -375,14 +369,11 @@
     }
     CGContextMoveToPoint(context, 0, gridHeight+kVRGCalendarViewTopBarHeight);
     CGContextAddLineToPoint(context, kVRGCalendarViewWidth, gridHeight+kVRGCalendarViewTopBarHeight);
-    
     CGContextStrokePath(context);
-    
     CGContextSetAllowsAntialiasing(context, YES);
     
     //Draw days
-    CGContextSetFillColorWithColor(context, 
-                                   [UIColor colorWithHexString:@"0x383838"].CGColor);
+    CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:@"0x383838"].CGColor);
 
     int numBlocks = numRows*7;
     NSDate *previousMonth = [self.currentMonth offsetMonth:-1];
@@ -432,7 +423,6 @@
         int targetY = kVRGCalendarViewTopBarHeight + targetRow * (kVRGCalendarViewDayHeight+2)+12;
         
         NSString *dateString;
-        // BOOL isCurrentMonth = NO;
         BOOL isToDrawYuan = NO;
         if (i<firstWeekDay) { //previous month
             targetDate = (prevMonthNumDays-firstWeekDay)+(i+1);
@@ -445,14 +435,14 @@
             if (filteredArray.count>0) {//标记
                 isToDrawYuan = YES;
                 CGContextSetLineWidth(context, 0);//线的宽度
+                CGContextAddArc(context, targetX+kVRGCalendarViewDayWidth-10, targetY, 5, 0, 2*M_PI, 0); //添加一个圆
                 UIColor*aColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
                 CGContextSetFillColorWithColor(context, aColor.CGColor);//填充颜色
-                CGContextAddArc(context, targetX+kVRGCalendarViewDayWidth-10, targetY, 5, 0, 2*M_PI, 0); //添加一个圆
                 CGContextDrawPath(context, kCGPathFillStroke);//绘制填充
+                filteredArray = nil;
             }
             NSString *hex = (isSelectedDatePreviousMonth) ? @"0x383838" : @"aaaaaa";
-            CGContextSetFillColorWithColor(context,
-                                           [UIColor colorWithHexString:hex].CGColor);
+            CGContextSetFillColorWithColor(context,[UIColor colorWithHexString:hex].CGColor);
             
         } else if (i>=(firstWeekDay+currentMonthNumDays)) { //next month
             targetDate = (i+1) - (firstWeekDay+currentMonthNumDays);
@@ -464,16 +454,15 @@
             if (filteredArray.count>0) {//标记
                 isToDrawYuan = YES;
                 CGContextSetLineWidth(context, 0);//线的宽度
+                CGContextAddArc(context, targetX+kVRGCalendarViewDayWidth-10, targetY, 5, 0, 2*M_PI, 0); //添加一个圆
                 UIColor*aColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
                 CGContextSetFillColorWithColor(context, aColor.CGColor);//填充颜色
-                CGContextAddArc(context, targetX+kVRGCalendarViewDayWidth-10, targetY, 5, 0, 2*M_PI, 0); //添加一个圆
                 CGContextDrawPath(context, kCGPathFillStroke);//绘制填充
+                filteredArray = nil;
             }
             NSString *hex = (isSelectedDateNextMonth) ? @"0x383838" : @"aaaaaa";
-            CGContextSetFillColorWithColor(context,
-                                           [UIColor colorWithHexString:hex].CGColor);
+            CGContextSetFillColorWithColor(context,[UIColor colorWithHexString:hex].CGColor);
         } else { //current month
-            // isCurrentMonth = YES;
             targetDate = (i-firstWeekDay)+1;
             dateString = [NSString stringWithFormat:@"%d-%d-%d",[currentMonth year],[currentMonth month],targetDate];
             NSDate *endDate = [dateFormatterString dateFromString:dateString];
@@ -483,14 +472,14 @@
             if (filteredArray.count>0) {//标记
                 isToDrawYuan = YES;
                 CGContextSetLineWidth(context, 0);//线的宽度
+                CGContextAddArc(context, targetX+kVRGCalendarViewDayWidth-10, targetY, 5, 0, 2*M_PI, 0); //添加一个圆
                 UIColor*aColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
                 CGContextSetFillColorWithColor(context, aColor.CGColor);//填充颜色
-                CGContextAddArc(context, targetX+kVRGCalendarViewDayWidth-10, targetY, 5, 0, 2*M_PI, 0); //添加一个圆
                 CGContextDrawPath(context, kCGPathFillStroke);//绘制填充
+                filteredArray = nil;
             }
             NSString *hex = (isSelectedDatePreviousMonth || isSelectedDateNextMonth) ? @"0xaaaaaa" : @"0x383838";
-            CGContextSetFillColorWithColor(context,
-                                           [UIColor colorWithHexString:hex].CGColor);
+            CGContextSetFillColorWithColor(context, [UIColor colorWithHexString:hex].CGColor);
         }
         
         NSString *date = [NSString stringWithFormat:@"%i",targetDate];
@@ -504,21 +493,16 @@
             
             if (isToDrawYuan == YES) {
                 CGContextSetLineWidth(context, 0);//线的宽度
+                CGContextAddArc(context, targetX+kVRGCalendarViewDayWidth-10, targetY, 5, 0, 2*M_PI, 0); //添加一个圆
                 UIColor*aColor = [UIColor whiteColor];
                 CGContextSetFillColorWithColor(context, aColor.CGColor);//填充颜色
-                CGContextAddArc(context, targetX+kVRGCalendarViewDayWidth-10, targetY, 5, 0, 2*M_PI, 0); //添加一个圆
                 CGContextDrawPath(context, kCGPathFillStroke);//绘制填充
             }
-            
-            CGContextSetFillColorWithColor(context, 
-                                           [UIColor whiteColor].CGColor);
+            CGContextSetFillColorWithColor(context,[UIColor whiteColor].CGColor);
         }
         
         [date drawInRect:CGRectMake(targetX+2, targetY+10, kVRGCalendarViewDayWidth, kVRGCalendarViewDayHeight) withFont:[UIFont fontWithName:@"HelveticaNeue-Bold" size:30] lineBreakMode:NSLineBreakByClipping alignment:NSTextAlignmentCenter];
     }
-    
-    //    CGContextClosePath(context);
-    
     
     //Draw markings
     if (!self.markedDates || isSelectedDatePreviousMonth || isSelectedDateNextMonth) return;
@@ -535,8 +519,6 @@
         } else {
             continue;
         }
-        
-        
         
         int targetBlock = firstWeekDay + (targetDate-1);
         int targetColumn = targetBlock%7;
@@ -557,10 +539,11 @@
             color  = (UIColor *)[markedColors objectAtIndex:i];
         }
         
-        
         CGContextSetFillColorWithColor(context, color.CGColor);
         CGContextFillPath(context);
+        
     }
+    CGContextClosePath(context);
 }
 
 #pragma mark - Draw image for animation

@@ -510,8 +510,8 @@
                 self.IconView.hidden = NO;
                 
                 NSFileManager *fileManage = [NSFileManager defaultManager];
-                NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-                NSString *filename = [Path stringByAppendingPathComponent:@"class.plist"];
+                NSString *path = [Utility returnPath];
+                NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
                 if ([fileManage fileExistsAtPath:filename]) {
                     [fileManage removeItemAtPath:filename error:nil];
                 }
@@ -527,7 +527,7 @@
                     [self.appDel.notification_dic setObject:array forKey:[DataService sharedService].theClass.classId];
                 }
                 
-                NSString *filename2 = [Path stringByAppendingPathComponent:@"student.plist"];
+                NSString *filename2 = [path stringByAppendingPathComponent:@"student.plist"];
                 if ([fileManage fileExistsAtPath:filename2]) {
                     [fileManage removeItemAtPath:filename2 error:nil];
                 }

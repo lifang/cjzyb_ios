@@ -21,7 +21,6 @@
         }
     }
     
-    
     [card setCarId:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"id"]]]];
     [card setCard_bag_id:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"card_bag_id"]]]];
     [card setMistake_types:[[aDic objectForKey:@"mistake_types"]integerValue]];
@@ -36,7 +35,7 @@
     [card setCard_tag_id:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"card_tag_id"]]]];
     [card setCreated_at:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"new_created_at"]]]];
     [card setFull_text:[NSString stringWithFormat:@"%@",[Utility filterValue:[aDic objectForKey:@"full_text"]]]];
-    [card setTagArray:[NSMutableArray arrayWithArray:[aDic objectForKey:@"card_tags_id"]]];
+
     return card;
 }
 @end

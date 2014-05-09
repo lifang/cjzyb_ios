@@ -46,6 +46,7 @@
     label.font = [UIFont systemFontOfSize:20];
     label.backgroundColor = [UIColor clearColor];
     label.text = text;
+    label.textColor = [UIColor whiteColor];
     label.lineBreakMode =NSLineBreakByWordWrapping;
     label.numberOfLines = 0;
     [myScroll addSubview:label];

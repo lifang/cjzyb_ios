@@ -307,7 +307,6 @@
     }
 }
 
-
 #ifdef __IPHONE_7_0
 //0:系统，1：回复，2：作业
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {

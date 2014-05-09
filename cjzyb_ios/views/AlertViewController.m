@@ -64,7 +64,7 @@
 
 - (IBAction)closeBtnPressed:(id)sender {
     self.isSuccess = NO;
-    [self.delegate dismissPopView:self andType:self.type];
+    [self.delegate dismissPopView:self andType:-1];
 }
 - (void)didReceiveMemoryWarning
 {

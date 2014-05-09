@@ -8,14 +8,12 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardpackageViewController">
             <connections>
                 <outlet property="cataview" destination="vjX-z0-hnK" id="SFb-KQ-0bh"/>
-                <outlet property="defaultBtn" destination="Ja1-9N-EKV" id="pdW-RN-tdD"/>
+                <outlet property="defaultBtn" destination="yRR-tp-HUm" id="omj-pB-2YV"/>
                 <outlet property="myScrollView" destination="ka2-ye-ReN" id="J5e-Xj-LBp"/>
-                <outlet property="redBtn" destination="61l-0X-LvM" id="zWi-0x-BE5"/>
+                <outlet property="pullTable" destination="00K-7M-Fhl" id="7SH-mI-7cd"/>
                 <outlet property="searchBtn" destination="LV2-kM-IfY" id="cKl-Tw-QVs"/>
                 <outlet property="searchTxt" destination="1m6-SR-llO" id="Lbx-dI-DvS"/>
-                <outlet property="selectedBtn" destination="iBy-Ff-IiB" id="ohi-Gq-Yjy"/>
                 <outlet property="view" destination="2" id="3"/>
-                <outlet property="writeBtn" destination="Gqa-NN-HDO" id="rmz-eQ-pQU"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -40,53 +38,6 @@
                                 <outlet property="delegate" destination="-1" id="Chm-6r-D5i"/>
                             </connections>
                         </textField>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBy-Ff-IiB">
-                            <rect key="frame" x="568" y="28" width="86" height="34"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                            <state key="normal" title="选错" backgroundImage="card_btn.png">
-                                <color key="titleColor" red="0.2470588235" green="0.28235294119999998" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="selectedBtnTapped:" destination="-1" eventType="touchUpInside" id="yIa-oL-hGy"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ja1-9N-EKV">
-                            <rect key="frame" x="662" y="29" width="86" height="34"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                            <state key="normal" title="默认" backgroundImage="card_btn_active.png">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="defaultBtnTapped:" destination="-1" eventType="touchUpInside" id="yla-En-rKo"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gqa-NN-HDO">
-                            <rect key="frame" x="474" y="28" width="86" height="34"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                            <state key="normal" title="拼错" backgroundImage="card_btn.png">
-                                <color key="titleColor" red="0.2470588235" green="0.28235294119999998" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="writeBtnTapped:" destination="-1" eventType="touchUpInside" id="Off-8X-SiU"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61l-0X-LvM">
-                            <rect key="frame" x="380" y="27" width="86" height="34"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                            <state key="normal" title="读错" backgroundImage="card_btn.png">
-                                <color key="titleColor" red="0.2470588235" green="0.28235294119999998" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="redBtnTapped:" destination="-1" eventType="touchUpInside" id="COu-Ni-Nxf"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LV2-kM-IfY">
                             <rect key="frame" x="216" y="29" width="32" height="32"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -99,10 +50,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yRR-tp-HUm">
-                            <rect key="frame" x="286" y="27" width="86" height="34"/>
+                            <rect key="frame" x="507" y="23" width="86" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                            <state key="normal" title="刷新" backgroundImage="card_btn.png">
+                            <state key="normal" title="刷新">
                                 <color key="titleColor" red="0.2470588235" green="0.28235294119999998" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -114,8 +65,8 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                 </view>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="    卡包中的卡包为作业时出现的错题，记录来便于复习和巩固，若以后遇到同类型题，不再犯同样的错误，卡片将自动消失。" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="574" translatesAutoresizingMaskIntoConstraints="NO" id="j8P-j1-FOV">
-                    <rect key="frame" x="97" y="98" width="574" height="43"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="       卡包中的卡包为作业时出现的错题，记录来便于复习和巩固，它积到20张时将影响用户不能进行作业，请及时清理卡包内的错题卡（题卡中绿色的字体为正确答案，红色为你的错误答案）。" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="604" translatesAutoresizingMaskIntoConstraints="NO" id="j8P-j1-FOV">
+                    <rect key="frame" x="82" y="91" width="604" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.57647058823529407" green="0.59607843137254901" blue="0.62352941176470589" alpha="1" colorSpace="calibratedRGB"/>
@@ -129,14 +80,22 @@
                         <outlet property="delegate" destination="-1" id="hCs-6J-Epb"/>
                     </connections>
                 </scrollView>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="00K-7M-Fhl">
+                    <rect key="frame" x="627" y="23" width="110" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                    <inset key="separatorInset" minX="35" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="7Qu-DN-fXX"/>
+                        <outlet property="delegate" destination="-1" id="WcH-iY-nS1"/>
+                    </connections>
+                </tableView>
             </subviews>
             <color key="backgroundColor" red="0.86274509799999999" green="0.86274509799999999" blue="0.86274509799999999" alpha="1" colorSpace="calibratedRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
     <resources>
-        <image name="card_btn.png" width="85" height="33"/>
-        <image name="card_btn_active.png" width="85" height="33"/>
         <image name="card_searchBtn.png" width="32" height="32"/>
         <image name="card_searchText.png" width="231" height="48"/>
     </resources>

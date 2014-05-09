@@ -47,6 +47,28 @@
     [request setHTTPMethod:@"GET"];
     [request setTimeoutInterval:60];
     [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
+        /*
+        //用户
+        NSDictionary *userDic = [dicData objectForKey:@"student"];
+        [DataService sharedService].user = [UserObject userFromDictionary:userDic];
+        //班级
+        NSDictionary *classDic =[dicData objectForKey:@"class"];
+        [DataService sharedService].theClass = [ClassObject classFromDictionary:classDic];
+        
+        NSFileManager *fileManage = [NSFileManager defaultManager];
+        NSString *path = [Utility returnPath];
+        NSString *filename = [path stringByAppendingPathComponent:@"class.plist"];
+        if ([fileManage fileExistsAtPath:filename]) {
+            [fileManage removeItemAtPath:filename error:nil];
+        }
+        [NSKeyedArchiver archiveRootObject:classDic toFile:filename];
+        NSString *filename2 = [path stringByAppendingPathComponent:@"student.plist"];
+        if ([fileManage fileExistsAtPath:filename2]) {
+            [fileManage removeItemAtPath:filename2 error:nil];
+        }
+        [NSKeyedArchiver archiveRootObject:userDic toFile:filename2];
+        */
+        
         NSArray *taskArr = [dicData objectForKey:@"tasks"];
         NSString *knowlegeCount = [Utility filterValue:[dicData objectForKey:@"knowledges_cards_count"]];
         NSMutableArray *taskList = [NSMutableArray array];

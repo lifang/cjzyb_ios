@@ -8,8 +8,6 @@
 
 #import "CalendarViewController.h"
 @interface CalendarViewController ()
-- (IBAction)okButtonClicked:(id)sender;
-
 @end
 
 @implementation CalendarViewController
@@ -22,15 +20,15 @@
     }
     return self;
 }
-
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.calendarView = [[VRGCalendarView alloc] init];
+    self.calendarView.delegate = self;
+    [self.view addSubview:self.calendarView];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.calendarView = [[VRGCalendarView alloc] init];
-    self.calendarView.delegate = self;
-    self.calendarView.backgroundColor = [UIColor redColor];
-    [self.view addSubview:self.calendarView];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -38,7 +36,12 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    self.calendarView.delegate = nil;
+    [self.calendarView removeFromSuperview];
+    self.calendarView = nil;
+}
 #pragma mark VRGCalendarViewDelegate日历代理
 -(void)calendarView:(VRGCalendarView *)calendarView dateSelected:(NSDate *)date{
     NSDateFormatter *dateFormatterString = [[NSDateFormatter alloc] init];
@@ -49,15 +52,10 @@
 }
 
 -(void)calendarView:(VRGCalendarView *)calendarView switchedToMonth:(int)month targetHeight:(float)targetHeight animated:(BOOL)animated{
-    NSLog(@"switch:%d",month);
+    
 }
 #pragma mark --
 
-- (IBAction)okButtonClicked:(id)sender {
-//    if (self.selectedDateBlock) {
-//        self.selectedDateBlock(self.selectedDateArray);
-//    }
-}
 
 #pragma mark property
 -(NSMutableArray *)selectedDateArray{

@@ -7,6 +7,8 @@
 //
 
 #import "CardpackageViewController.h"
+
+
 @interface CardpackageViewController ()
 @property (nonatomic,strong) WYPopoverController *poprController;
 @end
@@ -40,12 +42,14 @@ static NSInteger tmpPage = 0;
 }
 
 -(IBAction)refreshCardPackageData:(id)sender {
+    [self.defaultBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.defaultBtn setBackgroundColor:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1]];
     [self getCardData];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"卡包";
+    self.typeArray = [NSArray arrayWithObjects:@"默认",@"默认",@"听写",@"朗读",@"十速",@"选择",@"连线",@"完型",@"排序", nil];
     
     [self getCardData];
     self.myScrollView.backgroundColor = [UIColor colorWithRed:220/255.0 green:220/255.0 blue:220/255.0 alpha:1];
@@ -56,8 +60,14 @@ static NSInteger tmpPage = 0;
     
     //翻页之后停止播放声音
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePlayerByView:) name:@"changePlayerByView" object:nil];
-    //选择或者取消标签
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeTagByView:) name:@"changeTagByView" object:nil];
+    
+    
+    [self.pullTable.layer setCornerRadius:8.0f];
+    [self.pullTable.layer setMasksToBounds:YES];
+    
+    [self.defaultBtn.layer setCornerRadius:8.0f];
+    [self.defaultBtn.layer setMasksToBounds:YES];
+    [self.defaultBtn setBackgroundColor:[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1]];
 }
 -(void)changePage:(id)sender {
     int whichPage = self.myPageControl.currentPage;
@@ -83,66 +93,7 @@ static NSInteger tmpPage = 0;
     }
 }
 
-- (void)changeTagByView:(NSNotification *)notification {
-    CardObject *card = [notification object];
-    
-    NSInteger card_Id = [card.carId integerValue];
-    
-    for (int i=0; i<self.dataArray.count; i++) {
-        CardObject *card2 = [self.dataArray objectAtIndex:i];
-        if ([card2.carId integerValue]==card_Id){
-            [self.dataArray replaceObjectAtIndex:i withObject:card];
-        }
-    }
-    
-    for (int i=0; i<self.cardArray.count; i++) {
-        CardObject *card2 = [self.cardArray objectAtIndex:i];
-        if ([card2.carId integerValue]==card_Id) {
-            
-            if (card2.tagArray.count>0) {
-                NSMutableArray *tmpArray = [self compareArray:[DataService sharedService].tagsArray array:card2.tagArray];
-                [[CMRManager sharedService] DeleteContact:[card2.carId intValue]];
-                if ([card2.types integerValue]==5) {
-                    [[CMRManager sharedService] AddContact:[card2.carId intValue] name:card2.full_text phone:tmpArray];
-                }else {
-                    [[CMRManager sharedService] AddContact:[card2.carId intValue] name:card2.content phone:tmpArray];
-                }
-                
-            }else {
-                [[CMRManager sharedService] DeleteContact:[card2.carId intValue]];
-                if ([card2.types integerValue]==5) {
-                    [[CMRManager sharedService] AddContact:[card2.carId intValue] name:card2.full_text phone:nil];
-                }else {
-                    [[CMRManager sharedService] AddContact:[card2.carId intValue] name:card2.content phone:nil];
-                }
-            }
-            
-            [self.cardArray replaceObjectAtIndex:i withObject:card];
-            
-            NSInteger tag = i/4+TableTag;
-            UITableView *table = (UITableView *)[self.myScrollView viewWithTag:tag];
-            NSInteger section = 0;
-            if (i%4==0 || i%4==1) {
-                section=0;
-            }else if (i%4==2 || i%4==3){
-                section = 1;
-            }
 
-            NSIndexPath *idPath = [NSIndexPath indexPathForRow:section inSection:0];
-            UITableViewCell *cell = [table cellForRowAtIndexPath:idPath];
-
-            NSArray *subViews = [cell.contentView subviews];
-            for (UIView *vv in subViews) {
-                if ([vv isKindOfClass:[CardCustomView class]] && vv.tag==i) {
-                    CardCustomView *cardCustom = (CardCustomView *)vv;
-                    [cardCustom.cardFirst setTagNameArray:card.tagArray];
-                }
-            }
-            
-            break;
-        }
-    }
-}
 -(NSMutableArray *)cardArray {
     if (!_cardArray) {
         _cardArray = [[NSMutableArray alloc]init];
@@ -213,28 +164,149 @@ static NSInteger tmpPage = 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 2;
+    if ([tableView isEqual:self.pullTable]) {
+        if (dropDown1Open) {
+            return 9;
+        }
+        else
+        {
+            return 1;
+        }
+    }else
+        return 2;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 360;
+    if ([tableView isEqual:self.pullTable]){
+        return 44;
+    }else
+        return 360;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger count = ([self.cardArray count]-1)/4+1;
-    static NSString *CellIdentifier = @"Cellcard";
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-	if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.backgroundColor = [UIColor clearColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        for (int i = 0; i<count; i++) {
-            if ((tableView.tag-TableTag)==i) {
-                [self drawTableViewCell:cell index:[indexPath row] category:i];
+    if ([tableView isEqual:self.pullTable]) {
+        static NSString *CellIdentifier = @"Cell";
+        static NSString *DropDownCellIdentifier = @"DropDownCell";
+        if(indexPath.row==0) {
+            DropDownCell *cell = (DropDownCell*) [tableView dequeueReusableCellWithIdentifier:DropDownCellIdentifier];
+            if (cell == nil){
+                NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"DropDownCell" owner:nil options:nil];
+                
+                for(id currentObject in topLevelObjects)
+                {
+                    if([currentObject isKindOfClass:[DropDownCell class]])
+                    {
+                        cell = (DropDownCell *)currentObject;
+                        cell.backgroundColor = [UIColor clearColor];
+                        cell.contentView.backgroundColor = [UIColor clearColor];
+                        break;
+                    }
+                }
+            }
+            
+            [[cell textLabel] setText:@"默认"];
+            return cell;
+        }
+        else {
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+                cell.backgroundColor = [UIColor clearColor];
+                cell.contentView.backgroundColor = [UIColor clearColor];
+            }
+            
+            NSString *label = [NSString stringWithFormat:@"%@", [self.typeArray objectAtIndex:indexPath.row]];
+            [[cell textLabel] setText:label];
+            return cell;
+        }
+    }else {
+        NSInteger count = ([self.cardArray count]-1)/4+1;
+        static NSString *CellIdentifier = @"Cellcard";
+        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            cell.backgroundColor = [UIColor clearColor];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            for (int i = 0; i<count; i++) {
+                if ((tableView.tag-TableTag)==i) {
+                    [self drawTableViewCell:cell index:[indexPath row] category:i];
+                }
             }
         }
-	}
+        
+        return cell;
+    }
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSIndexPath *path0 = [NSIndexPath indexPathForRow:1 inSection:[indexPath section]];
+    NSIndexPath *path1 = [NSIndexPath indexPathForRow:2 inSection:[indexPath section]];
+    NSIndexPath *path2 = [NSIndexPath indexPathForRow:3 inSection:[indexPath section]];
+    NSIndexPath *path3 = [NSIndexPath indexPathForRow:4 inSection:[indexPath section]];
+    NSIndexPath *path4 = [NSIndexPath indexPathForRow:5 inSection:[indexPath section]];
+    NSIndexPath *path5 = [NSIndexPath indexPathForRow:6 inSection:[indexPath section]];
+    NSIndexPath *path6 = [NSIndexPath indexPathForRow:7 inSection:[indexPath section]];
+    NSIndexPath *path7 = [NSIndexPath indexPathForRow:8 inSection:[indexPath section]];
+    NSArray *indexPathArray = [NSArray arrayWithObjects:path0, path1, path2,path3,path4,path5,path6,path7, nil];
     
-    return cell;
+    if ([tableView isEqual:self.pullTable]){
+        if(indexPath.row==0) {
+            
+            DropDownCell *cell = (DropDownCell*) [tableView cellForRowAtIndexPath:indexPath];
+            if ([cell isOpen]){
+                [UIView animateWithDuration:0.25 animations:^{
+                    [cell setClosed];
+                    dropDown1Open = [cell isOpen];
+                    [tableView deleteRowsAtIndexPaths:indexPathArray withRowAnimation:UITableViewRowAnimationTop];
+                } completion:^(BOOL finished){
+                    CGRect frame = self.pullTable.frame;
+                    frame.size.height = 44;
+                    self.pullTable.frame = frame;
+                }];
+            }
+            else{
+                [UIView animateWithDuration:0.1 animations:^{
+                    CGRect frame = self.pullTable.frame;
+                    frame.size.height = 396;
+                    self.pullTable.frame = frame;
+                } completion:^(BOOL finished){
+                    [cell setOpen];
+                    dropDown1Open = [cell isOpen];
+                    [tableView insertRowsAtIndexPaths:indexPathArray withRowAnimation:UITableViewRowAnimationAutomatic];
+                }];
+            }
+        }
+        else{
+            NSString* dropDown1 = [[[tableView cellForRowAtIndexPath:indexPath] textLabel] text];
+            NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:[indexPath section]];
+            DropDownCell *cell = (DropDownCell*) [tableView cellForRowAtIndexPath:path];
+            [[cell textLabel] setText:dropDown1];
+            
+            CGRect frame = self.pullTable.frame;
+            frame.size.height = 44;
+            self.pullTable.frame = frame;
+            [cell setClosed];
+            dropDown1Open = [cell isOpen];
+            [tableView deleteRowsAtIndexPaths:indexPathArray withRowAnimation:UITableViewRowAnimationTop];
+            
+            [self.searchTxt resignFirstResponder];
+            self.cardArray = nil;
+            int number = [self.typeArray indexOfObject:dropDown1];
+            
+            if (number==0 || number==1) {
+                self.cardArray = [NSMutableArray arrayWithArray:self.dataArray];
+            }else {
+                for (CardObject *card in self.dataArray) {
+                    if ([card.types integerValue] == (number-2)) {
+                        [self.cardArray addObject:card];
+                    }
+                }
+            }
+            tmpPage = 0;
+            [self displayNewView];
+        }
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
 }
 
 //绘制tableview的cell
@@ -257,23 +329,16 @@ static NSInteger tmpPage = 0;
     NSInteger currentTag = 2*row+col+category*4;
     
     CardObject *aCard = (CardObject *)[self.cardArray objectAtIndex:currentTag];
-    NSArray *viewArray = [[NSBundle mainBundle] loadNibNamed:@"CardFirstView" owner:self options:nil];
-    CardFirstView *cardFirst = (CardFirstView *)[viewArray objectAtIndex:0];
-    
-    viewArray = [[NSBundle mainBundle] loadNibNamed:@"CardSecondView" owner:self options:nil];
-    CardSecondView *cardSecond = (CardSecondView *)[viewArray objectAtIndex:0];
-    
-    CardCustomView *cView = [[CardCustomView alloc]initWithFrame:CGRectMake(34.67+(332+34.67)*col, 14, 332, 332) andFirst:cardFirst andSecond:cardSecond andObj:aCard];
-    cView.viewtag = currentTag;
+    NSArray *viewArray = [[NSBundle mainBundle] loadNibNamed:@"CardCustomView" owner:self options:nil];
+    CardCustomView *cView = (CardCustomView *)[viewArray objectAtIndex:0];
     cView.tag = currentTag;
-    cView.cardFirst.delegate = self;
-    cView.cardSecond.delegate = self;
+    cView.aCard = aCard;
+    cView.viewtag = currentTag;
+    cView.delegate = self;
+    
+    cView.frame = CGRectMake(34.67+(332+34.67)*col, 14, 332, 332);
     [cell.contentView addSubview:cView];
-}
-
--(void)selectedCardView:(id)sender {
-    CardCustomView *control = (CardCustomView *)sender;
-    [control flipTouched];
+    
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -282,95 +347,7 @@ static NSInteger tmpPage = 0;
     self.myPageControl.currentPage = page;
     tmpPage = page;
 }
-#pragma mark
-#pragma mark - 选择分类
-//MISTAKE_TYPES_NAME = {0 => "默认", 1 => "读错",2 => '写错',3 => '选错'}
-- (IBAction)redBtnTapped:(id)sender//1
-{
-    [self.redBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.redBtn setBackgroundImage:[UIImage imageNamed:@"card_btn_active"] forState:UIControlStateNormal];
-    [self.writeBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.writeBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
-    [self.selectedBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.selectedBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
-    [self.defaultBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.defaultBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
-    
-    [self.searchTxt resignFirstResponder];
-    self.cardArray = nil;
-    if (self.dataArray.count>0) {
-        for (CardObject *card in self.dataArray) {
-            if (card.mistake_types == 1) {
-                [self.cardArray addObject:card];
-            }
-        }
-    }
-    tmpPage = 0;
-    [self displayNewView];
-    
-}
-- (IBAction)writeBtnTapped:(id)sender//2
-{
-    [self.writeBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.writeBtn setBackgroundImage:[UIImage imageNamed:@"card_btn_active"] forState:UIControlStateNormal];
-    [self.redBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.redBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
-    [self.selectedBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.selectedBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
-    [self.defaultBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.defaultBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
-    
-    [self.searchTxt resignFirstResponder];
-    self.cardArray = nil;
-    if (self.dataArray.count>0) {
-        for (CardObject *card in self.dataArray) {
-            if (card.mistake_types == 2) {
-                [self.cardArray addObject:card];
-            }
-        }
-    }
-    tmpPage = 0;
-    [self displayNewView];
-}
-- (IBAction)selectedBtnTapped:(id)sender//3
-{
-    [self.selectedBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.selectedBtn setBackgroundImage:[UIImage imageNamed:@"card_btn_active"] forState:UIControlStateNormal];
-    [self.writeBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.writeBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
-    [self.redBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.redBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
-    [self.defaultBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.defaultBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
-    
-    [self.searchTxt resignFirstResponder];
-    self.cardArray = nil;
-    if (self.dataArray.count>0) {
-        for (CardObject *card in self.dataArray) {
-            if (card.mistake_types == 3) {
-                [self.cardArray addObject:card];
-            }
-        }
-    }
-    tmpPage = 0;
-    [self displayNewView];
-}
-- (IBAction)defaultBtnTapped:(id)sender//0
-{
-    [self.defaultBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.defaultBtn setBackgroundImage:[UIImage imageNamed:@"card_btn_active"] forState:UIControlStateNormal];
-    [self.writeBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.writeBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
-    [self.selectedBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.selectedBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
-    [self.redBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
-    [self.redBtn setBackgroundImage:[UIImage imageNamed:@"card_btn"] forState:UIControlStateNormal];
-    
-    [self.searchTxt resignFirstResponder];
-    self.cardArray = [NSMutableArray arrayWithArray:self.dataArray];
-    tmpPage = 0;
-    [self displayNewView];
-}
+#pragma mark  --
 -(NSMutableArray *)getDatafromArray:(NSMutableArray *)array1 array:(NSMutableArray *)array2 {
     
     NSMutableArray *tempArray = [[NSMutableArray alloc]init];
@@ -432,34 +409,12 @@ static NSInteger tmpPage = 0;
 
 #pragma mark
 #pragma mark - CardInterfaceDelegate
--(NSMutableArray *)compareArray:(NSMutableArray *)array1 array:(NSMutableArray *)array2 {
-    NSMutableArray *tempArray = [[NSMutableArray alloc]init];
-    
-    for (int i=0; i<array1.count; i++) {
-        TagObject *tagObj = (TagObject *)[array1 objectAtIndex:i];
-        for (int k=0; k<array2.count; k++) {
-            NSInteger t_id = [[array2 objectAtIndex:k]integerValue];
-            if ([tagObj.tagId integerValue]==t_id) {
-                [tempArray addObject:tagObj.tagName];
-            }
-        }
-    }
-    
-    return tempArray;
-}
 -(void)getCardInfoDidFinished:(NSDictionary *)result {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [MBProgressHUD hideHUDForView:self.view animated:YES];
-            NSArray *arrayTag = [result objectForKey:@"tags"];
-            [DataService sharedService].tagsArray = [[NSMutableArray alloc]init];
-            if (arrayTag.count>0) {
-                for (int i=0; i<arrayTag.count; i++) {
-                    NSDictionary *dic = [arrayTag objectAtIndex:i];
-                    TagObject *tagObj = [TagObject tagFromDictionary:dic];
-                    [[DataService sharedService].tagsArray addObject:tagObj];
-                }
-            }
+            [self.defaultBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
+            [self.defaultBtn setBackgroundColor:[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1]];
             
             NSArray *array = [result objectForKey:@"knowledges_card"];
             self.cardArray = nil;[[CMRManager sharedService] Reset];
@@ -468,21 +423,10 @@ static NSInteger tmpPage = 0;
                     NSDictionary *dic = [array objectAtIndex:i];
                     CardObject *card = [CardObject cardFromDictionary:dic];
                     
-                    if (card.tagArray.count>0) {
-                        NSMutableArray *tmpArray = [self compareArray:[DataService sharedService].tagsArray array:card.tagArray];
-                        
-                        if ([card.types integerValue]==5) {
-                            [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.full_text phone:tmpArray];
-                        }else {
-                           [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.content phone:tmpArray];
-                        }
-                        
+                    if ([card.types integerValue]==5) {
+                        [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.full_text phone:nil];
                     }else {
-                        if ([card.types integerValue]==5) {
-                            [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.full_text phone:nil];
-                        }else {
-                            [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.content phone:nil];
-                        }
+                        [[CMRManager sharedService] AddContact:[card.carId intValue] name:card.content phone:nil];
                     }
                     
                     [self.cardArray addObject:card];
@@ -496,6 +440,8 @@ static NSInteger tmpPage = 0;
 }
 -(void)getCardInfoDidFailed:(NSString *)errorMsg {
     [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [self.defaultBtn setTitleColor:[UIColor colorWithRed:63/255.0 green:72/255.0 blue:83/255.0 alpha:1] forState:UIControlStateNormal];
+    [self.defaultBtn setBackgroundColor:[UIColor colorWithRed:240/255.0 green:240/255.0 blue:240/255.0 alpha:1]];
     [Utility errorAlert:errorMsg];
 }
 
@@ -571,16 +517,27 @@ static NSInteger tmpPage = 0;
         [self playWithTag:btn.tag];
     }
 }
+
+static NSInteger temButtonTag = -1;
+
 -(void)pressedDeleteBtn:(UIButton *)btn {
-    if (self.appDel.isReachable == NO) {
-        [Utility errorAlert:@"暂无网络!"];
-    }else {
-        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        CardObject *card = [self.cardArray objectAtIndex:btn.tag];
-        [self.deleteInter getDeleteCardDelegateDelegateWithCardId:card.carId andTag:btn.tag];
-    }
+    temButtonTag = btn.tag;
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"" message:@"确认删除卡片?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+    [alert show];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [alertView dismissWithClickedButtonIndex:buttonIndex animated:YES];
+    if (buttonIndex==1) {
+        if (self.appDel.isReachable == NO) {
+            [Utility errorAlert:@"暂无网络!"];
+        }else {
+            [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            CardObject *card = [self.cardArray objectAtIndex:temButtonTag];
+            [self.deleteInter getDeleteCardDelegateDelegateWithCardId:card.carId andTag:temButtonTag];
+        }
+    }
+}
 -(void)pressedShowFullText:(NSString *)fullText andBtn:(UIButton *)btn {
     
     self.fullTextView = [[FullText alloc]initWithNibName:@"FullText" bundle:nil];
@@ -629,23 +586,5 @@ static NSInteger tmpPage = 0;
 }
 #pragma mark
 #pragma mark - 第一个页面
--(void)pressedTxtBtn:(UIButton *)btn {
-    CardObject *card = [self.cardArray objectAtIndex:btn.tag];
-    TagViewController *tagView = [[TagViewController alloc]initWithNibName:@"TagViewController" bundle:nil];
-    tagView.tagArray = [DataService sharedService].tagsArray;
-    tagView.filteredArray = [DataService sharedService].tagsArray;
-    tagView.aCard = card;
-    
-    UIBarButtonItem *barItem = [[UIBarButtonItem alloc]initWithCustomView:btn];
-    __block UIBarButtonItem *barItemm = barItem;
-    self.poprController = [[WYPopoverController alloc] initWithContentViewController:tagView];
-    self.poprController.theme.tintColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
-    self.poprController.theme.fillTopColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
-    self.poprController.theme.fillBottomColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
-    self.poprController.theme.glossShadowColor = [UIColor colorWithRed:53./255. green:207./255. blue:143./255. alpha:1.0];
-    self.poprController.popoverContentSize = (CGSize){265,263};
-    [self.poprController presentPopoverFromBarButtonItem:barItem permittedArrowDirections:WYPopoverArrowDirectionUp animated:YES completion:^{
-        barItemm=nil;
-    }];
-}
+
 @end
