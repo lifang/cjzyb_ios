@@ -42,6 +42,9 @@ static NSInteger tmpPage = 0;
 }
 
 -(IBAction)refreshCardPackageData:(id)sender {
+    dropDown1Open = NO;
+    [self.pullTable reloadData];
+    
     [self.defaultBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.defaultBtn setBackgroundColor:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1]];
     [self getCardData];

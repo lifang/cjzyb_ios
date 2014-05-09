@@ -2701,7 +2701,7 @@
 				);
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_STATIC_ANALYZER_MODE = shallow;
-				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.comdosoft.cjzyb";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sen Ye (FE46ZS29LM)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2742,7 +2742,7 @@
 				);
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CLANG_STATIC_ANALYZER_MODE = shallow;
-				CODE_SIGN_IDENTITY = "Apple Development IOS Push Services: com.comdosoft.cjzyb";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Sen Ye (FE46ZS29LM)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Sen Ye (FE46ZS29LM)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

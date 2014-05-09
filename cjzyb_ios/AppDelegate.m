@@ -123,12 +123,12 @@
 
     self.the_class_id = -1;
 
-    [DataService sharedService].notificationPage=0;
+    [DataService sharedService].notificationPage=1;
     self.notification_type = 0;
     [DataService sharedService].numberOfViewArray = [[NSMutableArray alloc]initWithCapacity:4];
     //推送
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+     (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     
     //表示app是登录状态
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -195,25 +195,20 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    //记录作业＋通知右上角红点点～～
-    NSFileManager *fileManage = [NSFileManager defaultManager];
-    NSString *path = [Utility returnPath];
-    NSString *filename = [path stringByAppendingPathComponent:@"type.plist"];
-    if ([fileManage fileExistsAtPath:filename]) {
-        [fileManage removeItemAtPath:filename error:nil];
-    }
     
-    [NSKeyedArchiver archiveRootObject:self.notification_dic toFile:filename];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:@"2" forKey:@"isOn"];
+    [defaults synchronize];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    
+
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -356,11 +351,30 @@
                 }
             }
         }
-        
         if (isPush==YES) {
             [[NSNotificationCenter defaultCenter]postNotificationName:@"loadByNotification" object:[self.notification_dic objectForKey:classId]];
         }
         
+    }else if ([isOn intValue] == 2) {//app从后台进入前台
+        [defaults setObject:@"1" forKey:@"isOn"];
+        [defaults synchronize];
+        
+        self.the_class_id = [[userInfo objectForKey:@"class_id"]integerValue];
+        self.the_class_name = [userInfo objectForKey:@"class_name"];
+        self.the_student_id = [[userInfo objectForKey:@"student_id"]integerValue];
+        if (type == 2) {
+            self.notification_type = 0;
+        }else {
+            self.notification_type = 2;
+            if (type==0) {
+                [DataService sharedService].notificationPage=1;
+            }else {
+                [DataService sharedService].notificationPage=0;
+            }
+        }
+    
+        
+        [self showRootView];
     }
     completionHandler(UIBackgroundFetchResultNoData);
 }

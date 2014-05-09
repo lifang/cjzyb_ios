@@ -134,9 +134,6 @@
         [[DataService sharedService].numberOfViewArray addObject:indexString];
     }
     
-    
-    
-    
     if (abs(self.selectedIndex - selectedIndex) <= 1) {
         [self.scrollView setContentOffset:CGPointMake(selectedIndex * self.scrollWidth, 0) animated:animated];
         if (selectedIndex == _selectedIndex) {

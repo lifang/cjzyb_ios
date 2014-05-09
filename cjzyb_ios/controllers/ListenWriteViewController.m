@@ -764,7 +764,6 @@ static int numberOfMusic =0;
             [remindTmpArray filterUsingPredicate:thePredicate2];
         
             [self.remindArray addObjectsFromArray:remindTmpArray];
-            NSLog(@"1=%@",self.remindArray);
             
             self.remindView.hidden=NO;
             

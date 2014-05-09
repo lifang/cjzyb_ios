@@ -369,6 +369,7 @@
                             NSRange range_compare2 = [math rangeAtIndex:0];
                             content_text = [NSMutableString stringWithString:[full_context substringWithRange:NSMakeRange(range_compare.location+1, range_compare2.location-range_compare.location)]];
                         }
+                        break;
                     }
                 }
             }else {

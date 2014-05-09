@@ -47,7 +47,7 @@
     [request setHTTPMethod:@"GET"];
     [request setTimeoutInterval:60];
     [Utility requestDataWithRequest:request withSuccess:^(NSDictionary *dicData) {
-        /*
+        
         //用户
         NSDictionary *userDic = [dicData objectForKey:@"student"];
         [DataService sharedService].user = [UserObject userFromDictionary:userDic];
@@ -67,7 +67,7 @@
             [fileManage removeItemAtPath:filename2 error:nil];
         }
         [NSKeyedArchiver archiveRootObject:userDic toFile:filename2];
-        */
+       
         
         NSArray *taskArr = [dicData objectForKey:@"tasks"];
         NSString *knowlegeCount = [Utility filterValue:[dicData objectForKey:@"knowledges_cards_count"]];

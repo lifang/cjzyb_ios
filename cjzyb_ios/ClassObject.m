@@ -30,7 +30,7 @@
     appDel.the_class_id = -1;
     appDel.notification_type=0;
     NSFileManager *fileManage = [NSFileManager defaultManager];
-    NSString *Path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *Path = [Utility returnPath];
     NSString *filename = [Path stringByAppendingPathComponent:@"class.plist"];
     if ([fileManage fileExistsAtPath:filename]) {
         [fileManage removeItemAtPath:filename error:nil];
