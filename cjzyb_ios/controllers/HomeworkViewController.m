@@ -69,6 +69,14 @@
     return self;
 }
 -(IBAction)refreshData:(id)sender {
+    NSArray *visibleItemIndexPath  = [self.collectionView indexPathsForVisibleItems];
+    if (visibleItemIndexPath && visibleItemIndexPath.count > 0) {
+        NSIndexPath *path = visibleItemIndexPath.firstObject;
+        if (path.item -1 >= 0) {
+            [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionRight animated:YES];
+        }
+    }
+    
     [self getHomeworkData];
 }
 -(void)getHomeworkData {
@@ -171,7 +179,7 @@
             self.allHistoryTaskArray = [NSMutableArray arrayWithArray:filteredArray];
         }else {
             self.historyNameLabel.hidden = YES;
-            self.historyStartTaskLabel.hidden = YES;
+            self.historyStartTaskLabel.text = @"暂无作业";
             self.allHistoryTaskArray = nil;
         }
         self.isShowHistory = YES;
@@ -365,7 +373,6 @@
         
         if ([Utility judgeQuestionJsonFileIsExistForTaskObj:task]) {//存在question
             NSInteger status = [Utility judgeAnswerJsonFileIsLastVersionForTaskObj:task];
-            
             //0:不存在answer文件   1:存在不是最新的  2:最新的
             if (task.isExpire == YES) {
                 if (status==1) {//存在不是最新的
@@ -394,7 +401,7 @@
                 }
             }else {
                 if (status == 0) {
-                    if (![task.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && task.taskAnswerFileDownloadURL.length>10) {
+                    if (![task.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && task.taskAnswerFileDownloadURL!=nil && task.taskAnswerFileDownloadURL.length>10) {
                         //answer的下载地址
                         AppDelegate *app = [AppDelegate shareIntance];
                         __block MBProgressHUD *progress = [MBProgressHUD showHUDAddedTo:app.window animated:YES];

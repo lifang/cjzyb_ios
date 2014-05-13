@@ -383,11 +383,14 @@
         [self.remindButton removeTarget:self action:NULL forControlEvents:UIControlEventTouchUpInside];
         [self.remindButton addTarget:self action:@selector(showFullTextPressed) forControlEvents:UIControlEventTouchUpInside];
         
+        NSString *tempText = [NSString stringWithFormat:@"%@",content_text];
         //原文
         CGSize size = [self getSizeWithString:content_text withWidth:240];
         UILabel *originLabel = [self returnLabel];
+        tempText = [tempText stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];//去空格
+        tempText = [tempText stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         originLabel.frame = CGRectMake(20, 50, 240, size.height);
-        originLabel.text = content_text;
+        originLabel.text = tempText;
         [self addSubview:originLabel];
         //选项
         CGRect frame = CGRectMake(20, originLabel.frame.size.height+originLabel.frame.origin.y+20, 292, 20);
