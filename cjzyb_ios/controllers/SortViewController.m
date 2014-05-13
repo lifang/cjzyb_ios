@@ -74,7 +74,7 @@ static BOOL isCanUpLoad = NO;
     
     int num1 = self.orgArray.count/3;//除以3的整数
     int num2 = self.orgArray.count%3;//除以3的余数
-    //TODO:上半部分
+    //
     for (int i=0; i<num1; i++) {
         for (int k=0; k<3; k++) {
             UIButton *btn3 = [self returnButton];
@@ -1123,10 +1123,11 @@ static BOOL isCanUpLoad = NO;
     self.branchScore = self.orgArray.count;
     for (int i=0; i<self.orgArray.count; i++) {
         [anserString appendFormat:@"%@ ",[self.orgArray objectAtIndex:i]];
-        
+        NSString *title_str = [self.orgArray objectAtIndex:i];
+
         UIButton *answerBtn = (UIButton *)[self.wordsContainerView viewWithTag:i+CP_Answer_Button_Tag_Offset];
-        [answerBtn setTitleColor:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] forState:UIControlStateNormal];
-        [answerBtn setTitle:[self.orgArray objectAtIndex:i] forState:UIControlStateNormal];
+        [answerBtn setTitle:title_str forState:UIControlStateDisabled];
+        [answerBtn setTitleColor:[UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1] forState:UIControlStateDisabled];
         answerBtn.enabled = NO;
         
         UIButton *wordBtn = (UIButton *)[self.wordsContainerView viewWithTag:i+CP_Word_Button_Tag_Offset];

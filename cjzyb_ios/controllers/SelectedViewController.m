@@ -586,7 +586,17 @@ static BOOL isCanUpLoad = NO;
     UnderLineLabel *label = (UnderLineLabel *)[self.clozeVV viewWithTag:self.prop_number+UnderLab_tag];
     NSDictionary *dic = [self.answerArray objectAtIndex:self.prop_number];
     NSString *answer = [dic objectForKey:@"answer"];
-    label.text = answer;
+    
+    int font_size = 20;
+    for (int i=33; i>=20; i--) {
+        CGSize sizeSub = [answer sizeWithFont:[UIFont systemFontOfSize:i]];
+        if (sizeSub.width-150<=0) {
+            font_size = i;
+            break;
+        }
+    }
+    label.font = [UIFont systemFontOfSize:font_size];
+    [label setText:answer];
     label.textColor = [UIColor colorWithRed:53/255.0 green:207/255.0 blue:143/255.0 alpha:1];
 }
 - (void)clozeViewReduceTimeButtonClicked {

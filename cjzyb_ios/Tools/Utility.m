@@ -428,7 +428,7 @@ dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if (![[dataObject objectForKey:@"update"]isKindOfClass:[NSNull class]] && [dataObject objectForKey:@"update"]!=nil) {
             NSString *updateDate = [dataObject objectForKey:@"update"];
             
-            if (task.taskAnswerFileUpdateDate.length>10) {
+            if (![task.taskAnswerFileDownloadURL isKindOfClass:[NSNull class]] && task.taskAnswerFileDownloadURL!=nil && task.taskAnswerFileDownloadURL.length>10) {
                 NSDate *taskUpdteDate = [Utility getDateFromDateString:task.taskAnswerFileUpdateDate];
                 NSDate *fileUpDate = [Utility getDateFromDateString:updateDate];
                 if ([taskUpdteDate compare:fileUpDate] == NSOrderedSame) {
