@@ -59,6 +59,8 @@
 - (IBAction)listeningButtonClicked:(id)sender;
 
 @property (nonatomic,assign) BOOL currentSentencePassed; //当前题目是否及格
+
+@property (nonatomic, assign) BOOL exitButtonHasBeenClicked; //用户点击了"退出"按钮
 @end
 
 @implementation ReadingTaskViewController
@@ -125,6 +127,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.exitButtonHasBeenClicked = NO;
     self.currentSentencePassed = NO;
     self.shouldUpload = NO;
     // 创建识别对象
@@ -316,7 +319,7 @@
                         [parentVC stopTimer];
                         if (self.isFirst && ![DataService sharedService].isHistory) {
                             [self uploadJSON];
-                        }else{
+                        }else{ //为重新做题
                             [self showResultView];
                         }
                     }
@@ -416,7 +419,7 @@
     [ParseAnswerJsonFileTool parseAnswerJsonFileWithUserId:[DataService sharedService].user.userId withTask:task withReadingHistoryArray:^(NSArray *readingQuestionArr, int currentQuestionIndex, int currentQuestionItemIndex, int status, NSString *updateTime, NSString *userTime, int specifyTime,float ratio){
         ReadingTaskViewController *tempSelf = weakSelf;
         if (tempSelf) {
-            HomeworkContainerController *container = (HomeworkContainerController*)tempSelf.parentViewController;
+            HomeworkContainerController *container = (HomeworkContainerController*)[tempSelf parentViewController];
             tempSelf.readingHomeworksArr = readingQuestionArr;
             tempSelf.specifiedSecond = specifyTime;
             if (status > 0 || [DataService sharedService].taskObj.isExpire) {
@@ -430,9 +433,8 @@
                 tempSelf.isFirst = YES;
                 tempSelf.currentHomeworkIndex = currentQuestionIndex < 0 ?0:currentQuestionIndex;
                 tempSelf.currentSentenceIndex = currentQuestionItemIndex < 0 ?0:currentQuestionItemIndex;
-                container.spendSecond = userTime?userTime.intValue:0;
+                container.spendSecond = userTime ? userTime.intValue : 0;
             }
-            
         }
     } withParseError:^(NSError *error) {
         [Utility errorAlert:[error.userInfo objectForKey:@"msg"]];
@@ -449,9 +451,9 @@
     TaskObj *task = [DataService sharedService].taskObj;
     NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
     [parentVC  uploadAnswerJsonFileWithPath:path withSuccess:^(NSString *success) {
-         [Utility returnAnswerPAthWithString:success];
+        [Utility returnAnswerPAthWithString:success];
         //退出或显示成绩界面
-        if (self.currentHomeworkIndex+1 >= self.readingHomeworksArr.count && self.currentSentenceIndex+1 >= self.currentHomework.readingHomeworkSentenceObjArray.count && ![DataService sharedService].isHistory) {
+        if (self.currentHomeworkIndex + 1 >= self.readingHomeworksArr.count && self.currentSentenceIndex + 1 >= self.currentHomework.readingHomeworkSentenceObjArray.count && ![DataService sharedService].isHistory && !self.exitButtonHasBeenClicked) {
             [self showResultView];
         }else{
             [parentVC dismissViewControllerAnimated:YES completion:nil];
@@ -460,7 +462,7 @@
         [Utility errorAlert:error];
         [Utility uploadFaild];
         //退出或显示成绩界面
-        if (self.currentHomeworkIndex+1 >= self.readingHomeworksArr.count && self.currentSentenceIndex+1 >= self.currentHomework.readingHomeworkSentenceObjArray.count && ![DataService sharedService].isHistory) {
+        if (self.currentHomeworkIndex + 1 >= self.readingHomeworksArr.count && self.currentSentenceIndex + 1 >= self.currentHomework.readingHomeworkSentenceObjArray.count && ![DataService sharedService].isHistory && !self.exitButtonHasBeenClicked) {
             [self showResultView];
         }else{
             [parentVC dismissViewControllerAnimated:YES completion:nil];
@@ -837,6 +839,7 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSString *choice = [alertView buttonTitleAtIndex:buttonIndex];
     if ([choice isEqualToString:@"退出"]) {
+        self.exitButtonHasBeenClicked = YES;
         [self quitNow];
     }else if ([choice isEqualToString:@"取消"]){
         
@@ -874,7 +877,9 @@
     TaskObj *task = [DataService sharedService].taskObj;
     NSString *path = [NSString stringWithFormat:@"%@/%@/answer_%@.json",[Utility returnPath],task.taskStartDate,[DataService sharedService].user.userId?:@""];
     
-    [DRSentenceSpellMatch checkSentence:self.currentSentence.readingSentenceContent withSpellMatchSentence:result andSpellMatchAttributeString:^(NSMutableAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray,NSArray *rightWordArray) {
+    [DRSentenceSpellMatch checkSentence:self.currentSentence.readingSentenceContent
+                 withSpellMatchSentence:result
+           andSpellMatchAttributeString:^(NSMutableAttributedString *spellAttriString,float matchScore,NSArray *errorWordArray,NSArray *rightWordArray){
         self.readingCount++;
         [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         //记录读对的词
