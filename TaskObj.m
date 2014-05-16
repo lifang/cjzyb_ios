@@ -19,10 +19,13 @@
     [task setTaskEndDate:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"end_time"]]];
     [task setTaskFileDownloadURL:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"question_packages_url"]]];
     [task setFinish_types:[NSMutableArray arrayWithArray:[aDic objectForKey:@"finish_types"]]];
-    [task setTaskAnswerFileDownloadURL:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"answer_url"]]];
+    
+    if (![[aDic objectForKey:@"answer_url"] isKindOfClass:[NSNull class]] && [aDic objectForKey:@"answer_url"]!=nil) {
+        [task setTaskAnswerFileDownloadURL:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"answer_url"]]];
+    }
     [task setTaskAnswerFileUpdateDate:[NSString stringWithFormat:@"%@",[aDic objectForKey:@"updated_at"]]];
     if (task.taskStartDate.length > 0) {
-        [task setTaskFolderPath:[[Utility returnPath] stringByAppendingPathComponent:task.taskStartDate]];
+        [task setTaskFolderPath:[[Utility returnPath] stringByAppendingPathComponent:[aDic objectForKey:@"start_time"]]];
     }
     return task;
 }
